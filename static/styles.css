@@ -1,0 +1,1474 @@
+:root {
+    /* Typography */
+    --font-heading: "Saira", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: "Barlow", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Colors */
+    --color-bg: #050816;
+    --color-surface: #0b1020;
+    --color-surface-alt: #0f172a;
+    --color-navy: #0b1530;
+    --color-blue: #2b6cb0;
+    --color-blue-soft: #3b82f6;
+    --color-mint: #34d3c6;
+    /* The brand gold (CLAUDE.md §5): the mark, Cascade, and anything new.
+       Mint stays the interface accent. Promoted out of .casc-banner so the
+       products strip and the loop cards use the SAME gold — a second gold
+       would break the palette grammar. */
+    --brand-gold: #d9a62c;
+
+    /* The sticky header measures 70.1px at both 390px and 1440px. Anchor jumps
+       used block:"start" with no offset, so every nav target (#shipped,
+       #problems, #about, #contact) landed with its own heading hidden behind
+       the bar. */
+    --header-h: 70px;
+    --color-text: #f9fafb;
+    --color-text-muted: #9ca3af;
+    --color-border-subtle: rgba(148, 163, 184, 0.3);
+
+    /* Layout */
+    --max-width: 1040px;
+    --radius-sm: 0.4rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+
+    --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.65);
+    --shadow-subtle: 0 1px 4px rgba(15, 23, 42, 0.3);
+
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1.25rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: radial-gradient(circle at top left, #0f172a 0%, #020617 55%, #000000 100%);
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol {
+    padding-left: 1.25rem;
+}
+
+p {
+    margin: 0 0 var(--space-sm);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-heading);
+    margin: 0 0 var(--space-sm);
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: clamp(2rem, 3.1vw + 1.4rem, 2.9rem);
+}
+
+h2 {
+    font-size: clamp(1.6rem, 2.4vw + 1.1rem, 2.1rem);
+}
+
+h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+}
+
+/* Long section headings read better slightly tighter than the body default. */
+h1,
+h2 {
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Header */
+
+/* The header bar gets more room than the reading column. Measured: with the
+   client-area link the row needs 1068px (nav 805 + brand 263), and the shared
+   1040px container only supplies 1000 — so at every viewport the brand tagline
+   was being squeezed onto two lines and the header grew to 88px. The reading
+   column stays at 1040 for line length; only the bar is wider. */
+.site-header .container {
+    max-width: 1200px;
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(14px);
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.7));
+    border-bottom: 1px solid rgba(15, 23, 42, 0.85);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem var(--space-md);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 0.75rem;
+    background: radial-gradient(circle at 30% 20%, var(--color-mint), var(--color-blue));
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.5);
+    object-fit: contain;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 0.98rem;
+}
+
+.brand-tagline {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+/* Measured: the eight links need 766px of natural width beside a 233px brand
+   block, inside 1000px of content. Without nowrap six of the eight broke across
+   two lines and pushed the header to 88px tall. nowrap + this gap/size leaves
+   ~13px of slack at the 1040px container. */
+.nav-link {
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.3rem;
+    width: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--color-mint), var(--color-blue-soft));
+    transition: width 0.18s ease-out;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+    width: 100%;
+}
+
+/* Destination pages are visually separated from the in-page anchors: eight
+   equal-weight links read as one undifferentiated row at desktop width. */
+.nav-sep {
+    width: 1px;
+    height: 0.95rem;
+    background: rgba(148, 163, 184, 0.35);
+    flex: none;
+}
+
+.nav-link--page {
+    color: rgba(249, 250, 251, 0.82);
+}
+
+/* Client area — R-CAI. Marked with a key so it reads as "you need a code for
+   this", not as another marketing page. Mint, because it is the interface
+   accent; gold stays the brand mark (CLAUDE.md §5). */
+.nav-link--rcai {
+    color: var(--color-mint);
+    border: 1px solid rgba(52, 211, 198, 0.45);
+    border-radius: 999px;
+    padding: 0.28rem 0.7rem;
+}
+
+.nav-link--rcai::before {
+    content: "⌾";
+    margin-right: 0.3rem;
+    opacity: 0.85;
+}
+
+/* The underline sweep belongs to the plain links; on a pill it just clips. */
+.nav-link--rcai::after {
+    display: none;
+}
+
+.nav-link--rcai:hover,
+.nav-link--rcai:focus-visible {
+    border-color: var(--color-mint);
+    background: rgba(52, 211, 198, 0.1);
+}
+
+.nav-cta {
+    font-size: 0.84rem;
+    white-space: nowrap;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.18), rgba(15, 23, 42, 0.2));
+    box-shadow: var(--shadow-subtle);
+}
+
+.nav-toggle {
+    display: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.35rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    /* Measured 49.2 x 19.2px at 390px — the smallest target on the page, and
+       the only one a phone user has to hit to navigate at all. 44px square is
+       the iOS floor. flex-direction keeps the two bars stacked and centred
+       now that the box is taller than its contents. */
+    min-width: 44px;
+    min-height: 44px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.nav-toggle-line {
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-text);
+    display: block;
+}
+
+.nav-toggle .nav-toggle-line + .nav-toggle-line {
+    margin-top: 0;
+}
+
+.nav-toggle-line + .nav-toggle-line {
+    margin-top: 4px;
+}
+
+/* Promo banner — slim strip between the header and the hero. Mint rather than
+   yellow: on this palette a bright warm bar reads as a warning, not an offer. */
+
+.promo-banner {
+    background: var(--color-mint);
+    color: #04121c;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.promo-banner__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 0.55rem var(--space-md);
+    text-align: center;
+}
+
+.promo-banner__label {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.promo-banner__text {
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+}
+
+.promo-banner__link {
+    font-weight: 700;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(4, 18, 28, 0.55);
+    padding-bottom: 1px;
+}
+
+.promo-banner__link:hover,
+.promo-banner__link:focus-visible {
+    border-bottom-color: #04121c;
+}
+
+@media (max-width: 700px) {
+    .promo-banner__inner {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .promo-banner__text {
+        letter-spacing: 0.06em;
+    }
+}
+
+/* Hero */
+
+.hero {
+    padding: var(--space-xl) 0 var(--space-xl);
+}
+
+.hero-inner {
+    display: grid;
+    gap: var(--space-lg);
+}
+
+.hero-copy {
+    max-width: 620px;
+}
+
+.eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-mint);
+    margin-bottom: var(--space-xs);
+}
+
+.hero-subhead {
+    margin-top: var(--space-sm);
+    color: var(--color-text-muted);
+    max-width: 34rem;
+}
+
+.hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: var(--space-md) 0 var(--space-md);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    /* 44px is the iOS minimum tap target. Measured at 390px the primary CTA
+       came out 42.2px on padding alone, so the floor is set explicitly. */
+    min-height: 44px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background 0.1s ease-out,
+        border-color 0.1s ease-out;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-mint), var(--color-blue-soft));
+    color: #020617;
+    box-shadow: 0 12px 28px rgba(34, 197, 235, 0.4);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 38px rgba(34, 197, 235, 0.5);
+}
+
+.btn-secondary {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.55);
+    color: var(--color-text);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+    background: rgba(30, 64, 175, 0.7);
+    border-color: rgba(191, 219, 254, 0.9);
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    color: var(--color-text-muted);
+}
+
+.btn-ghost:hover,
+.btn-ghost:focus-visible {
+    border-color: rgba(191, 219, 254, 0.9);
+    color: var(--color-text);
+}
+
+.hero-highlights {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.hero-highlights li::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 0.5rem;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 20%, var(--color-mint), var(--color-blue-soft));
+}
+
+.hero-aside {
+    max-width: 360px;
+}
+
+.hero-card {
+    background: radial-gradient(circle at 0% 0%, rgba(52, 211, 198, 0.18), rgba(15, 23, 42, 0.96));
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg) var(--space-md);
+    border: 1px solid rgba(15, 23, 42, 0.9);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.92rem;
+}
+
+/* The card sits beside the h1. Letting it inherit the global h2 scale put a
+   2.1rem heading inside a 360px box and made it compete with the headline. */
+.hero-card__title {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: var(--space-xs);
+}
+
+.hero-card p {
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+}
+
+.hero-card ul {
+    margin-top: var(--space-sm);
+    padding-left: 1.15rem;
+    color: var(--color-text-muted);
+}
+
+.hero-kicker {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin: var(--space-md) 0 var(--space-sm);
+}
+
+/* Product demo mock ("screenshot") */
+
+.demo-card {
+    background: rgba(11, 17, 32, 0.98);
+    border: 1px solid rgba(37, 99, 235, 0.55);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.92rem;
+}
+
+.demo-q {
+    font-family: var(--font-heading);
+    color: var(--color-mint);
+    margin-bottom: var(--space-xs);
+}
+
+.demo-q::before {
+    content: "Q · ";
+    color: var(--color-text-muted);
+}
+
+.demo-a {
+    color: var(--color-text);
+}
+
+.demo-sources {
+    list-style: none;
+    padding: 0.6rem 0 0;
+    margin: 0.6rem 0 0;
+    border-top: 1px dashed rgba(148, 163, 184, 0.35);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.demo-sources::before {
+    content: "Sources";
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+/* Before / After transformation */
+
+.ba-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.ba-before {
+    border-color: rgba(148, 163, 184, 0.35);
+}
+
+.ba-before ul,
+.ba-after ul {
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.ba-after {
+    border-color: rgba(52, 211, 198, 0.6);
+    background: radial-gradient(circle at 0% 0%, rgba(52, 211, 198, 0.14), rgba(15, 23, 42, 0.97));
+}
+
+.ba-after ul {
+    color: var(--color-text);
+}
+
+@media (min-width: 721px) {
+    .ba-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.proof-vignette {
+    margin-top: var(--space-md);
+    color: var(--color-text-muted);
+    max-width: 44rem;
+    font-size: 0.95rem;
+}
+
+/* Sections */
+
+.section {
+    padding: var(--space-xl) 0;
+}
+
+.section-alt {
+    background: radial-gradient(circle at top right, rgba(30, 64, 175, 0.35), rgba(15, 23, 42, 0.98));
+}
+
+.section-header {
+    max-width: 640px;
+    margin-bottom: var(--space-lg);
+}
+
+.section-header p {
+    color: var(--color-text-muted);
+}
+
+/* Card grids */
+
+.card-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.card {
+    background: rgba(15, 23, 42, 0.94);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-subtle);
+    font-size: 0.95rem;
+}
+
+.card p {
+    color: var(--color-text-muted);
+}
+
+/* "Why clients hire me" is six headline-only cards. At full card padding they
+   read as six empty boxes, so the compact variant tightens them into a scannable
+   list while keeping the same markup and grid. */
+.card-grid--compact {
+    gap: var(--space-sm);
+}
+
+.card--compact {
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 100%;
+}
+
+.card--compact h3 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.card--compact::before {
+    content: "";
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 20%, var(--color-mint), var(--color-blue-soft));
+}
+
+.card ul {
+    margin-top: var(--space-sm);
+    color: var(--color-text-muted);
+}
+
+.case-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.case-card {
+    background: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.14), rgba(15, 23, 42, 0.97));
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(37, 99, 235, 0.55);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.95rem;
+}
+
+.case-card p {
+    color: var(--color-text-muted);
+}
+
+.case-card ul {
+    margin-top: var(--space-sm);
+    color: var(--color-text-muted);
+}
+
+.case-footnote {
+    margin-top: var(--space-sm);
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+    opacity: 0.9;
+}
+
+/* Process steps */
+
+.process-steps {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    gap: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.process-steps li {
+    background: rgba(15, 23, 42, 0.96);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: var(--shadow-subtle);
+}
+
+.process-steps h3 {
+    margin-bottom: 0.25rem;
+}
+
+.process-steps p {
+    color: var(--color-text-muted);
+}
+
+/* Contact / final CTA */
+
+.contact-section {
+    background: radial-gradient(circle at 20% 0%, rgba(52, 211, 198, 0.22), rgba(15, 23, 42, 0.98));
+}
+
+.contact-inner {
+    display: grid;
+    gap: var(--space-md);
+}
+
+/* Was carrying no rule at all, so the closing paragraph ran the full container
+   width — the longest measure on the page, in its most important section. */
+.contact-copy {
+    max-width: 44rem;
+}
+
+.contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: var(--space-md) 0 var(--space-sm);
+}
+
+.contact-note {
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    max-width: 34rem;
+}
+
+/* Footer */
+
+.site-footer {
+    border-top: 1px solid rgba(30, 64, 175, 0.75);
+    background: rgba(2, 6, 23, 0.98);
+}
+
+.footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.9rem var(--space-md) 1.1rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+/* Utilities */
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--color-mint);
+    outline-offset: 2px;
+}
+
+/* Responsive layout */
+
+/* The nav collapses below 1160px. Measured: the nine links plus the separator
+   need 805px beside a 263px brand block — 1068px total — and the header bar
+   supplies min(1200, vw) - 40. Below ~1108 there is not enough, so the bar
+   becomes a hamburger rather than a squeezed two-line header. */
+@media (max-width: 1159px) {
+    .site-nav {
+        position: absolute;
+        inset-inline: 0;
+        /* Was a hardcoded 56px, which assumed the 32px logo was the tallest
+           thing in the bar. The brand block is two stacked lines and runs
+           taller than that, so the panel opened overlapping the header.
+           100% tracks the header's real height, whatever it ends up being. */
+        top: 100%;
+        padding: 0.85rem var(--space-md) 0.9rem;
+        /* Was rgba(15, 23, 42, 0.98) — reaching for opaque but not reaching it.
+           The panel hangs below the header, outside the header's own painted
+           background, so the hero headline read straight through the open menu
+           on a phone. Solid, and z-index above the page content. */
+        background: var(--color-surface-alt);
+        z-index: 30;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+        display: none;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .site-nav.open {
+        display: flex;
+    }
+
+    .nav-cta {
+        align-self: flex-start;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    /* A vertical hairline between stacked rows reads as a stray artifact. */
+    .nav-sep {
+        display: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .hero {
+        padding-top: var(--space-lg);
+    }
+
+    .hero-inner {
+        gap: var(--space-lg);
+    }
+}
+
+@media (min-width: 721px) {
+    .hero-inner {
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+        align-items: center;
+    }
+
+    .section {
+        padding: calc(var(--space-xl) + 0.5rem) 0;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .case-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .footer-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero {
+        padding-top: calc(var(--space-xl) + 0.8rem);
+    }
+
+    /* Six cards in two rows of three, rather than three rows of two — the
+       section reads in one glance instead of scrolling past it. */
+    .card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* More air between sections once there is room for it. At the shared
+       --space-xl the page ran together on a wide screen. */
+    .section {
+        padding: calc(var(--space-xl) + 1.25rem) 0;
+    }
+}
+
+/* Narrow phones: the shared --space-md gutter leaves too little room either
+   side, and the CTAs read better full-width than wrapped. */
+@media (max-width: 420px) {
+    .container {
+        padding-inline: 1rem;
+    }
+
+    .hero-ctas .btn,
+    .contact-actions .btn {
+        width: 100%;
+    }
+
+    .promo-banner__inner {
+        padding-block: 0.5rem;
+    }
+}
+
+/* ── Trusted by ─────────────────────────────────────────────────────────────
+   Sits directly under the hero: the first thing after the claim is the
+   evidence for it. Named where there is permission, described where there is
+   an NDA — a logo wall that overstates the relationship is worse than none. */
+.trust-section {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.trust-kicker {
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-mint);
+}
+
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border-subtle);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.trust-item {
+    background: var(--color-surface);
+    padding: var(--space-md) var(--space-md) calc(var(--space-md) + 0.1rem);
+}
+
+.trust-item h3 {
+    margin: 0 0 0.2rem;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+}
+
+.trust-item .trust-what {
+    margin: 0 0 0.7rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-mint);
+}
+
+.trust-item .trust-line {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+.trust-item .trust-line b {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* Slot kept for real logos: drop an <img> in beside the name once a client
+   confirms in writing, and nothing else about the block has to change. */
+.trust-item img {
+    height: 26px;
+    width: auto;
+    margin-bottom: 0.6rem;
+    opacity: 0.9;
+}
+
+.trust-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    padding: var(--space-md) 0 0;
+}
+
+.trust-stats b {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-mint);
+}
+
+.trust-stats span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+}
+
+.trust-note {
+    margin: var(--space-md) 0 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    opacity: 0.8;
+    max-width: 68ch;
+}
+
+@media (max-width: 900px) {
+    .trust-grid { grid-template-columns: repeat(2, 1fr); }
+    .trust-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+    .trust-grid { grid-template-columns: 1fr; }
+    .trust-stats { grid-template-columns: 1fr; gap: var(--space-sm); }
+    .trust-stats b { font-size: 1.45rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   Cascade Araña banner (home page)
+
+   The product itself lives in __R_CAI/_1_CASCADES/ and is served from
+   /cascades/ — it has its own palette (warm cream, plum, yolk) and its own
+   stylesheet, deliberately untouched. THIS block is the CAI side of the door:
+   the site's own dark navy, the gold brand mark, the site's own button. It is
+   the only Cascades styling in this file, and it must stay that way — do not
+   import cascade.css here, and do not restyle the product to match the site.
+
+   Gold is the CAI mark colour (see assets/brand_2026/README.md), not the mint
+   used for interface accents, so it is scoped to this block rather than added
+   to the global tokens.
+--------------------------------------------------------------------------- */
+
+.casc-banner {
+    padding: var(--space-lg) 0 var(--space-xl);
+    --casc-gold: var(--brand-gold);
+}
+
+.casc-banner__card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(217, 166, 44, 0.32);
+    background: var(--color-navy);
+    box-shadow: var(--shadow-soft);
+    text-decoration: none;
+    color: inherit;
+    isolation: isolate;
+    transition: transform 0.12s ease-out, border-color 0.12s ease-out, box-shadow 0.12s ease-out;
+}
+
+.casc-banner__card:hover,
+.casc-banner__card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 166, 44, 0.7);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.8);
+}
+
+/* The art is decorative and sits behind everything. object-fit keeps the 2:1
+   derivative from distorting as the card gets taller on narrow screens. */
+.casc-banner__art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* Scrim. The tile is already dark, but the copy has to stay readable over the
+   lit panels on the right, so the gradient is heaviest on the left where the
+   text sits. */
+.casc-banner__card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(100deg, rgba(5, 8, 22, 0.95) 0%, rgba(5, 8, 22, 0.86) 45%, rgba(5, 8, 22, 0.55) 100%),
+        radial-gradient(120% 130% at 0% 0%, rgba(217, 166, 44, 0.16), transparent 55%);
+}
+
+.casc-banner__body {
+    position: relative;
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    max-width: 44rem;
+}
+
+.casc-banner__head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: var(--space-sm);
+}
+
+.casc-banner__mark {
+    width: 2.1rem;
+    height: 2.1rem;
+    flex: none;
+}
+
+.casc-banner__label {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--casc-gold);
+    margin: 0;
+}
+
+.casc-banner__title {
+    font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+    line-height: 1.02;
+    margin: 0 0 var(--space-sm);
+    letter-spacing: -0.02em;
+}
+
+.casc-banner__title em {
+    font-style: normal;
+    color: var(--casc-gold);
+}
+
+.casc-banner__copy {
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-md);
+    max-width: 34rem;
+}
+
+/* A miniature of the cascade they are one click from. Pure CSS: the home page
+   loads no JavaScript for this, and the motion is the whole point of putting it
+   here — a still banner does not read as something that runs. */
+.casc-banner__ribbon {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: min(20rem, 100%);
+    margin: 0 0 var(--space-md);
+}
+
+.casc-banner__ribbon::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(217, 166, 44, 0.15), rgba(217, 166, 44, 0.5), rgba(217, 166, 44, 0.15));
+}
+
+.casc-banner__ribbon i {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(217, 166, 44, 0.28);
+    animation: cascRun 4.2s ease-in-out infinite;
+}
+
+.casc-banner__ribbon i:nth-child(1) { animation-delay: 0s; }
+.casc-banner__ribbon i:nth-child(2) { animation-delay: 0.32s; }
+.casc-banner__ribbon i:nth-child(3) { animation-delay: 0.64s; }
+.casc-banner__ribbon i:nth-child(4) { animation-delay: 0.96s; }
+.casc-banner__ribbon i:nth-child(5) { animation-delay: 1.28s; }
+.casc-banner__ribbon i:nth-child(6) { animation-delay: 1.6s; }
+.casc-banner__ribbon i:nth-child(7) { animation-delay: 1.92s; }
+
+@keyframes cascRun {
+    0%, 62%, 100% { background: rgba(217, 166, 44, 0.28); box-shadow: none; transform: none; }
+    12% { background: var(--casc-gold); box-shadow: 0 0 0 4px rgba(217, 166, 44, 0.18); transform: scale(1.25); }
+    34% { background: rgba(217, 166, 44, 0.75); box-shadow: none; transform: none; }
+}
+
+.casc-banner__proof {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1.4rem;
+    padding: 0;
+    margin: 0 0 var(--space-md);
+}
+
+.casc-banner__proof li {
+    position: relative;
+    padding-left: 1rem;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+}
+
+.casc-banner__proof li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--casc-gold);
+}
+
+.casc-banner__free {
+    display: inline-block;
+    margin-left: 0.85rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    vertical-align: middle;
+}
+
+/* Styled as a button but rendered as a span: the whole card is already the
+   link, and an <a> cannot legally contain another one. */
+.casc-banner__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.78rem 1.6rem;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #1a1204;
+    background: linear-gradient(135deg, var(--casc-gold), #f0c451);
+    box-shadow: 0 12px 28px rgba(217, 166, 44, 0.28);
+}
+
+.casc-banner__card:hover .casc-banner__cta,
+.casc-banner__card:focus-visible .casc-banner__cta {
+    box-shadow: 0 14px 34px rgba(217, 166, 44, 0.42);
+}
+
+@media (max-width: 700px) {
+    .casc-banner__body {
+        max-width: none;
+    }
+
+    .casc-banner__card::before {
+        background:
+            linear-gradient(180deg, rgba(5, 8, 22, 0.9) 0%, rgba(5, 8, 22, 0.94) 100%),
+            radial-gradient(130% 100% at 0% 0%, rgba(217, 166, 44, 0.18), transparent 60%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .casc-banner__card,
+    .casc-banner__card:hover,
+    .casc-banner__card:focus-visible {
+        transform: none;
+        transition: none;
+    }
+
+    .casc-banner__ribbon i {
+        animation: none;
+    }
+}
+
+/* ── Shipped products, Sept 2026 ─────────────────────────────────────────────
+   Three live things placed directly under the hero. They are products, not
+   promos, so they carry the same weight as a case card and each one is a whole
+   link. The accent per card is the only difference between them: mint for the
+   client portal (interface accent), gold for Cascades (the brand mark, per
+   CLAUDE.md §5), blue for the archive. */
+
+.shipped {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.shipped .section-header {
+    margin-bottom: var(--space-md);
+}
+
+.ship-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.ship-card {
+    --ship-accent: var(--color-mint);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    background: rgba(15, 23, 42, 0.94);
+    box-shadow: var(--shadow-subtle);
+    color: inherit;
+    transition: transform 0.1s ease-out, border-color 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.ship-card:hover,
+.ship-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--ship-accent);
+    box-shadow: var(--shadow-soft);
+}
+
+.ship-card__tag {
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ship-accent);
+    margin: 0;
+}
+
+.ship-card h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.25rem;
+}
+
+.ship-card p:not(.ship-card__tag) {
+    color: var(--color-text-muted);
+    font-size: 0.93rem;
+    margin: 0;
+}
+
+/* Pushed to the bottom so the three CTAs line up however long the copy runs. */
+.ship-card__cta {
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ship-accent);
+}
+
+.ship-card--rcai { --ship-accent: var(--color-mint); }
+.ship-card--casc { --ship-accent: var(--brand-gold); }
+.ship-card--yc   { --ship-accent: var(--color-blue-soft); }
+
+@media (min-width: 721px) {
+    /* Two products since Y-Contracts came off the marketing surface. Left at
+       repeat(3, ...) the pair sat in two thirds of the row with a hole where
+       the third card used to be. */
+    .ship-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Existing clients, in the closing block. Quiet on purpose: the primary action
+   here is a scope call, and this is for people who already have a code. */
+.contact-note__link {
+    color: var(--color-mint);
+    border-bottom: 1px solid rgba(52, 211, 198, 0.45);
+}
+
+.contact-note__link:hover,
+.contact-note__link:focus-visible {
+    border-bottom-color: var(--color-mint);
+}
+
+/* ── Loop examples ──────────────────────────────────────────────────────────
+   Four real cascades, each a link into /cascades/. Gold is doing grammar work
+   here, not decoration: the watch cadence is muted (it is the trigger) and the
+   yolk line is gold (it is the deliverable), matching the product's own
+   palette. Same grid behaviour as .card-grid — one column by default, widening
+   with the viewport. */
+.loop-grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.loop-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-subtle);
+    border-top: 2px solid var(--brand-gold);
+    background: rgba(15, 23, 42, 0.94);
+    box-shadow: var(--shadow-subtle);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.1s ease-out, border-color 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.loop-card:hover,
+.loop-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--brand-gold);
+    box-shadow: var(--shadow-soft);
+}
+
+.loop-card__watch {
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.loop-card h3 {
+    margin: 0;
+    font-size: 1.08rem;
+}
+
+.loop-card__short {
+    color: var(--color-text-muted);
+    font-size: 0.93rem;
+    margin: 0;
+}
+
+/* Pushed to the bottom so the four yolk lines align however long the copy. */
+.loop-card__yolk {
+    margin: 0;
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--brand-gold);
+}
+
+.loops-more {
+    margin-top: var(--space-md);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+}
+
+.loops-more a {
+    display: inline-flex;
+    align-items: center;
+    /* Standalone link on its own line, so it gets a real tap target rather
+       than the 22px its text alone produced. */
+    min-height: 44px;
+    color: var(--brand-gold);
+    text-decoration: none;
+}
+
+.loops-more a:hover,
+.loops-more a:focus-visible {
+    text-decoration: underline;
+}
+
+/* The gold "New · 2026" pill beside the products heading. Inline-block with
+   its own line-height so it never stretches the heading's leading. */
+.new-badge {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.6rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--brand-gold);
+    color: var(--brand-gold);
+    font-family: var(--font-heading);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+@media (min-width: 721px) {
+    .loop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .loop-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* Anchor jumps clear the sticky header. scroll-margin-top is honoured by
+   scrollIntoView(), which is what app.js uses, as well as by a plain #hash
+   load — so both routes into a section land the heading in view. */
+section[id],
+[id="top"] {
+    scroll-margin-top: calc(var(--header-h) + 0.75rem);
+}

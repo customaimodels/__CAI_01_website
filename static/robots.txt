@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /contracts
+Disallow: /api/
+Disallow: /s/
+Disallow: /y-contracts

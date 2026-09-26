@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Custom AI Models | Custom AI Systems for Companies That Need More Than ChatGPT</title>
+    <meta
+        name="description"
+        content="Production AI systems built on your data and inside your workflow: copilots, decision support, forecasting, automation. Shipped by one engineer, end to end."
+    />
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="apple-touch-icon" href="logo.png" />
+
+    <!-- Fonts: Saira (headings) + Barlow (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Saira:wght@400;600;700&display=swap"
+        rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="chat.css" />
+</head>
+<body id="top">
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#top" class="brand">
+                <img src="logo.png" alt="Custom AI Models logo" class="brand-logo" />
+                <span class="brand-text">
+                    <span class="brand-name">Custom AI Models</span>
+                    <span class="brand-tagline">Faster decisions. Fewer surprises.</span>
+                </span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+
+            <nav class="site-nav" id="site-nav" aria-label="Primary">
+                <a href="#shipped" class="nav-link">Products</a>
+                <a href="#problems" class="nav-link">What I solve</a>
+                <a href="#about" class="nav-link">About</a>
+                <span class="nav-sep" aria-hidden="true"></span>
+                <a href="/articles" class="nav-link nav-link--page">Articles</a>
+                <a href="/deal-execution-copilot" class="nav-link nav-link--page">Deal Copilot for M&amp;A</a>
+                <!-- R-CAI client portal. The route is implemented by
+                     __R_CAI/_0_CLIENTS/serve.js but is NOT yet mounted: server.js
+                     needs an import plus one app.use("/rcai", ...). Until that
+                     lands this link 404s in production. Wire it before shipping. -->
+                <a href="/rcai" class="nav-link nav-link--rcai">Client login</a>
+                <a href="#contact" class="nav-cta">Book a scope call</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="promo-banner">
+        <div class="container promo-banner__inner">
+            <span class="promo-banner__label">New &middot; 2026 pricing</span>
+            <span class="promo-banner__text">
+                What custom AI actually costs &mdash; three bands, from six published guides.
+            </span>
+            <a class="promo-banner__link" href="/articles/what-custom-ai-costs-2026">See the cost bands</a>
+        </div>
+    </section>
+
+    <main>
+        <!-- Hero -->
+        <section id="hero" class="hero">
+            <div class="container hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow">Built and shipped by one engineer</p>
+                    <h1>AI loops that explore solutions with you.</h1>
+                    <p class="hero-subhead">
+                        Cascade Ara&ntilde;a turns a workflow into a chain of loops that wake on
+                        real events &mdash; a missed call, a quiet quote, a new review &mdash; do the
+                        work, and wait for your YES. Structure in seconds, not days.
+                    </p>
+
+                    <div class="hero-ctas">
+                        <button class="btn btn-primary" data-scroll-target="#contact" type="button">
+                            Book a Scope Call
+                        </button>
+                        <a class="btn btn-secondary" href="/cascades/">
+                            See the loop engine
+                        </a>
+                    </div>
+
+                    <ul class="hero-highlights">
+                        <li>8.5 years shipping production ML and AI</li>
+                        <li>500+ locations monitored &middot; 100+ live signal features</li>
+                    </ul>
+                </div>
+
+                <aside class="hero-aside">
+                    <div class="hero-card">
+                        <h2 class="hero-card__title">Not sure what it would take?</h2>
+                        <p>
+                            Describe what's slow or manual. Scope and approach back in
+                            five minutes.
+                        </p>
+                        <div class="hero-ctas">
+                            <button class="btn btn-primary" data-open-chat type="button">
+                                Describe Your Use Case
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Shipped products, September 2026. Three live things a visitor can
+             actually open, placed high so they are not buried under the case
+             studies. Each links to its real route; none of these are roadmap. -->
+        <section id="shipped" class="section shipped">
+            <div class="container">
+                <header class="section-header">
+                    <h2>New from Custom AI Models<span class="new-badge">New &middot; 2026</span></h2>
+                    <p>Two products, live now. The loop engine, and the hub your work shows up in.</p>
+                </header>
+
+                <div class="ship-grid">
+                    <a class="ship-card ship-card--casc" href="/cascades/">
+                        <p class="ship-card__tag">Product builder</p>
+                        <h3>Cascade Ara&ntilde;a</h3>
+                        <p>
+                            A website, report or dataset, built by a chain of AI stages that
+                            check their own work.
+                        </p>
+                        <span class="ship-card__cta">Open Cascade Ara&ntilde;a <span aria-hidden="true">&rarr;</span></span>
+                    </a>
+
+                    <a class="ship-card ship-card--rcai" href="/rcai">
+                        <p class="ship-card__tag">Client portal</p>
+                        <h3>R&#8209;CAI</h3>
+                        <p>
+                            Clients sign in with a code and see their own projects and
+                            figures. Nobody sees anyone else's.
+                        </p>
+                        <span class="ship-card__cta">Client login <span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Who this is built for -->
+        <section id="trusted" class="section trust-section">
+            <div class="container">
+                <p class="trust-kicker">Trusted with production systems</p>
+
+                <div class="trust-grid">
+                    <article class="trust-item">
+                        <h3>M&amp;A Supply</h3>
+                        <p class="trust-what">HVAC distribution &middot; ~50 dealer network</p>
+                        <p class="trust-line">
+                            Catalog, pricing and proposals they own.
+                        </p>
+                    </article>
+
+                    <article class="trust-item">
+                        <h3>Dealer Training Hub</h3>
+                        <p class="trust-what">Dealer enablement &middot; national network</p>
+                        <p class="trust-line">
+                            Replaced spreadsheets. Leadership sees where dealers stall.
+                        </p>
+                    </article>
+
+                    <article class="trust-item">
+                        <h3>A live hospitality venue</h3>
+                        <p class="trust-what">Real-time audio intelligence</p>
+                        <p class="trust-line">
+                            Raw room audio, read continuously.
+                        </p>
+                    </article>
+
+                    <article class="trust-item">
+                        <h3>An investment desk</h3>
+                        <p class="trust-what">Decision support &middot; under NDA</p>
+                        <p class="trust-line">
+                            Instant answers, auditable trail.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="trust-stats">
+                    <div><b>8.5 yrs</b><span>Shipping production ML and AI</span></div>
+                    <div><b>500+</b><span>Locations under anomaly detection</span></div>
+                    <div><b>~50</b><span>Dealers on one quoting platform</span></div>
+                    <div><b>100+</b><span>Live signal features in production</span></div>
+                </div>
+
+                <p class="trust-note">
+                    Named with permission, described under NDA.
+                </p>
+            </div>
+        </section>
+
+        <!-- Case studies. Deliberately NOT the products strip — that is
+             #shipped, higher up. This section is client work, described under
+             NDA; keep the id, deep links point at it. -->
+        <section id="production" class="section section-alt">
+            <div class="container">
+                <header class="section-header">
+                    <h2>Built for clients</h2>
+                    <p>Running today. Real users, real stakes.</p>
+                </header>
+
+                <div class="case-grid">
+                    <article class="case-card">
+                        <h3>Financial Decision Copilot</h3>
+                        <ul>
+                            <li>Instant answers over internal research and past decisions</li>
+                            <li>Every recommendation traceable, measured, auditable</li>
+                        </ul>
+                    </article>
+
+                    <article class="case-card">
+                        <h3>AI Dealer Training Platform</h3>
+                        <ul>
+                            <li>3-mode assistant inside the training workflow</li>
+                            <li>Leadership sees where dealers stall, and adapts</li>
+                        </ul>
+                    </article>
+
+                    <article class="case-card">
+                        <h3>Real-Time Audio Intelligence</h3>
+                        <ul>
+                            <li>100+ features from raw room audio, live</li>
+                            <li>Adaptive engine driving operational decisions</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cascade Arana — product banner.
+             This is the click. It leads with what the visitor gets, not with how
+             the machine works: the mechanism is one line and the outcome is the
+             headline. The product lives in __R_CAI/_1_CASCADES/ and is served
+             from /cascades/; this block and the mount in server.js are its only
+             presence in the CAI site. Art is a derivative in static/brand/,
+             per CLAUDE.md §5.
+             Copy left as authored — it already carries one outcome line, one
+             mechanism line and three proof points, which is the target shape. -->
+        <section id="cascades" class="casc-banner" aria-labelledby="casc-banner-title">
+            <div class="container">
+                <a class="casc-banner__card" href="/cascades/">
+                    <img
+                        class="casc-banner__art"
+                        src="/brand/tile-cascade.jpg"
+                        alt=""
+                        width="1600"
+                        height="800"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    <div class="casc-banner__body">
+                        <div class="casc-banner__head">
+                            <img
+                                class="casc-banner__mark"
+                                src="/brand/mark-gold.png"
+                                alt=""
+                                width="160"
+                                height="160"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                            <p class="casc-banner__label">New &middot; Cascade Ara&ntilde;a</p>
+                        </div>
+
+                        <h2 id="casc-banner-title" class="casc-banner__title">
+                            Describe it once.<br />Wake up to it <em>built.</em>
+                        </h2>
+
+                        <p class="casc-banner__copy">
+                            A website, a report, a dataset &mdash; built overnight by a chain of AI
+                            stages that run themselves and check their own work. You stop babysitting
+                            a chat window.
+                        </p>
+
+                        <!-- a miniature of the thing they are about to see -->
+                        <div class="casc-banner__ribbon" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                        </div>
+
+                        <ul class="casc-banner__proof">
+                            <li>One command starts it</li>
+                            <li>Every stage checkpoints</li>
+                            <li>400+ deterministic validators</li>
+                        </ul>
+
+                        <span class="casc-banner__cta">
+                            Build your cascade <span aria-hidden="true">&rarr;</span>
+                        </span>
+                        <span class="casc-banner__free">Free &middot; nothing to install</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+
+
+        <!-- Loop examples. Four cascades that already exist as full walkthroughs
+             at /cascades/<name>.html — the copy here is lifted from
+             examples-data.js so the landing cannot drift from the real pages.
+             Each card carries its WATCH cadence and its yolk, which is the
+             whole grammar in two lines. -->
+        <section id="loops" class="section loops">
+            <div class="container">
+                <header class="section-header">
+                    <h2>Four leaks. Four cascades.</h2>
+                    <p>A loop wakes on a real event, does the work, and waits for your YES. Open one and step through it.</p>
+                </header>
+
+                <div class="loop-grid">
+                    <a class="loop-card" href="/cascades/missed-call.html">
+                        <p class="loop-card__watch">Wakes every 2h</p>
+                        <h3>Missed call &rarr; booked job</h3>
+                        <p class="loop-card__short">Catch every missed call and book it</p>
+                        <p class="loop-card__yolk">Yolk &middot; booked job</p>
+                    </a>
+
+                    <a class="loop-card" href="/cascades/cold-quote.html">
+                        <p class="loop-card__watch">Wakes daily &middot; 8 AM</p>
+                        <h3>Cold quote &rarr; signed deal</h3>
+                        <p class="loop-card__short">Revive quotes that went quiet</p>
+                        <p class="loop-card__yolk">Yolk &middot; signed quote</p>
+                    </a>
+
+                    <a class="loop-card" href="/cascades/bad-review.html">
+                        <p class="loop-card__watch">Wakes every 6h</p>
+                        <h3>Bad review &rarr; returning guest</h3>
+                        <p class="loop-card__short">Answer low reviews before they cost tables</p>
+                        <p class="loop-card__yolk">Yolk &middot; recovered guest</p>
+                    </a>
+
+                    <a class="loop-card" href="/cascades/team-points.html">
+                        <p class="loop-card__watch">Wakes Fridays 4 PM</p>
+                        <h3>Weekly points &rarr; thanked team</h3>
+                        <p class="loop-card__short">Score the week and thank who earned it</p>
+                        <p class="loop-card__yolk">Yolk &middot; thanked team</p>
+                    </a>
+                </div>
+
+                <p class="loops-more">
+                    <a href="/cascades/examples.html">See all four, node by node <span aria-hidden="true">&rarr;</span></a>
+                </p>
+            </div>
+        </section>
+
+        <!-- What problems I solve -->
+        <section id="problems" class="section">
+            <div class="container">
+                <header class="section-header">
+                    <h2>What problems I solve</h2>
+                    <p>Repetitive questions, manual work, stale decisions.</p>
+                </header>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Internal knowledge assistants</h3>
+                        <p>Answers instantly, instead of pinging the one person who knows.</p>
+                    </article>
+                    <article class="card">
+                        <h3>AI copilots for employees</h3>
+                        <p>Drafting, triaging, preparing work for human review.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Forecasting &amp; monitoring</h3>
+                        <p>What's coming, with honest uncertainty bands. Anomalies caught as they happen.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About. Was id="why" ("Why clients hire me") until 2026-09-16 — a
+             six-item list of adjectives. Replaced with three answers a buyer
+             actually asks: who, what, how. The id changed to #about; the only
+             reference was this page's own nav, which moved with it. -->
+        <section id="about" class="section section-alt">
+            <div class="container">
+                <header class="section-header">
+                    <h2>About Custom AI Models</h2>
+                    <p>One engineer, end to end. Design, data, models, deployment.</p>
+                </header>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Who I work with</h3>
+                        <p>Operators and founders with a concrete problem: decisions are slow, work is manual, data sits unused.</p>
+                    </article>
+                    <article class="card">
+                        <h3>What I build</h3>
+                        <p>Copilots, decision support, monitoring, data products. Things that run in production, not demos.</p>
+                    </article>
+                    <article class="card">
+                        <h3>How I work</h3>
+                        <p>Fixed phases, agreed metrics, weekly review. You always know what shipped and what is next.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section id="process" class="section">
+            <div class="container">
+                <header class="section-header">
+                    <h2>How working together works</h2>
+                    <p>
+                        Fixed phases, written deliverables, a quote on each.
+                    </p>
+                </header>
+
+                <ol class="process-steps">
+                    <li>
+                        <h3>1. Scope call</h3>
+                        <p>Data, systems, constraints, desired outcome.</p>
+                    </li>
+                    <li>
+                        <h3>2. Fixed-phase plan</h3>
+                        <p>Phases, deliverables, success criteria, fixed quote.</p>
+                    </li>
+                    <li>
+                        <h3>3. Deposit &amp; kick-off</h3>
+                        <p>50% deposit. Scope locks, execution starts.</p>
+                    </li>
+                    <li>
+                        <h3>4. Weekly cadence</h3>
+                        <p>Weekly review and decisions.</p>
+                    </li>
+                    <li>
+                        <h3>5. Milestone delivery</h3>
+                        <p>Code, models, docs, deployment. Balance on delivery.</p>
+                    </li>
+                    <li>
+                        <h3>6. Iterate or hand off</h3>
+                        <p>Next phase, or clean handover.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Final CTA + contact -->
+        <section id="contact" class="section contact-section">
+            <div class="container contact-inner">
+                <div class="contact-copy">
+                    <h2>Ready to talk about a real project?</h2>
+                    <p>
+                        Bring a concrete use case. Every quote is tied to one problem, a
+                        phase plan, named deliverables.
+                    </p>
+
+                    <div class="contact-actions">
+                        <a
+                            href="mailto:customaimodels@gmail.com?subject=Scope%20call%3A%20Custom%20AI%20Models"
+                            class="btn btn-primary"
+                            data-role="scope-call-link"
+                        >
+                            Book a scope call
+                        </a>
+                        <button class="btn btn-secondary" data-open-chat type="button">
+                            Describe Your Use Case
+                        </button>
+                        <a href="mailto:customaimodels@gmail.com" class="btn btn-ghost">
+                            Email Yeriko
+                        </a>
+                    </div>
+
+                    <p class="contact-note">
+                        Already a client? <a href="/rcai" class="contact-note__link">Sign in to R&#8209;CAI</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <span>&copy; <span id="year"></span> Custom AI Models · Yeriko Vargas</span>
+            <span>Built small on purpose. Two dependencies, no build step.</span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="chat.js" defer></script>
+</body>
+</html>
