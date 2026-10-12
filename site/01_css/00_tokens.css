@@ -1,0 +1,32 @@
+/* ADR-0002 roles + ADR-0003 grammar. The only place a hex lives. */
+:root{
+  /* canvas + fields */
+  --paper:#ffffff;      /* default canvas, cards, reversed type */
+  --paper-y:#faf6ea;    /* pale yellow panel  (Baselayer Mint Paper role) */
+  --paper-c:#e4f5f9;    /* pale cyan panel    (Sky Paper role) */
+  --ink:#0e0e10;        /* ADR-0002 ground: dark fields, header, footer (Ledger Navy role) */
+  --carbon:#141417;     /* near-black cards */
+  --signal:#1d7f98;     /* deep cyan: the live console field (Registry Blue role) */
+  --field:linear-gradient(90deg,#0e0e10 0%,#1d7f98 100%); /* the one gradient */
+  --grid:rgb(79 195 217 / .14);   /* cyan cross-grid on dark fields */
+  --hair:rgb(255 255 255 / .16);  /* rules on dark fields */
+
+  /* rules + text */
+  --rule:#e5e5e5;  --steel:#ced3dc;  --quiet:#595959;  --text:#0e0e10;
+
+  /* ADR-0002 roles */
+  --yellow:#D8AD3A;   /* calm · code · paths */
+  --magenta:#d23c9b;  /* brand */
+  --cyan:#4fc3d9;     /* brand · frames */
+  --red:#d9474a;      /* flags only */
+  --pink:#ec6fa6;     /* tiny · points */
+
+  /* type (Baselayer substitutes: Season VF → Cormorant, Uncut Sans → DM Sans, Modern Era Mono → Plex Mono) */
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"DM Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* shape */
+  --max:1312px; --pad:20px; --gap:12px; --r:4px;
+  --yolk:#d9a62c;       /* the frame EDGE only: 2px top line, his old-site loop-card (10-12) */
+}

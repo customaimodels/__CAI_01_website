@@ -1,0 +1,34 @@
+# CAI chatbot -- the one config. Flat key: value. Comments are instructions; keep them.
+
+# the roads to a model, tried left to right; the first that answers wins
+#   claude_cli = the claude login on this Mac (local preview) · anthropic_api = needs ANTHROPIC_API_KEY (hosted)
+#   ollama = local, free, ~30 s and loose on grounding -- last resort only
+provider: claude_cli, anthropic_api, ollama
+cli_model: haiku
+api_model: claude-haiku-5-5
+# Low temperature: small models invent "example clients" at higher values.
+temperature: 0.1
+timeout_seconds: 60
+
+# ollama (fallback road)
+model: llama3.2:3b
+base_url: http://localhost:11434
+# 15s was too short for long grounded replies and tripped the fallback with Ollama healthy.
+ollama_timeout_seconds: 120
+
+# retrieval
+top_k: 4
+min_score: 0.0
+
+# chat
+history_max_turns: 10
+max_message_chars: 1200
+
+# the API the landing page calls (run.py)
+host: 127.0.0.1
+port: 8190
+# Origins allowed to call /api/chat from a browser. Comma-separated. Local preview only for now.
+allow_origins: http://127.0.0.1:8180, http://localhost:8180
+
+# Instant lead ping (Zapier Catch Hook or similar). Empty = off; leads still land in dta/_2_exports/leads.csv.
+lead_webhook_url:
