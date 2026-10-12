@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>R-CAI — Client records · Custom AI Models</title>
+<link rel="icon" href="bean.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="rcai.css">
+</head>
+<body>
+
+<!-- SIGN IN: the bean on ink, the sign-in on paper -->
+<main id="gate" hidden>
+ <section class="vault">
+  <div class="dots"></div>
+  <span class="mark">R-CAI</span>
+  <div class="seed"><img src="bean.svg" alt=""></div>
+  <h1>Every seed we plant for you, <em>growing</em>.</h1>
+  <p class="cap">Data first · human reviewed · then it runs</p>
+ </section>
+ <section class="desk">
+  <form id="login" autocomplete="on">
+   <span class="eyebrow">Client sign in</span>
+   <h2>Your hub</h2>
+   <p class="lede">Your projects, where each one stands, its dates and live links — read straight from our ledger.</p>
+   <label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
+   <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="the word we gave you"></label>
+   <button type="submit"><span>Open my hub</span><i>→</i></button>
+   <p class="err" role="alert"></p>
+   <p class="fine">No code word? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></p>
+  </form>
+  <p class="foot">Custom AI Models · a data-first AI agency</p>
+ </section>
+</main>
+
+<!-- THE HUB: a private ledger, one row per project -->
+<div id="hub" hidden>
+ <header>
+  <div class="wrap">
+   <a class="brand" href="#"><img src="bean.svg" alt="">R-CAI<small>Client records</small></a>
+   <span class="who"></span>
+   <button class="out" type="button">Sign out</button>
+  </div>
+ </header>
+
+ <section class="hello wrap">
+  <span class="eyebrow co"></span>
+  <h1 class="greet"></h1>
+  <p class="lede sub"></p>
+  <div class="tiles"></div>
+ </section>
+
+ <main class="wrap" id="cards"></main>
+
+ <footer>
+  <div class="wrap">
+   <span class="brand"><img src="bean.svg" alt="">R-CAI</span>
+   <span>Questions about a project? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></span>
+  </div>
+ </footer>
+</div>
+
+<script src="rcai.js"></script>
+</body>
+</html>

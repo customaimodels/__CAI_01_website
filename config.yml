@@ -1,0 +1,24 @@
+# __ss1_CAI_website -- the one config. Flat key: value. Comments are instructions; keep them.
+# Today it holds R-CAI (src_rcai). Landing and vault have no settings yet.
+
+# ── R-CAI ─────────────────────────────────────────────────────────────────────────────
+# where the truth lives: the Clients Hub records (read only, never written from here)
+hub_data: ../__ss5_usrs/_3_ppl_projects/_1_CLIENTS_HUB/SHELL/DATA
+
+# the code word, stored as its sha256 -- never the word itself.
+# change it: python3 run.py --set-code NEWWORD   (rewrites this line)
+# hosted: this line is stripped from the bundle; Railway reads RCAI_CODE_SHA256 instead.
+# code_sha256: from the Railway variable RCAI_CODE_SHA256
+
+# these emails see every hub (the owner view). Comma-separated.
+owners: customaimodels@gmail.com, ygvargas93@gmail.com
+
+# a sign-in lasts this long
+session_hours: 12
+# wrong code word this many times from one address = locked for lockout_minutes
+max_fails: 5
+lockout_minutes: 10
+
+# live links clients can open from their card. project_id_key = url
+link.training-hub: https://www.matraininghub.com
+link.ceilidh-website: https://www.schuggies-ceilidhs.co.uk

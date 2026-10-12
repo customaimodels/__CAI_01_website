@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .DS_Store
 chat/dta/_2_exports/
+dta/

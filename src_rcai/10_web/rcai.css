@@ -1,0 +1,139 @@
+/* R-CAI · the private ledger. Ivory paper, ink type, gold only where the bean is.
+   The landing is near-black + cyan; the portal is the warm, quiet room behind it. The only place a hex lives. */
+:root{
+  --paper:#f5f1e8; --paper-2:#ede7da; --ink:#15120d; --ink-2:#1d1913; --quiet:#6e6656; --rule:#d9d0bf;
+  --gold:#c9a13b; --gold-deep:#8a6a1c; --gold-pale:#efe0b4; --err:#a23b2c;
+  --serif:"Cormorant Garamond",Georgia,serif; --sans:"DM Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums}
+[hidden]{display:none!important}
+a{color:inherit}
+em{font-style:italic;color:var(--gold-deep)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.eyebrow{font:500 12px/1.15 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--quiet)}
+.lede{font-size:18px;line-height:1.5;color:var(--quiet)}
+
+/* ── gate ─────────────────────────────────────────── */
+#gate{display:grid;grid-template-columns:1.05fr 1fr;min-height:100vh}
+.vault{position:relative;background:var(--ink);color:#f3ecdc;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;padding:64px 48px;overflow:hidden}
+.vault .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(201,161,59,.16) 1px,transparent 1.2px);
+  background-size:28px 28px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+.vault .mark{position:absolute;top:36px;left:48px;font:500 13px var(--mono);letter-spacing:.24em;color:var(--gold)}
+.seed{position:relative;width:min(280px,46vw);aspect-ratio:4/3;margin-bottom:44px}
+.seed::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,rgba(236,199,92,.22),transparent 62%)}
+.seed img{position:relative;width:100%;height:100%;filter:drop-shadow(0 18px 28px rgba(0,0,0,.55))}
+.vault h1{position:relative;font:500 clamp(36px,4.2vw,58px)/1.04 var(--serif);letter-spacing:-.01em;max-width:13ch}
+.vault h1 em{color:var(--gold)}
+.vault .cap{position:relative;margin-top:28px;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#a99d84}
+
+.desk{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:64px 48px;position:relative}
+#login{width:100%;max-width:400px}
+#login h2{font:500 52px/1.02 var(--serif);margin:14px 0 14px;letter-spacing:-.01em}
+#login .lede{font-size:16px;margin-bottom:40px}
+#login label{display:block;margin-bottom:28px}
+#login label span{display:block;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--quiet);margin-bottom:6px}
+#login input{width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;padding:10px 0;
+  font:400 18px var(--sans);color:var(--ink);outline:0;transition:border-color .2s}
+#login input::placeholder{color:#b4ab99}
+#login input:focus{border-bottom-color:var(--gold-deep)}
+#login button{width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+  padding:18px 20px;border:0;border-radius:4px;background:var(--ink);color:#f3ecdc;cursor:pointer;
+  font:500 14px var(--mono);letter-spacing:.12em;text-transform:uppercase;transition:background .2s}
+#login button i{font-style:normal;color:var(--gold)}
+#login button:hover{background:var(--ink-2)}
+#login button:disabled{opacity:.6;cursor:wait}
+.err{min-height:22px;margin-top:14px;font:500 13px var(--mono);color:var(--err)}
+.fine{margin-top:18px;font-size:14px;color:var(--quiet)}
+.fine a{color:var(--gold-deep);text-underline-offset:3px}
+.desk .foot{position:absolute;bottom:28px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#a59c8a}
+
+/* ── hub ──────────────────────────────────────────── */
+header{border-bottom:1px solid var(--rule);background:var(--paper)}
+header .wrap{display:flex;align-items:center;height:76px;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:500 26px var(--serif)}
+.brand img{width:30px;height:auto}
+.brand small{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--quiet);margin-left:10px;padding-left:12px;border-left:1px solid var(--rule)}
+.who{margin-left:auto;text-align:right;font:500 12px/1.45 var(--mono);color:var(--quiet)}
+.who b{color:var(--ink);font-weight:500}
+.out{border:1px solid var(--rule);background:transparent;border-radius:4px;padding:10px 14px;cursor:pointer;
+  font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.out:hover{border-color:var(--ink)}
+
+.hello{padding-top:72px;padding-bottom:8px}
+.greet{font:500 clamp(44px,6vw,76px)/1.02 var(--serif);letter-spacing:-.012em;margin:16px 0 18px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.tiles div{padding:20px 0 24px;border-left:1px solid var(--rule);padding-left:24px}
+.tiles div:first-child{border-left:0;padding-left:0}
+.tiles span{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
+.tiles b{display:block;font:400 52px/1 var(--sans);letter-spacing:-.03em;margin-top:12px}
+.tiles div:last-child b{color:var(--gold-deep)}
+
+#cards{padding-top:72px;padding-bottom:120px}
+.group+.group{margin-top:80px}
+.ghead{display:flex;align-items:baseline;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+.ghead h2{font:500 36px/1.1 var(--serif)}
+.ghead span{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--quiet)}
+
+.row{display:grid;grid-template-columns:1.15fr 1.35fr .8fr;gap:48px;padding:36px 0;border-bottom:1px solid var(--rule)}
+.row .code{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep)}
+.row h3{font:500 30px/1.12 var(--serif);margin:8px 0 10px;letter-spacing:-.005em}
+.row p{color:var(--quiet);font-size:15px;line-height:1.55;max-width:44ch}
+.row .kind{display:block;font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#9a917e;margin-bottom:12px}
+
+.state{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.tag{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:4px;border:1px solid var(--ink)}
+.tag.pending{border-style:dashed;border-color:var(--quiet);color:var(--quiet)}
+.tag.gold{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.state .phase{font:500 13px var(--mono);color:var(--ink)}
+
+/* the growth line: the bean sits where the project is */
+.track{position:relative;display:grid;grid-template-columns:repeat(5,1fr);padding-top:26px}
+.track::before{content:"";position:absolute;top:33px;left:0;right:20%;height:1px;background:var(--rule)}
+.track .fill{position:absolute;top:32px;left:0;height:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold));border-radius:2px}
+.track .st{position:relative;font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#a59c8a;padding-top:22px}
+.track .st::before{content:"";position:absolute;top:3px;left:0;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1px solid var(--rule)}
+.track .st.on{color:var(--quiet)}
+.track .st.on::before{background:var(--gold);border-color:var(--gold)}
+.track .st.now{color:var(--ink)}
+.track .st.now::before{display:none}
+.track .st.now img{position:absolute;top:-10px;left:-9px;width:34px;filter:drop-shadow(0 3px 5px rgba(80,58,12,.35))}
+
+.side dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin-bottom:24px}
+.side dt{font:500 11px/1.7 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--quiet)}
+.side dd{font:500 13px/1.7 var(--mono)}
+.go{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.go a{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  border-bottom:1px solid currentColor;padding-bottom:3px}
+.go a.live{color:var(--gold-deep)}
+.go a:hover{color:var(--ink)}
+.empty{padding:48px 0;color:var(--quiet);border-top:1px solid var(--ink)}
+
+footer{background:var(--ink);color:#bfb39a}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;height:96px;font:500 12px var(--mono)}
+footer .brand{color:#f3ecdc;font-size:22px}
+footer a{color:var(--gold)}
+
+/* ── phone ────────────────────────────────────────── */
+@media (max-width:900px){
+  #gate{grid-template-columns:1fr}
+  .vault{padding:84px 28px 48px;min-height:auto}
+  .vault .mark{left:28px;top:28px}
+  .seed{width:170px;margin-bottom:28px}
+  .desk{padding:48px 28px 88px}
+  #login h2{font-size:42px}
+  .row{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 20px}
+  .hello{padding-top:48px}
+  #cards{padding-top:56px;padding-bottom:80px}
+  .brand small,.who{display:none}
+  .out{margin-left:auto}
+  .tiles b{font-size:40px}
+  .tiles div{padding-left:14px}
+  .track .st{font-size:9px;letter-spacing:.02em}
+  footer .wrap{flex-direction:column;justify-content:center;gap:10px;height:auto;padding:32px 20px}
+}
