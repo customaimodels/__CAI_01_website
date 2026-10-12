@@ -116,7 +116,8 @@ def snapshot(cfg):
     people = {i: keep(p, ("id", "name", "email", "role", "company", "hub")) for i, p in db["people"].items() if p.get("hub")}
     projects = {}
     for i, p in db["projects"].items():
-        q = keep(p, ("id", "project_id", "name", "company", "status", "dates"))
+        q = keep(p, ("id", "project_id", "name", "company", "status"))
+        q["dates"] = {k: v for k, v in (p.get("dates") or {}).items() if v and k in dict(DATE_LABELS)}
         q["phase"] = _clean_phase(p.get("phase"))
         q["client_note"] = _clean_note(p.get("client_note"))
         projects[i] = q
