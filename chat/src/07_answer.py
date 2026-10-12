@@ -26,9 +26,21 @@ def _from_record(chunks):
             "\n\nWant this for your business? Reply in this format and I'll follow up by email:\n\n" + LEAD_FORM)
 
 
+def _overview():
+    """A broad question matched nothing: answer with the services overview, never a script."""
+    try:
+        cs = [c for c in R.load().get("chunks", []) if c.get("source", "").startswith("services_overview")]
+    except Exception:
+        return []
+    return cs[:1]
+
+
 def fallback(text, chunks=None):
     if chunks and chunks[0].get("score", 0) > 0:
         return _from_record(chunks)
+    ov = _overview()
+    if ov and not any(w in text.lower() for w in ("price", "pricing", "cost", "$", "quote", "budget")):
+        return _from_record(ov)
     t = text.lower()
     if any(w in t for w in ("price", "pricing", "cost", "$", "quote", "budget")):
         return ("Every CAI project is quoted after a short scope call: the number depends on how much of "
