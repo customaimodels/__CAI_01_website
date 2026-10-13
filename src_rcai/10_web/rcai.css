@@ -137,3 +137,21 @@ footer a{color:var(--gold)}
   .track .st{font-size:9px;letter-spacing:.02em}
   footer .wrap{flex-direction:column;justify-content:center;gap:10px;height:auto;padding:32px 20px}
 }
+
+/* ── v3 (10-12) · deluxe pass: a gold hairline frame, glass header, quiet hover. Same palette. ── */
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-deep));z-index:20}
+.vault::after{content:"";position:absolute;inset:22px;border:1px solid rgba(201,161,59,.22);pointer-events:none}
+.vault::before{content:"";position:absolute;left:50%;bottom:0;width:1px;height:72px;background:linear-gradient(transparent,rgba(201,161,59,.5))}
+.vault h1 em{font-style:italic}
+.desk{background:radial-gradient(80% 60% at 50% 40%,#fbf8f1,var(--paper))}
+#login{padding:44px 40px 36px;background:rgba(255,255,255,.55);border:1px solid var(--rule);border-top:2px solid var(--gold);border-radius:4px;box-shadow:0 30px 60px -36px rgba(60,44,10,.28)}
+#login button{box-shadow:inset 0 -1px 0 rgba(201,161,59,.35)}
+#login button:hover i{transform:translateX(3px)}
+#login button i{transition:transform .2s}
+header{position:sticky;top:2px;z-index:10;background:rgba(245,241,232,.86);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px)}
+.tiles{border-top:2px solid var(--gold)}
+.tiles b{font:500 60px/1 var(--serif);letter-spacing:-.01em}
+.row{transition:background-color .2s;margin:0 -20px;padding-left:20px;padding-right:20px}
+.row:hover{background:rgba(255,255,255,.45)}
+.ghead{border-bottom-width:2px}
+@media (max-width:900px){#login{padding:32px 24px 28px}.vault::after{inset:14px}}
