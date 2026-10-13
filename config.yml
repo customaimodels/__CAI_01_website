@@ -22,3 +22,8 @@ lockout_minutes: 10
 # live links clients can open from their card. project_id_key = url
 link.training-hub: https://www.matraininghub.com
 link.ceilidh-website: https://www.schuggies-ceilidhs.co.uk
+
+# ── _Y_VAULT ─────────────────────────────────────────────────────────────────────────
+# the vault PIN, as its sha256 (today: 0000). Ships in the bundle -- a 4-digit PIN hides nothing anyway.
+# hosted, the YVAULT_SHA256 variable wins if set. The vault shows every *.html at src_y_vault/'s root.
+vault_sha256: 9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0

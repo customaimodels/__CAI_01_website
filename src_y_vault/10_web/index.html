@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>_Y_VAULT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* _Y_VAULT · ink room, gold top line, one PIN. The shelf is big buttons, one per page. */
+:root{--ink:#121010;--ink-2:#1b1816;--rule:#2e2a25;--paper:#f3ecdc;--quiet:#9b917d;--gold:#c9a13b;--li:#0a66c2;--err:#d0604c;
+  --serif:"Cormorant Garamond",Georgia,serif;--sans:"DM Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}[hidden]{display:none!important}
+html,body{min-height:100%;background:var(--ink);color:var(--paper);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+body{border-top:2px solid var(--gold)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+.mark{font:500 13px var(--mono);letter-spacing:.24em;color:var(--gold)}
+header{display:flex;justify-content:space-between;align-items:center;padding:28px 0}
+header a,header button{font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--quiet);background:none;border:0;cursor:pointer;text-decoration:none}
+header a:hover,header button:hover{color:var(--paper)}
+h1{font:500 clamp(40px,5vw,64px)/1.04 var(--serif);letter-spacing:-.01em}
+h1 em{color:var(--gold)}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--quiet)}
+/* gate */
+#gate{min-height:calc(100vh - 90px);display:grid;place-items:center;text-align:center}
+#gate form{display:flex;flex-direction:column;align-items:center;gap:26px}
+.pins{display:flex;gap:12px}
+.pins input{width:58px;height:70px;text-align:center;font:500 30px var(--mono);color:var(--paper);background:var(--ink-2);
+  border:1px solid var(--rule);border-radius:10px;outline:none;transition:border-color .15s}
+.pins input:focus{border-color:#c8c8c8}
+#err{min-height:20px;font:500 12px var(--mono);letter-spacing:.08em;color:var(--err)}
+/* shelf */
+#shelf{padding:28px 0 80px}
+#shelf h1{margin:10px 0 40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;justify-content:space-between;min-height:190px;padding:26px;border-radius:14px;
+  background:linear-gradient(180deg,#1f1b18,#171412);border:1px solid var(--rule);color:var(--paper);text-decoration:none;
+  transition:border-color .15s,transform .15s}
+.card:hover{border-color:#c8c8c8;transform:translateY(-2px)}
+.card .t{font:500 30px/1.1 var(--serif)}
+.card .f{font:500 11px var(--mono);letter-spacing:.1em;color:var(--quiet)}
+.card .ic{width:44px;height:44px;border-radius:9px;display:grid;place-items:center;font:700 22px var(--sans);background:var(--gold);color:var(--ink)}
+.card.linkedin{background:linear-gradient(180deg,#0d4f97,#0a3d75);border-color:#1d6fc8}
+.card.linkedin .ic{background:#fff;color:var(--li);font:700 24px/1 Helvetica,Arial,sans-serif;letter-spacing:-.04em}
+.card.linkedin .f{color:#b9d3f0}
+.card.linkedin:hover{border-color:#e6eef8}
+@media(max-width:560px){.wrap{padding:0 20px}.pins input{width:50px;height:62px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header><a class="mark" href="/">CAI</a><button id="out" hidden>Lock</button></header>
+
+ <section id="gate" hidden>
+  <form id="f" autocomplete="off">
+   <span class="eyebrow">Private shelf</span>
+   <h1>_Y_<em>VAULT</em></h1>
+   <div class="pins">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN digit 1"><input inputmode="numeric" maxlength="1" aria-label="PIN digit 2">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN digit 3"><input inputmode="numeric" maxlength="1" aria-label="PIN digit 4">
+   </div>
+   <div id="err"></div>
+  </form>
+ </section>
+
+ <section id="shelf" hidden>
+  <span class="eyebrow">_Y_VAULT</span>
+  <h1>The <em>shelf</em>.</h1>
+  <div class="grid" id="grid"></div>
+ </section>
+</div>
+<script>
+const $=s=>document.querySelector(s), boxes=[...document.querySelectorAll(".pins input")];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+async function load(){
+  const r=await fetch("api/list",{credentials:"same-origin"});
+  if(r.status!==200){$("#gate").hidden=false;$("#shelf").hidden=true;$("#out").hidden=true;boxes[0].focus();return}
+  const d=await r.json();
+  $("#grid").innerHTML=d.pages.map(p=>`<a class="card ${p.kind}" href="${encodeURIComponent(p.file)}" target="_blank" rel="noopener">
+    <span class="ic">${p.kind==="linkedin"?"in":"Y"}</span><span><span class="t">${esc(p.title)}</span><br><span class="f">${esc(p.file)}</span></span></a>`).join("");
+  $("#gate").hidden=true;$("#shelf").hidden=false;$("#out").hidden=false;
+}
+async function send(){
+  const pin=boxes.map(b=>b.value).join("");
+  const r=await fetch("api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
+  if(r.ok)return load();
+  const d=await r.json().catch(()=>({}));$("#err").textContent=d.error||"Wrong PIN.";
+  boxes.forEach(b=>b.value="");boxes[0].focus();
+}
+boxes.forEach((b,i)=>{
+  b.addEventListener("input",()=>{b.value=b.value.replace(/\D/g,"").slice(-1);$("#err").textContent="";
+    if(b.value&&i<3)boxes[i+1].focus();if(boxes.every(x=>x.value))send()});
+  b.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!b.value&&i)boxes[i-1].focus()});
+  b.addEventListener("paste",e=>{const v=(e.clipboardData.getData("text")||"").replace(/\D/g,"").slice(0,4);
+    if(v.length===4){e.preventDefault();v.split("").forEach((c,j)=>boxes[j].value=c);send()}});
+});
+$("#f").addEventListener("submit",e=>{e.preventDefault();send()});
+$("#out").addEventListener("click",async()=>{await fetch("api/logout",{method:"POST",credentials:"same-origin"});load()});
+load();
+</script>
+</body>
+</html>

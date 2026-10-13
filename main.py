@@ -10,7 +10,8 @@ sys.path[:0] = [str(HERE / "chat"), str(HERE)]
 os.chdir(HERE / "chat")
 door = import_module("src.10_server")
 portal = import_module("src_rcai.04_server")
+vault = import_module("src_y_vault.vault")
 GET, POST = door.Door.do_GET, door.Door.do_POST
-door.Door.do_GET = lambda h: portal.handle(h, "GET") or GET(h)
-door.Door.do_POST = lambda h: portal.handle(h, "POST") or POST(h)
+door.Door.do_GET = lambda h: portal.handle(h, "GET") or vault.handle(h, "GET") or GET(h)
+door.Door.do_POST = lambda h: portal.handle(h, "POST") or vault.handle(h, "POST") or POST(h)
 door.serve()
