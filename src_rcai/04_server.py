@@ -10,6 +10,7 @@ GET  /r-cai/api/master.csv  owners only: the MASTER table, person × project
 POST /r-cai/api/scope    {stage: check|review, i, notes, tries} → the Phase 2 scope reviewers (06_review, mock today)
 POST /r-cai/api/event    {i, act, picked?, total?} → one step on a Phase 2 page (07_activity: where the client stands)
 GET  /r-cai/api/handbook/<id>  the project's HANDBOOK PDF, only for someone who can see that project
+GET  /r-cai/api/visual/<id>    the phase 2 picture (delivery.yml visual:), same rule
 POST /r-cai/api/request  {kind, text, project?} → 08_inbox: saved, then that person waits 24 h (429 + until inside it)
 POST /r-cai/api/signup   {name, company, email, need} → 08_inbox kind=signup (no login; 24 h per email, 3 a day per address)
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
@@ -131,6 +132,20 @@ def handle(h, method):
                 h.send_header(k, val)
             h.end_headers()
             h.wfile.write(pdf)
+            return True
+        if rel.startswith("api/visual/"):
+            pid, email = rel[len("api/visual/"):], _email(h)
+            v = R.view(R.load(cfg), cfg, email) if email else None
+            if not v or not any(c["id"] == pid and c.get("visual") for c in v["projects"]):
+                return _json(h, 404, {"error": "not found"})
+            img, mime = R.visual_bytes(cfg, pid)
+            if not img:
+                return _json(h, 404, {"error": "not found"})
+            h.send_response(200)
+            for k, val in (("Content-Type", mime), ("Cache-Control", "private, no-store"), ("Content-Length", str(len(img)))):
+                h.send_header(k, val)
+            h.end_headers()
+            h.wfile.write(img)
             return True
         if rel == "api/activity":
             email = _email(h)

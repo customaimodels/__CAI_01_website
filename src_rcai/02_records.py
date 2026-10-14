@@ -143,6 +143,10 @@ def _delivery(path):
                 f = _file(path, v)
                 if f.suffix.lower() == ".pdf" and f.exists():
                     cur["handbook"] = str(f)
+            elif k == "visual":                   # one picture of how the phase works (jpg/png): middle of its phase 2 page, behind login
+                f = _file(path, v)
+                if f.suffix.lower() in (".jpg", ".jpeg", ".png") and f.exists():
+                    cur["visual"] = str(f)
             elif k in WHERE:
                 cur[k] = v
     return out
@@ -170,18 +174,28 @@ def unseal(blob, key):
     return _stream(blob[16:], key, blob[:16])
 
 
-def handbook_bytes(cfg, pid):
-    """The HANDBOOK PDF of one project. Local: the file named in delivery.yml.
-    Hosted: 20_docs/<id>.bin opened with the Railway variable RCAI_DOC_KEY (the repo is public; the bin alone reads as noise)."""
+def _doc_bytes(cfg, pid, field, suffix, ok):
+    """A private file of one project (handbook PDF · phase visual). Local: the file named in delivery.yml.
+    Hosted: 20_docs/<id><suffix>.bin opened with the Railway variable RCAI_DOC_KEY (the repo is public; the bin alone reads as noise)."""
     import os
     if not cfg.get("hub_json"):
-        f = (load(cfg).get("delivery", {}).get(pid) or {}).get("handbook")
+        f = (load(cfg).get("delivery", {}).get(pid) or {}).get(field)
         return pathlib.Path(f).read_bytes() if f and pathlib.Path(f).is_file() else None
-    f, key = DOCS / f"{pid}.bin", os.environ.get("RCAI_DOC_KEY", "")
+    f, key = DOCS / f"{pid}{suffix}.bin", os.environ.get("RCAI_DOC_KEY", "")
     if not key or not re.fullmatch(r"[\w-]+", pid) or not f.is_file():
         return None
-    pdf = unseal(f.read_bytes(), key)
-    return pdf if pdf.startswith(b"%PDF-") else None
+    data = unseal(f.read_bytes(), key)
+    return data if ok(data) else None
+
+
+def handbook_bytes(cfg, pid):
+    return _doc_bytes(cfg, pid, "handbook", "", lambda b: b.startswith(b"%PDF-"))
+
+
+def visual_bytes(cfg, pid):
+    """(bytes, mime) of the phase 2 picture, or (None, None)."""
+    b = _doc_bytes(cfg, pid, "visual", ".visual", lambda b: b[:3] == b"\xff\xd8\xff" or b[:4] == b"\x89PNG")
+    return (b, "image/png" if b[:4] == b"\x89PNG" else "image/jpeg") if b else (None, None)
 
 
 def load(cfg):
@@ -231,6 +245,7 @@ def _card(db, cfg, pid):
         "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
         "handbook": bool(d.get("handbook")),    # → api/handbook/<id>: the project's HANDBOOK PDF, behind login
+        "visual": bool(d.get("visual")),        # → api/visual/<id>: the phase picture, middle of the phase 2 page
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),
@@ -285,6 +300,6 @@ def snapshot(cfg):
         projects[i] = q
     companies = {i: keep(c, ("id", "name", "kind")) for i, c in db["companies"].items()}
     access = {k: v for k, v in db["access"].items() if k in people}
-    delivery = {k: ({**v, "handbook": True} if v.get("handbook") else v)       # never a local path: the PDF rides in RCAI_DOC_* vars
+    delivery = {k: {**v, **{f: True for f in ("handbook", "visual") if v.get(f)}}  # never a local path: the files ride sealed in 20_docs
                 for k, v in db.get("delivery", {}).items() if k in projects}
     return {"people": people, "companies": companies, "projects": projects, "access": access, "delivery": delivery}

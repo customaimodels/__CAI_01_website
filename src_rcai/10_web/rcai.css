@@ -427,3 +427,8 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .waitbar[hidden]{display:none}
 .waitbar i{flex:none;width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--gold)}.waitbar b{color:var(--ink);font-weight:600}
 #hub.paused :is(.tk,.gk,.ed,.plug,.send2,.chips button,.sk.accept,.sk.inv,.scx,.shipgo,#prefs textarea,#fb textarea){opacity:.38;filter:grayscale(1);pointer-events:none}
+
+/* the phase picture (delivery.yml visual:), middle of the phase 2 page */
+.scope .vis { margin: 28px 0; text-align: center; }
+.scope .vis img { display: block; width: 100%; max-width: 640px; margin: 0 auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.08); }
+.scope .vis figcaption { margin-top: 8px; font: 11px/1.4 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }

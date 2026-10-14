@@ -82,7 +82,9 @@
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Your decision</span></div>
       <p class="dec top">Accept, ask to change the scope, or pay the deposit. We expect a decision either way; any question from us comes by email, and every request is kept in the Handbook.</p>
       <div class="adslot">${addsHTML(s, picked)}</div>
-      ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}${part(2, "Timeline", tl)}
+      ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}
+      ${p.visual ? `<figure class="vis"><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></a><figcaption>How it works · tap for full size</figcaption></figure>` : ""}
+      ${part(2, "Timeline", tl)}
       ${(s.terms || []).map((t, j) => part(3 + j, esc(t.title), `<ul class="dl">${t.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`)).join("")}
       ${part(3 + (s.terms || []).length, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
       <div class="holdslot">${holdHTML()}</div>
