@@ -211,9 +211,9 @@ button{font:inherit;color:inherit}
 .paygo:hover{filter:brightness(1.06)}
 .paygo.off{background:transparent;color:var(--mute);border:1px dashed var(--line-2);cursor:default;filter:none}
 .scope .sks{padding-top:18px}
-/* top of the hub: just "Hi, John". The client logo lives only on its project square; ⚙ sits beside the bell. */
-.hi{padding:36px 0 0}
-.hi h1{font:600 26px/1 var(--head);letter-spacing:-.03em;margin:0;color:#fff}
+/* "Hi, John": small, in the bar, left of the bell. The client logo lives only on its project square; ⚙ sits beside the bell. */
+.tools .hi{margin:0 4px 0 6px;font:500 13px/1 var(--sans);color:var(--ink-2);white-space:nowrap}
+.tools .hi .nm{color:var(--ink)}
 .gear{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:9px;color:var(--ink-2)}
 .gear:hover,.gear[aria-expanded="true"]{color:var(--ink);border-color:rgba(255,255,255,.26)}
 .gear .ico{width:16px;height:16px}
