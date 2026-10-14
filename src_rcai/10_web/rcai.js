@@ -208,7 +208,7 @@
     $('.opt[data-opt="pw"]').hidden = !v.pw_on;
     // the caption beside Your projects: owners only (a client's company is already on its square).
     $(".sh .co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : "";
-    // status demo_sent lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
+    // p.demo (demo_sent · pending_signature, set in 02_records.DEMO) lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
     const all = v.projects.map((p, i) => [p, i]);
     const real = all.filter(([p]) => !p.demo), demos = all.filter(([p]) => p.demo);
     $("#cards").innerHTML = real.length ? real.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet.</div>`;
