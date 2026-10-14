@@ -79,6 +79,9 @@
   // device keys follow the project id, not its place in the list: a list that grows or reorders never moves a pick.
   const PK = () => `${view?.email || ""}.${view?.projects[+location.hash.slice(4)]?.id ?? location.hash.slice(4)}`;
   const SEENKEY = () => `rcai.seen.${PK()}`;
+  const itSplit = (t) => { const [a, ...b] = String(t).split(" | "); return [a, b.join(" | ")]; };
+  const flat = (t) => itSplit(t).filter(Boolean).join(": ");
+  const dcard = (a, b, cls = "") => `<li${cls ? ` class="${cls}"` : ""}><b>${esc(a)}</b>${b ? `<span>${esc(b)}</span>` : ""}</li>`;
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEENKEY()) || "[]"); } catch { return []; } };
   const fold = (k, n, title, peek, body) => { const r = seen().includes(k);
     return `<details class="part fold${r ? " read" : ""}" data-k="${k}"><summary><b><i>${String(n).padStart(2, "0")}</i>${title}</b><span class="pv">${peek}</span>
@@ -103,7 +106,8 @@
     const ad = s.addons || [], picked = added();
     const secs = [
       ["scope", "Scope of work", `${s.items.length + picked.length} deliverables`, `<ul class="dl sow">${delivHTML(s, picked)}</ul>`],
-      ...(p.visual ? [["how", "How it works", "One picture", `<figure class="vis"><div class="phone"><i class="isl"></i><div class="scr"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></div></div><figcaption><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener">Scroll inside · open full size</a></figcaption></figure>`]] : []),
+      // the picture in two halves, side by side (top · bottom of the same file); either half opens it full size
+      ...(p.visual ? [["how", "How it works", "Two halves, start to finish", `<figure class="vis two">${["top", "bottom"].map((h, j) => `<a class="half" href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img class="${h}" src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works, part ${j + 1}" loading="lazy"><i>${j + 1}</i></a>`).join("")}<figcaption><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener">Open full size</a></figcaption></figure>`]] : []),
       ["time", "Schedule", (s.timeline || []).length ? "3–4 weeks" : "", tl],
       ...(s.terms || []).map((t, j) => ["t" + j, esc(t.title), termPeek(t), termBody(t)]),
       ["pay", "Investment", bill(s, picked) ? `${money(bill(s, picked).dep)} to start` : "",`<div class="payrow">${payHTML(s, picked)}</div>`],
@@ -128,7 +132,7 @@
               <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div></div>` : ""}
           <p class="lede">Comment on any deliverable, or add a capability. Every note saves on this device as you type, so nothing is lost.
             When you press Save, a first reader checks each note is specific enough to build from: what, where, for whom.</p>
-          <ol class="its">${s.items.map((t, j) => `<li><span>${esc(t)}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
+          <ol class="its">${s.items.map((t, j) => `<li><span>${esc(flat(t))}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
           <label class="add"><span>+ Add a new capability</span><textarea name="add" rows="2" maxlength="1500" placeholder="What should it also do? Who uses it, when, and what do they see?"></textarea></label>
           <p class="stamp"></p>
           <p class="push" role="alert"></p>
@@ -387,8 +391,9 @@
       <div class="adg pkg">${ad.map((a) => `<div class="ad"><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></div>`).join("")}</div>
       <div class="adk"><button type="button" class="adgo"${h ? " disabled" : ""}>Add the package to my build →</button></div></div>`;
   }
-  const delivHTML = (s, picked) => s.items.map((t) => `<li>${esc(t)}</li>`).join("")
-    + picked.map((j) => (s.addons || [])[j]).filter(Boolean).map((a) => `<li class="plus">${esc(a.title)}: ${esc(a.why)}</li>`).join("");
+  // a deliverable is `Title | one line` (delivery.yml): a card on the page, `Title: line` everywhere else (forms, emails)
+  const delivHTML = (s, picked) => s.items.map((t) => dcard(...itSplit(t))).join("")
+    + picked.map((j) => (s.addons || [])[j]).filter(Boolean).map((a) => dcard(a.title, a.why, "plus")).join("");
   function payHTML(s, picked) {
     const b = bill(s, picked);
     if (b) return `<div class="pay2"><span><small>Deposit to start</small><strong>${money(b.dep)}</strong></span>
@@ -580,7 +585,7 @@
         if (!r.ok) { if (r.weak) tries++; f.querySelector("textarea.weak")?.focus(); return; }
         track("scope_saved");
         const ns = notesOf(f);
-        $(".sum", f).innerHTML = Object.entries(ns.items).map(([j, v]) => `<dt>${esc(s.items[j])}</dt><dd>${esc(v)}</dd>`).join("")
+        $(".sum", f).innerHTML = Object.entries(ns.items).map(([j, v]) => `<dt>${esc(flat(s.items[j]))}</dt><dd>${esc(v)}</dd>`).join("")
           + (ns.add ? `<dt class="nw">New capability</dt><dd>${esc(ns.add)}</dd>` : "");
         step(f, 2);
       } else if (n === 2) {
@@ -592,7 +597,7 @@
       } else if (n === 3) {
         if (qs.some((_, j) => !f["q" + j].value.trim())) { msg.textContent = "Answer each one, even briefly. \"Not needed\" is an answer."; return; }
         const ns = notesOf(f);
-        const body = Object.entries(ns.items).map(([j, v]) => `• ${s.items[j]}\n  → ${v}`).join("\n\n");
+        const body = Object.entries(ns.items).map(([j, v]) => `• ${flat(s.items[j])}\n  → ${v}`).join("\n\n");
         const qa = qs.map((q, j) => `Q: ${q}\nA: ${f["q" + j].value.trim()}`).join("\n\n");
         const bl = bill(s, added());
         if (!(await send("scope", `${s.name} · ${p.name}\n\nThe package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign(),

@@ -527,3 +527,20 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .fold .pb{padding:0 4px 28px 382px;font-size:15px;line-height:1.6}
 @media (max-width:860px){.fold>summary{grid-template-columns:minmax(0,1fr) auto 14px;gap:16px}.fold .pb{padding-left:38px}}
 @media (max-width:640px){.fold>summary{grid-template-columns:minmax(0,1fr) 14px}.fold .pb{padding-left:4px}}
+/* 2026-10-14 compact Phase 2: Scope + How it works run the full width. Deliverables = a grid of small cards
+   (title + one line), the picture = its two halves side by side. */
+.fold[data-k="scope"] .pb,.fold[data-k="how"] .pb{padding-left:38px}
+.scope .dl.sow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;counter-reset:d}
+.scope .dl.sow li{counter-increment:d;margin:0;padding:14px 16px 15px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:5px}
+.scope .dl.sow li::before{content:counter(d,decimal-leading-zero);font:500 10.5px/1 var(--mono);letter-spacing:.08em;color:var(--gold)}
+.scope .dl.sow li b{font:600 14px/1.3 var(--head);color:var(--ink);letter-spacing:-.005em}
+.scope .dl.sow li span{font:400 13px/1.5 var(--sans);color:var(--ink-2)}
+.scope .dl.sow li.plus{border-color:rgba(217,166,44,.35)}
+.scope .vis.two{margin:4px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.scope .vis.two .half{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;border-radius:14px;background:#fff;box-shadow:0 0 0 1px var(--line-2),0 18px 40px -22px rgba(0,0,0,.7)}
+.scope .vis.two .half img{display:block;width:100%;height:100%;object-fit:cover}
+.scope .vis.two .half img.top{object-position:50% 0}
+.scope .vis.two .half img.bottom{object-position:50% 100%}
+.scope .vis.two .half i{position:absolute;left:10px;bottom:10px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 11px/1 var(--mono);font-style:normal;color:#0e0c12;background:var(--gold)}
+.scope .vis.two figcaption{grid-column:1/-1;margin-top:2px}
+@media (max-width:640px){.fold[data-k="scope"] .pb,.fold[data-k="how"] .pb{padding-left:4px}.scope .vis.two{grid-template-columns:1fr}}
