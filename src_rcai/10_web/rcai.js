@@ -307,11 +307,7 @@
 
   // a demo square's own key: Request action → a box inside the square → Send (kind "action", that demo named)
   // → the key becomes "Give us 24 hours". Inside any 24 h pause every demo square shows the same quiet line.
-  // Smart keys (5, pick any): one tap says the common ask; the box is for the rest. Either one is enough to send.
-  const RA_KEYS = {
-    demo: ["Open the scope", "Notify me with details", "Request changes", "Alternate build", "Book a walkthrough"],
-    sign: ["Ready to sign", "Open the scope", "Request changes", "Alternate build", "Notify me with details"],
-  };
+  // The box asks one thing: "Let us know what's stopping you." Send → Brevo email to us (kind "action").
   // Archive (device only, keyed by project id): the square leaves Your demos and joins ONE "Archived" square; Restore brings it back.
   const ARCKEY = "rcai.archived";
   const archived = () => { try { return JSON.parse(localStorage.getItem(ARCKEY) || "[]"); } catch { return []; } };
@@ -340,13 +336,10 @@
   const raHTML = (p, ar = "") => paused()
     ? `<div class="ra"><span class="ra-wait">Sent · give us 24 hours</span>${ar}</div>`
     : `<div class="ra"><button type="button" class="ra-go" data-p="${esc(p.code || p.name)}">Request action</button>${ar}
-        <form class="ra-f" hidden><div class="ra-keys">${RA_KEYS[/signature/i.test(p.stage_label || "") ? "sign" : "demo"]
-          .map((k) => `<button type="button" class="ra-k" aria-pressed="false">${esc(k)}</button>`).join("")}</div>
-        <textarea name="m" rows="2" maxlength="1500" placeholder="Anything else? (optional)"></textarea>
+        <form class="ra-f" hidden><p class="ra-q">Let us know what's stopping you.</p>
+        <textarea name="m" rows="3" maxlength="1500" placeholder="A line or two is plenty."></textarea>
         <div class="ra-row"><button type="button" class="ra-x">Cancel</button><button type="submit" class="ra-s">Send</button></div></form></div>`;
   $("#demos").addEventListener("click", (e) => {
-    const k = e.target.closest(".ra-k");
-    if (k) { k.setAttribute("aria-pressed", k.getAttribute("aria-pressed") === "true" ? "false" : "true"); return; }
     const go = e.target.closest(".ra-go"), x = e.target.closest(".ra-x");
     if (!go && !x) return;
     const ra = e.target.closest(".ra"), f = $(".ra-f", ra);
@@ -356,9 +349,8 @@
   $("#demos").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.target, ra = f.closest(".ra"), p = $(".ra-go", ra).dataset.p;
-    const picks = $$(".ra-k[aria-pressed=true]", f).map((b) => "• " + b.textContent);
-    const t = [picks.join("\n"), f.m.value.trim()].filter(Boolean).join("\n\n");
-    if (!t) { f.m.placeholder = "Pick a key or write a line."; f.m.focus(); return; }
+    const t = f.m.value.trim();
+    if (!t) { f.m.placeholder = "Write a line first."; f.m.focus(); return; }
     $(".ra-s", f).disabled = true;
     await send("action", t + sign(), p);
     if (paused()) drawDemos();
