@@ -11,6 +11,7 @@ POST /r-cai/api/scope    {stage: check|review, i, notes, tries} → the Phase 2 
 POST /r-cai/api/event    {i, act, picked?, total?} → one step on a Phase 2 page (07_activity: where the client stands)
 GET  /r-cai/api/handbook/<id>  the project's HANDBOOK PDF, only for someone who can see that project
 GET  /r-cai/api/visual/<id>    the phase 2 picture (delivery.yml visual:), same rule
+GET  /r-cai/api/logo/<id>      hosted: the client logo, sealed in 20_docs (local pages carry it as a data URI)
 POST /r-cai/api/request  {kind, text, project?} → 08_inbox: saved, then that person waits 24 h (429 + until inside it)
 POST /r-cai/api/signup   {name, company, email, need} → 08_inbox kind=signup (no login; 24 h per email, 3 a day per address)
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
@@ -133,12 +134,13 @@ def handle(h, method):
             h.end_headers()
             h.wfile.write(pdf)
             return True
-        if rel.startswith("api/visual/"):
-            pid, email = rel[len("api/visual/"):], _email(h)
+        if rel.startswith(("api/visual/", "api/logo/")):
+            kind, _, pid = rel[4:].partition("/")
+            email = _email(h)
             v = R.view(R.load(cfg), cfg, email) if email else None
-            if not v or not any(c["id"] == pid and c.get("visual") for c in v["projects"]):
+            if not v or not any(c["id"] == pid and c.get(kind) for c in v["projects"]):
                 return _json(h, 404, {"error": "not found"})
-            img, mime = R.visual_bytes(cfg, pid)
+            img, mime = (R.visual_bytes if kind == "visual" else R.logo_bytes)(cfg, pid)
             if not img:
                 return _json(h, 404, {"error": "not found"})
             h.send_response(200)

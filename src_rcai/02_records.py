@@ -198,6 +198,16 @@ def visual_bytes(cfg, pid):
     return (b, "image/png" if b[:4] == b"\x89PNG" else "image/jpeg") if b else (None, None)
 
 
+def logo_bytes(cfg, pid):
+    """(bytes, mime) of the client logo. Hosted only: 20_docs/<id>.logo.bin (the snapshot carries logo: true, never base64)."""
+    import os
+    f, key = DOCS / f"{pid}.logo.bin", os.environ.get("RCAI_DOC_KEY", "")
+    if not cfg.get("hub_json") or not key or not re.fullmatch(r"[\w-]+", pid) or not f.is_file():
+        return None, None
+    b = unseal(f.read_bytes(), key)
+    return (b, "image/png") if b[:4] == b"\x89PNG" else (b, "image/svg+xml") if b.lstrip()[:1] == b"<" else (b, "image/jpeg") if b[:3] == b"\xff\xd8\xff" else (None, None)
+
+
 def load(cfg):
     if cfg.get("hub_json"):                       # hosted: the snapshot from RCAI_HUB_JSON
         db = json.loads(cfg["hub_json"])
@@ -242,7 +252,7 @@ def _card(db, cfg, pid):
         "notices": notices,
         "scope": ({**scope, "timeline": d.get("timeline", []), "terms": d.get("terms", []), "pay": d.get("pay"), "price": d.get("price"),
                    "pay_links": d.get("invoices", {})} if scope and scope["items"] else None),
-        "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
+        "logo": (d["logo"] if isinstance(d.get("logo"), str) else f"api/logo/{pid}" if d.get("logo") else None),  # data URI local · sealed URL hosted
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
         "handbook": bool(d.get("handbook")),    # → api/handbook/<id>: the project's HANDBOOK PDF, behind login
         "visual": bool(d.get("visual")),        # → api/visual/<id>: the phase picture, middle of the phase 2 page
@@ -300,6 +310,6 @@ def snapshot(cfg):
         projects[i] = q
     companies = {i: keep(c, ("id", "name", "kind")) for i, c in db["companies"].items()}
     access = {k: v for k, v in db["access"].items() if k in people}
-    delivery = {k: {**v, **{f: True for f in ("handbook", "visual") if v.get(f)}}  # never a local path: the files ride sealed in 20_docs
+    delivery = {k: {**v, **{f: True for f in ("handbook", "visual", "logo") if v.get(f)}}  # never a local path: the files ride sealed in 20_docs
                 for k, v in db.get("delivery", {}).items() if k in projects}
     return {"people": people, "companies": companies, "projects": projects, "access": access, "delivery": delivery}
