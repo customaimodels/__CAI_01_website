@@ -43,15 +43,15 @@ def _pin_hash():
 
 
 def pages():
-    """The shelf: every *.html at the vault root, in file order. Label = its <title>."""
+    """The shelf: the resume site first, then every *.html at the vault root, in file order. Label = its <title>."""
     out = []
+    if (RESUME / "index.html").exists():
+        t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
+        out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
     for f in sorted(HERE.glob("*.html")):
         t = TITLE.search(f.read_text(encoding="utf-8", errors="ignore")[:4000])
         out.append({"file": f.name, "title": (t.group(1).strip() if t else f.stem.strip("_")),
                     "kind": "linkedin" if "linked" in f.name.lower() else "page"})
-    if (RESUME / "index.html").exists():
-        t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
-        out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
     return out
 
 
