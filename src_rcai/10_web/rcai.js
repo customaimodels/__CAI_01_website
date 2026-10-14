@@ -1,52 +1,96 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
+// The hub: two actions (credits · deploy), each with a corner badge; the bell holds every notice.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
+  const MAIL = "customaimodels@gmail.com";
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const day = (iso) => { const d = new Date(iso + "T12:00:00"); return isNaN(d) ? iso : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); };
   const hour = new Date().getHours();
   const part = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+  const WHERE = { live: ["i-globe", "Live"], git: ["i-branch", "Git"], railway: ["i-cloud", "Railway"], email: ["i-mail", "Account email"] };
+  const LANES = {
+    credits: { title: "Add credits", ph: "How many hours, and for what?" },
+    deploy: { title: "Deploy changes", ph: "What should change? Pages, wording, a bug, a new screen…" },
+  };
+  let view = null, lane = null;
+
+  const icon = (id) => `<svg class="ico"><use href="#${id}"/></svg>`;
+
+  function where(w) {
+    const v = esc(w.v), [ic, label] = WHERE[w.k];
+    const text = `<span>${v.replace(/^https?:\/\//, "")}</span>`;
+    const val = w.k === "live" ? `<a href="${v}" target="_blank" rel="noopener">${text}</a>` : text;
+    return `<div>${icon(ic)}<span style="min-width:0"><small>${label}</small>${val}</span></div>`;
+  }
 
   function card(p, stages) {
-    // the gold line runs from Seed to the bean; Runs sits past the line's end (80%)
-    const pct = (p.stage / (stages.length - 1)) * 80;
-    const track = stages.map((s, i) => i === p.stage
-      ? `<div class="st now"><img src="bean.svg" alt="">${s}</div>`
-      : `<div class="st ${i < p.stage ? "on" : ""}">${s}</div>`).join("");
-    const tag = `<span class="tag ${p.demo ? "pending" : p.stage >= 3 ? "gold" : ""}">${esc(p.stage_label)}</span>`;
-    const dates = p.dates.map((d) => `<dt>${esc(d.k)}</dt><dd>${esc(day(d.v))}</dd>`).join("");
-    const ask = `mailto:customaimodels@gmail.com?subject=${encodeURIComponent((p.code || p.name) + " — next phase")}`;
-    return `<article class="row">
-      <div><span class="code">${esc(p.code)}</span><h3>${esc(p.name)}</h3>
-        <span class="kind">${esc(p.company)}${p.kind ? " · " + esc(p.kind) : ""}</span>
-        ${p.note ? `<p>${esc(p.note)}</p>` : ""}</div>
-      <div><div class="state">${tag}${p.phase ? `<span class="phase">${esc(p.phase)}</span>` : ""}</div>
-        <div class="track" aria-label="Stage ${p.stage + 1} of ${stages.length}: ${esc(stages[p.stage])}">
-          <span class="fill" style="width:${pct}%"></span>${track}</div></div>
-      <div class="side">${dates ? `<dl>${dates}</dl>` : ""}
-        <div class="go">${p.link ? `<a class="live" href="${esc(p.link)}" target="_blank" rel="noopener">Open live ↗</a>` : ""}<a href="${ask}">Ask about the next phase →</a></div></div>
+    p.where = p.where || []; p.notices = p.notices || [];
+    const track = stages.map((_, i) => `<i class="${i < p.stage ? "on" : i === p.stage ? "now" : ""}"></i>`).join("");
+    const names = stages.map((s, i) => `<span class="${i === p.stage ? "now" : ""}">${esc(s)}</span>`).join("");
+    const tag = `<span class="tag ${p.stage >= 3 ? "ok" : p.notices.some((n) => n.lane === "general") ? "wait" : ""}">${esc(p.stage_label)}</span>`;
+    return `<article class="proj">
+      <div class="top"><div><span class="code">${esc(p.code)}</span><h3>${esc(p.name)}</h3>
+        <span class="co">${esc(p.company)}${p.phase ? " · " + esc(p.phase) : ""}</span></div>${tag}</div>
+      ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
+      <div class="track">${track}</div><div class="steps">${names}</div>
+      ${p.where.length ? `<div class="where">${p.where.map(where).join("")}</div>` : ""}
+      ${p.notices.map((n) => `<div class="ntc">${icon("i-bell")}${esc(n.text)}</div>`).join("")}
     </article>`;
   }
 
+  function badges(v) {
+    const all = v.projects.flatMap((p) => (p.notices || []).map((n) => ({ ...n, p })));
+    const set = (el, n) => { el.dataset.n = n; el.textContent = n || ""; };
+    set($(".bell .badge"), all.length);
+    set($(".act.credits .badge"), all.filter((n) => n.lane === "credits").length);
+    set($(".act.deploy .badge"), all.filter((n) => n.lane === "deploy").length);
+    $(".pop").innerHTML = all.length
+      ? all.map((n) => `<div class="row">${icon(n.lane === "credits" ? "i-credits" : n.lane === "deploy" ? "i-deploy" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
+      : `<div class="none">Nothing new.</div>`;
+  }
+
   function hub(v) {
+    view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
     $(".who").innerHTML = `<b>${esc(v.full || v.name)}</b><br>${esc(v.role || "")}${v.company ? " · " + esc(v.company) : ""}`;
     $(".co").textContent = v.owner ? "Owner view · every hub" : v.company || "";
     $(".greet").innerHTML = `Good ${part}, <em>${esc(v.name)}</em>.`;
     const n = v.projects.length;
-    $(".sub").textContent = v.owner
-      ? `${n} projects across ${v.clients} clients. What each client sees, all in one place.`
-      : `${n} project${n === 1 ? "" : "s"} on record, read straight from our ledger and updated as we work.`;
-    const building = v.projects.filter((p) => p.stage >= 1 && p.stage <= 2).length;
-    const done = v.projects.filter((p) => p.stage >= 3).length;
-    $(".tiles").innerHTML = `<div><span>Projects</span><b>${n}</b></div><div><span>In build</span><b>${building}</b></div><div><span>Delivered</span><b>${done}</b></div>`;
-    const groups = {};
-    v.projects.forEach((p) => (groups[p.company] ??= []).push(p));
-    const order = Object.keys(groups);
-    $("#cards").innerHTML = n
-      ? order.map((co) => `<div class="group"><div class="ghead"><h2>${esc(co)}</h2><span>${groups[co].length} project${groups[co].length === 1 ? "" : "s"}</span></div>
-          ${groups[co].map((p) => card(p, v.stages)).join("")}</div>`).join("")
-      : `<div class="empty">No projects on your hub yet. Write to customaimodels@gmail.com.</div>`;
+    $(".sub").textContent = v.owner ? `${n} projects across ${v.clients} clients.` : `${n} project${n === 1 ? "" : "s"} on your hub.`;
+    $("#cards").innerHTML = n ? v.projects.map((p) => card(p, v.stages)).join("") : `<div class="empty">No projects on your hub yet. Write to ${MAIL}.</div>`;
+    $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
+    badges(v);
   }
+
+  function open(which) {
+    const form = $(".ask");
+    const same = lane === which && !form.hidden;
+    document.querySelectorAll(".act").forEach((b) => b.setAttribute("aria-expanded", String(!same && b.dataset.lane === which)));
+    if (same) { form.hidden = true; lane = null; return; }
+    lane = which;
+    form.hidden = false;
+    $(".ttl", form).textContent = LANES[which].title;
+    $("h3 use", form).setAttribute("href", which === "credits" ? "#i-credits" : "#i-deploy");
+    form.msg.placeholder = LANES[which].ph;
+    form.msg.focus({ preventScroll: true });
+  }
+
+  document.querySelectorAll(".act").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
+
+  $(".ask").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const subject = `[R-CAI] ${LANES[lane].title} · ${f.project.value}`;
+    const body = `${f.msg.value.trim()}\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
+    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+
+  $(".bell").addEventListener("click", (e) => {
+    const pop = $(".pop"), on = pop.hidden;
+    pop.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".bell, .pop")) { $(".pop").hidden = true; $(".bell").setAttribute("aria-expanded", "false"); }
+  });
 
   function gate() { $("#hub").hidden = true; $("#gate").hidden = false; $("#login [name=email]").focus(); }
 

@@ -4,62 +4,128 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>R-CAI — Client records · Custom AI Models</title>
-<link rel="icon" href="bean.svg">
+<meta name="theme-color" content="#060709">
+<title>R-CAI — your hub · Custom AI Models</title>
+<link rel="icon" href="knot.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="/01_css/00_tokens.css">
 <link rel="stylesheet" href="rcai.css">
 </head>
 <body>
 
-<!-- SIGN IN: the bean on ink, the sign-in on paper -->
+<!-- icons: Icon Motion Atlas grammar, same set as the landing -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-credits" viewBox="0 0 24 24"><circle cx="10" cy="12" r="7"/><path d="M10 9v6M7 12h6"/><path d="M17.5 5.6a7 7 0 0 1 0 12.8"/></symbol>
+ <symbol id="i-deploy" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4 14v4.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V14"/></symbol>
+ <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+ <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></symbol>
+ <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9c0 5-6 4-11.2 8.6"/></symbol>
+ <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.3 9.2 4.4 4.4 0 0 0 7 18z"/></symbol>
+ <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4A1.5 1.5 0 0 1 4 14.5z"/></symbol>
+ <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+ <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
+ <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/><path d="m14 7 3 3"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16 9.5"/></symbol>
+ <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
+</svg>
+
+<!-- SIGN IN -->
 <main id="gate" hidden>
- <section class="vault">
-  <div class="dots"></div>
-  <span class="mark">R-CAI</span>
-  <div class="seed"><img src="bean.svg" alt=""></div>
-  <h1>Every seed we plant for you, <em>growing</em>.</h1>
-  <p class="cap">Data in · models · loops · live</p>
+ <section class="night">
+  <a class="home" href="/"><img src="knot.png" alt="">Custom AI Models</a>
+  <div>
+   <img class="knot" src="knot.png" alt="">
+   <h1>Your <em>hub</em>.</h1>
+   <p>Your projects, where they live, and what is next.</p>
+  </div>
+  <span class="cap">R-CAI</span>
  </section>
  <section class="desk">
   <form id="login" autocomplete="on">
-   <span class="eyebrow">Client sign in</span>
-   <h2>Your hub</h2>
-   <p class="lede">Your projects, where each one stands, its dates and live links — read straight from our ledger.</p>
+   <span class="cap">Client sign in</span>
+   <h2>Welcome back.</h2>
    <label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
    <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="the word we gave you"></label>
-   <button type="submit"><span>Open my hub</span><i>→</i></button>
+   <button class="go" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
    <p class="err" role="alert"></p>
    <p class="fine">No code word? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></p>
   </form>
-  <p class="foot">Custom AI Models · AI systems, end to end</p>
  </section>
 </main>
 
-<!-- THE HUB: a private ledger, one row per project -->
+<!-- THE HUB -->
 <div id="hub" hidden>
  <header>
   <div class="wrap">
-   <a class="brand" href="#"><img src="bean.svg" alt="">R-CAI<small>Client records</small></a>
+   <a class="brand" href="/"><img src="knot.png" alt="">R-CAI<small>your hub</small></a>
    <span class="who"></span>
+   <button class="bell" type="button" aria-label="Notices" aria-expanded="false"><svg class="ico"><use href="#i-bell"/></svg><span class="badge" data-n="0"></span></button>
    <button class="out" type="button">Sign out</button>
   </div>
+  <div class="pop" hidden></div>
  </header>
 
- <section class="hello wrap">
-  <span class="eyebrow co"></span>
-  <h1 class="greet"></h1>
-  <p class="lede sub"></p>
-  <div class="tiles"></div>
- </section>
+ <main class="wrap">
+  <section class="hello">
+   <span class="cap co"></span>
+   <h1 class="greet"></h1>
+   <p class="sub"></p>
+  </section>
 
- <main class="wrap" id="cards"></main>
+  <section class="acts">
+   <button class="act credits" type="button" data-lane="credits" aria-expanded="false">
+    <span class="sq"><svg class="ico"><use href="#i-credits"/></svg><span class="badge" data-n="0"></span></span>
+    <span><b>Add credits</b><span class="t">More hours on a project.</span></span>
+    <svg class="ico arr"><use href="#i-arrow"/></svg>
+   </button>
+   <button class="act deploy" type="button" data-lane="deploy" aria-expanded="false">
+    <span class="sq"><svg class="ico"><use href="#i-deploy"/></svg><span class="badge" data-n="0"></span></span>
+    <span><b>Deploy changes</b><span class="t">Say what should change. We ship it.</span></span>
+    <svg class="ico arr"><use href="#i-arrow"/></svg>
+   </button>
+  </section>
+
+  <form class="ask" hidden>
+   <h3><svg class="ico"><use href="#i-deploy"/></svg><span class="ttl"></span></h3>
+   <div class="grid">
+    <select name="project" aria-label="Project"></select>
+    <textarea name="msg" maxlength="2000"></textarea>
+   </div>
+   <div class="foot"><small>Opens your email, filled in. A person replies.</small><button class="go" type="submit">Send<svg class="ico"><use href="#i-arrow"/></svg></button></div>
+  </form>
+
+  <section class="sec">
+   <span class="cap">Projects</span>
+   <div id="cards"></div>
+  </section>
+
+  <section class="guide">
+   <span class="cap">The guide</span>
+   <h2>How a project moves.</h2>
+   <p>Five phases. Every project walks them, in order.</p>
+   <div class="phases">
+    <div class="phase"><span class="n">01<svg class="ico"><use href="#i-chat"/></svg></span><b>Describe</b><p>You tell us the problem, in plain words.</p><p>We ask what done looks like.</p></div>
+    <div class="phase"><span class="n">02<svg class="ico"><use href="#i-doc"/></svg></span><b>Proposal</b><p>We send scope, phases and dates.</p><p>You sign, or ask for changes.</p></div>
+    <div class="phase"><span class="n">03<svg class="ico"><use href="#i-code"/></svg></span><b>Build</b><p>Python, in a Git repo, tested as it grows.</p><p>You see it before it is live.</p></div>
+    <div class="phase"><span class="n">04<svg class="ico"><use href="#i-cloud"/></svg></span><b>Deploy</b><p>Live on Railway, on your domain.</p><p>The notice lands here.</p></div>
+    <div class="phase"><span class="n">05<svg class="ico"><use href="#i-pen"/></svg></span><b>Modify</b><p>Send changes with Deploy changes.</p><p>Each one ships as a new version.</p></div>
+   </div>
+   <div class="rules">
+    <span><svg class="ico"><use href="#i-check"/></svg>Each change starts as a request.</span>
+    <span><svg class="ico"><use href="#i-layers"/></svg>Every version is kept.</span>
+    <span><svg class="ico"><use href="#i-mail"/></svg>customaimodels@gmail.com, always.</span>
+   </div>
+  </section>
+ </main>
 
  <footer>
   <div class="wrap">
-   <span class="brand"><img src="bean.svg" alt="">R-CAI</span>
-   <span>Questions about a project? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></span>
+   <span class="brand"><img src="knot.png" alt="">R-CAI</span>
+   <span class="sp">Questions? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></span>
   </div>
  </footer>
 </div>

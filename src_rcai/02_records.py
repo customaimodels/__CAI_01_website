@@ -45,9 +45,46 @@ def _read(folder):
     return out
 
 
+# what a card may show about where the project lives, in this order
+WHERE = ["live", "git", "railway", "email"]
+
+# a status that asks something of the client becomes a notice. (lane, text)
+STATUS_NOTICE = {
+    "demo_sent": ("general", "A demo is waiting for your reaction."),
+    "quoted": ("general", "A quote is waiting for your reply."),
+    "pending_signature": ("general", "The proposal is waiting for your signature."),
+    "phase1_delivered": ("deploy", "Phase 1 is delivered. Send changes any time."),
+    "delivered": ("deploy", "Delivered. Send changes any time."),
+}
+
+
+def _delivery(path):
+    """delivery.yml: `id:` blocks of `key: value` lines (stdlib only, the hosted repo has no yaml).
+    notice lines repeat: `notice: deploy | text`."""
+    out, cur = {}, None
+    if not path.exists():
+        return out
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.split(" #")[0].rstrip()
+        if not line.strip() or line.lstrip().startswith("#") or ":" not in line:
+            continue
+        k, v = (x.strip() for x in line.split(":", 1))
+        if not raw[0].isspace():
+            cur = out.setdefault(k, {"notices": []})
+        elif cur is not None and v:
+            if k == "notice":
+                lane, _, text = v.partition("|")
+                cur["notices"].append({"lane": lane.strip() or "general", "text": text.strip() or lane.strip()})
+            elif k in WHERE:
+                cur[k] = v
+    return out
+
+
 def load(cfg):
     if cfg.get("hub_json"):                       # hosted: the snapshot from RCAI_HUB_JSON
-        return json.loads(cfg["hub_json"])
+        db = json.loads(cfg["hub_json"])
+        db.setdefault("delivery", {})
+        return db
     hub = cfg["hub"]
     return {
         "people": _read(hub / "people"),
@@ -55,6 +92,7 @@ def load(cfg):
         "projects": _read(hub / "projects"),
         "access": {k: v for k, v in json.loads((hub / "access.json").read_text(encoding="utf-8")).items()
                    if not k.startswith("_")},
+        "delivery": _delivery(hub / "delivery.yml"),
     }
 
 
@@ -71,7 +109,16 @@ def _card(db, cfg, pid):
     stage, label = STATUS.get(p.get("status"), (0, (p.get("status") or "").replace("_", " ").title()))
     dates = [{"k": lab, "v": p["dates"][k]} for k, lab in DATE_LABELS if (p.get("dates") or {}).get(k)]
     company = db["companies"].get(p.get("company"), {})
+    d = db.get("delivery", {}).get(pid, {})
+    if not d.get("live") and cfg["links"].get(pid):
+        d = {**d, "live": cfg["links"][pid]}
+    notices = list(d.get("notices", []))
+    if p.get("status") in STATUS_NOTICE:
+        lane, text = STATUS_NOTICE[p["status"]]
+        notices.insert(0, {"lane": lane, "text": text})
     return {
+        "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
+        "notices": notices,
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),
@@ -123,4 +170,5 @@ def snapshot(cfg):
         projects[i] = q
     companies = {i: keep(c, ("id", "name", "kind")) for i, c in db["companies"].items()}
     access = {k: v for k, v in db["access"].items() if k in people}
-    return {"people": people, "companies": companies, "projects": projects, "access": access}
+    delivery = {k: v for k, v in db.get("delivery", {}).items() if k in projects}
+    return {"people": people, "companies": companies, "projects": projects, "access": access, "delivery": delivery}

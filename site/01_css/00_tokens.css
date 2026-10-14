@@ -1,32 +1,27 @@
-/* ADR-0002 roles + ADR-0003 grammar. The only place a hex lives. */
+/* CAI — night tokens (2026-10-14). More black than blue. Shared by the landing and R-CAI.
+   Shapes follow the Icon Motion Atlas: 24px grid, one stroke weight, round caps + joins, built from
+   circles, arcs, lines. Blue is a touch, never a field. Gold is the mark and the step numbers. */
 :root{
-  /* canvas + fields */
-  --paper:#ffffff;      /* default canvas, cards, reversed type */
-  --paper-y:#faf6ea;    /* pale yellow panel  (Baselayer Mint Paper role) */
-  --paper-c:#e4f5f9;    /* pale cyan panel    (Sky Paper role) */
-  --ink:#0e0e10;        /* ADR-0002 ground: dark fields, header, footer (Ledger Navy role) */
-  --carbon:#141417;     /* near-black cards */
-  --signal:#1d7f98;     /* deep cyan: the live console field (Registry Blue role) */
-  --field:linear-gradient(90deg,#0e0e10 0%,#1d7f98 100%); /* the one gradient */
-  --grid:rgb(79 195 217 / .14);   /* cyan cross-grid on dark fields */
-  --hair:rgb(255 255 255 / .16);  /* rules on dark fields */
+  --bg:#060709;          /* the canvas: black, a breath of blue */
+  --bg-2:#0a0c11;        /* raised panel */
+  --bg-3:#10131a;        /* inputs, wells */
+  --line:rgba(255,255,255,.075);
+  --line-2:rgba(255,255,255,.14);
+  --ink:#ecebe6;         /* text, never pure white */
+  --ink-2:#a9abb2;       /* secondary */
+  --mute:#6e717a;        /* meta */
+  --blue:#5b8cff;        /* the touch: active, links, glow */
+  --gold:#d9a62c;        /* the mark's gold */
+  --ok:#3fcf8e;          /* live */
+  --warn:#f0b44c;
+  --bad:#ef5a5a;
 
-  /* rules + text */
-  --rule:#e5e5e5;  --steel:#ced3dc;  --quiet:#595959;  --text:#0e0e10;
+  --serif:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
 
-  /* ADR-0002 roles */
-  --yellow:#D8AD3A;   /* calm · code · paths */
-  --magenta:#d23c9b;  /* brand */
-  --cyan:#4fc3d9;     /* brand · frames */
-  --red:#d9474a;      /* flags only */
-  --pink:#ec6fa6;     /* tiny · points */
-
-  /* type (Baselayer substitutes: Season VF → Cormorant, Uncut Sans → DM Sans, Modern Era Mono → Plex Mono) */
-  --serif:"Cormorant Garamond",Georgia,serif;
-  --sans:"DM Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-
-  /* shape */
-  --max:1312px; --pad:20px; --gap:12px; --r:4px;
-  --yolk:#d9a62c;       /* the frame EDGE only: 2px top line, his old-site loop-card (10-12) */
+  --r:14px;              /* panels */
+  --r-s:8px;             /* buttons, wells */
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:1180px;
 }
