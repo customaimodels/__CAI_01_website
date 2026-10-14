@@ -402,3 +402,9 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
   #hub .pop{left:18px;right:18px;width:auto}
   .sec{padding:32px 0 4px}
 }
+
+/* one request at a time (08_inbox): after a send the bar shows, every request key pauses 24 h. Stripe stays live. */
+.waitbar{display:flex;gap:10px;align-items:flex-start;margin:10px auto 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(90deg,rgba(217,166,44,.10),transparent 70%);font-size:13px;color:var(--ink-2)}
+.waitbar[hidden]{display:none}
+.waitbar i{flex:none;width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--gold)}.waitbar b{color:var(--ink);font-weight:600}
+#hub.paused :is(.tk,.gk,.ed,.plug,.send2,.chips button,.sk.accept,.sk.inv,.scx,.shipgo,#prefs textarea,#fb textarea){opacity:.38;filter:grayscale(1);pointer-events:none}

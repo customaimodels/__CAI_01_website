@@ -4,11 +4,11 @@
 // Phase 2 changes are scope changes, asked on its own page: a comment per deliverable + new capabilities, pushed twice to be specific.
 // Ghost keys beside the titles: "+ New project or phase" (Your projects) · "Request a demo" (Your demos), same window.
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
-// Every send opens a filled-in email: there is no request queue yet.
+// Every send goes to api/request (08_inbox: saved for him to read), then every request key pauses 24 h: we write back in that window.
+// Stripe never pauses. The server holds the pause too (429), so a reload or another device doesn't reopen it.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const MAIL = "customaimodels@gmail.com";
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const WHERE = { live: ["i-globe", "Live"], git: ["i-branch", "Git"], railway: ["i-cloud", "Railway"], email: ["i-mail", "Account email"] };
   const LANES = {
@@ -23,7 +23,7 @@
   let view = null, lane = null;
 
   // every step on a Phase 2 page goes to api/event (07_activity): run.py --activity says where the client stands.
-  // sendBeacon survives the mailto: jump; it carries pointers only (which step, picks, total), never note text.
+  // sendBeacon survives a page change; it carries pointers only (which step, picks, total), never note text.
   function track(act, i = +location.hash.slice(4)) {
     const p = view && view.projects[i], s = p && p.scope;
     if (!s) return;
@@ -41,12 +41,36 @@
 
   const icon = (id) => `<svg class="ico"><use href="#${id}"/></svg>`;
   const sign = () => `\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
-  const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
+  // send = one request to us. ok → the 24 h pause starts; inside a pause → false, and the bar says when we write back.
+  const paused = () => (view?.wait_until || 0) * 1000 > Date.now();
+  const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  function pause(until) {
+    if (view && until) view.wait_until = until;
+    const on = paused(), bar = $(".waitbar");
+    $("#hub").classList.toggle("paused", on);
+    bar.hidden = !on;
+    if (!on) return;
+    const t = new Date(view.wait_until * 1000);
+    $("span", bar).innerHTML = `<b>Sent. We write back within 24 hours.</b> New requests open again ${t.toLocaleDateString("en-US", { weekday: "short" })} ${t.toTimeString().slice(0, 5)}. Paying the deposit stays open.`;
+    $(".ask").hidden = true; lane = null;
+  }
+  async function send(kind, text, project = "", extra = {}) {
+    if (paused()) { pause(); toTop(); return false; }
+    try {
+      const r = await fetch("api/request", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind, text, project, ...extra }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.status === 429) { pause(j.until); toTop(); return false; }
+      if (!r.ok) { alert(j.error || "That didn't reach us. Try again."); return false; }
+      pause(j.until); toTop();
+      return true;
+    } catch { alert("Offline. Nothing was sent; try again."); return false; }
+  }
 
   // a phase 2 proposal waiting on the client: their logo, then 01 deliverables · 02 timeline · 03 start the build
   // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:, always live) · Request invoice
   // (any payment method), and in small
-  // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer opens a filled-in email.
+  // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer is one request (send).
   function scope(p) {
     const s = p.scope;
     const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
@@ -93,7 +117,7 @@
             <button class="send2" type="submit">Send scope change<svg class="ico"><use href="#i-arrow"/></svg></button></div>
         </div>
         <div class="w" data-w="4" hidden>
-          <p class="lede">Sent. Your notes and answers are in your email, addressed to us. A person reads them and replies within 24 hours with the updated scope.</p>
+          <p class="lede">Sent. We have your notes and answers. A person reads them and writes back within 24 hours with the updated scope.</p>
         </div>
       </form></div>`;
   }
@@ -193,6 +217,7 @@
     badges(v);
     fab(v);
     route();
+    pause();
   }
 
   // #p2-<i> = that project's phase 2 page; anything else = the hub. Browser back works.
@@ -207,6 +232,7 @@
   window.addEventListener("hashchange", () => { if (view && !$("#hub").hidden) route(); });
 
   function open(which, proj) {
+    if (paused()) { pause(); return; }
     const form = $(".ask");
     const same = lane === which && !form.hidden && (!proj || form.project.value === proj);
     document.querySelectorAll(".tk").forEach((b) => b.setAttribute("aria-expanded", String(!same && b.dataset.lane === which)));
@@ -324,8 +350,9 @@
     $$(".ad.sw").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
   }
 
-  $("#scopes").addEventListener("click", (e) => {
+  $("#scopes").addEventListener("click", async (e) => {
     if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .shipgo")) return;
+    if (paused() && e.target.closest(".scx, button.sk:not(.back0), .shipgo")) { pause(); toTop(); return; }
     if (e.target.closest(".stripe:not(.off)")) { track("stripe"); return; }
     if (e.target.closest(".adgo")) { track("add_pkg"); setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
@@ -354,15 +381,15 @@
       + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)}.` : "");
     const tag = `${s.name} · ${p.code || p.name}`;
     if (b.classList.contains("shipgo")) {
+      if (!(await send("ship", `${tag}\n\nWe accept this proposal and the build is OK as it stands. Ship today. We'll pay the deposit before go-live.` + plus + sign(),
+        p.code || p.name, bl ? { total: bl.tot, deposit: bl.dep } : {}))) return;
       track("ship");
       try { localStorage.setItem(SHIPKEY(), String(Date.now())); } catch {}
       freeze("Scope locked · the build is shipping");
-      return mail(`[R-CAI] Phase 2 · ${tag} · Accepted · SHIP TODAY`,
-        "We accept this proposal and the build is OK as it stands. Ship today. We'll pay the deposit before go-live." + plus + sign());
+      return;
     }
-    if (b.dataset.ans === "inv") track("invoice");
-    if (b.dataset.ans === "inv") mail(`[R-CAI] Phase 2 · ${tag} · Invoice request`,
-      `Please send us an invoice for the deposit${bl ? ` (${money(bl.dep)})` : ""}.\n\nWe'd like to pay by (keep one):\n· Bank transfer / ACH\n· Card\n· Check\n· Other: \n\nBilling name and address:\n` + plus + sign());
+    if (b.dataset.ans === "inv" && await send("invoice", `${tag}\n\n` +
+      `Please send us an invoice for the deposit${bl ? ` (${money(bl.dep)})` : ""}.\n\nWe'd like to pay by (keep one):\n· Bank transfer / ACH\n· Card\n· Check\n· Other: \n\nBilling name and address:\n` + plus + sign(), p.code || p.name)) track("invoice");
   });
 
   // scope change, four faces: 1 Write (autosaves on this device) → Save = the cheap reader (api/scope check, mock today)
@@ -430,8 +457,9 @@
         const ns = notesOf(f);
         const body = Object.entries(ns.items).map(([j, v]) => `• ${s.items[j]}\n  → ${v}`).join("\n\n");
         const qa = qs.map((q, j) => `Q: ${q}\nA: ${f["q" + j].value.trim()}`).join("\n\n");
-        mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${p.name}`,
-          `The package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
+        const bl = bill(s, added());
+        if (!(await send("scope", `${s.name} · ${p.name}\n\nThe package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign(),
+          p.code || p.name, bl ? { total: bl.tot, deposit: bl.dep } : {}))) { msg.textContent = "Not sent. Your notes are still here."; return; }
         track("scope_sent");
         try { localStorage.removeItem(KEY()); } catch {}
         step(f, 4);
@@ -448,22 +476,24 @@
     const on = b.getAttribute("aria-pressed") !== "true";
     g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b && on)));
   }));
-  $("#prefs").addEventListener("submit", (e) => {
+  $("#prefs").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.currentTarget;
     const pick = (q) => $(`.chips[data-q="${q}"] [aria-pressed="true"]`, f)?.textContent || "-";
     const body = `Rating: ${pick("rating")}/5\nUpdates: ${pick("updates")}\nRecommend: ${pick("recommend")}\n\nReview:\n${f.review.value.trim() || "-"}`;
-    mail(`[R-CAI] Preferences · ${view?.company || view?.name || ""}`, body + sign());
+    if (await send("prefs", body + sign())) { f.reset(); $$("[aria-pressed]", f).forEach((x) => x.setAttribute("aria-pressed", "false")); }
   });
-  $("#fb").addEventListener("submit", (e) => {
-    e.preventDefault();
-    mail(`[R-CAI] Feedback · ${view?.company || view?.name || ""}`, e.currentTarget.msg.value.trim() + sign());
-  });
-
-  $(".ask").addEventListener("submit", (e) => {
+  $("#fb").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.currentTarget;
-    mail(`[R-CAI] ${LANES[lane].title}${lane === "plug" ? " · " + plug : LANES[lane].free ? "" : " · " + f.project.value}`, f.msg.value.trim() + sign());
+    if (await send("feedback", f.msg.value.trim() + sign())) f.reset();
+  });
+
+  $(".ask").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.currentTarget, k = lane, text = f.msg.value.trim();
+    if (!text) return f.msg.focus();
+    if (await send(k, (k === "plug" ? `Plug-in: ${plug}\n\n` : "") + text + sign(), LANES[k].free ? "" : f.project.value)) f.reset();
   });
 
   $(".gear").addEventListener("click", (e) => {
@@ -517,13 +547,18 @@
   }
   document.querySelectorAll("[data-face]").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); face(el.dataset.face); }));
 
-  $("#signup").addEventListener("submit", (e) => {
+  $("#signup").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const f = e.currentTarget;
-    const subject = `[R-CAI] Sign up · ${f.company.value.trim() || f.name.value.trim()}`;
-    const body = `Name: ${f.name.value.trim()}\nCompany: ${f.company.value.trim()}\nEmail: ${f.email.value.trim()}\n\nWhat we need:\n${f.need.value.trim()}`;
-    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    face("sent");
+    const f = e.currentTarget, btn = $("button[type=submit]", f);
+    btn.disabled = true;
+    try {
+      const r = await fetch("api/signup", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: f.name.value, company: f.company.value, email: f.email.value, need: f.need.value }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok || r.status === 429) { f.reset(); face("sent"); }
+      else alert(j.error || "That didn't reach us. Try again.");
+    } catch { alert("Offline. Nothing was sent; try again."); }
+    finally { btn.disabled = false; }
   });
 
   function gate() { $("#hub").hidden = true; $("#gate").hidden = false; face(location.hash === "#signup" ? "signup" : "login"); }

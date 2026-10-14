@@ -10,6 +10,8 @@ GET  /r-cai/api/master.csv  owners only: the MASTER table, person × project
 POST /r-cai/api/scope    {stage: check|review, i, notes, tries} → the Phase 2 scope reviewers (06_review, mock today)
 POST /r-cai/api/event    {i, act, picked?, total?} → one step on a Phase 2 page (07_activity: where the client stands)
 GET  /r-cai/api/handbook/<id>  the project's HANDBOOK PDF, only for someone who can see that project
+POST /r-cai/api/request  {kind, text, project?} → 08_inbox: saved, then that person waits 24 h (429 + until inside it)
+POST /r-cai/api/signup   {name, company, email, need} → 08_inbox kind=signup (no login; 24 h per email, 3 a day per address)
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
 POST /r-cai/api/logout
 """
@@ -17,6 +19,7 @@ import importlib
 import json
 import mimetypes
 import os
+import time
 from http.cookies import SimpleCookie
 
 C = importlib.import_module("src_rcai.01_config")
@@ -25,6 +28,7 @@ A = importlib.import_module("src_rcai.03_auth")
 U = importlib.import_module("src_rcai.05_users")
 V = importlib.import_module("src_rcai.06_review")
 T = importlib.import_module("src_rcai.07_activity")
+I = importlib.import_module("src_rcai.08_inbox")
 CFG = None
 
 
@@ -100,7 +104,7 @@ def handle(h, method):
                 return _json(h, 401, {"in": False})
             return _json(h, 200, {"in": True, "stages": R.stages(), "own_pw": U.has_own(email),
                                   "pw_on": U.store() is not None,
-                                  "epoch": cfg.get("state_epoch", "1"), **v})
+                                  "epoch": cfg.get("state_epoch", "1"), "wait_until": I.until(cfg, email), **v})
         if rel == "api/master.csv":
             email = _email(h)
             if not email or email not in cfg["owners"]:
@@ -136,10 +140,10 @@ def handle(h, method):
         return _file(h, rel)
     if rel == "api/logout":
         return _json(h, 200, {"in": False}, _cookie("", 0))
-    if rel not in ("api/login", "api/password", "api/scope", "api/event"):
+    if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup"):
         return _json(h, 404, {"error": "not found"})
     try:
-        n = min(int(h.headers.get("Content-Length", 0)), 16384 if rel == "api/scope" else 4096)
+        n = min(int(h.headers.get("Content-Length", 0)), 16384 if rel in ("api/scope", "api/request") else 4096)
         data = json.loads(h.rfile.read(n) or b"{}")
     except (ValueError, json.JSONDecodeError):
         return _json(h, 400, {"error": "bad request"})
@@ -147,6 +151,10 @@ def handle(h, method):
         return _scope(h, cfg, data)
     if rel == "api/event":
         return _event(h, cfg, data)
+    if rel == "api/request":
+        return _request(h, cfg, data)
+    if rel == "api/signup":
+        return _signup(h, cfg, data)
     ip = _ip(h)
     if A.locked(cfg, ip):
         return _json(h, 429, {"error": "Too many tries. Wait a few minutes."})
@@ -210,3 +218,41 @@ def _event(h, cfg, data):
     if not p or not p.get("scope") or not T.record(cfg, email, p, str(data.get("act", ""))[:20], data, v.get("name")):
         return _json(h, 400, {"error": "bad request"})
     return _json(h, 200, {"ok": True})
+
+
+def _request(h, cfg, data):
+    """Signed in; a kind from 08_inbox.KINDS; a project only if this person can see it. Inside their 24 h → 429."""
+    email = _email(h)
+    v = R.view(R.load(cfg), cfg, email) if email else None
+    if not v:
+        return _json(h, 401, {"error": "Sign in again."})
+    kind, text = str(data.get("kind", ""))[:20], str(data.get("text", "")).strip()[:12000]
+    proj = str(data.get("project", ""))[:120]
+    if proj and not any(proj in (p.get("code"), p.get("name")) for p in v["projects"]):
+        proj = ""
+    if kind not in I.KINDS or kind == "signup" or not text:
+        return _json(h, 400, {"error": "Write something first."})
+    ok, until = I.put(cfg, email, kind, text, proj, v.get("full") or v.get("name"),
+                      {k: data[k] for k in ("total", "deposit") if isinstance(data.get(k), (int, float))})
+    if not ok:
+        return _json(h, 429, {"error": "We have your last request. We write back within 24 hours.", "until": until})
+    return _json(h, 200, {"ok": True, "until": until})
+
+
+_SIGNUPS = {}
+
+
+def _signup(h, cfg, data):
+    ip, day = _ip(h), time.strftime("%Y-%m-%d")
+    n = _SIGNUPS.get((ip, day), 0)
+    f = {k: str(data.get(k, "")).strip()[:2000 if k == "need" else 120] for k in ("name", "company", "email", "need")}
+    if not f["name"] or "@" not in f["email"] or not f["need"]:
+        return _json(h, 400, {"error": "Name, email and what you need, please."})
+    if n >= 3:
+        return _json(h, 429, {"error": "We have your request. We write back within 24 hours."})
+    text = f"Name: {f['name']}\nCompany: {f['company']}\nEmail: {f['email']}\n\nWhat we need:\n{f['need']}"
+    ok, until = I.put(cfg, f["email"], "signup", text, f["company"], f["name"])
+    if not ok:
+        return _json(h, 429, {"error": "We have your request. We write back within 24 hours.", "until": until})
+    _SIGNUPS[(ip, day)] = n + 1
+    return _json(h, 200, {"ok": True, "until": until})

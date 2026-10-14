@@ -2,8 +2,8 @@
 # Today it holds R-CAI (src_rcai). Landing and vault have no settings yet.
 
 # ── R-CAI ─────────────────────────────────────────────────────────────────────────────
-# where the truth lives: the Clients Hub records (read only, never written from here)
-hub_data: ../__ss5_usrs/_3_ppl_projects/_1_CLIENTS_HUB/SHELL/DATA
+# where the truth lives: the Clients Hub records, src_rcai/_hub (local only, never bundled; read only from here)
+hub_data: src_rcai/_hub/SHELL/DATA
 
 # the code word, stored as its sha256 -- never the word itself.
 # change it: python3 run.py --set-code NEWWORD   (rewrites this line)

@@ -63,6 +63,20 @@ STATUS_NOTICE = {
 }
 
 
+USRS = pathlib.Path(__file__).resolve().parents[2] / "__ss5_usrs"   # the eggs (client work), local only
+EGG_TIERS = ("_3_ppl_projects", "_1_ppl_demos", "_2_ppl_n_phase")
+
+
+def _file(path, v):
+    """A file named in delivery.yml. `egg:<folder>/<rest>` is found in whichever tier holds that egg
+    (projects, demos, workshop), so an egg can change tier without breaking a line. Anything else is relative."""
+    if v.startswith("egg:"):
+        folder, _, rest = v[4:].strip().partition("/")
+        home = next((USRS / t / folder for t in EGG_TIERS if (USRS / t / folder).is_dir()), USRS / EGG_TIERS[0] / folder)
+        return (home / rest).resolve()
+    return (path.parent / v).resolve()
+
+
 def _delivery(path):
     """delivery.yml: `id:` blocks of `key: value` lines (stdlib only, the hosted repo has no yaml).
     notice lines repeat: `notice: deploy | text`. scope lines repeat: `scope: Phase 2 | one item`
@@ -113,12 +127,12 @@ def _delivery(path):
                 name, _, role = v.partition("|")
                 cur["owner"] = {"name": name.strip(), "role": role.strip()}
             elif k == "logo":                     # the client's own logo file, carried as a data URI: behind login, never in git
-                f = (path.parent / v).resolve()
+                f = _file(path, v)
                 mime = {".png": "image/png", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}.get(f.suffix.lower())
                 if mime and f.exists():
                     cur["logo"] = f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
             elif k == "handbook":                 # the project's HANDBOOK (one PDF, the single source of truth): served behind login
-                f = (path.parent / v).resolve()
+                f = _file(path, v)
                 if f.suffix.lower() == ".pdf" and f.exists():
                     cur["handbook"] = str(f)
             elif k in WHERE:

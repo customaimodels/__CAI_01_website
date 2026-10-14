@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=58f3ebbe99">
-<link rel="stylesheet" href="rcai.css?v=58f3ebbe99">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=a9629b917a">
+<link rel="stylesheet" href="rcai.css?v=a9629b917a">
 </head>
 <body>
 
@@ -80,14 +80,14 @@
    <label><span>Work email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
    <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" required placeholder="A dashboard from our sales data, an email that sends itself…"></textarea></label>
    <button class="key" type="submit">Request access<svg class="ico"><use href="#i-arrow"/></svg></button>
-   <p class="fine">Opens your email, filled in. A person replies.</p>
+   <p class="fine">Goes straight to us. A person writes back within 24 hours.</p>
    <p class="fine">Have a code word? <a href="#login" data-face="login">Log in</a></p>
   </form>
 
   <div id="sent" class="face" hidden>
    <svg class="ico ok"><use href="#i-check"/></svg>
-   <h2>Almost there.</h2>
-   <p class="lede">Send the email that just opened. Your code word comes back to that inbox.</p>
+   <h2>Sent.</h2>
+   <p class="lede">We have it. A person writes back to that email within 24 hours, with your code word.</p>
    <p class="fine"><a href="#login" data-face="login">Back to log in</a></p>
   </div>
  </section>
@@ -123,13 +123,15 @@
    <a class="opt master" href="api/master.csv" hidden><svg class="ico"><use href="#i-doc"/></svg>Master table</a>
    <button class="opt out" type="button"><svg class="ico"><use href="#i-arrow"/></svg>Sign out</button>
   </div>
+  <!-- one request at a time: after a send every request key pauses 24 h (08_inbox). Stripe never pauses. -->
+  <div class="waitbar wrap" hidden><i></i><span></span></div>
   <form class="ask wrap" hidden>
    <div class="grid">
     <select name="project" aria-label="Project"></select>
     <textarea name="msg" rows="2" maxlength="2000"></textarea>
     <button class="send" type="submit" aria-label="Send"><svg class="ico"><use href="#i-arrow"/></svg></button>
    </div>
-   <small>Opens your email, filled in. A person replies.</small>
+   <small>Goes straight to us. A person writes back within 24 hours.</small>
   </form>
  </header>
 
@@ -188,6 +190,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=58f3ebbe99"></script>
+<script src="rcai.js?v=a9629b917a"></script>
 </body>
 </html>
