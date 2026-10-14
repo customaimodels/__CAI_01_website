@@ -126,18 +126,29 @@ def _delivery(path):
     return out
 
 
+DOCS = pathlib.Path(__file__).parent / "20_docs"   # sealed handbooks: <id>.bin, the only form that ever reaches git
+
+
+def seal(data, key):
+    """SHA-256 counter keystream, XOR. Symmetric: seal(seal(x, k), k) == x. The key never leaves the laptop + Railway."""
+    import hashlib
+    k = bytes.fromhex(key)
+    stream = b"".join(hashlib.sha256(k + i.to_bytes(8, "big")).digest() for i in range(len(data) // 32 + 1))
+    return bytes(a ^ b for a, b in zip(data, stream))
+
+
 def handbook_bytes(cfg, pid):
     """The HANDBOOK PDF of one project. Local: the file named in delivery.yml.
-    Hosted: base64 chunks in Railway variables RCAI_DOC_<ID>_0, _1 … (too big for one variable, never in git)."""
+    Hosted: 20_docs/<id>.bin opened with the Railway variable RCAI_DOC_KEY (the repo is public; the bin alone reads as noise)."""
     import os
     if not cfg.get("hub_json"):
         f = (load(cfg).get("delivery", {}).get(pid) or {}).get("handbook")
         return pathlib.Path(f).read_bytes() if f and pathlib.Path(f).is_file() else None
-    key = "RCAI_DOC_" + re.sub(r"\W", "_", pid).upper()
-    parts, n = [], 0
-    while os.environ.get(f"{key}_{n}"):
-        parts.append(os.environ[f"{key}_{n}"]); n += 1
-    return base64.b64decode("".join(parts)) if parts else None
+    f, key = DOCS / f"{pid}.bin", os.environ.get("RCAI_DOC_KEY", "")
+    if not key or not re.fullmatch(r"[\w-]+", pid) or not f.is_file():
+        return None
+    pdf = seal(f.read_bytes(), key)
+    return pdf if pdf.startswith(b"%PDF-") else None
 
 
 def load(cfg):
