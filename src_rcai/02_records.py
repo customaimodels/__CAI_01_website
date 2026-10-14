@@ -117,6 +117,13 @@ def _delivery(path):
             elif k == "timeline":                 # `timeline: when | what`, in order
                 when, _, what = v.partition("|")
                 cur.setdefault("timeline", []).append({"when": when.strip(), "what": what.strip()})
+            elif k == "terms":                    # `terms: Section title | one line` -- extra sections of the phase page, in order
+                title, _, line_ = v.partition("|")
+                tl = cur.setdefault("terms", [])
+                if not tl or tl[-1]["title"] != title.strip():
+                    tl.append({"title": title.strip(), "lines": []})
+                if line_.strip():
+                    tl[-1]["lines"].append(line_.strip())
             elif k == "pay":                      # `pay: $3,250 | what it starts` -- the ONE money line, written on purpose
                 amt, _, what = v.partition("|")
                 cur["pay"] = {"amount": amt.strip(), "what": what.strip()}
@@ -219,7 +226,7 @@ def _card(db, cfg, pid):
     return {
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
-        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "price": d.get("price"),
+        "scope": ({**scope, "timeline": d.get("timeline", []), "terms": d.get("terms", []), "pay": d.get("pay"), "price": d.get("price"),
                    "pay_links": d.get("invoices", {})} if scope and scope["items"] else None),
         "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square

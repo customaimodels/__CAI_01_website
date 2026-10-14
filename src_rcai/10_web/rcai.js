@@ -83,7 +83,8 @@
       <p class="dec top">Accept, ask to change the scope, or pay the deposit. We expect a decision either way; any question from us comes by email, and every request is kept in the Handbook.</p>
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}${part(2, "Timeline", tl)}
-      ${part(3, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
+      ${(s.terms || []).map((t, j) => part(3 + j, esc(t.title), `<ul class="dl">${t.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`)).join("")}
+      ${part(3 + (s.terms || []).length, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
       <div class="holdslot">${holdHTML()}</div>
       <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("inv", "Request invoice")}</div>
       <div class="shipslot"></div>
