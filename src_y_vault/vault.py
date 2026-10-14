@@ -8,6 +8,7 @@ GET  /y-vault/api/list      the pages on the shelf: every *.html at this folder'
 GET  /y-vault/<page>.html   one page (signed in only)
 GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed in only)
 POST /y-vault/api/logout
+GET  /behind-the-models/... the same resume site, PUBLIC (the landing's "About the owner's work and portfolio")
 
 The PIN is config.yml vault_sha256 (or the YVAULT_SHA256 variable). A 4-digit PIN is a curtain, not a lock:
 the repo is public, so anything put here can be read on GitHub.
@@ -30,6 +31,7 @@ RESUME = HERE.parent / "src_resume"                 # his resume site, never edi
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
 MOUNT = "/y-vault"
+OWNER = "/behind-the-models"                        # public face of src_resume, linked from the landing footer (2026-10-14)
 HOURS, MAX_FAILS, LOCK_MIN = 12, 5, 10
 _FAILS = {}
 TITLE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
@@ -56,8 +58,9 @@ def pages():
 
 
 def _resume(h, rel):
-    """/y-vault/resume/<file>: a file inside src_resume, never outside it, never NOTE.md."""
-    sub = rel[len("resume/"):] or "index.html"
+    """/y-vault/resume/<file> or /behind-the-models/<file>: a file inside src_resume, never outside it, never NOTE.md."""
+    sub = rel.split("/", 1)[1] if "/" in rel else ""
+    sub = sub or "index.html"
     f = (RESUME / sub).resolve()
     if RESUME.resolve() not in f.parents or not f.is_file() or f.suffix.lower() not in TYPES:
         return _json(h, 404, {"error": "not found"})
@@ -115,6 +118,14 @@ def _locked(ip):
 
 def handle(h, method):
     path = h.path.split("?", 1)[0].split("#", 1)[0]
+    if method == "GET" and (path == OWNER or path.startswith(OWNER + "/")):
+        if path == OWNER:
+            h.send_response(301)
+            h.send_header("Location", OWNER + "/")
+            h.send_header("Content-Length", "0")
+            h.end_headers()
+            return True
+        return _resume(h, path[1:])
     if path != MOUNT and not path.startswith(MOUNT + "/"):
         return False
     if path == MOUNT:
