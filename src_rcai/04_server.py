@@ -69,7 +69,7 @@ def _file(h, rel):
     if C.WEB.resolve() not in f.parents or not f.is_file():
         return _json(h, 404, {"error": "not found"})
     return _send(h, 200, f.read_bytes(), mimetypes.guess_type(f.name)[0] or "application/octet-stream",
-                 cache="no-cache" if f.suffix == ".html" else "public, max-age=3600")
+                 cache="no-cache" if f.suffix == ".html" or not os.environ.get("PORT") else "public, max-age=3600")
 
 
 def handle(h, method):
@@ -95,7 +95,8 @@ def handle(h, method):
             if not v:
                 return _json(h, 401, {"in": False})
             return _json(h, 200, {"in": True, "stages": R.stages(), "own_pw": U.has_own(email),
-                                  "pw_on": U.store() is not None, **v})
+                                  "pw_on": U.store() is not None,
+                                  "epoch": cfg.get("state_epoch", "1"), **v})
         if rel == "api/master.csv":
             email = _email(h)
             if not email or email not in cfg["owners"]:

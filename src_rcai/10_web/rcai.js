@@ -125,7 +125,18 @@
       : `<div class="none">Nothing new.</div>`;
   }
 
+  // the server's state_epoch (config.yml) outranks this device: a new epoch wipes every rcai.* key once.
+  function epoch(e) {
+    try {
+      if (e && localStorage.getItem("rcai.epoch") !== String(e)) {
+        Object.keys(localStorage).filter((k) => k.startsWith("rcai.")).forEach((k) => localStorage.removeItem(k));
+        localStorage.setItem("rcai.epoch", String(e));
+      }
+    } catch {}
+  }
+
   function hub(v) {
+    epoch(v.epoch);
     view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
     const n = v.projects.length;
