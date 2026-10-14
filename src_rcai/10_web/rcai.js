@@ -33,7 +33,8 @@
   const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
 
   // a phase 2 proposal waiting on the client: their logo, then 01 deliverables · 02 timeline · 03 start the build
-  // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:) · Decline, and in small
+  // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:, always live) · Request invoice
+  // (any payment method), and in small
   // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer opens a filled-in email.
   function scope(p) {
     const s = p.scope;
@@ -48,13 +49,14 @@
       ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}${part(2, "Timeline", tl)}
       ${part(3, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
       <div class="holdslot">${holdHTML()}</div>
-      <div class="sks${held() ? " frozen" : ""}">${key("accept", "Accept now, pay later", held())}<span class="stslot">${stripeHTML(s)}</span>${key("deny", "Decline")}</div>
-      <button type="button" class="scx" aria-expanded="false"${held() ? " disabled" : ""}>${held() ? "Scope change in review" : "Ask to change the scope of the project"}</button>
+      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("inv", "Request invoice")}</div>
+      <div class="shipslot"></div>
+      <button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : "Ask to change the scope of the project"}</button>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
         <div class="w" data-w="1">
           ${ad.length ? `<div class="swpk"><div class="adh"><b>The package</b><small class="few">only these switch on and off</small></div>
-            <div class="adg">${ad.map((a, j) => `<button type="button" class="ad sw" data-a="${j}" aria-pressed="${picked.includes(j)}"${held() ? " disabled" : ""}>
+            <div class="adg">${ad.map((a, j) => `<button type="button" class="ad sw" data-a="${j}" aria-pressed="${picked.includes(j)}"${lock() ? " disabled" : ""}>
               <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div></div>` : ""}
           <p class="lede">Comment on any deliverable, or add a capability. Every note saves on this device as you type, so nothing is lost.
             When you press Save, a first reader checks each note is specific enough to build from: what, where, for whom.</p>
@@ -225,11 +227,11 @@
   function addsHTML(s, picked) {
     const ad = s.addons || [];
     if (!ad.length) return "";
-    const h = held();
+    const h = lock(), why = held() ? "locked while your scope change is in review" : "locked · the build is shipping";
     if (picked.length) return `<div class="adds in"><span class="ok">${icon("i-check")}</span><b>In your build</b>
-      <span>${addNames(s, picked).map(esc).join(" · ")}</span><small class="few">${h ? "locked while your scope change is in review" : "change it in Ask to change the scope"}</small></div>`;
+      <span>${addNames(s, picked).map(esc).join(" · ")}</span><small class="few">${h ? why : "change it in Ask to change the scope"}</small></div>`;
     return `<div class="adds${h ? " frozen" : ""}"><div class="adh"><b>The package · not in the build</b><span>All ${ad.length}, small on the bill.</span>
-        <small class="few">${h ? "locked while your scope change is in review" : "or select a few when you ask to change the scope"}</small></div>
+        <small class="few">${h ? why : "or select a few when you ask to change the scope"}</small></div>
       <div class="adg pkg">${ad.map((a) => `<div class="ad"><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></div>`).join("")}</div>
       <div class="adk"><button type="button" class="adgo"${h ? " disabled" : ""}>Add the package to my build →</button></div></div>`;
   }
@@ -241,31 +243,42 @@
       <span class="tot"><small>Total</small><b>${money(b.tot)}</b></span></div><p>The total follows what is in your build. The deposit stays the same.</p>`;
     return s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : "";
   }
-  // the deposit never moves, so one invoice serves every build: delivery.yml `invoice: <link>`. Frozen while a scope change is in review.
+  // the deposit never moves, so one invoice serves every build: delivery.yml `invoice: <link>`. ALWAYS live: never frozen.
   function stripeHTML(s) {
     const pl = s.pay_links || {}, link = pl["0"] || Object.values(pl)[0];
-    if (link && !held()) return `<a class="sk stripe" href="${esc(link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>`;
+    if (link) return `<a class="sk stripe" href="${esc(link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>`;
     return `<span class="sk stripe off">Pay deposit through Stripe${link ? "" : " · link on its way"}</span>`;
   }
   // a scope change sent to review holds the answer keys for 24 h: Accept now and Stripe freeze until we come back.
   const HOLDKEY = () => `rcai.hold.${view?.email || ""}.${+location.hash.slice(4)}`;
   function held() { const t = +(localStorage.getItem(HOLDKEY()) || 0); return t && Date.now() - t < 864e5 ? t : 0; }
+  // Accept now, pay later → a second press, SHIP TODAY, confirms the build is OK. Then everything on the page locks
+  // for good, except the two ways to pay (Stripe · Request invoice).
+  const SHIPKEY = () => `rcai.ship.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const shipped = () => +(localStorage.getItem(SHIPKEY()) || 0);
+  const lock = () => held() || shipped();
   function holdHTML() {
-    const t = held();
-    return t ? `<div class="hold"><i></i><span><b>Scope change in review.</b> We're back to you within 24 hours. Accept and pay open again with the updated scope.</span></div>` : "";
+    if (shipped()) return `<div class="hold ok"><i></i><span><b>Accepted. The build is shipping.</b> The deposit is due before go-live: Stripe, or ask for an invoice by another method.</span></div>`;
+    return held() ? `<div class="hold"><i></i><span><b>Scope change in review.</b> We're back to you within 24 hours. Accept opens again with the updated scope. Paying the deposit stays open.</span></div>` : "";
+  }
+  function freeze(label) {
+    $(".holdslot").innerHTML = holdHTML();
+    $(".shipslot").innerHTML = "";
+    $(".sks").classList.add("frozen");
+    const a = $(".sks .sk.accept"); a.disabled = true; if (shipped()) a.textContent = "Accepted · shipping";
+    const s = view.projects[+location.hash.slice(4)].scope;
+    // the package locks with the answer key: no adding, no switching, no scope change. Paying stays open.
+    $(".adslot").innerHTML = addsHTML(s, added());
+    $$(".ad.sw").forEach((b) => (b.disabled = true));
+    const x = $(".scx"); x.disabled = true; x.textContent = label;
+    const f = $(".scf"); if (f && shipped()) f.hidden = true;
   }
   function setHold() {
     try { localStorage.setItem(HOLDKEY(), String(Date.now())); } catch {}
-    $(".holdslot").innerHTML = holdHTML();
-    $(".sks").classList.add("frozen");
-    $(".sks .sk.accept").disabled = true;
-    const s = view.projects[+location.hash.slice(4)].scope;
-    $(".stslot").innerHTML = stripeHTML(s);
-    // the package locks with the answer keys: no adding, no switching, no second scope change until we come back
-    $(".adslot").innerHTML = addsHTML(s, added());
-    $$(".ad.sw").forEach((b) => (b.disabled = true));
-    const x = $(".scx"); x.disabled = true; x.textContent = "Scope change in review";
+    freeze("Scope change in review");
   }
+  const shipHTML = () => `<div class="ship"><p><b>Is the build OK as it stands?</b> We start today. The scope locks; you pay the deposit before go-live.</p>
+    <div class="row2"><button type="button" class="sk back0">Not yet</button><button type="button" class="shipgo">Ship today →</button></div></div>`;
   function setAdded(picked) {
     const s = view.projects[+location.hash.slice(4)].scope;
     picked = [...new Set(picked)].sort();
@@ -277,9 +290,8 @@
     $$(".ad.sw").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
   }
 
-  const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
   $("#scopes").addEventListener("click", (e) => {
-    if (held() && e.target.closest(".adgo, button.ad.sw, .scx")) return;
+    if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .shipgo")) return;
     if (e.target.closest(".adgo")) { setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
     if (a) {
@@ -296,14 +308,23 @@
       if (on) { step(f, 1); restore(f); f.querySelector("textarea").focus(); }
       return;
     }
-    const b = e.target.closest("button.sk");
+    if (e.target.closest(".back0")) { $(".shipslot").innerHTML = ""; return; }
+    const b = e.target.closest("button.sk, .shipgo");
     if (!b || b.disabled) return;
-    const lead = { accept: "We accept this proposal. We'll pay the deposit later.", deny: "We decline this proposal." }[b.dataset.ans];
-    const p = view.projects[+location.hash.slice(4)], pk = added(), yes = b.dataset.ans === "accept" && p;
-    const adn = yes ? addNames(p.scope, pk) : [], bl = yes && bill(p.scope, pk);
+    // first press on Accept only asks; SHIP TODAY is the yes
+    if (b.dataset.ans === "accept") { $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
+    const p = view.projects[+location.hash.slice(4)], s = p.scope, pk = added(), bl = bill(s, pk), adn = addNames(s, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
-      + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)} to start.` : "");
-    mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + plus + sign());
+      + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)}.` : "");
+    const tag = `${s.name} · ${p.code || p.name}`;
+    if (b.classList.contains("shipgo")) {
+      try { localStorage.setItem(SHIPKEY(), String(Date.now())); } catch {}
+      freeze("Scope locked · the build is shipping");
+      return mail(`[R-CAI] Phase 2 · ${tag} · Accepted · SHIP TODAY`,
+        "We accept this proposal and the build is OK as it stands. Ship today. We'll pay the deposit before go-live." + plus + sign());
+    }
+    if (b.dataset.ans === "inv") mail(`[R-CAI] Phase 2 · ${tag} · Invoice request`,
+      `Please send us an invoice for the deposit${bl ? ` (${money(bl.dep)})` : ""}.\n\nWe'd like to pay by (keep one):\n· Bank transfer / ACH\n· Card\n· Check\n· Other: \n\nBilling name and address:\n` + plus + sign());
   });
 
   // scope change, four faces: 1 Write (autosaves on this device) → Save = the cheap reader (api/scope check, mock today)

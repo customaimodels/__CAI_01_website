@@ -300,8 +300,14 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .sk:hover{color:var(--ink);border-color:rgba(255,255,255,.26)}
 .sk.accept{background:#fff;color:#0e0c12;border-color:#fff}
 .sk.accept:hover{background:#ebe8f0}
-.sk.deny{margin-left:auto;border-color:transparent;color:var(--mute)}
-.sk.deny:hover{color:var(--bad);border-color:rgba(217,71,74,.5)}
+.sk.inv{margin-left:auto}
+/* Accept → "Is the build OK?" → SHIP TODAY: the one bright key on the page */
+.ship{margin-top:12px;padding:14px 16px;border:1px solid rgba(217,166,44,.45);border-radius:12px;background:linear-gradient(90deg,rgba(217,166,44,.1),transparent 75%);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ship p{margin:0;font-size:13px;color:var(--ink-2)}.ship b{color:var(--ink);font-weight:600}
+.ship .row2{display:flex;gap:8px;align-items:center}
+.shipgo{all:unset;cursor:pointer;height:38px;padding:0 20px;display:inline-flex;align-items:center;border-radius:10px;font:700 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#0e0c12;background:linear-gradient(180deg,#ffd76a,var(--gold));box-shadow:0 0 0 1px rgba(255,215,106,.6),0 6px 22px rgba(217,166,44,.35)}
+.shipgo:hover{filter:brightness(1.06)}
+.hold.ok i{background:var(--ok,#3fb27f)}
 /* phase 2: accept now (white) · pay the deposit through Stripe (gold; dashed until the link exists) */
 .sk.stripe{background:var(--gold);color:#0e0c12;border-color:var(--gold);font-weight:600}
 .sk.stripe:hover{filter:brightness(1.06)}
@@ -312,7 +318,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 /* scope change in review: the 24 h notice; Accept + Stripe frozen behind a dim gradient */
 .hold{display:flex;gap:10px;align-items:flex-start;margin:18px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(90deg,rgba(217,166,44,.08),transparent 70%);font-size:13px;color:var(--ink-2)}
 .hold i{flex:none;width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--gold)}.hold b{color:var(--ink);font-weight:600}
-.sks.frozen .sk.accept,.sks.frozen .sk.stripe{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);border:1px solid var(--line);filter:grayscale(1);cursor:not-allowed;pointer-events:none;font-weight:500}
+.sks.frozen .sk.accept{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);border:1px solid var(--line);filter:grayscale(1);cursor:not-allowed;pointer-events:none;font-weight:500}
 .adgo:disabled,.ad.sw:disabled{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);box-shadow:none;filter:grayscale(1);cursor:not-allowed;pointer-events:none;transform:none}
 .adds.frozen .adg .ad{opacity:.45;filter:grayscale(1)}
 .scx:disabled{cursor:default;color:var(--mute);border-bottom-style:dashed;pointer-events:none}
@@ -373,7 +379,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
   .proj.duo{aspect-ratio:auto;min-height:220px}
   .duo .pane{padding:14px}
   .scf .its li{grid-template-columns:minmax(0,1fr);gap:4px}
-  .sk.deny{margin-left:0}
+  .sk.inv{margin-left:0}
   .q{flex-wrap:wrap}
   #plugs{grid-template-columns:minmax(0,1fr)}
   .plug{min-height:0}
