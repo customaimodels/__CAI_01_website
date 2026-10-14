@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=6d3bc59876">
-<link rel="stylesheet" href="rcai.css?v=6d3bc59876">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=feec5bdaf6">
+<link rel="stylesheet" href="rcai.css?v=feec5bdaf6">
 </head>
 <body>
 
@@ -91,7 +91,7 @@
 <!-- THE HUB (2026-10-14, minimal on purpose: more lands here later).
      Top right: one small key (request build) + the bell; it drops one message window.
      Request changes sits on each project square, only once that project is signed or paid.
-     Body, three sections: 01 your projects (small squares) + phase 2 proposal · 02 your preferences (survey + review) · 03 feedback. -->
+     Body, three sections: 01 your projects (small squares; one website with a phase 2 = ONE wide square, phase 1 | phase 2; phase 2 opens its own page) · 02 your preferences (survey + review) · 03 feedback. -->
 <div id="hub" hidden>
  <header>
   <div class="wrap">
@@ -113,12 +113,10 @@
   </form>
  </header>
 
- <main class="wrap">
+ <main class="wrap" id="home">
   <section class="sec">
    <div class="sh"><h2>Your projects</h2><span class="cap co"></span></div>
    <div id="cards"></div>
-   <div id="p2" hidden><div class="sh sub2"><h3>Phase 2 proposal</h3></div>
-   <div id="scopes"></div></div>
   </section>
 
   <section class="sec">
@@ -144,9 +142,17 @@
   </section>
  </main>
 
+ <!-- phase 2 is a new build, so it gets its own page (#p2-<i>): back · the proposal · the answer. -->
+ <main class="wrap" id="p2page" hidden>
+  <section class="sec">
+   <a class="back" href="#">← Your projects</a>
+   <div id="scopes"></div>
+  </section>
+ </main>
+
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=6d3bc59876"></script>
+<script src="rcai.js?v=feec5bdaf6"></script>
 </body>
 </html>

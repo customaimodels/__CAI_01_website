@@ -51,13 +51,16 @@
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
       <div class="foot">${keys}${p.can_change ? `<button type="button" class="rc" data-p="${esc(p.code || p.name)}">${icon("i-pen")}Request changes${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
     </article>`;
-    // a real phase 2 scope in the record = a square right beside it (red dot only). No scope, no square.
-    const next = p.scope ? `<article class="proj p2">
-      <span class="tag bad">${esc(p.scope.name)} awaits</span>
-      <h3>${esc(p.scope.name)}</h3><span class="co">${p.scope.items.length} items · ${esc(p.name)}</span>
-      <button type="button" class="p2go" data-i="${i}">Review ${esc(p.scope.name)} →</button>
-    </article>` : "";
-    return sq + next;
+    // a real phase 2 scope = ONE wide square, the same website: phase 1 left, phase 2 right (its key opens its own page).
+    if (!p.scope) return sq;
+    return `<article class="proj duo">
+      <div class="pane">${sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))}</div>
+      <div class="pane p2">
+        <span class="tag bad">${esc(p.scope.name)} awaits</span>
+        <h3>${esc(p.scope.name)}</h3><span class="co">New build · ${p.scope.items.length} items</span>
+        <button type="button" class="p2go" data-i="${i}">Review ${esc(p.scope.name)} →</button>
+      </div>
+    </article>`;
   }
 
   function badges(v) {
@@ -76,10 +79,20 @@
     const n = v.projects.length;
     $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
     $("#cards").innerHTML = n ? v.projects.map((p, i) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet. Write to ${MAIL}.</div>`;
-    $("#p2").hidden = true; $("#scopes").innerHTML = "";
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
+    route();
   }
+
+  // #p2-<i> = that project's phase 2 page; anything else = the hub. Browser back works.
+  function route() {
+    const m = location.hash.match(/^#p2-(\d+)$/), p = m && view && view.projects[+m[1]];
+    const on = !!(p && p.scope);
+    $("#home").hidden = on; $("#p2page").hidden = !on;
+    $("#scopes").innerHTML = on ? scope(p) : "";
+    window.scrollTo({ top: 0 });
+  }
+  window.addEventListener("hashchange", () => { if (view && !$("#hub").hidden) route(); });
 
   function open(which, proj) {
     const form = $(".ask");
@@ -100,10 +113,7 @@
     const rc = e.target.closest(".rc");
     if (rc) { open("changes", rc.dataset.p); window.scrollTo({ top: 0 }); return; }
     const b = e.target.closest(".p2go");
-    if (!b) return;
-    $("#scopes").innerHTML = scope(view.projects[+b.dataset.i]);
-    $("#p2").hidden = false;
-    $("#p2").scrollIntoView({ block: "nearest" });
+    if (b) location.hash = "p2-" + b.dataset.i;
   });
 
   const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
