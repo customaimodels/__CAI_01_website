@@ -133,11 +133,18 @@ button{font:inherit;color:inherit}
 .track i{height:2px;border-radius:2px;background:var(--line-2)}
 .track i.on{background:var(--violet-soft)}
 .track i.now{background:var(--gold)}
-.proj .foot{display:flex;align-items:center;gap:8px;margin-top:14px;min-height:16px}
-.proj .foot a{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--sans);color:var(--ink)}
-.proj .foot a:hover{color:var(--gold)}
-.proj .ws{margin-left:auto;display:flex;gap:8px;color:var(--mute)}
-.proj .ws .ico{width:14px;height:14px}
+.proj .foot{display:flex;align-items:center;gap:6px;margin-top:14px;min-height:34px}
+/* git · railway: two small squares, the only keys on a project */
+.sq{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;border:1px solid var(--line-2);background:rgba(255,255,255,.035);color:var(--ink-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:color .15s,border-color .15s,background .15s}
+.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255,255,255,.07)}
+/* phase 2 awaits: the red square beside a delivered project */
+.tag.bad{border-color:rgba(217,71,74,.5);color:#ff6b6e;background:rgba(217,71,74,.08)}
+.proj.p2{border-color:rgba(217,71,74,.35);background:linear-gradient(180deg,rgba(217,71,74,.10),rgba(217,71,74,.02) 60%),var(--card)}
+.p2go{all:unset;box-sizing:border-box;cursor:pointer;margin-top:auto;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;
+  background:#d9474a;color:#fff;font:600 14px/1 var(--sans);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 26px -12px rgba(217,71,74,.7);transition:background .15s}
+.p2go:hover{background:#e25356}
+.proj.p2 h3{margin:auto 0 4px}
 
 /* preferences + feedback: one quiet box each */
 .box{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:6px 20px 18px}

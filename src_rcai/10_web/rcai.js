@@ -1,6 +1,6 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
 // The hub: two small keys top right (request changes · request build) with corner badges, the bell for every notice.
-// Body: projects as small squares · phase 2 proposal (Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
+// Body: projects as small squares (+ a red Phase 2 square when a scope waits → its proposal: Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
 // Every send opens a filled-in email: there is no request queue yet.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
@@ -28,18 +28,27 @@
       <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
   }
 
-  // one project = one small square: state, name, company, the stage track, where it lives (icons, value on hover).
-  function card(p, stages) {
+  // one project = one small square: state, name, company, the stage track, and two small keys: git · railway.
+  // The square itself does nothing on click. A git value "github.com/o/r · main" links to the repo; railway opens the dashboard.
+  const href = (k, v) => k === "git" ? "https://" + v.split(" ")[0].replace(/^https?:\/\//, "") : "https://railway.com/dashboard";
+  function card(p, stages, i) {
     p.where = p.where || []; p.notices = p.notices || [];
-    const track = stages.map((_, i) => `<i class="${i < p.stage ? "on" : i === p.stage ? "now" : ""}"></i>`).join("");
-    const live = p.where.find((w) => w.k === "live");
-    const rest = p.where.filter((w) => w.k !== "live").map((w) => `<span title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</span>`).join("");
-    return `<article class="proj">
+    const track = stages.map((_, j) => `<i class="${j < p.stage ? "on" : j === p.stage ? "now" : ""}"></i>`).join("");
+    const keys = p.where.filter((w) => w.k === "git" || w.k === "railway")
+      .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</a>`).join("");
+    const sq = `<article class="proj">
       <span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>
       <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
-      <div class="foot">${live ? `<a href="${esc(live.v)}" target="_blank" rel="noopener">${icon("i-globe")}Open</a>` : ""}<span class="ws">${rest}</span></div>
+      <div class="foot">${keys}</div>
     </article>`;
+    // a real phase 2 scope in the record = a red square right beside it. No scope, no square.
+    const next = p.scope ? `<article class="proj p2">
+      <span class="tag bad">${esc(p.scope.name)} awaits</span>
+      <h3>${esc(p.scope.name)}</h3><span class="co">${p.scope.items.length} items · ${esc(p.name)}</span>
+      <button type="button" class="p2go" data-i="${i}">Review ${esc(p.scope.name)} →</button>
+    </article>` : "";
+    return sq + next;
   }
 
   function badges(v) {
@@ -58,9 +67,8 @@
     $("#gate").hidden = true; $("#hub").hidden = false;
     const n = v.projects.length;
     $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
-    $("#cards").innerHTML = n ? v.projects.map((p) => card(p, v.stages)).join("") : `<div class="empty">No projects yet. Write to ${MAIL}.</div>`;
-    const sc = v.projects.filter((p) => p.scope);
-    $("#scopes").innerHTML = sc.length ? sc.map(scope).join("") : `<div class="empty">Nothing waiting on you.</div>`;
+    $("#cards").innerHTML = n ? v.projects.map((p, i) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet. Write to ${MAIL}.</div>`;
+    $("#p2").hidden = true; $("#scopes").innerHTML = "";
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
   }
@@ -77,6 +85,15 @@
   }
 
   document.querySelectorAll(".tk").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
+
+  // the red square's button opens that proposal under the squares: its lines + Accept · Ask changes · Deny.
+  $("#cards").addEventListener("click", (e) => {
+    const b = e.target.closest(".p2go");
+    if (!b) return;
+    $("#scopes").innerHTML = scope(view.projects[+b.dataset.i]);
+    $("#p2").hidden = false;
+    $("#p2").scrollIntoView({ block: "nearest" });
+  });
 
   const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
   $("#scopes").addEventListener("click", (e) => {
