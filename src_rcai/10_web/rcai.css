@@ -201,6 +201,9 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .adh{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .adh b{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .adh span{color:var(--ink-2);font-size:14px}
+.adh .few{flex-basis:100%;margin-top:-6px;font:500 10.5px/1.4 var(--mono);letter-spacing:.04em;color:var(--mute)}
+/* the package: the three squares sit in one frame, read as one thing */
+.adg.pkg{padding:10px;border-radius:18px;border:1px solid rgba(217,166,44,.28);background:rgba(217,166,44,.03)}
 .adg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .ad{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:14px;
   border:1px solid var(--line-2);background:var(--card-2);transition:border-color .15s,background .15s,transform .15s}

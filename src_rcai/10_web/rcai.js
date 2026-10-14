@@ -39,9 +39,11 @@
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
     // add-ons FIRST (delivery.yml addon:): not in the build, small on the bill. Picked before any price shows;
     // the page never carries their price -- it is quoted on its own small invoice, approved before anything is billed.
-    const ad = s.addons || [], picked = addPicked();
-    const adds = ad.length ? `<div class="adds"><div class="adh"><b>Not in the build</b><span>Small on the bill. Pick what you want in.</span></div>
-        <div class="adg">${ad.map((a, j) => `<button type="button" class="ad" data-a="${j}" aria-pressed="${picked.includes(j)}">
+    // Sold as ONE package (all ticked by default); small letters let them take a few instead.
+    const ad = s.addons || [], picked = addPicked(ad.length);
+    const adds = ad.length ? `<div class="adds"><div class="adh"><b>The package · not in the build</b><span>${ad.length > 1 ? `All ${ad.length}, small on the bill.` : "Small on the bill."}</span>
+          ${ad.length > 1 ? `<small class="few">or select a few · tap one to take it out</small>` : ""}</div>
+        <div class="adg pkg">${ad.map((a, j) => `<button type="button" class="ad" data-a="${j}" aria-pressed="${picked.includes(j)}">
           <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div>
         <div class="adk"><button type="button" class="adgo">${addLabel(picked, ad.length)}</button>
           <span class="adn">Quoted on its own small invoice. Nothing is billed until you approve it.</span></div></div>` : "";
@@ -200,8 +202,13 @@
   // add-ons: a pick is kept on this device per client + project; "Add … to my build" sends the picks (the filled-in email).
   // Accept carries them too, so a fast yes still lands them in the build.
   const ADDKEY = () => `rcai.addons.${view?.email || ""}.${+location.hash.slice(4)}`;
-  function addPicked() { try { return JSON.parse(localStorage.getItem(ADDKEY()) || "[]"); } catch { return []; } }
-  const addLabel = (picked, n) => picked.length ? `Add ${picked.length === n && n > 1 ? "them" : picked.length === 1 ? "it" : picked.length} to my build →` : `Add ${n === 3 ? "all three" : "them all"} to my build →`;
+  // nothing stored yet = the whole package is in.
+  function addPicked(n) {
+    try { const v = localStorage.getItem(ADDKEY()); if (v) return JSON.parse(v); } catch {}
+    return [...Array(n || $$(".ad").length).keys()];
+  }
+  const addLabel = (picked, n) => picked.length === n && n > 1 ? "Add the package to my build →"
+    : picked.length ? `Add ${picked.length === 1 ? "this one" : picked.length} to my build →` : "Add the package to my build →";
   const addNames = (s, idx) => idx.map((j) => (s.addons || [])[j]?.title).filter(Boolean);
 
   const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
