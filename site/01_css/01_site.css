@@ -164,6 +164,10 @@ footer .wrap{display:flex;align-items:center;gap:28px;height:96px;color:var(--mu
 footer .brand{color:var(--ink)}
 footer .sp{margin-left:auto}
 footer a:hover{color:var(--ink)}
+footer .key input{width:64px;height:28px;padding:0 10px;background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-s);color:var(--ink);font:12px var(--mono);letter-spacing:.2em;outline:none;transition:border-color .2s var(--ease),width .3s var(--ease)}
+footer .key input::placeholder{color:var(--mute);letter-spacing:.08em}
+footer .key input:focus{border-color:var(--line-2);width:96px}
+footer .key.no input{border-color:var(--bad)}
 
 /* the assistant launcher */
 .ai-fab{position:fixed;right:22px;bottom:22px;z-index:30;display:flex;align-items:center;gap:9px;height:44px;padding:0 16px 0 10px;border-radius:12px;

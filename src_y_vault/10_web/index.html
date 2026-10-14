@@ -61,7 +61,7 @@ h1 em{color:var(--gold);font-style:normal}
    </div>
    <div class="pins">
     <input inputmode="numeric" maxlength="1" aria-label="PIN digit 1"><input inputmode="numeric" maxlength="1" aria-label="PIN digit 2">
-    <input inputmode="numeric" maxlength="1" aria-label="PIN digit 3"><input inputmode="numeric" maxlength="1" aria-label="PIN digit 4">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN digit 3">
    </div>
    <div id="err"></div>
   </form>
@@ -114,10 +114,10 @@ async function send(){
 }
 boxes.forEach((b,i)=>{
   b.addEventListener("input",()=>{b.value=b.value.replace(/\D/g,"").slice(-1);$("#err").textContent="";
-    if(b.value&&i<3)boxes[i+1].focus();if(boxes.every(x=>x.value))send()});
+    if(b.value&&i<boxes.length-1)boxes[i+1].focus();if(boxes.every(x=>x.value))send()});
   b.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!b.value&&i)boxes[i-1].focus()});
   b.addEventListener("paste",e=>{const v=(e.clipboardData.getData("text")||"").replace(/\D/g,"").slice(0,4);
-    if(v.length===4){e.preventDefault();v.split("").forEach((c,j)=>boxes[j].value=c);send()}});
+    if(v.length===boxes.length){e.preventDefault();v.split("").forEach((c,j)=>boxes[j].value=c);send()}});
 });
 $("#f").addEventListener("submit",e=>{e.preventDefault();send()});
 $("#out").addEventListener("click",async()=>{await fetch("api/logout",{method:"POST",credentials:"same-origin"});load()});
