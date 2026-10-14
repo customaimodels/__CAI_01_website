@@ -34,13 +34,23 @@ img{display:block;max-width:100%}
 .hero:before{content:"";position:absolute;top:-260px;right:-180px;width:820px;height:820px;border-radius:50%;z-index:-1;
   background:radial-gradient(closest-side,rgba(70,110,255,.15),rgba(70,110,255,.045) 55%,transparent)}
 .hero .dunes{position:absolute;left:0;right:0;bottom:0;width:100%;height:200px;z-index:-1}
-.hero .wrap{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;padding-bottom:190px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;padding-bottom:170px}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8.4vw,116px);line-height:.92;letter-spacing:-.03em;margin:26px 0 30px}
 .hero h1 em{font-style:italic;color:#c9d6ff}
 .hero .sub{color:var(--ink-2);font-size:17px;max-width:46ch;margin:16px 0 0}
 .hero .row{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap}
-.hero .rail{border-left:1px solid rgba(217,166,44,.55);padding:4px 0 4px 18px;margin-bottom:110px}
-.hero .rail span{display:block;font:500 11px/2 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+/* hero: three screens (local · website · phone), then three vows */
+.screens{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.scr{margin:0;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,var(--bg-2),rgba(10,12,17,.5));padding:26px 26px 22px;transition:border-color .3s,transform .3s var(--ease)}
+.scr:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.scr svg{display:block;width:100%;height:150px;overflow:visible}
+.scr figcaption{display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:10px;color:var(--ink-2);font-size:14px}
+.scr figcaption b{font:400 26px/1 var(--serif);color:var(--ink)}
+.vow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(217,166,44,.45)}
+.vow li{display:flex;gap:14px;padding:22px 24px 0 0;color:var(--ink-2);font-size:14px;line-height:1.55}
+.vow li+li{padding-left:24px;border-left:1px solid var(--line)}
+.vow .ico{width:22px;height:22px;color:var(--gold);stroke-width:1.4;margin-top:1px}
+.vow b{color:var(--ink);font-weight:500}
 
 /* sections */
 section{position:relative}
@@ -177,7 +187,13 @@ footer a:hover{color:var(--ink)}
   .cap{line-height:1.8}
   #bar .wrap{gap:16px}
   html,body{overflow-x:hidden}
-  .hero .rail{display:none}
+  .vow{grid-template-columns:minmax(0,1fr)}
+  .screens{gap:8px}
+  .scr{padding:14px 10px 12px}
+  .scr svg{height:78px}
+  .scr figcaption{flex-direction:column;gap:4px;padding-top:10px;font-size:12px}
+  .scr figcaption b{font-size:20px}
+  .vow li+li{padding-left:0;border-left:0;border-top:1px solid var(--line);margin-top:18px}
   .blk{padding:80px 0}
   .head{flex-direction:column;align-items:start}
   .steps{grid-template-columns:minmax(0,1fr);gap:14px}
