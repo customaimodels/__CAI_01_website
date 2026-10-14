@@ -243,7 +243,7 @@
     const all = v.projects.map((p, i) => [p, i]);
     const real = all.filter(([p]) => !p.demo), demos = all.filter(([p]) => p.demo);
     $("#cards").innerHTML = real.length ? real.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet.</div>`;
-    $("#demos").innerHTML = demos.length ? demos.map(([p, i]) => card(p, v.stages, i).replace(/<\/article>\s*$/, `${raHTML(p)}</article>`)).join("") : `<div class="empty">No demos yet. Ask for one, built on your own data.</div>`;
+    drawDemos();
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
     fab(v);
@@ -298,9 +298,34 @@
     demo: ["Open the scope", "Notify me with details", "Request changes", "Alternate build", "Book a walkthrough"],
     sign: ["Ready to sign", "Open the scope", "Request changes", "Alternate build", "Notify me with details"],
   };
-  const raHTML = (p) => paused()
-    ? `<div class="ra"><span class="ra-wait">Sent · give us 24 hours</span></div>`
-    : `<div class="ra"><button type="button" class="ra-go" data-p="${esc(p.code || p.name)}">Request action</button>
+  // Archive (device only, keyed by project id): the square leaves Your demos and joins ONE "Archived" square; Restore brings it back.
+  const ARCKEY = "rcai.archived";
+  const archived = () => { try { return JSON.parse(localStorage.getItem(ARCKEY) || "[]"); } catch { return []; } };
+  const pid = (p) => String(p.id || p.code || p.name);
+  let arcOpen = false;
+  function drawDemos() {
+    const v = view, arc = archived();
+    const all = v.projects.map((p, i) => [p, i]).filter(([p]) => p.demo);
+    const live = all.filter(([p]) => !arc.includes(pid(p))), gone = all.filter(([p]) => arc.includes(pid(p)));
+    const arcKey = (p) => `<button type="button" class="ar-go" data-a="${esc(pid(p))}">Archive</button>`;
+    let h = live.map(([p, i]) => card(p, v.stages, i).replace(/<\/article>\s*$/, `${raHTML(p, arcKey(p))}</article>`)).join("");
+    if (gone.length) h += `<article class="arc"><button type="button" class="arc-t" aria-expanded="${arcOpen}"><span class="arc-l">Archived</span><span class="arc-n">${gone.length}</span></button>
+      <ul class="arc-list"${arcOpen ? "" : " hidden"}>${gone.map(([p]) => `<li><span>${esc(p.name)}</span><button type="button" class="ar-back" data-a="${esc(pid(p))}">Restore</button></li>`).join("")}</ul></article>`;
+    $("#demos").innerHTML = h || `<div class="empty">No demos yet. Ask for one, built on your own data.</div>`;
+  }
+  $("#demos").addEventListener("click", (e) => {
+    const t = e.target.closest(".arc-t");
+    if (t) { arcOpen = !arcOpen; drawDemos(); return; }
+    const a = e.target.closest(".ar-go, .ar-back");
+    if (!a) return;
+    const id = a.dataset.a, arc = archived().filter((x) => x !== id);
+    if (a.classList.contains("ar-go")) arc.push(id);
+    try { localStorage.setItem(ARCKEY, JSON.stringify(arc)); } catch {}
+    drawDemos();
+  });
+  const raHTML = (p, ar = "") => paused()
+    ? `<div class="ra"><span class="ra-wait">Sent · give us 24 hours</span>${ar}</div>`
+    : `<div class="ra"><button type="button" class="ra-go" data-p="${esc(p.code || p.name)}">Request action</button>${ar}
         <form class="ra-f" hidden><div class="ra-keys">${RA_KEYS[/signature/i.test(p.stage_label || "") ? "sign" : "demo"]
           .map((k) => `<button type="button" class="ra-k" aria-pressed="false">${esc(k)}</button>`).join("")}</div>
         <textarea name="m" rows="2" maxlength="1500" placeholder="Anything else? (optional)"></textarea>
@@ -322,7 +347,7 @@
     if (!t) { f.m.placeholder = "Pick a key or write a line."; f.m.focus(); return; }
     $(".ra-s", f).disabled = true;
     await send("action", t + sign(), p);
-    $$("#demos .ra").forEach((r) => { if (paused()) r.innerHTML = `<span class="ra-wait">Sent · give us 24 hours</span>`; });
+    if (paused()) drawDemos();
     if (!paused()) $(".ra-s", f).disabled = false;
   });
 

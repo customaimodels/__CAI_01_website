@@ -187,6 +187,18 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .ra-wait{display:inline-flex;align-items:center;gap:8px;height:32px;font-size:12.5px;color:var(--ink-2)}
 .ra-wait::before{content:"";width:6px;height:6px;border-radius:50%;background:#d9a62c}
 #demos{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:10px}
+/* Archive: a quiet text key beside Request action · the one ARCHIVED square holds the rest */
+.ra{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ra .ra-f{flex-basis:100%}
+.ar-go,.ar-back{all:unset;cursor:pointer;font-size:12px;color:var(--ink-2);padding:0 6px;height:32px;display:inline-flex;align-items:center;transition:color .15s}
+.ar-go:hover,.ar-back:hover{color:#fff}
+.arc{border:1px dashed var(--line-2);border-radius:18px;padding:22px;align-self:start}
+.arc-t{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%}
+.arc-l{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.arc-n{font:500 11px/1 var(--mono);color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:4px 8px}
+.arc-t:hover .arc-l{color:#fff}
+.arc-list{list-style:none;margin:14px 0 0;padding:0}
+.arc-list li{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--line-2);font-size:13px;color:var(--ink-2)}
 /* the phase 2 page */
 .back{display:inline-block;margin-bottom:18px;color:var(--ink-2);font:500 12px/1 var(--mono);letter-spacing:.06em;text-decoration:none}
 .back:hover{color:var(--ink)}
