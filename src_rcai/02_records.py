@@ -25,6 +25,8 @@ STATUS = {
     "delivered":        (3, "Delivered"),
     "live":             (4, "Live"),
 }
+# signed or paid: only then may a client ask for changes on that project (the key on its R-CAI square)
+CAN_CHANGE = {"signed", "paid_in_build", "in_build", "phase1_delivered", "delivered", "live"}
 DATE_LABELS = [("added", "Opened"), ("demo_sent", "Demo sent"), ("signed", "Signed"),
                ("delivery", "Delivery")]
 
@@ -151,6 +153,7 @@ def _card(db, cfg, pid):
         "company": company.get("name"),
         "kind": company.get("kind"),
         "demo": p.get("status") == "demo_sent",
+        "can_change": p.get("status") in CAN_CHANGE,
         "stage": stage,
         "stage_label": label,
         "phase": _clean_phase(p.get("phase")),

@@ -1,5 +1,6 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
-// The hub: two small keys top right (request changes · request build) with corner badges, the bell for every notice.
+// The hub: one small key top right (request build) + the bell for every notice.
+// Request changes sits on each project square, only when that project is signed or paid (can_change from 02_records).
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
 // Every send opens a filled-in email: there is no request queue yet.
 (() => {
@@ -48,7 +49,7 @@
       <span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>
       <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
-      <div class="foot">${keys}</div>
+      <div class="foot">${keys}${p.can_change ? `<button type="button" class="rc" data-p="${esc(p.code || p.name)}">${icon("i-pen")}Request changes${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
     </article>`;
     // a real phase 2 scope in the record = a square right beside it (red dot only). No scope, no square.
     const next = p.scope ? `<article class="proj p2">
@@ -63,7 +64,6 @@
     const all = v.projects.flatMap((p) => (p.notices || []).map((n) => ({ ...n, p })));
     const set = (el, n) => { el.dataset.n = n; el.textContent = n || ""; };
     set($(".bell .badge"), all.length);
-    set($('.tk[data-lane="changes"] .badge'), all.filter((n) => LANE_OF[n.lane] === "changes").length);
     set($('.tk[data-lane="build"] .badge'), all.filter((n) => LANE_OF[n.lane] === "build").length);
     $(".pop").innerHTML = all.length
       ? all.map((n) => `<div class="row">${icon(LANE_OF[n.lane] === "changes" ? "i-pen" : LANE_OF[n.lane] === "build" ? "i-code" : n.lane === "scope" ? "i-doc" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
@@ -81,14 +81,15 @@
     badges(v);
   }
 
-  function open(which) {
+  function open(which, proj) {
     const form = $(".ask");
-    const same = lane === which && !form.hidden;
+    const same = lane === which && !form.hidden && (!proj || form.project.value === proj);
     document.querySelectorAll(".tk").forEach((b) => b.setAttribute("aria-expanded", String(!same && b.dataset.lane === which)));
     if (same) { form.hidden = true; lane = null; return; }
     lane = which;
     form.hidden = false;
     form.msg.placeholder = LANES[which].ph;
+    if (proj) form.project.value = proj;
     form.msg.focus({ preventScroll: true });
   }
 
@@ -96,6 +97,8 @@
 
   // the red square's button opens that proposal under the squares: its lines + Accept · Ask changes · Deny.
   $("#cards").addEventListener("click", (e) => {
+    const rc = e.target.closest(".rc");
+    if (rc) { open("changes", rc.dataset.p); window.scrollTo({ top: 0 }); return; }
     const b = e.target.closest(".p2go");
     if (!b) return;
     $("#scopes").innerHTML = scope(view.projects[+b.dataset.i]);
