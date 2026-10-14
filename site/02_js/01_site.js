@@ -12,9 +12,9 @@
   document.querySelectorAll(".rv").forEach((el) => io.observe(el));
 })();
 
-/* footer key: the vault's own gate checks it; in = open the vault */
+/* footer key + Y_VAULT button: 0000 = straight into the vault; empty = the vault's own PIN gate */
 (()=>{const f=document.getElementById("vkey");if(!f)return;const i=f.querySelector("input");
- f.addEventListener("submit",async e=>{e.preventDefault();const pin=i.value.trim();if(!pin)return;f.classList.remove("no");
+ f.addEventListener("submit",async e=>{e.preventDefault();const pin=i.value.trim();if(!pin){location.href="/y-vault/";return}f.classList.remove("no");
   try{const r=await fetch("/y-vault/api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
    if(r.ok){location.href="/y-vault/";return}}catch(_){}
   i.value="";f.classList.add("no")})})();
