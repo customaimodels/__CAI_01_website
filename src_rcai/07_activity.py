@@ -36,9 +36,13 @@ ACTS = {
     "ship":        (5, "SHIP TODAY"),
     "stripe":      (5, "opened Stripe"),
     "invoice":     (5, "requested an invoice"),
+    "read":        (1, "opened a section"),
+    "support":     (3, "sent a support quick chat"),
+    "rebuild_ask": (4, "opened Request a different build"),
+    "rebuild":     (5, "CLOSED the proposal · asked for a different build"),
 }
 EXITS = {"ship": "ACCEPTED · ship today", "stripe": "PAYING · opened Stripe", "invoice": "PAYING · asked for an invoice",
-         "scope_sent": "SCOPE CHANGE · in review (24 h)"}
+         "scope_sent": "SCOPE CHANGE · in review (24 h)", "rebuild": "CLOSED · wants a different build (new demo)"}
 
 
 def where():
@@ -87,7 +91,7 @@ def load(path=None):
 def verdict(steps):
     """The furthest exit wins; no exit = STUCK at the furthest step."""
     acts = [s["act"] for s in steps]
-    for a in ("ship", "stripe", "invoice", "scope_sent"):
+    for a in ("ship", "stripe", "invoice", "rebuild", "scope_sent"):
         if a in acts:
             return "✓ " + EXITS[a]
     top = max(steps, key=lambda s: (ACTS[s["act"]][0], s["at"]))

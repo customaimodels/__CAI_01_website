@@ -71,26 +71,50 @@
   // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:, always live) · Request invoice
   // (any payment method), and in small
   // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer is one request (send).
+  // every section folds; a closed, unread one carries a gold "New" pill and nudges once as it scrolls in.
+  // Opening it marks it read (this device). The Action required bar counts what's been read.
+  const SEENKEY = () => `rcai.seen.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const seen = () => { try { return JSON.parse(localStorage.getItem(SEENKEY()) || "[]"); } catch { return []; } };
+  const fold = (k, n, title, peek, body) => { const r = seen().includes(k);
+    return `<details class="part fold${r ? " read" : ""}" data-k="${k}"><summary><b><i>${String(n).padStart(2, "0")}</i>${title}</b><span class="pv">${peek}</span>
+      <span class="nb">${r ? icon("i-check") + "Read" : "<i></i>New"}</span></summary><div class="pb">${body}</div></details>`; };
+  // Infrastructure and tools: `Name · Tag · note` lines drawn as one small flow, each node tagged Free / Optional upgrade.
+  const toolsHTML = (lines) => `<div class="flow">${lines.map((l) => { const [n, t = "", w = ""] = l.split(" · ");
+    return `<div class="nd"><b>${esc(n)}</b><em class="${/free/i.test(t) ? "free" : "up"}">${esc(t)}</em><small>${esc(w)}</small></div>`; }).join(`<span class="ar">${icon("i-arrow")}</span>`)}</div>
+    <p class="flsum">Running cost today: <b>$0</b>. The Brevo upgrade is optional.</p>`;
+  const supportHTML = (lines) => `<ul class="dl">${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
+    <button type="button" class="qc">${icon("i-chat")}Quick chat with Yeriko</button>
+    <form class="qcf" hidden><textarea name="m" rows="2" maxlength="1500" placeholder="What does your team need covered? Hours, response time, who to call…"></textarea>
+      <div class="ra-row"><button type="button" class="ra-x qcx">Cancel</button><button type="submit" class="ra-s">Send</button></div></form>`;
+  const isTools = (t) => /tool|infrastructure/i.test(t.title), isSup = (t) => /support/i.test(t.title);
+  const termBody = (t) => isTools(t) ? toolsHTML(t.lines) : isSup(t) ? supportHTML(t.lines) : `<ul class="dl">${t.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
+  const termPeek = (t) => isTools(t) ? "$0 today" : isSup(t) ? "Recommended" : /session|meeting/i.test(t.title) ? "3–5 hours · $42/h" : `${t.lines.length} points`;
+
   function scope(p) {
     const s = p.scope;
-    const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
     const tl = (s.timeline || []).length
       ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
     const key = (a, label, off) => `<button type="button" class="sk ${a}"${off ? " disabled" : ""} data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
     const ad = s.addons || [], picked = added();
-    return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
-        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Your decision</span></div>
-      <p class="dec top">Accept, ask to change the scope, or pay the deposit. We expect a decision either way; any question from us comes by email, and every request is kept in the Handbook.</p>
+    const secs = [
+      ["scope", "Scope of work", `${s.items.length + picked.length} deliverables`, `<ul class="dl">${delivHTML(s, picked)}</ul>`],
+      ...(p.visual ? [["how", "How it works", "One picture", `<figure class="vis"><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></a><figcaption>Tap for full size</figcaption></figure>`]] : []),
+      ["time", "Schedule", (s.timeline || []).length ? "3–4 weeks" : "", tl],
+      ...(s.terms || []).map((t, j) => ["t" + j, esc(t.title), termPeek(t), termBody(t)]),
+      ["pay", "Investment", bill(s, picked) ? `${money(bill(s, picked).dep)} to start` : "",`<div class="payrow">${payHTML(s, picked)}</div>`],
+    ];
+    const read = secs.filter(([k]) => seen().includes(k)).length;
+    return `<div class="scope" data-n="${secs.length}"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
+        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Action required</span></div>
+      <div class="actreq"><b>Action required</b><span>Review the proposal, then choose one: accept, pay the deposit, request an invoice, or request a different build.
+        Questions from us come by email. Every request is kept in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
-      ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}
-      ${p.visual ? `<figure class="vis"><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></a><figcaption>How it works · tap for full size</figcaption></figure>` : ""}
-      ${part(2, "Timeline", tl)}
-      ${(s.terms || []).map((t, j) => part(3 + j, esc(t.title), `<ul class="dl">${t.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`)).join("")}
-      ${part(3 + (s.terms || []).length, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
+      ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
       <div class="holdslot">${holdHTML()}</div>
-      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("inv", "Request invoice")}</div>
+      <p class="actlbl"><i></i>Your decision · choose one</p>
+      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Proposal closed" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("rebuild", "Request a different build", lock())}${key("inv", "Request invoice")}</div>
       <div class="shipslot"></div>
-      <button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : "Ask to change the scope of the project"}</button>
+      <button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : closed() ? "Proposal closed · a different build is on its way" : "Ask to change the scope of the project"}</button>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
         <div class="w" data-w="1">
@@ -229,7 +253,7 @@
     const on = !!(p && p.scope);
     $("#home").hidden = on; $("#p2page").hidden = !on;
     $("#scopes").innerHTML = on ? scope(p) : "";
-    if (on) track("open", +m[1]);
+    if (on) { track("open", +m[1]); nudge(); }
     window.scrollTo({ top: 0 });
   }
   window.addEventListener("hashchange", () => { if (view && !$("#hub").hidden) route(); });
@@ -354,8 +378,12 @@
   // for good, except the two ways to pay (Stripe · Request invoice).
   const SHIPKEY = () => `rcai.ship.${view?.email || ""}.${+location.hash.slice(4)}`;
   const shipped = () => +(localStorage.getItem(SHIPKEY()) || 0);
-  const lock = () => held() || shipped();
+  // Request a different build → a pre-prompt (close this proposal, ask for a new demo) → sent: the proposal closes for good. Paying stays open.
+  const CLOSEKEY = () => `rcai.closed.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const closed = () => +(localStorage.getItem(CLOSEKEY()) || 0);
+  const lock = () => held() || shipped() || closed();
   function holdHTML() {
+    if (closed()) return `<div class="hold"><i></i><span><b>Proposal closed. A different build is on its way.</b> We write back within 24 hours with a new demo.</span></div>`;
     if (shipped()) return `<div class="hold ok"><i></i><span><b>Accepted. The build is shipping.</b> The deposit is due before go-live: Stripe, or ask for an invoice by another method.</span></div>`;
     return held() ? `<div class="hold"><i></i><span><b>Scope change in review.</b> We're back to you within 24 hours. Accept opens again with the updated scope. Paying the deposit stays open.</span></div>` : "";
   }
@@ -363,7 +391,8 @@
     $(".holdslot").innerHTML = holdHTML();
     $(".shipslot").innerHTML = "";
     $(".sks").classList.add("frozen");
-    const a = $(".sks .sk.accept"); a.disabled = true; if (shipped()) a.textContent = "Accepted · shipping";
+    const a = $(".sks .sk.accept"); a.disabled = true; if (shipped()) a.textContent = "Accepted · shipping"; if (closed()) a.textContent = "Proposal closed";
+    const rb = $(".sks .sk.rebuild"); if (rb) rb.disabled = true;
     const s = view.projects[+location.hash.slice(4)].scope;
     // the package locks with the answer key: no adding, no switching, no scope change. Paying stays open.
     $(".adslot").innerHTML = addsHTML(s, added());
@@ -375,6 +404,9 @@
     try { localStorage.setItem(HOLDKEY(), String(Date.now())); } catch {}
     freeze("Scope change in review");
   }
+  const rebuildHTML = () => `<div class="ship rb"><p><b>Close this proposal and request a new demo?</b> Phase 2 as written is set aside. We come back within 24 hours with a different build.</p>
+    <textarea rows="2" maxlength="1500" placeholder="What should the new build do instead?"></textarea>
+    <div class="row2"><button type="button" class="sk back0">Keep this proposal</button><button type="button" class="rbgo">Close it and request a new demo →</button></div></div>`;
   const shipHTML = () => `<div class="ship"><p><b>Is the build OK as it stands?</b> We start today. The scope locks; you pay the deposit before go-live.</p>
     <div class="row2"><button type="button" class="sk back0">Not yet</button><button type="button" class="shipgo">Ship today →</button></div></div>`;
   function setAdded(picked) {
@@ -389,8 +421,8 @@
   }
 
   $("#scopes").addEventListener("click", async (e) => {
-    if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .shipgo")) return;
-    if (paused() && e.target.closest(".scx, button.sk:not(.back0), .shipgo")) { pause(); toTop(); return; }
+    if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .sk.rebuild, .shipgo, .rbgo")) return;
+    if (paused() && e.target.closest(".scx, button.sk:not(.back0), .shipgo, .rbgo, .qc")) { pause(); toTop(); return; }
     if (e.target.closest(".stripe:not(.off)")) { track("stripe"); return; }
     if (e.target.closest(".adgo")) { track("add_pkg"); setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
@@ -410,9 +442,22 @@
       return;
     }
     if (e.target.closest(".back0")) { track("not_yet"); $(".shipslot").innerHTML = ""; return; }
-    const b = e.target.closest("button.sk, .shipgo");
+    if (e.target.closest(".qc")) { const f = $(".qcf"); f.hidden = !f.hidden; if (!f.hidden) f.m.focus({ preventScroll: true }); return; }
+    if (e.target.closest(".qcx")) { $(".qcf").hidden = true; return; }
+    const b = e.target.closest("button.sk, .shipgo, .rbgo");
     if (!b || b.disabled) return;
     // first press on Accept only asks; SHIP TODAY is the yes
+    if (b.dataset.ans === "rebuild") { track("rebuild_ask"); $(".shipslot").innerHTML = rebuildHTML(); $(".shipslot textarea").focus({ preventScroll: true }); return; }
+    if (b.classList.contains("rbgo")) {
+      const ta = $(".shipslot textarea"), t = ta.value.trim();
+      if (!t) { ta.placeholder = "One line is enough: what should the new build do instead?"; ta.focus(); return; }
+      const pp = view.projects[+location.hash.slice(4)];
+      if (!(await send("rebuild", `${pp.scope.name} · ${pp.code || pp.name}\n\nClose this proposal and send us a new demo.\n\nWhat the new build should do instead:\n${t}` + sign(), pp.code || pp.name))) return;
+      track("rebuild");
+      try { localStorage.setItem(CLOSEKEY(), String(Date.now())); } catch {}
+      freeze("Proposal closed · a different build is on its way");
+      return;
+    }
     if (b.dataset.ans === "accept") { track("accept"); $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
     const p = view.projects[+location.hash.slice(4)], s = p.scope, pk = added(), bl = bill(s, pk), adn = addNames(s, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
@@ -429,6 +474,29 @@
     if (b.dataset.ans === "inv" && await send("invoice", `${tag}\n\n` +
       `Please send us an invoice for the deposit${bl ? ` (${money(bl.dep)})` : ""}.\n\nWe'd like to pay by (keep one):\n· Bank transfer / ACH\n· Card\n· Check\n· Other: \n\nBilling name and address:\n` + plus + sign(), p.code || p.name)) track("invoice");
   });
+
+  $("#scopes").addEventListener("submit", async (e) => {
+    if (!e.target.classList.contains("qcf")) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    const f = e.target, t = f.m.value.trim(), pp = view.projects[+location.hash.slice(4)];
+    if (!t) return f.m.focus();
+    if (await send("support", `Support plan · ${pp.name}\n\n${t}` + sign(), pp.code || pp.name)) { track("support"); f.reset(); f.hidden = true; }
+  }, true);
+  $("#scopes").addEventListener("toggle", (e) => {
+    const d = e.target;
+    if (!d.matches?.("details.fold") || !d.open || d.classList.contains("read")) return;
+    const k = d.dataset.k, all = new Set(seen()); all.add(k);
+    try { localStorage.setItem(SEENKEY(), JSON.stringify([...all])); } catch {}
+    d.classList.add("read"); $(".nb", d).innerHTML = icon("i-check") + "Read";
+    track("read");
+    const sc = $(".scope"); $(".rd", sc).textContent = `${$$("details.fold.read", sc).length} of ${sc.dataset.n} sections read`;
+  }, true);
+  let io = null;
+  function nudge() {
+    io?.disconnect();
+    io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add("hey"); io.unobserve(x.target); } }), { threshold: .9 });
+    $$("#scopes details.fold:not(.read)").forEach((d) => io.observe(d));
+  }
 
   // scope change, four faces: 1 Write (autosaves on this device) → Save = the cheap reader (api/scope check, mock today)
   // marks thin notes, pushes back twice at most → 2 Review (exactly what we'll read) → Send to review = the second

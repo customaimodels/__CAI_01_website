@@ -432,3 +432,49 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .scope .vis { margin: 28px 0; text-align: center; }
 .scope .vis img { display: block; width: 100%; max-width: 640px; margin: 0 auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.08); }
 .scope .vis figcaption { margin-top: 8px; font: 11px/1.4 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }
+
+/* Phase 2, 2026-10-14 pm: every section folds. Unread = a gold "New" pill + one soft glow as it scrolls in (once). Read = a quiet ✓. */
+.fold{display:block;padding:0}
+.fold>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px;padding:18px 4px;border-radius:10px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary b{font:600 15px/1.3 var(--head);letter-spacing:-.01em;color:var(--ink);text-transform:none}
+.fold>summary b i{font:500 11px/1 var(--mono);font-style:normal;color:var(--gold);margin-right:12px;letter-spacing:.08em}
+.fold>summary .pv{font:500 11.5px/1 var(--mono);color:var(--mute)}
+.fold>summary:hover{background:rgba(255,255,255,.025)}
+.fold .nb{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:99px;font:600 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#0e0c12;background:var(--gold)}
+.fold .nb i{width:6px;height:6px;border-radius:50%;background:#0e0c12}
+.fold.read .nb{background:transparent;color:var(--mute);border:1px solid var(--line-2)}
+.fold.read .nb .ico{width:11px;height:11px}
+.fold .pb{padding:0 4px 20px 38px}
+.fold[open]>summary .pv{visibility:hidden}
+.fold.hey:not(.read)>summary{animation:hey 1.6s ease-out 1}
+@keyframes hey{0%{box-shadow:inset 0 0 0 1px rgba(217,166,44,0)}30%{box-shadow:inset 0 0 0 1px rgba(217,166,44,.7),0 0 24px -6px rgba(217,166,44,.45)}100%{box-shadow:inset 0 0 0 1px rgba(217,166,44,0)}}
+/* Action required: the top bar, and the label over the answer keys */
+.actreq{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin:16px 0 4px;padding:12px 14px;border-radius:12px;border:1px solid rgba(217,166,44,.45);background:linear-gradient(90deg,rgba(217,166,44,.1),transparent 80%)}
+.actreq b{font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#0e0c12;background:var(--gold);padding:6px 9px;border-radius:6px;white-space:nowrap}
+.actreq span{font-size:13px;line-height:1.45;color:var(--ink-2)}
+.actreq .rd{font:500 11px/1 var(--mono);color:var(--gold);white-space:nowrap}
+.scope .wait::before{background:var(--gold)}
+.actlbl{display:flex;align-items:center;gap:8px;margin:22px 0 0;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.actlbl i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.scope .actlbl+.sks{padding-top:10px}
+.sk.rebuild{border-style:dashed}
+.ship.rb textarea{flex-basis:100%;box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;background:rgba(0,0,0,.28);color:var(--ink);font:500 13px/1.45 var(--sans);resize:vertical}
+.rbgo{all:unset;cursor:pointer;height:38px;padding:0 18px;display:inline-flex;align-items:center;border-radius:10px;font:600 13px/1 var(--sans);color:#0e0c12;background:#fff}
+.rbgo:hover{background:#ebe8f0}
+.sks.frozen .sk.rebuild{opacity:.35;pointer-events:none}
+/* Infrastructure and tools: one small flow, Free in green-grey, the upgrade in gold */
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.flow .nd{flex:1 1 130px;display:flex;flex-direction:column;gap:6px;padding:12px 12px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--card-2)}
+.flow .nd b{font:600 14px/1.2 var(--head);color:var(--ink)}
+.flow .nd em{align-self:flex-start;font:600 9.5px/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;padding:4px 6px;border-radius:5px}
+.flow .nd em.free{color:#9fd3a8;background:rgba(63,178,127,.12)}
+.flow .nd em.up{color:#0e0c12;background:var(--gold)}
+.flow .nd small{font-size:12px;line-height:1.4;color:var(--ink-2)}
+.flow .ar{align-self:center;color:var(--mute)}.flow .ar .ico{width:14px;height:14px}
+.flsum{margin:12px 0 0;font:500 12px/1.4 var(--mono);color:var(--mute)}.flsum b{color:var(--ink)}
+/* Ongoing support: one quiet key, a quick chat that emails him (never the client's mail app) */
+.qc{all:unset;cursor:pointer;margin-top:14px;height:34px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border-radius:9px;border:1px solid rgba(217,166,44,.55);color:var(--ink);font:600 13px/1 var(--sans)}
+.qc:hover{background:rgba(217,166,44,.08)}.qc .ico{width:15px;height:15px;color:var(--gold)}
+.qcf{margin-top:10px}.qcf textarea{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;background:rgba(0,0,0,.28);color:var(--ink);font:500 13px/1.45 var(--sans)}
+@media (max-width:640px){.fold>summary{grid-template-columns:minmax(0,1fr) auto}.fold>summary .pv{display:none}.fold .pb{padding-left:4px}.actreq{grid-template-columns:1fr}.flow .ar{display:none}}

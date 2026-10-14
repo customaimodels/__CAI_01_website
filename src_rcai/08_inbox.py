@@ -37,6 +37,8 @@ KINDS = {
     "scope":    "Phase 2 · change the scope",
     "ship":     "Phase 2 · accepted · SHIP TODAY",
     "invoice":  "Phase 2 · invoice request",
+    "support":  "Phase 2 · support plan · quick chat",
+    "rebuild":  "Phase 2 · closed · request a different build",
     "signup":   "Sign up",
 }
 
