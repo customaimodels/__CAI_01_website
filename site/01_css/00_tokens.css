@@ -1,47 +1,27 @@
-/* CAI — one palette for the whole site (2026-10-14, CID manual). Shared by the landing and R-CAI.
-   Off-white paper carries the page. Graphite-violet "night" fields hold the focal objects.
-   Gold = the mark, numerals, the vow line. Lavender = the one primary action. Blue = the signal dot
-   inside an icon, nothing more. Icons: CID Icon Atlas grammar (72 grid, one stroke, one signal node).
-   Type: three voices -- serif means editorial, sans means operational, mono means system. */
+/* CAI — night tokens (2026-10-14). More black than blue. Shared by the landing and R-CAI.
+   Shapes follow the Icon Motion Atlas: 24px grid, one stroke weight, round caps + joins, built from
+   circles, arcs, lines. Blue is a touch, never a field. Gold is the mark and the step numbers. */
 :root{
-  --paper:#f6f4ee;       /* off-white, warm */
-  --paper-2:#efece4;     /* wells on paper */
-  --card:#fbfaf6;
-  --ink:#14131b;         /* text on paper */
-  --ink-2:#5b5966;
-  --mute:#8e8c98;
-  --pline:rgba(20,19,27,.09);
-  --pline-2:rgba(20,19,27,.18);
-
-  --night:#121119;       /* graphite with a violet breath -- more black than blue */
-  --night-2:#18171f;     /* surface */
-  --night-3:#201e2a;     /* elevated, inputs */
-  --nline:rgba(255,255,255,.075);
-  --nline-2:rgba(255,255,255,.14);
-  --nink:#f3f2f6;        /* text on night, never pure white */
-  --nink-2:#a7a5b3;
-  --nmute:#73717f;
-
-  --lav:#8f84ff;         /* the primary action */
-  --lav-2:#a79eff;
-  --lav-soft:#c9c3ff;
+  --bg:#060709;          /* the canvas: black, a breath of blue */
+  --bg-2:#0a0c11;        /* raised panel */
+  --bg-3:#10131a;        /* inputs, wells */
+  --line:rgba(255,255,255,.075);
+  --line-2:rgba(255,255,255,.14);
+  --ink:#ecebe6;         /* text, never pure white */
+  --ink-2:#a9abb2;       /* secondary */
+  --mute:#6e717a;        /* meta */
+  --blue:#5b8cff;        /* the touch: active, links, glow */
   --gold:#d9a62c;        /* the mark's gold */
-  --gold-2:#f0c46a;
-  --blue:#4a63ff;        /* signal only */
-  --ok:#5fd39a;
-  --bad:#e5534b;
+  --ok:#3fcf8e;          /* live */
+  --warn:#f0b44c;
+  --bad:#ef5a5a;
 
-  --serif:"DM Serif Display","Iowan Old Style",Georgia,serif;
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --serif:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
 
-  --r:10px;              /* panel */
-  --r-l:24px;            /* night fields */
-  --r-s:8px;             /* CTA */
-  --soft:cubic-bezier(.16,1,.3,1);
+  --r:14px;              /* panels */
+  --r-s:8px;             /* buttons, wells */
+  --ease:cubic-bezier(.16,1,.3,1);
   --wrap:1180px;
-  --sh-soft:0 8px 24px rgba(0,0,0,.18);
-  --sh-mid:0 18px 50px rgba(0,0,0,.28);
-  --sh-high:0 30px 90px rgba(0,0,0,.38);
-  --sh-paper:0 1px 2px rgba(20,19,27,.04),0 24px 60px -36px rgba(20,19,27,.22);
 }
