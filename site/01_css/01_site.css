@@ -229,6 +229,40 @@ footer .key .y:hover{background:var(--violet)}
 .glow{animation:breathe 6s ease-in-out infinite}
 @keyframes breathe{50%{opacity:.55}}
 
+/* uses: the selling banner, a rail of small dashboards (his reference 2026-10-14). Shapes only, no figures. */
+.uses{padding:112px 0 0}
+.uhead{margin-bottom:28px}
+.uhead .cap{display:block}
+.uhead h2{font-size:clamp(34px,4vw,52px);margin:10px 0 0}
+.urail{--pad:max(32px,calc((100vw - var(--wrap))/2 + 32px));display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-inline:var(--pad);padding:4px var(--pad) 18px;scrollbar-width:none}
+.urail::-webkit-scrollbar{display:none}
+.ut{margin:0;flex:none;height:250px;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:start;
+  border-radius:4px;box-shadow:var(--lift);transition:transform .25s var(--ease)}
+.ut:hover{transform:translateY(-2px)}
+.w2{width:220px}.w3{width:330px}.w4{width:440px}
+.ut figcaption b{display:block;font:500 19px/1.2 var(--sans);letter-spacing:-.02em}
+.ut figcaption i{display:block;font:400 11px/1.5 var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;opacity:.6;margin-top:6px}
+.ut svg{width:100%;height:auto;display:block}
+.ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.ln.or{stroke:#f26b2a}.ln.ink{stroke:#0b0b12}.ln.fc{stroke:#b9b2ff;stroke-dasharray:4 5}
+.grid{stroke:rgba(255,255,255,.08)}
+.cur{stroke:#fff;stroke-width:1.4}.cur.dk{stroke:#0b0b12}
+.dk{background:#2b2b2e;color:#f2f1ec;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:4px 4px}
+.wh{background:#fff;color:var(--ink)}
+.wh figcaption b{font:400 30px/1 var(--serif);letter-spacing:-.01em}
+.gr{background:#14532d;background-image:radial-gradient(rgba(0,0,0,.22) 1px,transparent 1px);background-size:3px 3px;color:#d8f5e2;align-items:center}
+.gr svg{width:120px}.gr figcaption b{text-align:center;font-size:15px}
+.bl{background:var(--blue);color:#fff}
+.bl .lbl{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font:400 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.ld{background:#e4ddcb;color:#2a2620}
+.ld figcaption b{font:400 22px/1 var(--serif)}
+.ld ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ld li{font:400 15px/1 var(--serif);border-bottom:1px solid rgba(0,0,0,.12);padding-bottom:9px;position:relative}
+.ld li s{position:absolute;left:0;bottom:-1px;height:3px;width:var(--w);background:linear-gradient(90deg,#d9a62c,#2fb37a);text-decoration:none}
+#u-grid rect{rx:2}
+.unote{font:400 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:6px 0 0}
+@media (max-width:980px){.uses{padding-top:72px}.urail{--pad:16px}.ut{height:220px}.w3{width:280px}.w4{width:320px}.wh figcaption b{font-size:24px}}
+
 /* phone */
 @media (max-width:980px){
   .wrap{padding:0 16px}
