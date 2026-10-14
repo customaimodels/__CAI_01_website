@@ -284,6 +284,16 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .own small{color:var(--mute);font:500 11px/1.2 var(--mono)}
 .duo .dh .own{margin:0 0 0 auto;padding:0 0 0 14px;border-top:0;border-left:1px solid var(--line-2);align-self:center}
 .duo .dh h3,.duo .dh .co,.own i,.own b,.own small{white-space:nowrap}
+/* The Handbook: the project's one PDF, a quiet gold-edged key; on the duo header it closes the row */
+.hb{display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px 12px;border:1px solid rgba(217,166,44,.35);border-radius:10px;background:rgba(217,166,44,.05);color:var(--ink);text-decoration:none;transition:border-color .15s,background .15s}
+.hb:hover{border-color:rgba(220,220,230,.6);background:rgba(255,255,255,.05)}
+.hb .ico{width:16px;height:16px;color:var(--gold);flex:none}
+.hb span{display:flex;flex-direction:column;gap:2px}
+.hb b{font:600 12.5px/1.1 var(--head);letter-spacing:-.01em}
+.hb small{font:500 10px/1.2 var(--mono);letter-spacing:.06em;color:var(--mute)}
+.hb em{margin-left:auto;font-style:normal;color:var(--gold)}
+.duo .dh{flex-wrap:wrap}
+.duo .dh .hb{flex-basis:100%;max-width:340px;margin:12px 0 0;white-space:nowrap}
 /* R-CAI plug-ins: three quiet squares, silver rim on hover */
 #plugs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .plug{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:168px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card);transition:border-color .15s,transform .15s}

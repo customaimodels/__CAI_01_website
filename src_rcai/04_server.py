@@ -9,6 +9,7 @@ POST /r-cai/api/password {current, new} → adds the next pw_N column (05_users)
 GET  /r-cai/api/master.csv  owners only: the MASTER table, person × project
 POST /r-cai/api/scope    {stage: check|review, i, notes, tries} → the Phase 2 scope reviewers (06_review, mock today)
 POST /r-cai/api/event    {i, act, picked?, total?} → one step on a Phase 2 page (07_activity: where the client stands)
+GET  /r-cai/api/handbook/<id>  the project's HANDBOOK PDF, only for someone who can see that project
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
 POST /r-cai/api/logout
 """
@@ -111,6 +112,21 @@ def handle(h, method):
                 h.send_header(k, val)
             h.end_headers()
             h.wfile.write(body)
+            return True
+        if rel.startswith("api/handbook/"):
+            pid, email = rel[len("api/handbook/"):], _email(h)
+            v = R.view(R.load(cfg), cfg, email) if email else None
+            if not v or not any(c["id"] == pid and c.get("handbook") for c in v["projects"]):
+                return _json(h, 404, {"error": "not found"})
+            pdf = R.handbook_bytes(cfg, pid)
+            if not pdf:
+                return _json(h, 404, {"error": "not found"})
+            h.send_response(200)
+            for k, val in (("Content-Type", "application/pdf"), ("Cache-Control", "private, no-store"),
+                           ("Content-Disposition", f'inline; filename="{pid}_HANDBOOK.pdf"'), ("Content-Length", str(len(pdf)))):
+                h.send_header(k, val)
+            h.end_headers()
+            h.wfile.write(pdf)
             return True
         if rel == "api/activity":
             email = _email(h)

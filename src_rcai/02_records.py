@@ -7,6 +7,7 @@ One exception: a Phase 2 proposal's `price:` / add-on prices / `invoice:` lines 
 """
 import base64
 import json
+import pathlib
 import re
 
 # money never reaches a client: any phase part / note sentence naming it is dropped
@@ -116,9 +117,27 @@ def _delivery(path):
                 mime = {".png": "image/png", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}.get(f.suffix.lower())
                 if mime and f.exists():
                     cur["logo"] = f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+            elif k == "handbook":                 # the project's HANDBOOK (one PDF, the single source of truth): served behind login
+                f = (path.parent / v).resolve()
+                if f.suffix.lower() == ".pdf" and f.exists():
+                    cur["handbook"] = str(f)
             elif k in WHERE:
                 cur[k] = v
     return out
+
+
+def handbook_bytes(cfg, pid):
+    """The HANDBOOK PDF of one project. Local: the file named in delivery.yml.
+    Hosted: base64 chunks in Railway variables RCAI_DOC_<ID>_0, _1 … (too big for one variable, never in git)."""
+    import os
+    if not cfg.get("hub_json"):
+        f = (load(cfg).get("delivery", {}).get(pid) or {}).get("handbook")
+        return pathlib.Path(f).read_bytes() if f and pathlib.Path(f).is_file() else None
+    key = "RCAI_DOC_" + re.sub(r"\W", "_", pid).upper()
+    parts, n = [], 0
+    while os.environ.get(f"{key}_{n}"):
+        parts.append(os.environ[f"{key}_{n}"]); n += 1
+    return base64.b64decode("".join(parts)) if parts else None
 
 
 def load(cfg):
@@ -167,6 +186,7 @@ def _card(db, cfg, pid):
                    "pay_links": d.get("invoices", {})} if scope and scope["items"] else None),
         "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
+        "handbook": bool(d.get("handbook")),    # → api/handbook/<id>: the project's HANDBOOK PDF, behind login
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),
@@ -221,5 +241,6 @@ def snapshot(cfg):
         projects[i] = q
     companies = {i: keep(c, ("id", "name", "kind")) for i, c in db["companies"].items()}
     access = {k: v for k, v in db["access"].items() if k in people}
-    delivery = {k: v for k, v in db.get("delivery", {}).items() if k in projects}
+    delivery = {k: ({**v, "handbook": True} if v.get("handbook") else v)       # never a local path: the PDF rides in RCAI_DOC_* vars
+                for k, v in db.get("delivery", {}).items() if k in projects}
     return {"people": people, "companies": companies, "projects": projects, "access": access, "delivery": delivery}
