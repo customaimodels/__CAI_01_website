@@ -9,6 +9,7 @@ Where it lands (one folder, he reads it):
   <store>/inbox/<YYYY-MM-DD>/<HHMMSS>_<who>_<kind>.md  the same request, readable
   stdout `RCAI_REQUEST {...}`                        Railway's log: hosted without a volume the folder forgets on
                                                      deploy, the log keeps it (run.py --inbox --log <saved log>)
+  + one email to the admin per request (09_notify, Brevo): subject CLIENT req _from <name> _for <project> [client_id, project_id]
 <store> = RCAI_DATA_DIR (a Railway volume) or, locally, dta/_0_raw/rcai_inbox (raw: what the client wrote, as written).
 
 The pause counts only rows of the current state_epoch: run.py --fresh lifts every pause, the requests stay.
@@ -101,6 +102,7 @@ def put(cfg, email, kind, text, project="", person="", extra=None):
             f"# {KINDS[kind]}{' · ' + project if project else ''}\n\n{head}\n{more}\n\n---\n\n{text}\n", encoding="utf-8")
     except OSError:
         pass                                    # stdout already has it
+    importlib.import_module("src_rcai.09_notify").admin(row, cfg)   # email to US (Brevo), in a thread; never to the client
     return True, int(now) + WAIT
 
 

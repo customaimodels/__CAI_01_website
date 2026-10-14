@@ -249,8 +249,13 @@ def _request(h, cfg, data):
         proj = ""
     if kind not in I.KINDS or kind == "signup" or not text:
         return _json(h, 400, {"error": "Write something first."})
-    ok, until = I.put(cfg, email, kind, text, proj, v.get("full") or v.get("name"),
-                      {k: data[k] for k in ("total", "deposit") if isinstance(data.get(k), (int, float))})
+    db = R.load(cfg)
+    person = R.person_by_email(db, email) or {}
+    card = next((p for p in v["projects"] if proj and proj in (p.get("code"), p.get("name"))), {})
+    meta = {"client_id": person.get("company") or ("owner" if v.get("owner") else ""), "company": card.get("company") or v.get("company"),
+            "project_id": card.get("id", ""), "project_name": card.get("name", "")}
+    meta.update({k: data[k] for k in ("total", "deposit") if isinstance(data.get(k), (int, float))})
+    ok, until = I.put(cfg, email, kind, text, proj, v.get("full") or v.get("name"), meta)
     if not ok:
         return _json(h, 429, {"error": "We have your last request. We write back within 24 hours.", "until": until})
     return _json(h, 200, {"ok": True, "until": until})
@@ -268,7 +273,7 @@ def _signup(h, cfg, data):
     if n >= 3:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours."})
     text = f"Name: {f['name']}\nCompany: {f['company']}\nEmail: {f['email']}\n\nWhat we need:\n{f['need']}"
-    ok, until = I.put(cfg, f["email"], "signup", text, f["company"], f["name"])
+    ok, until = I.put(cfg, f["email"], "signup", text, "", f["name"], {"client_id": "new", "company": f["company"]})
     if not ok:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours.", "until": until})
     _SIGNUPS[(ip, day)] = n + 1
