@@ -443,8 +443,15 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 
 /* the phase picture (delivery.yml visual:), middle of the phase 2 page */
 .scope .vis { margin: 28px 0; text-align: center; }
-.scope .vis img { display: block; width: 100%; max-width: 640px; margin: 0 auto; border-radius: 10px; border: 1px solid rgba(255,255,255,.08); }
-.scope .vis figcaption { margin-top: 8px; font: 11px/1.4 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }
+/* framed as an iPhone: graphite body, thin rim, island; the picture scrolls inside the screen */
+.scope .vis .phone { position: relative; width: min(300px, 78vw); margin: 0 auto; padding: 11px; border-radius: 50px; background: linear-gradient(160deg, #2a2730, #121016 60%); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 0 0 3px #08070a, 0 30px 60px -20px rgba(0,0,0,.7); }
+.scope .vis .phone::before { content: ""; position: absolute; right: -4px; top: 120px; width: 3px; height: 64px; border-radius: 0 2px 2px 0; background: #2a2730; }
+.scope .vis .isl { position: absolute; z-index: 2; top: 22px; left: 50%; width: 84px; height: 24px; margin-left: -42px; border-radius: 20px; background: #000; }
+.scope .vis .scr { aspect-ratio: 9 / 19.5; overflow-y: auto; border-radius: 40px; background: #fff; scrollbar-width: none; }
+.scope .vis .scr::-webkit-scrollbar { display: none; }
+.scope .vis .scr img { display: block; width: 100%; height: auto; }
+.scope .vis figcaption a { color: inherit; text-decoration: none; }
+.scope .vis figcaption { margin-top: 14px; font: 11px/1.4 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }
 
 /* Phase 2, 2026-10-14 pm: every section folds. Unread = a gold "New" pill + one soft glow as it scrolls in (once). Read = a quiet ✓. */
 .fold{display:block;padding:0}

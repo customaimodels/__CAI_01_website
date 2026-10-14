@@ -102,7 +102,7 @@
     const ad = s.addons || [], picked = added();
     const secs = [
       ["scope", "Scope of work", `${s.items.length + picked.length} deliverables`, `<ul class="dl sow">${delivHTML(s, picked)}</ul>`],
-      ...(p.visual ? [["how", "How it works", "One picture", `<figure class="vis"><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></a><figcaption>Tap for full size</figcaption></figure>`]] : []),
+      ...(p.visual ? [["how", "How it works", "One picture", `<figure class="vis"><div class="phone"><i class="isl"></i><div class="scr"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></div></div><figcaption><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener">Scroll inside · open full size</a></figcaption></figure>`]] : []),
       ["time", "Schedule", (s.timeline || []).length ? "3–4 weeks" : "", tl],
       ...(s.terms || []).map((t, j) => ["t" + j, esc(t.title), termPeek(t), termBody(t)]),
       ["pay", "Investment", bill(s, picked) ? `${money(bill(s, picked).dep)} to start` : "",`<div class="payrow">${payHTML(s, picked)}</div>`],
