@@ -7,6 +7,7 @@ POST /r-cai/api/login   {email, code}  → sets the rcai cookie (Path=/r-cai)
 GET  /r-cai/api/me      the signed-in view (records re-read every call: the hub is the truth)
 POST /r-cai/api/password {current, new} → adds the next pw_N column (05_users), re-issues the cookie
 GET  /r-cai/api/master.csv  owners only: the MASTER table, person × project
+POST /r-cai/api/scope    {stage: check|review, i, notes, tries} → the Phase 2 scope reviewers (06_review, mock today)
 POST /r-cai/api/logout
 """
 import importlib
@@ -19,6 +20,7 @@ C = importlib.import_module("src_rcai.01_config")
 R = importlib.import_module("src_rcai.02_records")
 A = importlib.import_module("src_rcai.03_auth")
 U = importlib.import_module("src_rcai.05_users")
+V = importlib.import_module("src_rcai.06_review")
 CFG = None
 
 
@@ -109,13 +111,15 @@ def handle(h, method):
         return _file(h, rel)
     if rel == "api/logout":
         return _json(h, 200, {"in": False}, _cookie("", 0))
-    if rel not in ("api/login", "api/password"):
+    if rel not in ("api/login", "api/password", "api/scope"):
         return _json(h, 404, {"error": "not found"})
     try:
-        n = min(int(h.headers.get("Content-Length", 0)), 4096)
+        n = min(int(h.headers.get("Content-Length", 0)), 16384 if rel == "api/scope" else 4096)
         data = json.loads(h.rfile.read(n) or b"{}")
     except (ValueError, json.JSONDecodeError):
         return _json(h, 400, {"error": "bad request"})
+    if rel == "api/scope":
+        return _scope(h, cfg, data)
     ip = _ip(h)
     if A.locked(cfg, ip):
         return _json(h, 429, {"error": "Too many tries. Wait a few minutes."})
@@ -147,3 +151,20 @@ def _password(h, cfg, ip, data):
     n = U.change(email, new)
     A.log(email, True, ip, f"password v{n}")
     return _json(h, 200, {"ok": True, "version": n}, _cookie(A.issue(cfg, email), cfg["session_hours"] * 3600))
+
+
+def _scope(h, cfg, data):
+    """Signed in, and only a scope this person can see: check (on Save) or review (on Review and send)."""
+    email = _email(h)
+    v = R.view(R.load(cfg), cfg, email) if email else None
+    if not v:
+        return _json(h, 401, {"error": "Sign in again."})
+    try:
+        p = v["projects"][int(data.get("i", -1))]
+    except (ValueError, IndexError, TypeError):
+        p = None
+    if not p or not p.get("scope") or not isinstance(data.get("notes"), dict):
+        return _json(h, 400, {"error": "bad request"})
+    if data.get("stage") == "review":
+        return _json(h, 200, V.review(cfg, p["scope"], data["notes"]))
+    return _json(h, 200, V.check(cfg, p["scope"], data["notes"], min(int(data.get("tries", 0) or 0), 2)))

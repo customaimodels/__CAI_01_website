@@ -44,11 +44,33 @@
         ${key("deny", "Decline")}</div>
       <button type="button" class="scx" aria-expanded="false">Ask to change the scope of the project</button>
       <form class="scf" hidden>
-        <p class="lede">Comment on any deliverable, or add a capability. Be specific: what, where, for whom.</p>
-        <ol class="its">${s.items.map((t, j) => `<li><span>${esc(t)}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
-        <label class="add"><span>+ Add a new capability</span><textarea name="add" rows="2" maxlength="1500" placeholder="What should it also do? Who uses it, when, and what do they see?"></textarea></label>
-        <p class="push" role="alert"></p>
-        <button class="send2" type="submit">Send scope change<svg class="ico"><use href="#i-arrow"/></svg></button>
+        <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
+        <div class="w" data-w="1">
+          <p class="lede">Comment on any deliverable, or add a capability. Every note saves on this device as you type, so nothing is lost.
+            When you press Save, a first reader checks each note is specific enough to build from: what, where, for whom.</p>
+          <ol class="its">${s.items.map((t, j) => `<li><span>${esc(t)}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
+          <label class="add"><span>+ Add a new capability</span><textarea name="add" rows="2" maxlength="1500" placeholder="What should it also do? Who uses it, when, and what do they see?"></textarea></label>
+          <p class="stamp"></p>
+          <p class="push" role="alert"></p>
+          <button class="send2" type="submit">Save and continue<svg class="ico"><use href="#i-arrow"/></svg></button>
+        </div>
+        <div class="w" data-w="2" hidden>
+          <p class="lede">Saved. This is exactly what we'll read. Check it once: when you send it to review, a second reader goes through it and comes back with a few questions before it reaches us.</p>
+          <dl class="sum"></dl>
+          <p class="push" role="alert"></p>
+          <div class="row2"><button class="back" type="button" data-to="1">← Edit</button>
+            <button class="send2" type="submit">Send to review<svg class="ico"><use href="#i-arrow"/></svg></button></div>
+        </div>
+        <div class="w" data-w="3" hidden>
+          <p class="lede">Before it reaches us, a few questions. Short answers are fine. They turn your notes into something we can price and build.</p>
+          <ol class="qs"></ol>
+          <p class="push" role="alert"></p>
+          <div class="row2"><button class="back" type="button" data-to="2">← Back</button>
+            <button class="send2" type="submit">Send scope change<svg class="ico"><use href="#i-arrow"/></svg></button></div>
+        </div>
+        <div class="w" data-w="4" hidden>
+          <p class="lede">Sent. Your notes and answers are in your email, addressed to us. A person reads them and replies within 24 hours with the updated scope.</p>
+        </div>
       </form></div>`;
   }
 
@@ -171,8 +193,9 @@
     const x = e.target.closest(".scx");
     if (x) {
       const f = $(".scf"), on = f.hidden;
-      f.hidden = !on; x.setAttribute("aria-expanded", String(on)); tries = 0; $(".push", f).textContent = "";
-      if (on) f.querySelector("textarea").focus();
+      f.hidden = !on; x.setAttribute("aria-expanded", String(on)); tries = 0;
+      f.querySelectorAll(".push").forEach((m) => (m.textContent = ""));
+      if (on) { step(f, 1); restore(f); f.querySelector("textarea").focus(); }
       return;
     }
     const b = e.target.closest("button.sk");
@@ -181,25 +204,76 @@
     mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + sign());
   });
 
-  // scope change: rules, not a model. A note is vague when it is short or leans on filler words. The first two sends
-  // with vague notes are pushed back (marked, a sharper ask each time); the third goes through as written.
-  const VAGUE = /\b(better|nicer|improve|more|less|stuff|things?|something|etc|fix|change it|update|cleaner|modern|good|bad)\b/i;
-  const vague = (t) => t.split(/\s+/).length < 8 || (VAGUE.test(t) && !/\d/.test(t) && t.split(/\s+/).length < 16);
-  const PUSH = ["Be more specific on the marked notes: what exactly, on which page or step, for whom.",
-    "One more pass: give an example. \"When X happens, Y should see Z\" works best."];
-  let tries = 0;
-  $("#scopes").addEventListener("submit", (e) => {
+  // scope change, four faces: 1 Write (autosaves on this device) → Save = the cheap reader (api/scope check, mock today)
+  // marks thin notes, pushes back twice at most → 2 Review (exactly what we'll read) → Send to review = the second
+  // reader (api/scope review) ALWAYS comes back with 2-3 questions → 3 Questions → Send = the filled-in email → 4 Sent.
+  let tries = 0, qs = [], saveT = 0;
+  const P2 = () => +location.hash.slice(4);
+  const KEY = () => `rcai.scope.${view?.email || ""}.${P2()}`;
+  const hhmm = () => new Date().toTimeString().slice(0, 5);
+  const notesOf = (f) => ({ items: Object.fromEntries([...f.querySelectorAll(".its textarea")].map((t, j) => [j, t.value.trim()]).filter(([, v]) => v)), add: f.add.value.trim() });
+  const stamp = (f, t) => { $(".stamp", f).textContent = t ? `✓ Saved on this device · ${t}` : ""; };
+  const keep = (f) => { const at = hhmm(); try { localStorage.setItem(KEY(), JSON.stringify({ notes: notesOf(f), at })); } catch {} stamp(f, at); };
+  function step(f, n) {
+    f.querySelectorAll(".w").forEach((w) => (w.hidden = w.dataset.w !== String(n)));
+    f.querySelectorAll(".steps li").forEach((li) => (li.className = +li.dataset.w < n ? "done" : +li.dataset.w === n ? "on" : ""));
+    f.dataset.step = n;
+  }
+  function restore(f) {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(KEY()) || "null"); } catch {}
+    if (!d) return stamp(f, "");
+    Object.entries(d.notes.items || {}).forEach(([j, v]) => { if (f["c" + j]) f["c" + j].value = v; });
+    f.add.value = d.notes.add || ""; stamp(f, d.at);
+  }
+  $("#scopes").addEventListener("input", (e) => {
+    const f = e.target.closest(".scf");
+    if (!f || f.dataset.step !== "1") return;
+    clearTimeout(saveT); saveT = setTimeout(() => keep(f), 400);
+  });
+  $("#scopes").addEventListener("click", (e) => {
+    const b = e.target.closest(".back");
+    if (b) step(b.closest(".scf"), +b.dataset.to);
+  });
+  const ask = async (stage, f) => {
+    const r = await fetch("api/scope", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stage, i: P2(), notes: notesOf(f), tries }) });
+    if (!r.ok) throw new Error("offline");
+    return r.json();
+  };
+  $("#scopes").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const f = e.target, s = view.projects[+location.hash.slice(4)].scope;
-    const notes = [...f.querySelectorAll("textarea")], msg = $(".push", f);
-    const said = notes.filter((t) => t.value.trim());
-    if (!said.length) { msg.textContent = "Write at least one comment or a new capability."; return; }
-    const weak = said.filter((t) => vague(t.value.trim()));
-    notes.forEach((t) => t.classList.toggle("weak", weak.includes(t)));
-    if (weak.length && tries < 2) { msg.textContent = PUSH[tries++]; weak[0].focus(); return; }
-    const body = s.items.map((it, j) => f["c" + j].value.trim() ? `• ${it}\n  → ${f["c" + j].value.trim()}` : "").filter(Boolean).join("\n\n");
-    mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${view.projects[+location.hash.slice(4)].name}`,
-      `Comments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${f.add.value.trim() || "-"}` + sign());
+    const f = e.target, n = +f.dataset.step, w = $(`.w[data-w="${n}"]`, f);
+    const p = view.projects[P2()], s = p.scope, msg = $(".push", w), btn = $(".send2", w);
+    btn.disabled = true; msg.textContent = "";
+    try {
+      if (n === 1) {
+        const r = await ask("check", f);
+        keep(f);
+        f.querySelectorAll(".its textarea, [name=add]").forEach((t) => t.classList.toggle("weak", (r.weak || []).includes(t.name === "add" ? "add" : t.name.slice(1))));
+        msg.textContent = r.say || "";
+        if (!r.ok) { if (r.weak) tries++; f.querySelector("textarea.weak")?.focus(); return; }
+        const ns = notesOf(f);
+        $(".sum", f).innerHTML = Object.entries(ns.items).map(([j, v]) => `<dt>${esc(s.items[j])}</dt><dd>${esc(v)}</dd>`).join("")
+          + (ns.add ? `<dt class="nw">New capability</dt><dd>${esc(ns.add)}</dd>` : "");
+        step(f, 2);
+      } else if (n === 2) {
+        qs = (await ask("review", f)).questions || [];
+        $(".qs", f).innerHTML = qs.map((q, j) => `<li><span>${esc(q)}</span><textarea name="q${j}" rows="2" maxlength="800" placeholder="Your answer"></textarea></li>`).join("");
+        step(f, 3);
+        f.q0?.focus();
+      } else if (n === 3) {
+        if (qs.some((_, j) => !f["q" + j].value.trim())) { msg.textContent = "Answer each one, even briefly. \"Not needed\" is an answer."; return; }
+        const ns = notesOf(f);
+        const body = Object.entries(ns.items).map(([j, v]) => `• ${s.items[j]}\n  → ${v}`).join("\n\n");
+        const qa = qs.map((q, j) => `Q: ${q}\nA: ${f["q" + j].value.trim()}`).join("\n\n");
+        mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${p.name}`,
+          `Comments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
+        try { localStorage.removeItem(KEY()); } catch {}
+        step(f, 4);
+      }
+    } catch { msg.textContent = "That didn't reach us. Your notes are saved on this device; try again."; }
+    finally { btn.disabled = false; }
   });
 
   // preferences: one chip per question (tap again to clear), a review if they want, one send.

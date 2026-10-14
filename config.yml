@@ -23,6 +23,12 @@ lockout_minutes: 10
 link.training-hub: https://www.matraininghub.com
 link.ceilidh-website: https://www.schuggies-ceilidhs.co.uk
 
+# Phase 2 "Ask to change the scope": two reviewers (src_rcai/06_review.py).
+# ai_cheap reads each note on Save · ai_review asks the client 2-3 questions before it reaches us.
+# "mock" = rules, no model. Both stay mock until RCAI_AI_KEY is set (Railway variable; never in this file).
+ai_cheap: mock
+ai_review: mock
+
 # ── _Y_VAULT ─────────────────────────────────────────────────────────────────────────
 # the vault PIN, as its sha256 (today: 0000). Ships in the bundle -- a 4-digit PIN hides nothing anyway.
 # hosted, the YVAULT_SHA256 variable wins if set. The vault shows every *.html at src_y_vault/'s root.

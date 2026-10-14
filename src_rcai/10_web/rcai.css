@@ -284,6 +284,23 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .scf .add span{display:block;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .scf .push{min-height:18px;margin:10px 0 0;color:var(--gold);font-size:13px}
 .scf .push:empty{min-height:0;margin:0}
+.scf .steps{display:flex;gap:18px;margin:0 0 16px;padding:0;list-style:none;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);counter-reset:st}
+.scf .steps li{counter-increment:st;margin:0}
+.scf .steps li::before{content:"0" counter(st) " "}
+.scf .steps li.on{color:var(--ink)}
+.scf .steps li.done{color:var(--gold)}
+.scf .stamp{margin:10px 0 0;font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--mute)}
+.scf .stamp:empty{display:none}
+.scf .sum{margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:10px 16px;font-size:13.5px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.scf .sum dt{color:var(--ink-2)}
+.scf .sum dt.nw{font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.scf .sum dd{margin:0;color:var(--ink)}
+.scf .qs{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.scf .qs li{display:grid;gap:6px;font-size:13.5px;color:var(--ink)}
+.scf .row2{display:flex;align-items:center;gap:16px}
+.scf .back{all:unset;cursor:pointer;margin-top:12px;font:500 12px/1 var(--mono);color:var(--mute)}
+.scf .back:hover{color:var(--ink)}
+.send2:disabled{opacity:.5;cursor:wait}
 .empty{padding:24px;border:1px dashed var(--line-2);border-radius:16px;color:var(--mute)}
 
 #hub footer{display:flex;gap:16px;margin-top:56px;padding-top:20px;padding-bottom:32px;border-top:1px solid var(--line);color:var(--mute);font-size:12px}
