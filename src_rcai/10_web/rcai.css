@@ -107,6 +107,7 @@ button{font:inherit;color:inherit}
 /* the ask: drops under the bar, one line tall */
 #hub header>.ask{display:block;height:auto;padding-top:12px;padding-bottom:14px;border-top:1px solid var(--line)}
 .ask .grid{display:grid;grid-template-columns:220px 1fr 40px;gap:8px;align-items:stretch}
+.ask .grid:has(select[hidden]){grid-template-columns:1fr 40px}
 .ask select,.ask textarea{width:100%;background:var(--card);border:1px solid var(--line-2);border-radius:10px;color:var(--ink);font:14px/1.45 var(--sans);padding:9px 12px;outline:none}
 .ask textarea{resize:vertical;min-height:40px}
 .ask select:focus,.ask textarea:focus{border-color:var(--violet-soft);box-shadow:0 0 0 3px rgba(90,74,120,.35)}
@@ -155,6 +156,17 @@ button{font:inherit;color:inherit}
   background:#fff;color:#0e0c12;font:600 13px/1 var(--sans);transition:background .15s}
 .p2go:hover{background:#ebe8f0}
 .duo .pane h3{margin:auto 0 4px}
+/* the duo is named by the project: one head across both phases */
+.proj.duo{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;aspect-ratio:auto;min-height:280px}
+.duo .dh{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;padding:16px 18px 14px;border-bottom:1px solid var(--line)}
+.duo .dh h3{margin:0;font:600 17px/1.2 var(--head);letter-spacing:-.02em;color:#fff}
+.duo .pane.p2{border-radius:0 0 15px 0}
+/* ghost keys beside a section title: transparent, a hairline, silver on hover */
+.gk{all:unset;box-sizing:border-box;cursor:pointer;margin-left:auto;height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:9px;
+  border:1px solid var(--line-2);color:var(--ink-2);font-size:12.5px;white-space:nowrap;transition:color .15s,border-color .15s}
+.gk:hover{color:#fff;border-color:rgba(192,192,200,.5)}
+.sec .sh .cap + .gk{margin-left:0}
+#demos{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:10px}
 /* the phase 2 page */
 .back{display:inline-block;margin-bottom:18px;color:var(--ink-2);font:500 12px/1 var(--mono);letter-spacing:.06em;text-decoration:none}
 .back:hover{color:var(--ink)}
@@ -227,7 +239,7 @@ button{font:inherit;color:inherit}
   .out{display:none}
   .ask .grid{grid-template-columns:1fr 40px}
   .ask select{grid-column:1/-1}
-  #cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #cards,#demos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .proj.duo{aspect-ratio:auto;min-height:220px}
   .duo .pane{padding:14px}
   .rc{font-size:0;gap:0;padding:0 10px}

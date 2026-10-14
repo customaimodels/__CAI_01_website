@@ -1,6 +1,7 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
 // The hub: one small key top right (request build) + the bell for every notice.
 // Request changes sits on each project square, only when that project is signed or paid (can_change from 02_records).
+// Ghost keys beside the titles: "+ New project or phase" (Your projects) · "Request a demo" (Your demos), same window.
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
 // Every send opens a filled-in email: there is no request queue yet.
 (() => {
@@ -11,6 +12,8 @@
   const LANES = {
     changes: { title: "Request changes", ph: "What should change? Pages, wording, a bug…" },
     build: { title: "Request build", ph: "What should we build next?" },
+    next: { title: "New project or phase", ph: "A new project, or the next phase of one you have. What should it do?", free: true },
+    demo: { title: "Request a demo", ph: "What would you like to see working? Your data, your process…", free: true },
   };
   // the records still tag notices deploy / credits: they land on the matching key.
   const LANE_OF = { deploy: "changes", changes: "changes", credits: "build", build: "build" };
@@ -53,8 +56,11 @@
     </article>`;
     // a real phase 2 scope = ONE wide square, the same website: phase 1 left, phase 2 right (its key opens its own page).
     if (!p.scope) return sq;
+    const inner = sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))
+      .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>/, `<h3>Phase 1</h3>`);
     return `<article class="proj duo">
-      <div class="pane">${sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))}</div>
+      <div class="dh"><h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span></div>
+      <div class="pane">${inner}</div>
       <div class="pane p2">
         <span class="tag bad">${esc(p.scope.name)} awaits</span>
         <h3>${esc(p.scope.name)}</h3><span class="co">New build · ${p.scope.items.length} items</span>
@@ -78,7 +84,11 @@
     $("#gate").hidden = true; $("#hub").hidden = false;
     const n = v.projects.length;
     $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
-    $("#cards").innerHTML = n ? v.projects.map((p, i) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet. Write to ${MAIL}.</div>`;
+    // status demo_sent lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
+    const all = v.projects.map((p, i) => [p, i]);
+    const real = all.filter(([p]) => !p.demo), demos = all.filter(([p]) => p.demo);
+    $("#cards").innerHTML = real.length ? real.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet.</div>`;
+    $("#demos").innerHTML = demos.length ? demos.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No demos yet. Ask for one, built on your own data.</div>`;
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
     route();
@@ -101,20 +111,25 @@
     if (same) { form.hidden = true; lane = null; return; }
     lane = which;
     form.hidden = false;
+    form.project.hidden = !!LANES[which].free;
     form.msg.placeholder = LANES[which].ph;
     if (proj) form.project.value = proj;
     form.msg.focus({ preventScroll: true });
   }
 
   document.querySelectorAll(".tk").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
+  // the ghost keys beside a section title open the same one message window, at the top.
+  document.querySelectorAll(".gk").forEach((b) => b.addEventListener("click", () => { open(b.dataset.lane); window.scrollTo({ top: 0 }); }));
 
-  // the red square's button opens that proposal under the squares: its lines + Accept · Ask changes · Deny.
-  $("#cards").addEventListener("click", (e) => {
+  // Request changes on a square → the window with that project picked; Review Phase 2 → its own page.
+  const onCards = (e) => {
     const rc = e.target.closest(".rc");
     if (rc) { open("changes", rc.dataset.p); window.scrollTo({ top: 0 }); return; }
     const b = e.target.closest(".p2go");
     if (b) location.hash = "p2-" + b.dataset.i;
-  });
+  };
+  $("#cards").addEventListener("click", onCards);
+  $("#demos").addEventListener("click", onCards);
 
   const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
   $("#scopes").addEventListener("click", (e) => {
@@ -146,7 +161,7 @@
   $(".ask").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = e.currentTarget;
-    mail(`[R-CAI] ${LANES[lane].title} · ${f.project.value}`, f.msg.value.trim() + sign());
+    mail(`[R-CAI] ${LANES[lane].title}${LANES[lane].free ? "" : " · " + f.project.value}`, f.msg.value.trim() + sign());
   });
 
   $(".bell").addEventListener("click", (e) => {
