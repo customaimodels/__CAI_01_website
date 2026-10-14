@@ -75,7 +75,9 @@
   // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer is one request (send).
   // every section folds; a closed, unread one carries a gold "New" pill and nudges once as it scrolls in.
   // Opening it marks it read (this device). The Action required bar counts what's been read.
-  const SEENKEY = () => `rcai.seen.${view?.email || ""}.${+location.hash.slice(4)}`;
+  // device keys follow the project id, not its place in the list: a list that grows or reorders never moves a pick.
+  const PK = () => `${view?.email || ""}.${view?.projects[+location.hash.slice(4)]?.id ?? location.hash.slice(4)}`;
+  const SEENKEY = () => `rcai.seen.${PK()}`;
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEENKEY()) || "[]"); } catch { return []; } };
   const fold = (k, n, title, peek, body) => { const r = seen().includes(k);
     return `<details class="part fold${r ? " read" : ""}" data-k="${k}"><summary><b><i>${String(n).padStart(2, "0")}</i>${title}</b><span class="pv">${peek}</span>
@@ -99,7 +101,7 @@
     const key = (a, label, off) => `<button type="button" class="sk ${a}"${off ? " disabled" : ""} data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
     const ad = s.addons || [], picked = added();
     const secs = [
-      ["scope", "Scope of work", `${s.items.length + picked.length} deliverables`, `<ul class="dl">${delivHTML(s, picked)}</ul>`],
+      ["scope", "Scope of work", `${s.items.length + picked.length} deliverables`, `<ul class="dl sow">${delivHTML(s, picked)}</ul>`],
       ...(p.visual ? [["how", "How it works", "One picture", `<figure class="vis"><a href="api/visual/${encodeURIComponent(p.id)}" target="_blank" rel="noopener"><img src="api/visual/${encodeURIComponent(p.id)}" alt="${esc(s.name)}: how it works" loading="lazy"></a><figcaption>Tap for full size</figcaption></figure>`]] : []),
       ["time", "Schedule", (s.timeline || []).length ? "3–4 weeks" : "", tl],
       ...(s.terms || []).map((t, j) => ["t" + j, esc(t.title), termPeek(t), termBody(t)]),
@@ -338,7 +340,7 @@
   // add-ons (delivery.yml addon:, 3-5): FIRST on the page, NOT in the build, sold as one package. One key adds all of them:
   // they join the deliverables and the total moves (base + each add-on's price; the page never says what one costs).
   // Only "Ask to change the scope" switches them off and on, one by one. Kept on this device per client + project.
-  const ADDKEY = () => `rcai.added.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const ADDKEY = () => `rcai.added.${PK()}`;
   function added() { try { return JSON.parse(localStorage.getItem(ADDKEY()) || "[]"); } catch { return []; } }
   const addNames = (s, idx) => idx.map((j) => (s.addons || [])[j]?.title).filter(Boolean);
   const money = (n) => "$" + n.toLocaleString("en-US");
@@ -374,14 +376,14 @@
     return `<span class="sk stripe off">Pay deposit through Stripe${link ? "" : " · link on its way"}</span>`;
   }
   // a scope change sent to review holds the answer keys for 24 h: Accept now and Stripe freeze until we come back.
-  const HOLDKEY = () => `rcai.hold.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const HOLDKEY = () => `rcai.hold.${PK()}`;
   function held() { const t = +(localStorage.getItem(HOLDKEY()) || 0); return t && Date.now() - t < 864e5 ? t : 0; }
   // Accept now, pay later → a second press, SHIP TODAY, confirms the build is OK. Then everything on the page locks
   // for good, except the two ways to pay (Stripe · Request invoice).
-  const SHIPKEY = () => `rcai.ship.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const SHIPKEY = () => `rcai.ship.${PK()}`;
   const shipped = () => +(localStorage.getItem(SHIPKEY()) || 0);
   // Request a different build → a pre-prompt (close this proposal, ask for a new demo) → sent: the proposal closes for good. Paying stays open.
-  const CLOSEKEY = () => `rcai.closed.${view?.email || ""}.${+location.hash.slice(4)}`;
+  const CLOSEKEY = () => `rcai.closed.${PK()}`;
   const closed = () => +(localStorage.getItem(CLOSEKEY()) || 0);
   const lock = () => held() || shipped() || closed();
   function holdHTML() {
@@ -416,7 +418,8 @@
     picked = [...new Set(picked)].sort();
     localStorage.setItem(ADDKEY(), JSON.stringify(picked));
     $(".adslot").innerHTML = addsHTML(s, picked);
-    $(".dl").innerHTML = delivHTML(s, picked);
+    $(".dl.sow").innerHTML = delivHTML(s, picked);
+    const pv = $('details.fold[data-k="scope"] .pv'); if (pv) pv.textContent = `${s.items.length + picked.length} deliverables`;
     $(".payrow").innerHTML = payHTML(s, picked);
     $(".stslot").innerHTML = stripeHTML(s);
     $$(".ad.sw").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
@@ -505,7 +508,7 @@
   // reader (api/scope review) ALWAYS comes back with 2-3 questions → 3 Questions → Send = the filled-in email → 4 Sent.
   let tries = 0, qs = [], saveT = 0;
   const P2 = () => +location.hash.slice(4);
-  const KEY = () => `rcai.scope.${view?.email || ""}.${P2()}`;
+  const KEY = () => `rcai.scope.${PK()}`;
   const hhmm = () => new Date().toTimeString().slice(0, 5);
   const notesOf = (f) => ({ items: Object.fromEntries([...f.querySelectorAll(".its textarea")].map((t, j) => [j, t.value.trim()]).filter(([, v]) => v)), add: f.add.value.trim() });
   const stamp = (f, t) => { $(".stamp", f).textContent = t ? `✓ Saved on this device · ${t}` : ""; };
