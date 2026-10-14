@@ -6,6 +6,7 @@ GET  /y-vault/              the gate + the shelf (10_web/index.html)
 POST /y-vault/api/login     {pin}  → sets the yvault cookie (Path=/y-vault)
 GET  /y-vault/api/list      the pages on the shelf: every *.html at this folder's root (signed in only)
 GET  /y-vault/<page>.html   one page (signed in only)
+GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed in only)
 POST /y-vault/api/logout
 
 The PIN is config.yml vault_sha256 (or the YVAULT_SHA256 variable). A 4-digit PIN is a curtain, not a lock:
@@ -25,6 +26,9 @@ C = importlib.import_module("src_rcai.01_config")
 A = importlib.import_module("src_rcai.03_auth")      # same cookie secret as R-CAI
 HERE = Path(__file__).resolve().parent
 WEB = HERE / "10_web"
+RESUME = HERE.parent / "src_resume"                 # his resume site, never edited here
+TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
+         ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
 MOUNT = "/y-vault"
 HOURS, MAX_FAILS, LOCK_MIN = 12, 5, 10
 _FAILS = {}
@@ -45,7 +49,19 @@ def pages():
         t = TITLE.search(f.read_text(encoding="utf-8", errors="ignore")[:4000])
         out.append({"file": f.name, "title": (t.group(1).strip() if t else f.stem.strip("_")),
                     "kind": "linkedin" if "linked" in f.name.lower() else "page"})
+    if (RESUME / "index.html").exists():
+        t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
+        out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
     return out
+
+
+def _resume(h, rel):
+    """/y-vault/resume/<file>: a file inside src_resume, never outside it, never NOTE.md."""
+    sub = rel[len("resume/"):] or "index.html"
+    f = (RESUME / sub).resolve()
+    if RESUME.resolve() not in f.parents or not f.is_file() or f.suffix.lower() not in TYPES:
+        return _json(h, 404, {"error": "not found"})
+    return _send(h, 200, f.read_bytes(), TYPES[f.suffix.lower()])
 
 
 def _send(h, code, body, ctype, cookie=None):
@@ -115,7 +131,15 @@ def handle(h, method):
             return _json(h, 401, {"in": False})
         if rel == "api/list":
             return _json(h, 200, {"in": True, "pages": pages()})
-        if rel in {p["file"] for p in pages()}:
+        if rel == "resume":
+            h.send_response(301)
+            h.send_header("Location", MOUNT + "/resume/")
+            h.send_header("Content-Length", "0")
+            h.end_headers()
+            return True
+        if rel.startswith("resume/"):
+            return _resume(h, rel)
+        if rel in {p["file"] for p in pages() if p["file"].endswith(".html")}:
             return _send(h, 200, (HERE / rel).read_bytes(), "text/html; charset=utf-8")
         return _json(h, 404, {"error": "not found"})
     if rel == "api/logout":
