@@ -114,33 +114,52 @@ button{font:inherit;color:inherit}
 .ask .send:hover{background:#ebe8f0}
 .ask small{display:block;margin-top:8px;color:var(--mute);font-size:12px}
 
-.hello{padding:64px 0 36px}
-.hello h1{font:600 clamp(34px,4.2vw,48px)/1.05 var(--head);letter-spacing:-.035em;margin:12px 0 8px}
-.hello h1 em{font-style:normal;color:var(--violet-soft)}
-.hello p{color:var(--ink-2);margin:0;font-size:15px}
+/* sections: a small head, a 1px rule, the content. No greeting. */
+.sec{padding:44px 0 8px}
+.sec .sh{display:flex;align-items:baseline;gap:16px;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.sec h2{font:600 22px/1 var(--head);letter-spacing:-.025em;margin:0}
+.sec h3{font:600 15px/1 var(--head);letter-spacing:-.015em;margin:0;color:var(--ink-2)}
+.sec .sh .cap{margin-left:auto}
+.sec .sh.sub2{margin-top:32px;border-bottom:0;padding-bottom:0;margin-bottom:12px}
 
-/* projects: quiet cards, one line of state */
-.proj{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:22px 24px;margin-bottom:10px}
-.proj .top{display:flex;gap:20px;align-items:start}
-.proj h3{font:600 20px/1.15 var(--head);letter-spacing:-.02em;margin:0 0 4px}
-.proj .co{color:var(--mute);font:500 12px/1.4 var(--mono);letter-spacing:.04em}
-.tag{margin-left:auto;flex:none;font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+/* projects: small squares */
+#cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.proj{aspect-ratio:1;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px}
+.proj h3{font:600 17px/1.2 var(--head);letter-spacing:-.02em;margin:auto 0 4px}
+.proj .co{color:var(--mute);font:500 11px/1.4 var(--mono);letter-spacing:.04em}
+.tag{align-self:flex-start;font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
 .tag.ok{border-color:rgba(95,224,166,.35);color:var(--ok)}
-.track{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:18px 0 0}
+.track{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin:14px 0 0}
 .track i{height:2px;border-radius:2px;background:var(--line-2)}
 .track i.on{background:var(--violet-soft)}
 .track i.now{background:var(--gold)}
-.where{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 24px;margin-top:16px}
-.where div{display:flex;gap:10px;align-items:center;padding:6px 0;min-width:0}
-.where .ico{width:15px;height:15px;color:var(--mute)}
-.where small{display:none}
-.where span{display:block;font:12.5px var(--mono);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.where a span{color:var(--ink)}
-.where a:hover span{text-decoration:underline}
+.proj .foot{display:flex;align-items:center;gap:8px;margin-top:14px;min-height:16px}
+.proj .foot a{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--sans);color:var(--ink)}
+.proj .foot a:hover{color:var(--gold)}
+.proj .ws{margin-left:auto;display:flex;gap:8px;color:var(--mute)}
+.proj .ws .ico{width:14px;height:14px}
 
-/* scope: the one thing that asks the client to decide */
-.scope{margin-top:18px;padding:18px 18px 16px;border-radius:12px;border:1px solid rgba(217,166,44,.35);background:linear-gradient(180deg,rgba(217,166,44,.06),transparent)}
-.scope .sh{display:flex;align-items:center}
+/* preferences + feedback: one quiet box each */
+.box{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:6px 20px 18px}
+.q{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.q>span{font-size:14px;color:var(--ink-2)}
+.chips{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.chips button{all:unset;cursor:pointer;height:28px;min-width:28px;padding:0 10px;box-sizing:border-box;display:grid;place-items:center;border-radius:8px;border:1px solid var(--line-2);font:500 12.5px/1 var(--sans);color:var(--ink-2);transition:color .15s,border-color .15s,background .15s}
+.chips button:hover{color:var(--ink);border-color:rgba(255,255,255,.26)}
+.chips button[aria-pressed="true"]{background:#fff;color:#0e0c12;border-color:#fff}
+.box .rv{display:block;margin-top:16px}
+.box .rv span{display:block;font:600 15px/1.2 var(--head);letter-spacing:-.015em;margin-bottom:10px}
+.box textarea{width:100%;background:var(--bg);border:1px solid var(--line-2);border-radius:10px;color:var(--ink);font:14px/1.45 var(--sans);padding:10px 12px;outline:none;resize:vertical;min-height:72px}
+#fb textarea{margin-top:14px}
+.box textarea:focus{border-color:var(--violet-soft);box-shadow:0 0 0 3px rgba(90,74,120,.35)}
+.send2{all:unset;cursor:pointer;margin-top:12px;height:34px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border-radius:9px;background:#fff;color:#0e0c12;font:600 13px/1 var(--sans)}
+.send2:hover{background:#ebe8f0}
+.send2 .ico{width:15px;height:15px}
+
+/* phase 2 proposal: the one thing that asks the client to decide */
+.scope{margin-top:10px;padding:18px 18px 16px;border-radius:12px;border:1px solid rgba(217,166,44,.35);background:linear-gradient(180deg,rgba(217,166,44,.06),transparent)}
+.scope .sh{display:flex;align-items:center;padding:0;margin:0;border:0}
+.scope .sh .cap{margin-left:0}
 .scope .cap{color:var(--gold)}
 .scope .wait{margin-left:auto;font:500 11px/1 var(--mono);color:var(--gold)}
 .scope ul{margin:12px 0 16px;padding:0 0 0 18px;color:var(--ink);font-size:14px}
@@ -172,7 +191,9 @@ button{font:inherit;color:inherit}
   .out{display:none}
   .ask .grid{grid-template-columns:1fr 40px}
   .ask select{grid-column:1/-1}
-  .where{grid-template-columns:1fr}
+  #cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .q{flex-wrap:wrap}
+  .chips{margin-left:0}
   #hub .pop{left:18px;right:18px;width:auto}
-  .hello{padding:40px 0 28px}
+  .sec{padding:32px 0 4px}
 }

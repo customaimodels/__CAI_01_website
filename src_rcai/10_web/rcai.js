@@ -1,47 +1,44 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
-// The hub: two small keys top right (credits · deploy) with corner badges, the bell for every notice,
-// and a scope card (Accept · Ask changes · Deny) on any project with a scope waiting.
+// The hub: two small keys top right (request changes · request build) with corner badges, the bell for every notice.
+// Body: projects as small squares · phase 2 proposal (Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
+// Every send opens a filled-in email: there is no request queue yet.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const MAIL = "customaimodels@gmail.com";
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const hour = new Date().getHours();
-  const part = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
   const WHERE = { live: ["i-globe", "Live"], git: ["i-branch", "Git"], railway: ["i-cloud", "Railway"], email: ["i-mail", "Account email"] };
   const LANES = {
-    credits: { title: "Add credits", ph: "How many hours, and for what?" },
-    deploy: { title: "Deploy changes", ph: "What should change? Pages, wording, a bug, a new screen…" },
+    changes: { title: "Request changes", ph: "What should change? Pages, wording, a bug…" },
+    build: { title: "Request build", ph: "What should we build next?" },
   };
+  // the records still tag notices deploy / credits: they land on the matching key.
+  const LANE_OF = { deploy: "changes", changes: "changes", credits: "build", build: "build" };
   let view = null, lane = null;
 
   const icon = (id) => `<svg class="ico"><use href="#${id}"/></svg>`;
+  const sign = () => `\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
+  const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
 
-  function where(w) {
-    const v = esc(w.v), [ic, label] = WHERE[w.k];
-    const text = `<span>${v.replace(/^https?:\/\//, "")}</span>`;
-    const val = w.k === "live" ? `<a href="${v}" target="_blank" rel="noopener">${text}</a>` : text;
-    return `<div>${icon(ic)}<span style="min-width:0"><small>${label}</small>${val}</span></div>`;
-  }
-
-  // a scope waiting on the client: its lines + three answers. Each answer opens a filled-in email.
+  // a phase 2 proposal waiting on the client: its lines + three answers. Each answer opens a filled-in email.
   function scope(p) {
-    if (!p.scope) return "";
     const items = p.scope.items.map((t) => `<li>${esc(t)}</li>`).join("");
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(p.scope.name)}">${label}</button>`;
-    return `<div class="scope"><div class="sh"><span class="cap">${esc(p.scope.name)} · scope</span><span class="wait">Waiting on you</span></div>
+    return `<div class="scope"><div class="sh"><span class="cap">${esc(p.name)} · ${esc(p.scope.name)}</span><span class="wait">Waiting on you</span></div>
       <ul>${items}</ul>
       <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
   }
 
+  // one project = one small square: state, name, company, the stage track, where it lives (icons, value on hover).
   function card(p, stages) {
     p.where = p.where || []; p.notices = p.notices || [];
     const track = stages.map((_, i) => `<i class="${i < p.stage ? "on" : i === p.stage ? "now" : ""}"></i>`).join("");
-    const tag = `<span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>`;
+    const live = p.where.find((w) => w.k === "live");
+    const rest = p.where.filter((w) => w.k !== "live").map((w) => `<span title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</span>`).join("");
     return `<article class="proj">
-      <div class="top"><div><h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}${p.code ? " · " + esc(p.code) : ""}</span></div>${tag}</div>
+      <span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>
+      <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
-      ${p.where.length ? `<div class="where">${p.where.map(where).join("")}</div>` : ""}
-      ${scope(p)}
+      <div class="foot">${live ? `<a href="${esc(live.v)}" target="_blank" rel="noopener">${icon("i-globe")}Open</a>` : ""}<span class="ws">${rest}</span></div>
     </article>`;
   }
 
@@ -49,21 +46,21 @@
     const all = v.projects.flatMap((p) => (p.notices || []).map((n) => ({ ...n, p })));
     const set = (el, n) => { el.dataset.n = n; el.textContent = n || ""; };
     set($(".bell .badge"), all.length);
-    set($('.tk[data-lane="credits"] .badge'), all.filter((n) => n.lane === "credits").length);
-    set($('.tk[data-lane="deploy"] .badge'), all.filter((n) => n.lane === "deploy").length);
+    set($('.tk[data-lane="changes"] .badge'), all.filter((n) => LANE_OF[n.lane] === "changes").length);
+    set($('.tk[data-lane="build"] .badge'), all.filter((n) => LANE_OF[n.lane] === "build").length);
     $(".pop").innerHTML = all.length
-      ? all.map((n) => `<div class="row">${icon(n.lane === "credits" ? "i-credits" : n.lane === "deploy" ? "i-deploy" : n.lane === "scope" ? "i-doc" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
+      ? all.map((n) => `<div class="row">${icon(LANE_OF[n.lane] === "changes" ? "i-pen" : LANE_OF[n.lane] === "build" ? "i-code" : n.lane === "scope" ? "i-doc" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
       : `<div class="none">Nothing new.</div>`;
   }
 
   function hub(v) {
     view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
-    $(".co").textContent = v.owner ? "Owner view · every hub" : v.company || "";
-    $(".greet").innerHTML = `Good ${part}, <em>${esc(v.name)}</em>.`;
     const n = v.projects.length;
-    $(".sub").textContent = v.owner ? `${n} projects across ${v.clients} clients.` : `${n} project${n === 1 ? "" : "s"} on your hub.`;
-    $("#cards").innerHTML = n ? v.projects.map((p) => card(p, v.stages)).join("") : `<div class="empty">No projects on your hub yet. Write to ${MAIL}.</div>`;
+    $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
+    $("#cards").innerHTML = n ? v.projects.map((p) => card(p, v.stages)).join("") : `<div class="empty">No projects yet. Write to ${MAIL}.</div>`;
+    const sc = v.projects.filter((p) => p.scope);
+    $("#scopes").innerHTML = sc.length ? sc.map(scope).join("") : `<div class="empty">Nothing waiting on you.</div>`;
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
   }
@@ -82,21 +79,36 @@
   document.querySelectorAll(".tk").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
 
   const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
-  $("#cards").addEventListener("click", (e) => {
+  $("#scopes").addEventListener("click", (e) => {
     const b = e.target.closest(".sk");
     if (!b) return;
-    const lead = { accept: "We accept this scope.", deny: "We decline this scope.", change: "We'd like these changes to the scope:\n\n" }[b.dataset.ans];
-    const subject = `[R-CAI] ${b.dataset.s} scope · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`;
-    const body = `${lead}\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
-    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const lead = { accept: "We accept this proposal.", deny: "We decline this proposal.", change: "We'd like these changes to the proposal:\n\n" }[b.dataset.ans];
+    mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + sign());
+  });
+
+  // preferences: one chip per question (tap again to clear), a review if they want, one send.
+  document.querySelectorAll(".chips").forEach((g) => g.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const on = b.getAttribute("aria-pressed") !== "true";
+    g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b && on)));
+  }));
+  $("#prefs").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const pick = (q) => $(`.chips[data-q="${q}"] [aria-pressed="true"]`, f)?.textContent || "-";
+    const body = `Rating: ${pick("rating")}/5\nUpdates: ${pick("updates")}\nRecommend: ${pick("recommend")}\n\nReview:\n${f.review.value.trim() || "-"}`;
+    mail(`[R-CAI] Preferences · ${view?.company || view?.name || ""}`, body + sign());
+  });
+  $("#fb").addEventListener("submit", (e) => {
+    e.preventDefault();
+    mail(`[R-CAI] Feedback · ${view?.company || view?.name || ""}`, e.currentTarget.msg.value.trim() + sign());
   });
 
   $(".ask").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = e.currentTarget;
-    const subject = `[R-CAI] ${LANES[lane].title} · ${f.project.value}`;
-    const body = `${f.msg.value.trim()}\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
-    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    mail(`[R-CAI] ${LANES[lane].title} · ${f.project.value}`, f.msg.value.trim() + sign());
   });
 
   $(".bell").addEventListener("click", (e) => {

@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=12544de79d">
-<link rel="stylesheet" href="rcai.css?v=12544de79d">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=d7e0b98b7a">
+<link rel="stylesheet" href="rcai.css?v=d7e0b98b7a">
 </head>
 <body>
 
@@ -44,8 +44,8 @@
   </div>
   <div class="peek" aria-hidden="true">
    <div class="pk"><svg class="ico"><use href="#i-layers"/></svg><b>Projects</b><i class="live"></i><span>Live</span></div>
-   <div class="pk"><svg class="ico g"><use href="#i-credits"/></svg><b>Add credits</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
-   <div class="pk"><svg class="ico"><use href="#i-deploy"/></svg><b>Deploy changes</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
+   <div class="pk"><svg class="ico"><use href="#i-pen"/></svg><b>Request changes</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
+   <div class="pk"><svg class="ico g"><use href="#i-code"/></svg><b>Request build</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
   </div>
  </section>
 
@@ -89,14 +89,15 @@
 </main>
 
 <!-- THE HUB (2026-10-14, minimal on purpose: more lands here later).
-     Top right: two small keys (credits · deploy) + the bell. Body: hello · projects (scope card when one waits). -->
+     Top right: two small keys (request changes · request build) + the bell; each key drops one message window.
+     Body, three sections: 01 your projects (small squares) + phase 2 proposal · 02 your preferences (survey + review) · 03 feedback. -->
 <div id="hub" hidden>
  <header>
   <div class="wrap">
    <a class="brand" href="/"><img src="knot.png" alt=""><b class="gold">R-CAI</b></a>
    <nav class="tools">
-    <button class="tk" type="button" data-lane="credits" aria-expanded="false"><svg class="ico g"><use href="#i-credits"/></svg>Add credits<span class="badge" data-n="0"></span></button>
-    <button class="tk" type="button" data-lane="deploy" aria-expanded="false"><svg class="ico"><use href="#i-deploy"/></svg>Deploy changes<span class="badge" data-n="0"></span></button>
+    <button class="tk" type="button" data-lane="changes" aria-expanded="false"><svg class="ico"><use href="#i-pen"/></svg>Request changes<span class="badge" data-n="0"></span></button>
+    <button class="tk" type="button" data-lane="build" aria-expanded="false"><svg class="ico g"><use href="#i-code"/></svg>Request build<span class="badge" data-n="0"></span></button>
     <button class="bell" type="button" aria-label="Notices" aria-expanded="false"><svg class="ico"><use href="#i-bell"/></svg><span class="badge" data-n="0"></span></button>
     <button class="out" type="button">Sign out</button>
    </nav>
@@ -113,18 +114,39 @@
  </header>
 
  <main class="wrap">
-  <section class="hello">
-   <span class="cap co"></span>
-   <h1 class="greet"></h1>
-   <p class="sub"></p>
+  <section class="sec">
+   <div class="sh"><h2>Your projects</h2><span class="cap co"></span></div>
+   <div id="cards"></div>
+   <div class="sh sub2"><h3>Phase 2 proposal</h3></div>
+   <div id="scopes"></div>
   </section>
 
-  <section id="cards"></section>
+  <section class="sec">
+   <div class="sh"><h2>Your preferences</h2></div>
+   <form id="prefs" class="box">
+    <div class="q"><span>How are we doing?</span>
+     <div class="chips" data-q="rating"><button type="button">1</button><button type="button">2</button><button type="button">3</button><button type="button">4</button><button type="button">5</button></div></div>
+    <div class="q"><span>Updates</span>
+     <div class="chips" data-q="updates"><button type="button">Every change</button><button type="button">Weekly</button><button type="button">When done</button></div></div>
+    <div class="q"><span>Would you recommend us?</span>
+     <div class="chips" data-q="recommend"><button type="button">Yes</button><button type="button">Maybe</button><button type="button">Not yet</button></div></div>
+    <label class="rv"><span>Thank you. Please leave a review.</span><textarea name="review" rows="3" maxlength="1500" placeholder="A line or two we can share."></textarea></label>
+    <button class="send2" type="submit">Send<svg class="ico"><use href="#i-arrow"/></svg></button>
+   </form>
+  </section>
+
+  <section class="sec">
+   <div class="sh"><h2>Feedback</h2></div>
+   <form id="fb" class="box">
+    <textarea name="msg" rows="3" maxlength="2000" required placeholder="Anything. It goes straight to a person."></textarea>
+    <button class="send2" type="submit">Send<svg class="ico"><use href="#i-arrow"/></svg></button>
+   </form>
+  </section>
  </main>
 
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=12544de79d"></script>
+<script src="rcai.js?v=d7e0b98b7a"></script>
 </body>
 </html>
