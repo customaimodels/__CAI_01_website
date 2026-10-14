@@ -7,6 +7,7 @@ import hashlib
 import hmac
 import importlib
 import os
+import re
 import secrets
 import time
 
@@ -32,6 +33,10 @@ def locked(cfg, ip):
 
 
 def check_code(cfg, ip, code):
+    # local preview only (hub read from disk, no RCAI_HUB_JSON): any 4 digits opens it.
+    # hosted (Railway) never takes this path -- the public site keeps the real code word.
+    if cfg["hub"] is not None and re.fullmatch(r"\d{4}", (code or "").strip()):
+        return True
     ok = hmac.compare_digest(hashlib.sha256((code or "").strip().lower().encode()).hexdigest(), cfg["code_sha256"])
     if not ok:
         _FAILS.setdefault(ip, []).append(time.time())

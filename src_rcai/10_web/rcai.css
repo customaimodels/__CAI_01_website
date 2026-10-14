@@ -25,6 +25,10 @@ button{font:inherit;color:inherit}
 .field .home img{width:26px;height:26px}
 .field h1{font:600 clamp(56px,7vw,104px)/.94 var(--head);letter-spacing:-.04em;margin:18px 0 18px}
 .field h1 em{font-style:normal;color:var(--violet-soft)}
+.field h1 .in{display:block;font-size:.34em;letter-spacing:-.02em;color:rgba(255,255,255,.62);margin-bottom:.12em}
+.field h1 .gold{font-weight:700;color:var(--gold);background:linear-gradient(180deg,#f0c968,#d9a62c 60%,#b8861e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.field .say p.yours{font:600 clamp(24px,2.4vw,34px)/1.1 var(--head);letter-spacing:-.03em;color:#fff}
+#gate .say .cap{display:block;text-transform:none;font:600 clamp(24px,2.4vw,34px)/1.1 var(--head);letter-spacing:-.03em;color:#fff}
 .field .say p{margin:0;color:rgba(255,255,255,.62);font-size:18px;max-width:36ch}
 .peek{display:grid;gap:8px;max-width:420px;border-top:1px solid rgba(217,166,44,.55);padding-top:22px}
 .pk{display:flex;align-items:center;gap:14px;height:54px;padding:0 18px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);font-size:15px}
