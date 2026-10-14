@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=1ad3eac42c">
-<link rel="stylesheet" href="rcai.css?v=1ad3eac42c">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=eed1621b90">
+<link rel="stylesheet" href="rcai.css?v=eed1621b90">
 </head>
 <body>
 
@@ -57,7 +57,7 @@
  <section class="desk">
   <div class="seg" role="tablist">
    <button type="button" role="tab" data-face="login" aria-selected="true">Log in</button>
-   <button type="button" role="tab" data-face="signup" aria-selected="false">Sign up</button>
+   <button type="button" role="tab" aria-selected="false" disabled title="Opens soon">Sign up · soon</button>
   </div>
 
   <form id="login" class="face" autocomplete="on">
@@ -67,7 +67,6 @@
    <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
    <button class="key" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
    <p class="err" role="alert"></p>
-   <p class="fine">New here? <a href="#signup" data-face="signup">Sign up</a></p>
   </form>
 
   <form id="signup" class="face" autocomplete="on" hidden>
@@ -190,6 +189,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><span>customaimodels.com</span></footer>
 </div>
 
-<script src="rcai.js?v=1ad3eac42c"></script>
+<script src="rcai.js?v=eed1621b90"></script>
 </body>
 </html>

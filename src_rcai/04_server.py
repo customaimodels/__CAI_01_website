@@ -170,8 +170,8 @@ def handle(h, method):
         return _event(h, cfg, data)
     if rel == "api/request":
         return _request(h, cfg, data)
-    if rel == "api/signup":
-        return _signup(h, cfg, data)
+    if rel == "api/signup":  # closed 2026-10-14 until the sign-up data pipeline exists; _signup kept for then
+        return _json(h, 503, {"error": "Sign up opens soon."})
     ip = _ip(h)
     if A.locked(cfg, ip):
         return _json(h, 429, {"error": "Too many tries. Wait a few minutes."})

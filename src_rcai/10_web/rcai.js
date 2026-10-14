@@ -650,6 +650,7 @@
 
   // the gate has three faces: login · signup · sent. #signup in the URL (the landing's Get started) opens sign up.
   function face(which) {
+    if (which === "signup") which = "login";  // sign up closed until its data pipeline exists (2026-10-14)
     ["login", "signup", "sent"].forEach((id) => ($("#" + id).hidden = id !== which));
     document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.face === (which === "sent" ? "signup" : which))));
     const first = $(`#${which} input`);
