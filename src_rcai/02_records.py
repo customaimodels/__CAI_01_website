@@ -145,8 +145,8 @@ def _card(db, cfg, pid):
     return {
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
-        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "pay_link": d.get("invoice"),
-                   "logo": d.get("logo")} if scope and scope["items"] else None),
+        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "pay_link": d.get("invoice")} if scope and scope["items"] else None),
+        "logo": d.get("logo"),                  # the client's logo (data URI): on the square, the greeting, the phase 2 page
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),
@@ -168,16 +168,18 @@ def view(db, cfg, email):
     email = email.strip().lower()
     if email in cfg["owners"]:
         cards = [_card(db, cfg, pid) for pid in db["projects"]]
-        return {"name": "Yeriko", "role": "Owner", "company": "Custom AI Models", "owner": True,
+        return {"name": "Yeriko", "role": "Owner", "company": "Custom AI Models", "owner": True, "email": email,
                 "clients": len({c["company"] for c in cards}), "projects": cards}
     person = person_by_email(db, email)
     if not person or not person.get("hub"):
         return None
     ids = [pid for pid in db["access"].get(person["id"], []) if pid in db["projects"]]
     company = db["companies"].get(person.get("company"), {})
+    cards = [_card(db, cfg, pid) for pid in ids]
     return {"name": person["name"].split()[0], "full": person["name"], "role": person.get("role"),
-            "company": company.get("name"), "owner": False,
-            "projects": [_card(db, cfg, pid) for pid in ids]}
+            "company": company.get("name"), "owner": False, "email": email,
+            "logo": next((c["logo"] for c in cards if c.get("logo")), None),
+            "projects": cards}
 
 
 def stages():

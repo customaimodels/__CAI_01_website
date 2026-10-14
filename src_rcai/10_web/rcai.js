@@ -1,5 +1,5 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
-// The hub: one small key top right (request build) + the bell for every notice.
+// The hub: one small key top right (request build) + the bell for every notice. Top of the body: logo · Hi, John · ⚙ (email · sign out).
 // Request changes sits on each project square, only when that project is signed or paid (can_change from 02_records).
 // Ghost keys beside the titles: "+ New project or phase" (Your projects) · "Request a demo" (Your demos), same window.
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
@@ -34,7 +34,7 @@
     const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}
       ${s.pay_link ? `<a class="paygo" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay invoice →</a>` : `<span class="paygo off">Invoice on its way</span>`}</div>`;
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
-    return `<div class="scope"><div class="sh">${s.logo ? `<img class="logo" src="${esc(s.logo)}" alt="${esc(p.company || "")}">` : ""}
+    return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
       ${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
       <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
@@ -49,7 +49,7 @@
     const keys = p.where.filter((w) => w.k === "git" || w.k === "railway")
       .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</a>`).join("");
     const sq = `<article class="proj">
-      <span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>
+      <div class="top"><span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="">` : ""}</div>
       <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
       <div class="foot">${keys}${p.can_change ? `<button type="button" class="rc" data-p="${esc(p.code || p.name)}">${icon("i-pen")}Request changes${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
@@ -57,9 +57,9 @@
     // a real phase 2 scope = ONE wide square, the same website: phase 1 left, phase 2 right (its key opens its own page).
     if (!p.scope) return sq;
     const inner = sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))
-      .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>/, `<h3>Phase 1</h3>`);
+      .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>/, `<h3>Phase 1</h3>`).replace(/<img class="plogo"[^>]*>/, "");
     return `<article class="proj duo">
-      <div class="dh"><h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span></div>
+      <div class="dh">${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}<h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span></div>
       <div class="pane">${inner}</div>
       <div class="pane p2">
         <span class="tag bad">${esc(p.scope.name)} awaits</span>
@@ -83,6 +83,12 @@
     view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
     const n = v.projects.length;
+    // top of the hub: their logo · Hi, <first name> · the settings key (who is signed in · sign out).
+    $(".hi .nm").textContent = v.name || "";
+    const lg = $(".hi .clogo");
+    lg.hidden = !v.logo; if (v.logo) { lg.src = v.logo; lg.alt = v.company || ""; }
+    $(".gpop .cn").textContent = v.owner ? "Owner" : v.company || "";
+    $(".gpop .em").textContent = v.email || "";
     $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
     // status demo_sent lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
     const all = v.projects.map((p, i) => [p, i]);
@@ -164,6 +170,14 @@
     mail(`[R-CAI] ${LANES[lane].title}${LANES[lane].free ? "" : " · " + f.project.value}`, f.msg.value.trim() + sign());
   });
 
+  $(".gear").addEventListener("click", (e) => {
+    const pop = $(".gpop"), on = pop.hidden;
+    pop.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".gear, .gpop")) { $(".gpop").hidden = true; $(".gear").setAttribute("aria-expanded", "false"); }
+  });
+
   $(".bell").addEventListener("click", (e) => {
     const pop = $(".pop"), on = pop.hidden;
     pop.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
@@ -219,7 +233,7 @@
 
   $(".out").addEventListener("click", async () => {
     await fetch("api/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
-    $("#login").reset(); gate();
+    $(".gpop").hidden = true; $("#login").reset(); gate();
   });
 
   me().then((v) => (v ? hub(v) : gate()));
