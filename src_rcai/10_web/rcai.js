@@ -73,15 +73,16 @@
   // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:, always live) · Request invoice
   // (any payment method), and in small
   // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer is one request (send).
-  // every section folds; a closed, unread one carries a gold "New" pill and nudges once as it scrolls in.
-  // Opening it marks it read (this device). The Action required bar counts what's been read.
+  // every section folds, set as a ledger row (the resume's read: number + title in a fixed column, the peek beside it,
+  // hairlines between). No pills: an unread row nudges once as it scrolls in; opening it marks it read (this device).
+  // The Required follow up bar counts what's been read.
   // device keys follow the project id, not its place in the list: a list that grows or reorders never moves a pick.
   const PK = () => `${view?.email || ""}.${view?.projects[+location.hash.slice(4)]?.id ?? location.hash.slice(4)}`;
   const SEENKEY = () => `rcai.seen.${PK()}`;
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEENKEY()) || "[]"); } catch { return []; } };
   const fold = (k, n, title, peek, body) => { const r = seen().includes(k);
     return `<details class="part fold${r ? " read" : ""}" data-k="${k}"><summary><b><i>${String(n).padStart(2, "0")}</i>${title}</b><span class="pv">${peek}</span>
-      <span class="nb">${r ? icon("i-check") + "Read" : "<i></i>New"}</span></summary><div class="pb">${body}</div></details>`; };
+      <span class="cv" aria-hidden="true"></span></summary><div class="pb">${body}</div></details>`; };
   // Infrastructure and tools: `Name · Tag · note` lines drawn as one small flow, each node tagged Free / Optional upgrade.
   const toolsHTML = (lines) => `<div class="flow">${lines.map((l) => { const [n, t = "", w = ""] = l.split(" · ");
     return `<div class="nd"><b>${esc(n)}</b><em class="${/free/i.test(t) ? "free" : "up"}">${esc(t)}</em><small>${esc(w)}</small></div>`; }).join(`<span class="ar">${icon("i-arrow")}</span>`)}</div>
@@ -109,8 +110,8 @@
     ];
     const read = secs.filter(([k]) => seen().includes(k)).length;
     return `<div class="scope" data-n="${secs.length}"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
-        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Your move</span></div>
-      <div class="actreq"><b>Your move</b><span>Phase 2 is ready when you are. Take a look, pick what fits, and we'll take it from there.
+        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Required follow up</span></div>
+      <div class="actreq"><b>Required follow up</b><span>Phase 2 is ready when you are. Take a look, pick what fits, and we'll take it from there.
         Got a question? We'll catch you by email, and everything we agree lives in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
@@ -517,7 +518,7 @@
     if (!d.matches?.("details.fold") || !d.open || d.classList.contains("read")) return;
     const k = d.dataset.k, all = new Set(seen()); all.add(k);
     try { localStorage.setItem(SEENKEY(), JSON.stringify([...all])); } catch {}
-    d.classList.add("read"); $(".nb", d).innerHTML = icon("i-check") + "Read";
+    d.classList.add("read");
     track("read");
     const sc = $(".scope"); $(".rd", sc).textContent = `${$$("details.fold.read", sc).length} of ${sc.dataset.n} sections read`;
   }, true);
