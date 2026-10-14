@@ -1,6 +1,6 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
 // The hub: two small keys top right (request changes · request build) with corner badges, the bell for every notice.
-// Body: projects as small squares (+ a red Phase 2 square when a scope waits → its proposal: Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
+// Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
 // Every send opens a filled-in email: there is no request queue yet.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
@@ -19,12 +19,20 @@
   const sign = () => `\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
   const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
 
-  // a phase 2 proposal waiting on the client: its lines + three answers. Each answer opens a filled-in email.
+  // a phase 2 proposal waiting on the client: their logo, then 01 deliverables · 02 timeline · 03 start the build
+  // (pay the invoice), then Accept · Ask changes · Deny. Each answer opens a filled-in email. No pay link = a quiet "on its way".
   function scope(p) {
-    const items = p.scope.items.map((t) => `<li>${esc(t)}</li>`).join("");
-    const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(p.scope.name)}">${label}</button>`;
-    return `<div class="scope"><div class="sh"><span class="cap">${esc(p.name)} · ${esc(p.scope.name)}</span><span class="wait">Waiting on you</span></div>
-      <ul>${items}</ul>
+    const s = p.scope;
+    const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
+    const items = `<ul>${s.items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
+    const tl = (s.timeline || []).length
+      ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
+    const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}
+      ${s.pay_link ? `<a class="paygo" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay invoice →</a>` : `<span class="paygo off">Invoice on its way</span>`}</div>`;
+    const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
+    return `<div class="scope"><div class="sh">${s.logo ? `<img class="logo" src="${esc(s.logo)}" alt="${esc(p.company || "")}">` : ""}
+        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
+      ${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
       <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
   }
 
@@ -42,7 +50,7 @@
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
       <div class="foot">${keys}</div>
     </article>`;
-    // a real phase 2 scope in the record = a red square right beside it. No scope, no square.
+    // a real phase 2 scope in the record = a square right beside it (red dot only). No scope, no square.
     const next = p.scope ? `<article class="proj p2">
       <span class="tag bad">${esc(p.scope.name)} awaits</span>
       <h3>${esc(p.scope.name)}</h3><span class="co">${p.scope.items.length} items · ${esc(p.name)}</span>

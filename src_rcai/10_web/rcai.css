@@ -138,12 +138,13 @@ button{font:inherit;color:inherit}
 .sq{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;border:1px solid var(--line-2);background:rgba(255,255,255,.035);color:var(--ink-2);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:color .15s,border-color .15s,background .15s}
 .sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255,255,255,.07)}
-/* phase 2 awaits: the red square beside a delivered project */
-.tag.bad{border-color:rgba(217,71,74,.5);color:#ff6b6e;background:rgba(217,71,74,.08)}
-.proj.p2{border-color:rgba(217,71,74,.35);background:linear-gradient(180deg,rgba(217,71,74,.10),rgba(217,71,74,.02) 60%),var(--card)}
-.p2go{all:unset;box-sizing:border-box;cursor:pointer;margin-top:auto;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;
-  background:#d9474a;color:#fff;font:600 14px/1 var(--sans);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 26px -12px rgba(217,71,74,.7);transition:background .15s}
-.p2go:hover{background:#e25356}
+/* phase 2 awaits: a normal square, red only as a small dot + a hairline. The key is the landing's white. */
+.tag.bad{display:inline-flex;align-items:center;gap:7px;border-color:var(--line-2);color:var(--ink-2)}
+.tag.bad::before{content:"";width:6px;height:6px;border-radius:50%;background:#c4545a}
+.proj.p2{border-color:rgba(196,84,90,.28)}
+.p2go{all:unset;box-sizing:border-box;cursor:pointer;margin-top:auto;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;
+  background:#fff;color:#0e0c12;font:600 13px/1 var(--sans);transition:background .15s}
+.p2go:hover{background:#ebe8f0}
 .proj.p2 h3{margin:auto 0 4px}
 
 /* preferences + feedback: one quiet box each */
@@ -163,14 +164,29 @@ button{font:inherit;color:inherit}
 .send2:hover{background:#ebe8f0}
 .send2 .ico{width:15px;height:15px}
 
-/* phase 2 proposal: the one thing that asks the client to decide */
-.scope{margin-top:10px;padding:18px 18px 16px;border-radius:12px;border:1px solid rgba(217,166,44,.35);background:linear-gradient(180deg,rgba(217,166,44,.06),transparent)}
-.scope .sh{display:flex;align-items:center;padding:0;margin:0;border:0}
-.scope .sh .cap{margin-left:0}
-.scope .cap{color:var(--gold)}
-.scope .wait{margin-left:auto;font:500 11px/1 var(--mono);color:var(--gold)}
-.scope ul{margin:12px 0 16px;padding:0 0 0 18px;color:var(--ink);font-size:14px}
-.scope li+li{margin-top:4px}
+/* phase 2 proposal: client logo on top, then 01 deliverables · 02 timeline · 03 start the build, then the answer */
+.scope{margin-top:10px;padding:24px 24px 20px;border-radius:16px;border:1px solid var(--line);background:var(--card)}
+.scope .sh{display:flex;align-items:center;gap:14px;padding:0 0 18px;margin:0;border-bottom:1px solid var(--line)}
+.scope .logo{height:30px;width:auto;display:block}
+.scope .sh .cap{margin-left:0;color:var(--ink-2)}
+.scope .wait{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:500 11px/1 var(--mono);color:var(--ink-2)}
+.scope .wait::before{content:"";width:6px;height:6px;border-radius:50%;background:#c4545a}
+.part{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
+.part>b{font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.part>b i{font-style:normal;color:var(--gold);margin-right:8px}
+.scope ul{margin:0;padding:0 0 0 18px;color:var(--ink);font-size:14px}
+.scope li+li{margin-top:5px}
+.tl{list-style:none;padding:0!important}
+.tl li{display:grid;grid-template-columns:130px 1fr;gap:12px}
+.tl li span{font:500 12px/1.5 var(--mono);color:var(--gold)}
+.payrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.payrow strong{font:600 26px/1 var(--head);letter-spacing:-.02em;color:var(--ink)}
+.payrow p{margin:0;flex:1;min-width:200px;color:var(--ink-2);font-size:13.5px;line-height:1.5}
+.paygo{all:unset;cursor:pointer;height:36px;padding:0 16px;display:inline-flex;align-items:center;border-radius:9px;background:var(--gold);color:#0e0c12;font:600 13px/1 var(--sans)}
+.paygo:hover{filter:brightness(1.06)}
+.paygo.off{background:transparent;color:var(--mute);border:1px dashed var(--line-2);cursor:default;filter:none}
+.scope .sks{padding-top:18px}
+@media (max-width:640px){.part{grid-template-columns:1fr;gap:10px}.tl li{grid-template-columns:1fr;gap:2px}}
 .sks{display:flex;gap:8px;flex-wrap:wrap}
 .sk{all:unset;cursor:pointer;height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font:500 13px/1 var(--sans);border:1px solid var(--line-2);color:var(--ink-2)}
 .sk:hover{color:var(--ink);border-color:rgba(255,255,255,.26)}

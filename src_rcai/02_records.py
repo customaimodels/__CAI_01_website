@@ -3,7 +3,9 @@
 Reads the hub's people / companies / projects / access.json. Hands out ONLY the client-safe
 fields below. Internal notes, money and estimates never leave this file -- the hub's records
 disagree with each other on balances today, so billing stays off the portal until they agree.
+One exception: a Phase 2 proposal's `pay:` line in delivery.yml, which he writes by hand.
 """
+import base64
 import json
 import re
 
@@ -81,6 +83,19 @@ def _delivery(path):
                 sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
                 if item.strip():
                     sc["items"].append(item.strip())
+            elif k == "timeline":                 # `timeline: when | what`, in order
+                when, _, what = v.partition("|")
+                cur.setdefault("timeline", []).append({"when": when.strip(), "what": what.strip()})
+            elif k == "pay":                      # `pay: $3,250 | what it starts` -- the ONE money line, written on purpose
+                amt, _, what = v.partition("|")
+                cur["pay"] = {"amount": amt.strip(), "what": what.strip()}
+            elif k == "invoice":                  # the real invoice link, or nothing
+                cur["invoice"] = v
+            elif k == "logo":                     # the client's own logo file, carried as a data URI: behind login, never in git
+                f = (path.parent / v).resolve()
+                mime = {".png": "image/png", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}.get(f.suffix.lower())
+                if mime and f.exists():
+                    cur["logo"] = f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
             elif k in WHERE:
                 cur[k] = v
     return out
@@ -128,7 +143,8 @@ def _card(db, cfg, pid):
     return {
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
-        "scope": scope if scope and scope["items"] else None,
+        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "pay_link": d.get("invoice"),
+                   "logo": d.get("logo")} if scope and scope["items"] else None),
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),
