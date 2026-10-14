@@ -43,6 +43,9 @@ KINDS = {
 }
 
 
+MONEY = {"ship", "invoice"}   # saying yes or asking how to pay never waits behind the 24 h hold, and never starts one
+
+
 def folder():
     if os.environ.get("RCAI_DATA_DIR"):
         return Path(os.environ["RCAI_DATA_DIR"]) / "inbox"
@@ -68,10 +71,12 @@ def load(path=None):
     return rows
 
 
-def until(cfg, email):
+def until(cfg, email, kinds=None):
+    """End of this person's 24 h hold (0 = open). kinds=None: every non-money request counts; else only those kinds."""
     email = (email or "").lower()
     ep = str(cfg.get("state_epoch", "1"))
-    last = max((r.get("ts", 0) for r in load() if r.get("email") == email and str(r.get("epoch")) == ep), default=0)
+    hit = (lambda k: k in kinds) if kinds else (lambda k: k not in MONEY)
+    last = max((r.get("ts", 0) for r in load() if r.get("email") == email and str(r.get("epoch")) == ep and hit(r.get("kind"))), default=0)
     end = last + WAIT
     return end if end > time.time() else 0
 
@@ -80,7 +85,7 @@ def put(cfg, email, kind, text, project="", person="", extra=None):
     email = (email or "").lower()[:120]
     if kind not in KINDS:
         return False, 0
-    wait = until(cfg, email)
+    wait = until(cfg, email, {kind} if kind in MONEY else None)   # money: once per kind per 24 h, nothing else blocks it
     if wait:
         return False, wait
     now = time.time()
@@ -105,7 +110,7 @@ def put(cfg, email, kind, text, project="", person="", extra=None):
     except OSError:
         pass                                    # stdout already has it
     importlib.import_module("src_rcai.09_notify").admin(row, cfg)   # email to US (Brevo), in a thread; never to the client
-    return True, int(now) + WAIT
+    return True, (until(cfg, email) if kind in MONEY else int(now) + WAIT)   # money leaves the hold as it was
 
 
 def report(rows, everyone=True):

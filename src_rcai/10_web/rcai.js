@@ -55,14 +55,16 @@
     $(".ask").hidden = true; lane = null;
   }
   async function send(kind, text, project = "", extra = {}) {
-    if (paused()) { pause(); toTop(); return false; }
+    const money = kind === "ship" || kind === "invoice";          // accepting or paying never waits behind the 24 h hold
+    if (paused() && !money) { pause(); toTop(); return false; }
     try {
       const r = await fetch("api/request", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kind, text, project, ...extra }) });
       const j = await r.json().catch(() => ({}));
+      if (r.status === 429 && money) { alert("We already have this from you today. We write back within 24 hours."); return false; }
       if (r.status === 429) { pause(j.until); toTop(); return false; }
       if (!r.ok) { alert(j.error || "That didn't reach us. Try again."); return false; }
-      pause(j.until); toTop();
+      pause(j.until); if (!money) toTop();
       return true;
     } catch { alert("Offline. Nothing was sent; try again."); return false; }
   }
@@ -422,7 +424,7 @@
 
   $("#scopes").addEventListener("click", async (e) => {
     if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .sk.rebuild, .shipgo, .rbgo")) return;
-    if (paused() && e.target.closest(".scx, button.sk:not(.back0), .shipgo, .rbgo, .qc")) { pause(); toTop(); return; }
+    if (paused() && e.target.closest(".scx, button.sk:not(.back0):not(.accept):not(.inv), .rbgo, .qc")) { pause(); toTop(); return; }
     if (e.target.closest(".stripe:not(.off)")) { track("stripe"); return; }
     if (e.target.closest(".adgo")) { track("add_pkg"); setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
