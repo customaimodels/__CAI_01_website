@@ -22,6 +22,12 @@
   const LANE_OF = { deploy: "changes", changes: "changes", credits: "build", build: "build" };
   let view = null, lane = null;
 
+  // ?fresh wipes this device's test state (add-on picks, scope notes, the 24 h hold) and opens clean. Device only, nothing server-side.
+  if (new URLSearchParams(location.search).has("fresh")) {
+    try { Object.keys(localStorage).filter((k) => k.startsWith("rcai.")).forEach((k) => localStorage.removeItem(k)); } catch {}
+    history.replaceState(null, "", location.pathname + location.hash);
+  }
+
   const icon = (id) => `<svg class="ico"><use href="#${id}"/></svg>`;
   const sign = () => `\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
   const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
