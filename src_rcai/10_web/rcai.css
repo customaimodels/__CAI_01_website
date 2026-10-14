@@ -211,8 +211,8 @@ button{font:inherit;color:inherit}
 .paygo:hover{filter:brightness(1.06)}
 .paygo.off{background:transparent;color:var(--mute);border:1px dashed var(--line-2);cursor:default;filter:none}
 .scope .sks{padding-top:18px}
-/* "Hi, John": small, in the bar, left of the bell. The client logo lives only on its project square; ⚙ sits beside the bell. */
-.tools .hi{margin:0 4px 0 6px;font:500 13px/1 var(--sans);color:var(--ink-2);white-space:nowrap}
+/* "Hi, John": small, in the bar, left of Request build. The client logo lives only on its project square; ⚙ sits beside the bell. */
+.tools .hi{align-self:center;display:inline-flex;align-items:center;gap:.28em;height:32px;margin:0 6px 0 0;font:500 13px/1 var(--sans);color:var(--ink-2);white-space:nowrap}
 .tools .hi .nm{color:var(--ink)}
 .gear{all:unset;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:9px;color:var(--ink-2)}
 .gear:hover,.gear[aria-expanded="true"]{color:var(--ink);border-color:rgba(255,255,255,.26)}
