@@ -9,9 +9,9 @@
 <link rel="icon" href="knot.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=ce405b6391">
-<link rel="stylesheet" href="rcai.css?v=ce405b6391">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=6ec9b4e2fc">
+<link rel="stylesheet" href="rcai.css?v=6ec9b4e2fc">
 </head>
 <body>
 
@@ -33,27 +33,58 @@
  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
 </svg>
 
-<!-- SIGN IN -->
+<!-- GATE: log in · sign up (landing vibe: purple-black, aubergine field, Inter Tight). #signup opens the second face. -->
 <main id="gate" hidden>
- <section class="night">
+ <section class="field">
   <a class="home" href="/"><img src="knot.png" alt="">Custom AI Models</a>
-  <div>
-   <img class="knot" src="knot.png" alt="">
+  <div class="say">
+   <span class="cap">R-CAI</span>
    <h1>Your <em>hub</em>.</h1>
-   <p>Your projects, where they live, and what is next.</p>
+   <p>Every project, where it lives, what is next.</p>
   </div>
-  <span class="cap">R-CAI</span>
+  <div class="peek" aria-hidden="true">
+   <div class="pk"><svg class="ico"><use href="#i-layers"/></svg><b>Projects</b><i class="live"></i><span>Live</span></div>
+   <div class="pk"><svg class="ico g"><use href="#i-credits"/></svg><b>Add credits</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
+   <div class="pk"><svg class="ico"><use href="#i-deploy"/></svg><b>Deploy changes</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
+  </div>
  </section>
+
  <section class="desk">
-  <form id="login" autocomplete="on">
-   <span class="cap">Client sign in</span>
+  <div class="seg" role="tablist">
+   <button type="button" role="tab" data-face="login" aria-selected="true">Log in</button>
+   <button type="button" role="tab" data-face="signup" aria-selected="false">Sign up</button>
+  </div>
+
+  <form id="login" class="face" autocomplete="on">
    <h2>Welcome back.</h2>
+   <p class="lede">Your email and the code word we gave you.</p>
    <label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
-   <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="the word we gave you"></label>
-   <button class="go" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
+   <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
+   <button class="key" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
    <p class="err" role="alert"></p>
-   <p class="fine">No code word? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></p>
+   <p class="fine">New here? <a href="#signup" data-face="signup">Sign up</a></p>
   </form>
+
+  <form id="signup" class="face" autocomplete="on" hidden>
+   <h2>Start a project.</h2>
+   <p class="lede">Tell us who you are. We reply with your code word.</p>
+   <div class="two">
+    <label><span>Name</span><input name="name" required autocomplete="name"></label>
+    <label><span>Company</span><input name="company" autocomplete="organization"></label>
+   </div>
+   <label><span>Work email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
+   <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" required placeholder="A dashboard from our sales data, an email that sends itself…"></textarea></label>
+   <button class="key" type="submit">Request access<svg class="ico"><use href="#i-arrow"/></svg></button>
+   <p class="fine">Opens your email, filled in. A person replies.</p>
+   <p class="fine">Have a code word? <a href="#login" data-face="login">Log in</a></p>
+  </form>
+
+  <div id="sent" class="face" hidden>
+   <svg class="ico ok"><use href="#i-check"/></svg>
+   <h2>Almost there.</h2>
+   <p class="lede">Send the email that just opened. Your code word comes back to that inbox.</p>
+   <p class="fine"><a href="#login" data-face="login">Back to log in</a></p>
+  </div>
  </section>
 </main>
 
@@ -130,6 +161,6 @@
  </footer>
 </div>
 
-<script src="rcai.js?v=ce405b6391"></script>
+<script src="rcai.js?v=6ec9b4e2fc"></script>
 </body>
 </html>

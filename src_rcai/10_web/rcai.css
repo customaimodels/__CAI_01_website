@@ -11,31 +11,58 @@ a{color:inherit;text-decoration:none}
 .serif{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
 button{font:inherit;color:inherit}
 
-/* ── gate ─────────────────────────────────────────── */
-#gate{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
-.night{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:40px 48px;border-right:1px solid var(--line);
-  background:radial-gradient(70% 60% at 70% 20%,rgba(70,110,255,.16),transparent 70%),var(--bg)}
-.night .knot{width:120px;height:120px;filter:drop-shadow(0 0 40px rgba(217,166,44,.25))}
-.night h1{font:400 clamp(48px,6vw,84px)/.95 var(--serif);letter-spacing:-.03em;margin:28px 0 16px}
-.night h1 em{color:#c9d6ff}
-.night p{color:var(--ink-2);margin:0;max-width:36ch}
-.night .home{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2)}
-.night .home img{width:24px;height:24px}
-.desk{display:grid;place-items:center;padding:40px}
-#login{width:100%;max-width:380px}
-#login h2{font:400 40px/1 var(--serif);margin:14px 0 30px}
-#login label{display:block;margin-bottom:16px}
-#login label span{display:block;font-size:12px;color:var(--ink-2);margin-bottom:7px}
-#login input{width:100%;height:46px;padding:0 14px;background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-s);color:var(--ink);font:15px var(--sans);outline:none;transition:border-color .2s}
-#login input:focus{border-color:rgba(91,140,255,.55)}
+/* ── gate: log in · sign up (2026-10-14). The landing's vibe: purple-black, one aubergine field,
+   Inter Tight heads, Plex Mono caps, a white key. Scoped to #gate so the hub keeps its own tokens. */
+#gate{--bg:#0e0c12;--card:#17141d;--ink:#efece6;--ink-2:#a8a3b1;--mute:#76717f;--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.15);
+  --indigo:#1a1323;--violet:#5a4a78;--violet-soft:#c3bbd1;--bad:#d9474a;--ok:#2fb37a;
+  --head:"Inter Tight","Inter",-apple-system,sans-serif;--sans:"Inter",-apple-system,system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;gap:16px;padding:16px;background:var(--bg);color:var(--ink);font-family:var(--sans);letter-spacing:-.011em}
+#gate .ico{stroke-width:1.5}
+#gate .cap{font:500 11px/1.4 var(--mono);letter-spacing:.13em;color:var(--violet-soft)}
+.field{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.06);padding:36px 44px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;
+  background:radial-gradient(90% 70% at 90% -10%,rgba(90,74,120,.45),transparent 60%),radial-gradient(60% 50% at 0% 110%,rgba(90,74,120,.22),transparent 70%),var(--indigo)}
+.field .home{display:flex;align-items:center;gap:10px;font:600 15px/1 var(--sans);letter-spacing:-.02em}
+.field .home img{width:26px;height:26px}
+.field h1{font:600 clamp(56px,7vw,104px)/.94 var(--head);letter-spacing:-.04em;margin:18px 0 18px}
+.field h1 em{font-style:normal;color:var(--violet-soft)}
+.field .say p{margin:0;color:rgba(255,255,255,.62);font-size:18px;max-width:36ch}
+.peek{display:grid;gap:8px;max-width:420px;border-top:1px solid rgba(217,166,44,.55);padding-top:22px}
+.pk{display:flex;align-items:center;gap:14px;height:54px;padding:0 18px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);font-size:15px}
+.pk b{font-weight:500}
+.pk .ico{width:19px;height:19px;color:var(--violet-soft)}
+.pk .ico.g{color:var(--gold)}
+.pk .a{margin-left:auto;color:rgba(255,255,255,.4)}
+.pk .live{margin-left:auto;width:7px;height:7px;border-radius:50%;background:#5fe0a6;box-shadow:0 0 10px rgba(95,224,166,.7)}
+.pk span{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.desk{display:flex;flex-direction:column;align-items:center;padding:clamp(48px,14vh,150px) 24px 48px}
+.seg{display:flex;padding:4px;border-radius:12px;background:var(--card);border:1px solid var(--line);margin-bottom:44px}
+.seg button{all:unset;cursor:pointer;height:34px;padding:0 22px;border-radius:9px;font:500 14px/34px var(--sans);color:var(--ink-2);transition:background .2s var(--ease),color .2s}
+.seg button[aria-selected="true"]{background:#fff;color:#0e0c12;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.face{width:100%;max-width:400px}
+.face h2{font:600 44px/1 var(--head);letter-spacing:-.035em;margin:0 0 10px}
+.face .lede{color:var(--ink-2);margin:0 0 30px;font-size:16px}
+.face label{display:block;margin-bottom:14px;min-width:0}
+.face label span{display:block;font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.face input,.face textarea{width:100%;height:48px;padding:0 15px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font:15px/1.4 var(--sans);outline:none;transition:border-color .2s,box-shadow .2s}
+.face textarea{height:auto;padding:13px 15px;resize:vertical;min-height:96px}
+.face input::placeholder,.face textarea::placeholder{color:var(--mute)}
+.face input:focus,.face textarea:focus{border-color:var(--violet-soft);box-shadow:0 0 0 4px rgba(90,74,120,.35)}
+.face .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.key{all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:50px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:12px;
+  background:#fff;color:#0e0c12;font:600 15px/1 var(--sans);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 10px 30px -14px rgba(195,187,209,.5);transition:background .2s,transform .12s}
+.key:hover{background:#ebe8f0}
+.key:active{transform:scale(.985)}
+.key:disabled{opacity:.5}
+.key .ico{width:17px;height:17px}
+#sent .ok{width:40px;height:40px;color:var(--ok);margin-bottom:22px}
 .go{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:46px;padding:0 20px;border:1px solid #4a78f5;border-radius:var(--r-s);cursor:pointer;
   background:linear-gradient(180deg,#3f6ff0,#2a55d6);color:#fff;font:500 14px/1 var(--sans);box-shadow:0 8px 30px -10px rgba(63,111,240,.55),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .12s}
 .go:active{transform:scale(.98)}
 .go:disabled{opacity:.5}
-#login .go{width:100%;margin-top:8px}
 .err{min-height:20px;color:var(--bad);font-size:13px;margin:12px 0 0}
-.fine{font-size:13px;color:var(--mute);margin:18px 0 0}
-.fine a{color:var(--ink-2);border-bottom:1px solid var(--line-2)}
+.fine{font-size:13px;color:var(--mute);margin:14px 0 0}
+.fine a{color:var(--ink);border-bottom:1px solid var(--line-2)}
+.fine a:hover{border-color:var(--ink)}
 
 /* ── hub ──────────────────────────────────────────── */
 #hub header{position:sticky;top:0;z-index:10;background:rgba(6,7,9,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
@@ -140,8 +167,14 @@ button{font:inherit;color:inherit}
 #hub footer .sp{margin-left:auto}
 
 @media (max-width:860px){
-  #gate{grid-template-columns:1fr}
-  .night{min-height:46vh;border-right:0;border-bottom:1px solid var(--line);padding:28px}
+  #gate{grid-template-columns:minmax(0,1fr);padding:10px;gap:0}
+  .field{padding:24px 24px 28px;border-radius:22px;gap:28px}
+  .field h1{font-size:56px}
+  .peek{display:none}
+  .desk{padding:36px 10px 48px}
+  .seg{margin-bottom:32px}
+  .face h2{font-size:36px}
+  .face .two{grid-template-columns:minmax(0,1fr);gap:0}
   .wrap{padding:0 20px}
   .who{display:none}
   .bell{margin-left:auto}

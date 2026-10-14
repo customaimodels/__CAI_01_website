@@ -92,7 +92,26 @@
     if (!e.target.closest(".bell, .pop")) { $(".pop").hidden = true; $(".bell").setAttribute("aria-expanded", "false"); }
   });
 
-  function gate() { $("#hub").hidden = true; $("#gate").hidden = false; $("#login [name=email]").focus(); }
+  // the gate has three faces: login · signup · sent. #signup in the URL (the landing's Get started) opens sign up.
+  function face(which) {
+    ["login", "signup", "sent"].forEach((id) => ($("#" + id).hidden = id !== which));
+    document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.face === (which === "sent" ? "signup" : which))));
+    const first = $(`#${which} input`);
+    if (first) first.focus({ preventScroll: true });
+    history.replaceState(null, "", which === "signup" ? "#signup" : location.pathname);
+  }
+  document.querySelectorAll("[data-face]").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); face(el.dataset.face); }));
+
+  $("#signup").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const subject = `[R-CAI] Sign up · ${f.company.value.trim() || f.name.value.trim()}`;
+    const body = `Name: ${f.name.value.trim()}\nCompany: ${f.company.value.trim()}\nEmail: ${f.email.value.trim()}\n\nWhat we need:\n${f.need.value.trim()}`;
+    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    face("sent");
+  });
+
+  function gate() { $("#hub").hidden = true; $("#gate").hidden = false; face(location.hash === "#signup" ? "signup" : "login"); }
 
   async function me() {
     try {
