@@ -83,17 +83,16 @@
     view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
     const n = v.projects.length;
-    // top of the hub: their logo · Hi, <first name> · the settings key (who is signed in · sign out).
+    // top of the hub: Hi, <first name>. The logo lives only on the project square; ⚙ sits beside the bell.
     $(".hi .nm").textContent = v.name || "";
-    const lg = $(".hi .clogo");
-    lg.hidden = !v.logo; if (v.logo) { lg.src = v.logo; lg.alt = v.company || ""; }
     $(".gpop .cn").textContent = v.owner ? "Owner" : v.company || "";
     $(".gpop .em").textContent = v.email || "";
     $(".gpop .pwstate").textContent = v.own_pw ? "Your own password is set." : "Signed in with the shared code word.";
     $(".pwf [name=username]").value = v.email || "";
     $(".gpop .master").hidden = !v.owner;
     $('.opt[data-opt="pw"]').hidden = !v.pw_on;
-    $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
+    // the caption beside Your projects: owners only (a client's company is already on its square).
+    $(".sh .co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : "";
     // status demo_sent lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
     const all = v.projects.map((p, i) => [p, i]);
     const real = all.filter(([p]) => !p.demo), demos = all.filter(([p]) => p.demo);
