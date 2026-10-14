@@ -121,9 +121,11 @@
       ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
       <div class="holdslot">${holdHTML()}</div>
       <p class="actlbl"><i></i>Ready? Pick one</p>
-      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Proposal closed" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("rebuild", "Request a different build", lock())}${key("inv", "Request invoice")}</div>
+      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Proposal closed" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${shipped() ? key("inv", "Request invoice") : ""}</div>
       <div class="shipslot"></div>
-      <button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : closed() ? "Proposal closed · a different build is on its way" : "Ask to change the scope of the project"}</button>
+      <div class="endrow"><button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : closed() ? "Proposal closed · a different build is on its way" : "Ask to change the scope of the project"}</button>
+        ${key("rebuild", "Request a different build", lock())}</div>
+      <div class="rbslot"></div>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
         <div class="w" data-w="1">
@@ -424,10 +426,12 @@
   }
   function freeze(label) {
     $(".holdslot").innerHTML = holdHTML();
-    $(".shipslot").innerHTML = "";
+    $(".shipslot").innerHTML = ""; $(".rbslot").innerHTML = "";
     $(".sks").classList.add("frozen");
     const a = $(".sks .sk.accept"); a.disabled = true; if (shipped()) a.textContent = "Accepted · shipping"; if (closed()) a.textContent = "Proposal closed";
-    const rb = $(".sks .sk.rebuild"); if (rb) rb.disabled = true;
+    // once shipped, Request invoice joins the row for good: the second way to pay
+    if (shipped() && !$(".sks .sk.inv")) $(".sks").insertAdjacentHTML("beforeend", `<button type="button" class="sk inv" data-ans="inv">Request invoice</button>`);
+    const rb = $(".sk.rebuild"); if (rb) rb.disabled = true;
     const s = view.projects[+location.hash.slice(4)].scope;
     // the package locks with the answer key: no adding, no switching, no scope change. Paying stays open.
     $(".adslot").innerHTML = addsHTML(s, added());
@@ -442,8 +446,9 @@
   const rebuildHTML = () => `<div class="ship rb"><p><b>Close this proposal and request a new demo?</b> Phase 2 as written is set aside. We come back within 24 hours with a different build.</p>
     <textarea rows="2" maxlength="1500" placeholder="What should the new build do instead?"></textarea>
     <div class="row2"><button type="button" class="sk back0">Keep this proposal</button><button type="button" class="rbgo">Close it and request a new demo →</button></div></div>`;
+  // Accept now, pay later opens the two ways forward: an invoice by any method, or SHIP TODAY.
   const shipHTML = () => `<div class="ship"><p><b>Is the build OK as it stands?</b> We start today. The scope locks; you pay the deposit before go-live.</p>
-    <div class="row2"><button type="button" class="sk back0">Not yet</button><button type="button" class="shipgo">Ship today →</button></div></div>`;
+    <div class="row2"><button type="button" class="sk back0">Not yet</button><button type="button" class="sk inv" data-ans="inv">Request invoice</button><button type="button" class="shipgo">Ship today →</button></div></div>`;
   function setAdded(picked) {
     const s = view.projects[+location.hash.slice(4)].scope;
     picked = [...new Set(picked)].sort();
@@ -477,15 +482,15 @@
       if (on) { track("scope_open"); step(f, 1); restore(f); f.querySelector("textarea").focus(); }
       return;
     }
-    if (e.target.closest(".back0")) { track("not_yet"); $(".shipslot").innerHTML = ""; return; }
+    if (e.target.closest(".back0")) { track("not_yet"); $(".shipslot").innerHTML = ""; $(".rbslot").innerHTML = ""; return; }
     if (e.target.closest(".qc")) { const f = $(".qcf"); f.hidden = !f.hidden; if (!f.hidden) f.m.focus({ preventScroll: true }); return; }
     if (e.target.closest(".qcx")) { $(".qcf").hidden = true; return; }
     const b = e.target.closest("button.sk, .shipgo, .rbgo");
     if (!b || b.disabled) return;
     // first press on Accept only asks; SHIP TODAY is the yes
-    if (b.dataset.ans === "rebuild") { track("rebuild_ask"); $(".shipslot").innerHTML = rebuildHTML(); $(".shipslot textarea").focus({ preventScroll: true }); return; }
+    if (b.dataset.ans === "rebuild") { track("rebuild_ask"); $(".shipslot").innerHTML = ""; $(".rbslot").innerHTML = rebuildHTML(); $(".rbslot textarea").focus({ preventScroll: true }); return; }
     if (b.classList.contains("rbgo")) {
-      const ta = $(".shipslot textarea"), t = ta.value.trim();
+      const ta = $(".rbslot textarea"), t = ta.value.trim();
       if (!t) { ta.placeholder = "One line is enough: what should the new build do instead?"; ta.focus(); return; }
       const pp = view.projects[+location.hash.slice(4)];
       if (!(await send("rebuild", `${pp.scope.name} · ${pp.code || pp.name}\n\nClose this proposal and send us a new demo.\n\nWhat the new build should do instead:\n${t}` + sign(), pp.code || pp.name))) return;
@@ -494,7 +499,7 @@
       freeze("Proposal closed · a different build is on its way");
       return;
     }
-    if (b.dataset.ans === "accept") { track("accept"); $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
+    if (b.dataset.ans === "accept") { track("accept"); $(".rbslot").innerHTML = ""; $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
     const p = view.projects[+location.hash.slice(4)], s = p.scope, pk = added(), bl = bill(s, pk), adn = addNames(s, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
       + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)}.` : "");

@@ -478,11 +478,14 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .actlbl{display:flex;align-items:center;gap:8px;margin:22px 0 0;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .actlbl i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
 .scope .actlbl+.sks{padding-top:10px}
-.sk.rebuild{border-style:dashed}
+/* scope change left, Request a different build tucked in the bottom-right corner */
+.endrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.endrow .sk.rebuild{height:30px;padding:0 12px;font-size:11.5px;border-style:dashed;opacity:.8;margin-left:auto}
+.endrow .sk.rebuild:hover{opacity:1}
+.endrow .sk.rebuild:disabled{opacity:.35;pointer-events:none}
 .ship.rb textarea{flex-basis:100%;box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;background:rgba(0,0,0,.28);color:var(--ink);font:500 13px/1.45 var(--sans);resize:vertical}
 .rbgo{all:unset;cursor:pointer;height:38px;padding:0 18px;display:inline-flex;align-items:center;border-radius:10px;font:600 13px/1 var(--sans);color:#0e0c12;background:#fff}
 .rbgo:hover{background:#ebe8f0}
-.sks.frozen .sk.rebuild{opacity:.35;pointer-events:none}
 /* Infrastructure and tools: one small flow, Free in green-grey, the upgrade in gold */
 .flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
 .flow .nd{flex:1 1 130px;display:flex;flex-direction:column;gap:6px;padding:12px 12px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--card-2)}
