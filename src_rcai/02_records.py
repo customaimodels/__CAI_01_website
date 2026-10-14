@@ -85,6 +85,12 @@ def _delivery(path):
                 sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
                 if item.strip():
                     sc["items"].append(item.strip())
+            elif k == "addon":                    # `addon: Phase 2 | title | one line` -- NOT in the build, offered first; no price shipped
+                name, _, rest = v.partition("|")
+                title, _, why = rest.partition("|")
+                sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
+                if title.strip():
+                    sc.setdefault("addons", []).append({"title": title.strip(), "why": why.strip()})
             elif k == "timeline":                 # `timeline: when | what`, in order
                 when, _, what = v.partition("|")
                 cur.setdefault("timeline", []).append({"when": when.strip(), "what": what.strip()})

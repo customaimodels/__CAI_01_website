@@ -196,6 +196,27 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .scope .sh .cap{margin-left:0;color:var(--ink-2)}
 .scope .wait{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:500 11px/1 var(--mono);color:var(--ink-2)}
 .scope .wait::before{content:"";width:6px;height:6px;border-radius:50%;background:#c4545a}
+/* add-ons, first on the page: not in the build, small on the bill. Three quiet squares + one big gold key. */
+.adds{padding:22px 0 24px;border-bottom:1px solid var(--line)}
+.adh{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.adh b{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.adh span{color:var(--ink-2);font-size:14px}
+.adg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.ad{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:14px;
+  border:1px solid var(--line-2);background:var(--card-2);transition:border-color .15s,background .15s,transform .15s}
+.ad:hover{border-color:rgba(255,255,255,.26);transform:translateY(-1px)}
+.ad strong{font:600 15px/1.25 var(--head);letter-spacing:-.015em;color:var(--ink);padding-right:28px}
+.ad small{color:var(--ink-2);font-size:13px;line-height:1.45}
+.ad .tick{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);color:transparent}
+.ad .tick .ico{width:12px;height:12px}
+.ad[aria-pressed="true"]{border-color:rgba(217,166,44,.6);background:linear-gradient(180deg,rgba(217,166,44,.09),rgba(217,166,44,.02))}
+.ad[aria-pressed="true"] .tick{background:var(--gold);border-color:var(--gold);color:#0e0c12}
+.adk{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px}
+.adgo{all:unset;cursor:pointer;height:46px;padding:0 24px;display:inline-flex;align-items:center;border-radius:12px;background:var(--gold);color:#0e0c12;
+  font:600 15px/1 var(--sans);box-shadow:0 10px 30px -12px rgba(217,166,44,.55),inset 0 1px 0 rgba(255,255,255,.35)}
+.adgo:hover{filter:brightness(1.06)}
+.adgo.done{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1px rgba(217,166,44,.6)}
+.adn{font:500 11px/1.4 var(--mono);color:var(--mute);letter-spacing:.02em}
 .part{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
 .part>b{font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .part>b i{font-style:normal;color:var(--gold);margin-right:8px}

@@ -7,6 +7,7 @@
 // Every send opens a filled-in email: there is no request queue yet.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const MAIL = "customaimodels@gmail.com";
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const WHERE = { live: ["i-globe", "Live"], git: ["i-branch", "Git"], railway: ["i-cloud", "Railway"], email: ["i-mail", "Account email"] };
@@ -36,9 +37,17 @@
       ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
     const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}</div>`;
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
+    // add-ons FIRST (delivery.yml addon:): not in the build, small on the bill. Picked before any price shows;
+    // the page never carries their price -- it is quoted on its own small invoice, approved before anything is billed.
+    const ad = s.addons || [], picked = addPicked();
+    const adds = ad.length ? `<div class="adds"><div class="adh"><b>Not in the build</b><span>Small on the bill. Pick what you want in.</span></div>
+        <div class="adg">${ad.map((a, j) => `<button type="button" class="ad" data-a="${j}" aria-pressed="${picked.includes(j)}">
+          <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div>
+        <div class="adk"><button type="button" class="adgo">${addLabel(picked, ad.length)}</button>
+          <span class="adn">Quoted on its own small invoice. Nothing is billed until you approve it.</span></div></div>` : "";
     return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
-      ${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
+      ${adds}${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
       <div class="sks">${key("accept", "Accept now, pay later")}
         ${s.pay_link ? `<a class="sk stripe" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>` : `<span class="sk stripe off">Pay deposit through Stripe · link on its way</span>`}
         ${key("deny", "Decline")}</div>
@@ -188,8 +197,37 @@
     window.scrollTo({ top: 0 });
   });
 
+  // add-ons: a pick is kept on this device per client + project; "Add … to my build" sends the picks (the filled-in email).
+  // Accept carries them too, so a fast yes still lands them in the build.
+  const ADDKEY = () => `rcai.addons.${view?.email || ""}.${+location.hash.slice(4)}`;
+  function addPicked() { try { return JSON.parse(localStorage.getItem(ADDKEY()) || "[]"); } catch { return []; } }
+  const addLabel = (picked, n) => picked.length ? `Add ${picked.length === n && n > 1 ? "them" : picked.length === 1 ? "it" : picked.length} to my build →` : `Add ${n === 3 ? "all three" : "them all"} to my build →`;
+  const addNames = (s, idx) => idx.map((j) => (s.addons || [])[j]?.title).filter(Boolean);
+
   const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
   $("#scopes").addEventListener("click", (e) => {
+    const a = e.target.closest("button.ad");
+    if (a) {
+      const j = +a.dataset.a, set = new Set(addPicked());
+      set.has(j) ? set.delete(j) : set.add(j);
+      const picked = [...set].sort();
+      localStorage.setItem(ADDKEY(), JSON.stringify(picked));
+      a.setAttribute("aria-pressed", String(set.has(j)));
+      $(".adgo").innerHTML = addLabel(picked, $$(".ad").length);
+      return;
+    }
+    if (e.target.closest(".adgo")) {
+      const p = view.projects[+location.hash.slice(4)], s = p.scope;
+      let picked = addPicked();
+      if (!picked.length) picked = (s.addons || []).map((_, j) => j);
+      localStorage.setItem(ADDKEY(), JSON.stringify(picked));
+      $$(".ad").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
+      $(".adgo").innerHTML = `Added ✓ · ${picked.length} in your build`;
+      $(".adgo").classList.add("done");
+      mail(`[R-CAI] ${s.name} · Add to my build · ${p.name}`,
+        `Please add to ${s.name}:\n${addNames(s, picked).map((t) => "· " + t).join("\n")}\n\nSend me the small invoice for these to approve.` + sign());
+      return;
+    }
     const x = e.target.closest(".scx");
     if (x) {
       const f = $(".scf"), on = f.hidden;
@@ -201,7 +239,9 @@
     const b = e.target.closest("button.sk");
     if (!b) return;
     const lead = { accept: "We accept this proposal. We'll pay the deposit later.", deny: "We decline this proposal." }[b.dataset.ans];
-    mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + sign());
+    const p = view.projects[+location.hash.slice(4)], adn = b.dataset.ans === "accept" && p ? addNames(p.scope, addPicked()) : [];
+    const plus = adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "";
+    mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + plus + sign());
   });
 
   // scope change, four faces: 1 Write (autosaves on this device) → Save = the cheap reader (api/scope check, mock today)
