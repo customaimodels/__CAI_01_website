@@ -458,15 +458,12 @@
   const rebuildHTML = () => `<div class="ship rb"><p><b>Archive this scope and request a different build?</b> Phase 2 as written is set aside. We come back within 24 hours with a new demo.</p>
     <textarea rows="2" maxlength="1500" placeholder="What should the new build do instead?"></textarea>
     <div class="row2"><button type="button" class="sk back0">Keep this scope</button><button type="button" class="rbgo">Archive it and request a new demo →</button></div></div>`;
-  // Accept now, pay later is ONE key, pressed twice: the first press turns it into SHIP TODAY with Request invoice beside it.
+  // Accept now, pay later only asks: the yes (SHIP TODAY) and Request invoice sit in the panel it opens, right under the question.
   const shipHTML = () => `<div class="ship"><p><b>Is the build OK as it stands?</b> Press <b>Ship today</b> and we start this week; the deposit is due within 7 days. Or ask for an invoice first.</p>
-    <div class="row2"><button type="button" class="sk back0">Not yet</button></div></div>`;
+    <div class="row2"><button type="button" class="sk back0">Not yet</button><button type="button" class="sk inv" data-ans="inv">Request invoice</button><button type="button" class="shipgo">Ship today →</button></div></div>`;
   function arm(on) {
     const a = $(".sks .sk.accept");
-    a.classList.toggle("shipgo", on); a.classList.toggle("armed", on);
-    a.textContent = on ? "Ship today →" : "Accept now, pay later";
-    $(".sks .sk.inv:not(.keep)")?.remove();
-    if (on) a.insertAdjacentHTML("afterend", `<button type="button" class="sk inv" data-ans="inv">Request invoice</button>`);
+    a.classList.toggle("armed", on);
     $(".shipslot").innerHTML = on ? shipHTML() : "";
   }
   function setAdded(picked) {
