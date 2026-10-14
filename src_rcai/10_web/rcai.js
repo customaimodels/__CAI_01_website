@@ -34,14 +34,15 @@
     const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
     const tl = (s.timeline || []).length
       ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
-    const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
+    const key = (a, label, off) => `<button type="button" class="sk ${a}"${off ? " disabled" : ""} data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
     const ad = s.addons || [], picked = added();
     return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}${part(2, "Timeline", tl)}
       ${part(3, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
-      <div class="sks">${key("accept", "Accept now, pay later")}<span class="stslot">${stripeHTML(s, picked)}</span>${key("deny", "Decline")}</div>
+      <div class="holdslot">${holdHTML()}</div>
+      <div class="sks${held() ? " frozen" : ""}">${key("accept", "Accept now, pay later", held())}<span class="stslot">${stripeHTML(s)}</span>${key("deny", "Decline")}</div>
       <button type="button" class="scx" aria-expanded="false">Ask to change the scope of the project</button>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
@@ -200,8 +201,9 @@
   const money = (n) => "$" + n.toLocaleString("en-US");
   function bill(s, picked) {
     if (!s.price) return null;
-    const tot = s.price.base + picked.reduce((a, j) => a + ((s.addons || [])[j]?.p || 0), 0), dep = Math.round(tot * s.price.pct / 100);
-    return { tot, dep, rest: tot - dep, pct: s.price.pct };
+    // the deposit is fixed (pct of the base build, never moves); only the total moves with the package
+    const tot = s.price.base + picked.reduce((a, j) => a + ((s.addons || [])[j]?.p || 0), 0), dep = Math.round(s.price.base * s.price.pct / 100);
+    return { tot, dep };
   }
   function addsHTML(s, picked) {
     const ad = s.addons || [];
@@ -217,14 +219,29 @@
     + picked.map((j) => (s.addons || [])[j]).filter(Boolean).map((a) => `<li class="plus">${esc(a.title)}: ${esc(a.why)}</li>`).join("");
   function payHTML(s, picked) {
     const b = bill(s, picked);
-    if (b) return `<strong>${money(b.dep)}</strong><p>${b.pct}% of ${money(b.tot)} fixed, to start. The other ${money(b.rest)} on go-live.</p>`;
+    if (b) return `<div class="pay2"><span><small>Deposit to start</small><strong>${money(b.dep)}</strong></span>
+      <span class="tot"><small>Total</small><b>${money(b.tot)}</b></span></div><p>The total follows what is in your build. The deposit stays the same.</p>`;
     return s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : "";
   }
-  // the deposit invoice must match what is in the build: delivery.yml `invoice: N | link` per number of add-ons.
-  function stripeHTML(s, picked) {
-    const link = (s.pay_links || {})[String(picked.length)];
-    return link ? `<a class="sk stripe" href="${esc(link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>`
-      : `<span class="sk stripe off">Pay deposit through Stripe · ${picked.length ? "updated invoice" : "link"} on its way</span>`;
+  // the deposit never moves, so one invoice serves every build: delivery.yml `invoice: <link>`. Frozen while a scope change is in review.
+  function stripeHTML(s) {
+    const pl = s.pay_links || {}, link = pl["0"] || Object.values(pl)[0];
+    if (link && !held()) return `<a class="sk stripe" href="${esc(link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>`;
+    return `<span class="sk stripe off">Pay deposit through Stripe${link ? "" : " · link on its way"}</span>`;
+  }
+  // a scope change sent to review holds the answer keys for 24 h: Accept now and Stripe freeze until we come back.
+  const HOLDKEY = () => `rcai.hold.${view?.email || ""}.${+location.hash.slice(4)}`;
+  function held() { const t = +(localStorage.getItem(HOLDKEY()) || 0); return t && Date.now() - t < 864e5 ? t : 0; }
+  function holdHTML() {
+    const t = held();
+    return t ? `<div class="hold"><i></i><span><b>Scope change in review.</b> We're back to you within 24 hours. Accept and pay open again with the updated scope.</span></div>` : "";
+  }
+  function setHold() {
+    try { localStorage.setItem(HOLDKEY(), String(Date.now())); } catch {}
+    $(".holdslot").innerHTML = holdHTML();
+    $(".sks").classList.add("frozen");
+    $(".sks .sk.accept").disabled = true;
+    $(".stslot").innerHTML = stripeHTML(view.projects[+location.hash.slice(4)].scope);
   }
   function setAdded(picked) {
     const s = view.projects[+location.hash.slice(4)].scope;
@@ -233,7 +250,7 @@
     $(".adslot").innerHTML = addsHTML(s, picked);
     $(".dl").innerHTML = delivHTML(s, picked);
     $(".payrow").innerHTML = payHTML(s, picked);
-    $(".stslot").innerHTML = stripeHTML(s, picked);
+    $(".stslot").innerHTML = stripeHTML(s);
     $$(".ad.sw").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
   }
 
@@ -256,12 +273,12 @@
       return;
     }
     const b = e.target.closest("button.sk");
-    if (!b) return;
+    if (!b || b.disabled) return;
     const lead = { accept: "We accept this proposal. We'll pay the deposit later.", deny: "We decline this proposal." }[b.dataset.ans];
     const p = view.projects[+location.hash.slice(4)], pk = added(), yes = b.dataset.ans === "accept" && p;
     const adn = yes ? addNames(p.scope, pk) : [], bl = yes && bill(p.scope, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
-      + (bl ? `\n\nTotal ${money(bl.tot)} · ${money(bl.dep)} to start.` : "");
+      + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)} to start.` : "");
     mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + plus + sign());
   });
 
@@ -332,6 +349,7 @@
           `The package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
         try { localStorage.removeItem(KEY()); } catch {}
         step(f, 4);
+        setHold();
       }
     } catch { msg.textContent = "That didn't reach us. Your notes are saved on this device; try again."; }
     finally { btn.disabled = false; }

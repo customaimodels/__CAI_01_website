@@ -305,6 +305,14 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 /* phase 2: accept now (white) · pay the deposit through Stripe (gold; dashed until the link exists) */
 .sk.stripe{background:var(--gold);color:#0e0c12;border-color:var(--gold);font-weight:600}
 .sk.stripe:hover{filter:brightness(1.06)}
+/* deposit fixed · total moves with the package */
+.pay2{display:flex;gap:28px;align-items:flex-end}.pay2 span{display:flex;flex-direction:column;gap:4px}
+.pay2 small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.pay2 .tot b{font-size:18px;font-weight:600;color:var(--ink-2)}
+/* scope change in review: the 24 h notice; Accept + Stripe frozen behind a dim gradient */
+.hold{display:flex;gap:10px;align-items:flex-start;margin:18px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(90deg,rgba(217,166,44,.08),transparent 70%);font-size:13px;color:var(--ink-2)}
+.hold i{flex:none;width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--gold)}.hold b{color:var(--ink);font-weight:600}
+.sks.frozen .sk.accept,.sks.frozen .sk.stripe{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);border:1px solid var(--line);filter:grayscale(1);cursor:not-allowed;pointer-events:none;font-weight:500}
 .sk.stripe.off{background:transparent;color:var(--mute);border:1px dashed var(--line-2);font-weight:500;cursor:default;filter:none}
 /* ask to change the scope: small letters under the answer; opens a comment per deliverable + new capabilities */
 .scx{all:unset;cursor:pointer;display:block;margin-top:16px;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--mute);border-bottom:1px solid var(--line-2);padding-bottom:3px;width:max-content}
