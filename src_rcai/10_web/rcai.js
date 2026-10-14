@@ -109,8 +109,7 @@
     ];
     const read = secs.filter(([k]) => seen().includes(k)).length;
     return `<div class="scope" data-n="${secs.length}"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
-        <span class="cap">${esc(p.company || "")}</span><span class="wait">Your move</span></div>
-      <h1 class="ttl">${esc(p.name)}<em>${esc(s.name)}</em></h1>
+        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Your move</span></div>
       <div class="actreq"><b>Your move</b><span>Phase 2 is ready when you are. Take a look, pick what fits, and we'll take it from there.
         Got a question? We'll catch you by email, and everything we agree lives in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
@@ -257,8 +256,6 @@
     const m = location.hash.match(/^#p2-(\d+)$/), p = m && view && view.projects[+m[1]];
     const on = !!(p && p.scope);
     $("#home").hidden = on; $("#p2page").hidden = !on;
-    $("#hub").classList.toggle("doc", on); // phase 2 reads like the resume: paper, serif heads, ledger rows
-
     $("#scopes").innerHTML = on ? scope(p) : "";
     if (on) { track("open", +m[1]); nudge(); }
     window.scrollTo({ top: 0 });
