@@ -115,8 +115,7 @@
     const read = secs.filter(([k]) => seen().includes(k)).length;
     return `<div class="scope" data-n="${secs.length}"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Required follow up</span></div>
-      <div class="actreq"><b>Required follow up</b><span>Phase 2 is ready when you are. Take a look, pick what fits, and we'll take it from there.
-        Got a question? We'll catch you by email, and everything we agree lives in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
+      <div class="actreq"><b>Required follow up</b><span>Phase 2 is ready. Take a look and pick what fits.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
       <div class="holdslot">${holdHTML()}</div>
