@@ -60,7 +60,8 @@ STATUS_NOTICE = {
 
 def _delivery(path):
     """delivery.yml: `id:` blocks of `key: value` lines (stdlib only, the hosted repo has no yaml).
-    notice lines repeat: `notice: deploy | text`."""
+    notice lines repeat: `notice: deploy | text`. scope lines repeat: `scope: Phase 2 | one item`
+    (the first part names the scope, the rest is one line of it; the client accepts or denies the whole)."""
     out, cur = {}, None
     if not path.exists():
         return out
@@ -75,6 +76,11 @@ def _delivery(path):
             if k == "notice":
                 lane, _, text = v.partition("|")
                 cur["notices"].append({"lane": lane.strip() or "general", "text": text.strip() or lane.strip()})
+            elif k == "scope":
+                name, _, item = v.partition("|")
+                sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
+                if item.strip():
+                    sc["items"].append(item.strip())
             elif k in WHERE:
                 cur[k] = v
     return out
@@ -116,9 +122,13 @@ def _card(db, cfg, pid):
     if p.get("status") in STATUS_NOTICE:
         lane, text = STATUS_NOTICE[p["status"]]
         notices.insert(0, {"lane": lane, "text": text})
+    scope = d.get("scope")
+    if scope and scope["items"]:
+        notices.append({"lane": "scope", "text": f"{scope['name']} scope is waiting for your answer."})
     return {
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
+        "scope": scope if scope and scope["items"] else None,
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),

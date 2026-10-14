@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=7b6b9a0510">
-<link rel="stylesheet" href="rcai.css?v=7b6b9a0510">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=baf7bc3fd4">
+<link rel="stylesheet" href="rcai.css?v=baf7bc3fd4">
 </head>
 <body>
 
@@ -88,16 +88,28 @@
  </section>
 </main>
 
-<!-- THE HUB -->
+<!-- THE HUB (2026-10-14, minimal on purpose: more lands here later).
+     Top right: two small keys (credits · deploy) + the bell. Body: hello · projects (scope card when one waits) · one guide line. -->
 <div id="hub" hidden>
  <header>
   <div class="wrap">
-   <a class="brand" href="/"><img src="knot.png" alt="">R-CAI<small>your hub</small></a>
-   <span class="who"></span>
-   <button class="bell" type="button" aria-label="Notices" aria-expanded="false"><svg class="ico"><use href="#i-bell"/></svg><span class="badge" data-n="0"></span></button>
-   <button class="out" type="button">Sign out</button>
+   <a class="brand" href="/"><img src="knot.png" alt=""><b class="gold">R-CAI</b></a>
+   <nav class="tools">
+    <button class="tk" type="button" data-lane="credits" aria-expanded="false"><svg class="ico g"><use href="#i-credits"/></svg>Add credits<span class="badge" data-n="0"></span></button>
+    <button class="tk" type="button" data-lane="deploy" aria-expanded="false"><svg class="ico"><use href="#i-deploy"/></svg>Deploy changes<span class="badge" data-n="0"></span></button>
+    <button class="bell" type="button" aria-label="Notices" aria-expanded="false"><svg class="ico"><use href="#i-bell"/></svg><span class="badge" data-n="0"></span></button>
+    <button class="out" type="button">Sign out</button>
+   </nav>
   </div>
   <div class="pop" hidden></div>
+  <form class="ask wrap" hidden>
+   <div class="grid">
+    <select name="project" aria-label="Project"></select>
+    <textarea name="msg" rows="2" maxlength="2000"></textarea>
+    <button class="send" type="submit" aria-label="Send"><svg class="ico"><use href="#i-arrow"/></svg></button>
+   </div>
+   <small>Opens your email, filled in. A person replies.</small>
+  </form>
  </header>
 
  <main class="wrap">
@@ -107,60 +119,23 @@
    <p class="sub"></p>
   </section>
 
-  <section class="acts">
-   <button class="act credits" type="button" data-lane="credits" aria-expanded="false">
-    <span class="sq"><svg class="ico"><use href="#i-credits"/></svg><span class="badge" data-n="0"></span></span>
-    <span><b>Add credits</b><span class="t">More hours on a project.</span></span>
-    <svg class="ico arr"><use href="#i-arrow"/></svg>
-   </button>
-   <button class="act deploy" type="button" data-lane="deploy" aria-expanded="false">
-    <span class="sq"><svg class="ico"><use href="#i-deploy"/></svg><span class="badge" data-n="0"></span></span>
-    <span><b>Deploy changes</b><span class="t">Say what should change. We ship it.</span></span>
-    <svg class="ico arr"><use href="#i-arrow"/></svg>
-   </button>
-  </section>
-
-  <form class="ask" hidden>
-   <h3><svg class="ico"><use href="#i-deploy"/></svg><span class="ttl"></span></h3>
-   <div class="grid">
-    <select name="project" aria-label="Project"></select>
-    <textarea name="msg" maxlength="2000"></textarea>
-   </div>
-   <div class="foot"><small>Opens your email, filled in. A person replies.</small><button class="go" type="submit">Send<svg class="ico"><use href="#i-arrow"/></svg></button></div>
-  </form>
-
-  <section class="sec">
-   <span class="cap">Projects</span>
-   <div id="cards"></div>
-  </section>
+  <section id="cards"></section>
 
   <section class="guide">
-   <span class="cap">The guide</span>
-   <h2>How a project moves.</h2>
-   <p>Five phases. Every project walks them, in order.</p>
-   <div class="phases">
-    <div class="phase"><span class="n">01<svg class="ico"><use href="#i-chat"/></svg></span><b>Describe</b><p>You tell us the problem, in plain words.</p><p>We ask what done looks like.</p></div>
-    <div class="phase"><span class="n">02<svg class="ico"><use href="#i-doc"/></svg></span><b>Proposal</b><p>We send scope, phases and dates.</p><p>You sign, or ask for changes.</p></div>
-    <div class="phase"><span class="n">03<svg class="ico"><use href="#i-code"/></svg></span><b>Build</b><p>Python, in a Git repo, tested as it grows.</p><p>You see it before it is live.</p></div>
-    <div class="phase"><span class="n">04<svg class="ico"><use href="#i-cloud"/></svg></span><b>Deploy</b><p>Live on Railway, on your domain.</p><p>The notice lands here.</p></div>
-    <div class="phase"><span class="n">05<svg class="ico"><use href="#i-pen"/></svg></span><b>Modify</b><p>Send changes with Deploy changes.</p><p>Each one ships as a new version.</p></div>
-   </div>
-   <div class="rules">
-    <span><svg class="ico"><use href="#i-check"/></svg>Each change starts as a request.</span>
-    <span><svg class="ico"><use href="#i-layers"/></svg>Every version is kept.</span>
-    <span><svg class="ico"><use href="#i-mail"/></svg>customaimodels@gmail.com, always.</span>
-   </div>
+   <span class="cap">How a project moves</span>
+   <ol>
+    <li><b>Describe</b>the problem</li>
+    <li><b>Proposal</b>scope · dates</li>
+    <li><b>Build</b>Python · Git</li>
+    <li><b>Deploy</b>live on Railway</li>
+    <li><b>Modify</b>new versions</li>
+   </ol>
   </section>
  </main>
 
- <footer>
-  <div class="wrap">
-   <span class="brand"><img src="knot.png" alt="">R-CAI</span>
-   <span class="sp">Questions? <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></span>
-  </div>
- </footer>
+ <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=7b6b9a0510"></script>
+<script src="rcai.js?v=baf7bc3fd4"></script>
 </body>
 </html>

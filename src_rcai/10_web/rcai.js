@@ -1,5 +1,6 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
-// The hub: two actions (credits · deploy), each with a corner badge; the bell holds every notice.
+// The hub: two small keys top right (credits · deploy) with corner badges, the bell for every notice,
+// and a scope card (Accept · Ask changes · Deny) on any project with a scope waiting.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const MAIL = "customaimodels@gmail.com";
@@ -22,18 +23,25 @@
     return `<div>${icon(ic)}<span style="min-width:0"><small>${label}</small>${val}</span></div>`;
   }
 
+  // a scope waiting on the client: its lines + three answers. Each answer opens a filled-in email.
+  function scope(p) {
+    if (!p.scope) return "";
+    const items = p.scope.items.map((t) => `<li>${esc(t)}</li>`).join("");
+    const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(p.scope.name)}">${label}</button>`;
+    return `<div class="scope"><div class="sh"><span class="cap">${esc(p.scope.name)} · scope</span><span class="wait">Waiting on you</span></div>
+      <ul>${items}</ul>
+      <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
+  }
+
   function card(p, stages) {
     p.where = p.where || []; p.notices = p.notices || [];
     const track = stages.map((_, i) => `<i class="${i < p.stage ? "on" : i === p.stage ? "now" : ""}"></i>`).join("");
-    const names = stages.map((s, i) => `<span class="${i === p.stage ? "now" : ""}">${esc(s)}</span>`).join("");
-    const tag = `<span class="tag ${p.stage >= 3 ? "ok" : p.notices.some((n) => n.lane === "general") ? "wait" : ""}">${esc(p.stage_label)}</span>`;
+    const tag = `<span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>`;
     return `<article class="proj">
-      <div class="top"><div><span class="code">${esc(p.code)}</span><h3>${esc(p.name)}</h3>
-        <span class="co">${esc(p.company)}${p.phase ? " · " + esc(p.phase) : ""}</span></div>${tag}</div>
-      ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
-      <div class="track">${track}</div><div class="steps">${names}</div>
+      <div class="top"><div><h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}${p.code ? " · " + esc(p.code) : ""}</span></div>${tag}</div>
+      <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
       ${p.where.length ? `<div class="where">${p.where.map(where).join("")}</div>` : ""}
-      ${p.notices.map((n) => `<div class="ntc">${icon("i-bell")}${esc(n.text)}</div>`).join("")}
+      ${scope(p)}
     </article>`;
   }
 
@@ -41,17 +49,16 @@
     const all = v.projects.flatMap((p) => (p.notices || []).map((n) => ({ ...n, p })));
     const set = (el, n) => { el.dataset.n = n; el.textContent = n || ""; };
     set($(".bell .badge"), all.length);
-    set($(".act.credits .badge"), all.filter((n) => n.lane === "credits").length);
-    set($(".act.deploy .badge"), all.filter((n) => n.lane === "deploy").length);
+    set($('.tk[data-lane="credits"] .badge'), all.filter((n) => n.lane === "credits").length);
+    set($('.tk[data-lane="deploy"] .badge'), all.filter((n) => n.lane === "deploy").length);
     $(".pop").innerHTML = all.length
-      ? all.map((n) => `<div class="row">${icon(n.lane === "credits" ? "i-credits" : n.lane === "deploy" ? "i-deploy" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
+      ? all.map((n) => `<div class="row">${icon(n.lane === "credits" ? "i-credits" : n.lane === "deploy" ? "i-deploy" : n.lane === "scope" ? "i-doc" : "i-bell")}<div>${esc(n.text)}<small>${esc(n.p.name)}</small></div></div>`).join("")
       : `<div class="none">Nothing new.</div>`;
   }
 
   function hub(v) {
     view = v;
     $("#gate").hidden = true; $("#hub").hidden = false;
-    $(".who").innerHTML = `<b>${esc(v.full || v.name)}</b><br>${esc(v.role || "")}${v.company ? " · " + esc(v.company) : ""}`;
     $(".co").textContent = v.owner ? "Owner view · every hub" : v.company || "";
     $(".greet").innerHTML = `Good ${part}, <em>${esc(v.name)}</em>.`;
     const n = v.projects.length;
@@ -64,17 +71,25 @@
   function open(which) {
     const form = $(".ask");
     const same = lane === which && !form.hidden;
-    document.querySelectorAll(".act").forEach((b) => b.setAttribute("aria-expanded", String(!same && b.dataset.lane === which)));
+    document.querySelectorAll(".tk").forEach((b) => b.setAttribute("aria-expanded", String(!same && b.dataset.lane === which)));
     if (same) { form.hidden = true; lane = null; return; }
     lane = which;
     form.hidden = false;
-    $(".ttl", form).textContent = LANES[which].title;
-    $("h3 use", form).setAttribute("href", which === "credits" ? "#i-credits" : "#i-deploy");
     form.msg.placeholder = LANES[which].ph;
     form.msg.focus({ preventScroll: true });
   }
 
-  document.querySelectorAll(".act").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
+  document.querySelectorAll(".tk").forEach((b) => b.addEventListener("click", () => open(b.dataset.lane)));
+
+  const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
+  $("#cards").addEventListener("click", (e) => {
+    const b = e.target.closest(".sk");
+    if (!b) return;
+    const lead = { accept: "We accept this scope.", deny: "We decline this scope.", change: "We'd like these changes to the scope:\n\n" }[b.dataset.ans];
+    const subject = `[R-CAI] ${b.dataset.s} scope · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`;
+    const body = `${lead}\n\n— ${view ? view.full || view.name : ""}${view && view.company ? ", " + view.company : ""}`;
+    location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
 
   $(".ask").addEventListener("submit", (e) => {
     e.preventDefault();
