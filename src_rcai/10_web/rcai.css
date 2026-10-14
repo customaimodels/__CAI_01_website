@@ -176,6 +176,12 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .ra-f textarea{width:100%;box-sizing:border-box;resize:vertical;background:rgba(255,255,255,.03);border:1px solid var(--line-2);border-radius:10px;
   color:#fff;font:inherit;font-size:13px;padding:10px 12px}
 .ra-f textarea:focus{outline:none;border-color:rgba(192,192,200,.5)}
+.ra-keys{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ra-k{all:unset;box-sizing:border-box;cursor:pointer;height:28px;padding:0 11px;display:inline-flex;align-items:center;gap:6px;border-radius:999px;
+  border:1px solid var(--line-2);color:var(--ink-2);font-size:12px;transition:color .15s,border-color .15s,background .15s}
+.ra-k:hover{color:#fff;border-color:rgba(192,192,200,.5)}
+.ra-k[aria-pressed=true]{color:#fff;border-color:#d9a62c;background:rgba(217,166,44,.1)}
+.ra-k[aria-pressed=true]::before{content:"✓";color:#d9a62c;font-size:11px}
 .ra-row{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
 .ra-wait{display:inline-flex;align-items:center;gap:8px;height:32px;font-size:12.5px;color:var(--ink-2)}
 .ra-wait::before{content:"";width:6px;height:6px;border-radius:50%;background:#d9a62c}
