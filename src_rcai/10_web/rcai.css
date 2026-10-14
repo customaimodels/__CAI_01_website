@@ -313,6 +313,9 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .hold{display:flex;gap:10px;align-items:flex-start;margin:18px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(90deg,rgba(217,166,44,.08),transparent 70%);font-size:13px;color:var(--ink-2)}
 .hold i{flex:none;width:7px;height:7px;margin-top:6px;border-radius:50%;background:var(--gold)}.hold b{color:var(--ink);font-weight:600}
 .sks.frozen .sk.accept,.sks.frozen .sk.stripe{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);border:1px solid var(--line);filter:grayscale(1);cursor:not-allowed;pointer-events:none;font-weight:500}
+.adgo:disabled,.ad.sw:disabled{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015));color:rgba(255,255,255,.3);box-shadow:none;filter:grayscale(1);cursor:not-allowed;pointer-events:none;transform:none}
+.adds.frozen .adg .ad{opacity:.45;filter:grayscale(1)}
+.scx:disabled{cursor:default;color:var(--mute);border-bottom-style:dashed;pointer-events:none}
 .sk.stripe.off{background:transparent;color:var(--mute);border:1px dashed var(--line-2);font-weight:500;cursor:default;filter:none}
 /* ask to change the scope: small letters under the answer; opens a comment per deliverable + new capabilities */
 .scx{all:unset;cursor:pointer;display:block;margin-top:16px;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--mute);border-bottom:1px solid var(--line-2);padding-bottom:3px;width:max-content}

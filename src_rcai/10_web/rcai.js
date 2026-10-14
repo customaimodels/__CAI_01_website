@@ -43,12 +43,12 @@
       ${part(3, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
       <div class="holdslot">${holdHTML()}</div>
       <div class="sks${held() ? " frozen" : ""}">${key("accept", "Accept now, pay later", held())}<span class="stslot">${stripeHTML(s)}</span>${key("deny", "Decline")}</div>
-      <button type="button" class="scx" aria-expanded="false">Ask to change the scope of the project</button>
+      <button type="button" class="scx" aria-expanded="false"${held() ? " disabled" : ""}>${held() ? "Scope change in review" : "Ask to change the scope of the project"}</button>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
         <div class="w" data-w="1">
           ${ad.length ? `<div class="swpk"><div class="adh"><b>The package</b><small class="few">only these switch on and off</small></div>
-            <div class="adg">${ad.map((a, j) => `<button type="button" class="ad sw" data-a="${j}" aria-pressed="${picked.includes(j)}">
+            <div class="adg">${ad.map((a, j) => `<button type="button" class="ad sw" data-a="${j}" aria-pressed="${picked.includes(j)}"${held() ? " disabled" : ""}>
               <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div></div>` : ""}
           <p class="lede">Comment on any deliverable, or add a capability. Every note saves on this device as you type, so nothing is lost.
             When you press Save, a first reader checks each note is specific enough to build from: what, where, for whom.</p>
@@ -208,12 +208,13 @@
   function addsHTML(s, picked) {
     const ad = s.addons || [];
     if (!ad.length) return "";
+    const h = held();
     if (picked.length) return `<div class="adds in"><span class="ok">${icon("i-check")}</span><b>In your build</b>
-      <span>${addNames(s, picked).map(esc).join(" · ")}</span><small class="few">change it in Ask to change the scope</small></div>`;
-    return `<div class="adds"><div class="adh"><b>The package · not in the build</b><span>All ${ad.length}, small on the bill.</span>
-        <small class="few">or select a few when you ask to change the scope</small></div>
+      <span>${addNames(s, picked).map(esc).join(" · ")}</span><small class="few">${h ? "locked while your scope change is in review" : "change it in Ask to change the scope"}</small></div>`;
+    return `<div class="adds${h ? " frozen" : ""}"><div class="adh"><b>The package · not in the build</b><span>All ${ad.length}, small on the bill.</span>
+        <small class="few">${h ? "locked while your scope change is in review" : "or select a few when you ask to change the scope"}</small></div>
       <div class="adg pkg">${ad.map((a) => `<div class="ad"><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></div>`).join("")}</div>
-      <div class="adk"><button type="button" class="adgo">Add the package to my build →</button></div></div>`;
+      <div class="adk"><button type="button" class="adgo"${h ? " disabled" : ""}>Add the package to my build →</button></div></div>`;
   }
   const delivHTML = (s, picked) => s.items.map((t) => `<li>${esc(t)}</li>`).join("")
     + picked.map((j) => (s.addons || [])[j]).filter(Boolean).map((a) => `<li class="plus">${esc(a.title)}: ${esc(a.why)}</li>`).join("");
@@ -241,7 +242,12 @@
     $(".holdslot").innerHTML = holdHTML();
     $(".sks").classList.add("frozen");
     $(".sks .sk.accept").disabled = true;
-    $(".stslot").innerHTML = stripeHTML(view.projects[+location.hash.slice(4)].scope);
+    const s = view.projects[+location.hash.slice(4)].scope;
+    $(".stslot").innerHTML = stripeHTML(s);
+    // the package locks with the answer keys: no adding, no switching, no second scope change until we come back
+    $(".adslot").innerHTML = addsHTML(s, added());
+    $$(".ad.sw").forEach((b) => (b.disabled = true));
+    const x = $(".scx"); x.disabled = true; x.textContent = "Scope change in review";
   }
   function setAdded(picked) {
     const s = view.projects[+location.hash.slice(4)].scope;
@@ -256,6 +262,7 @@
 
   const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
   $("#scopes").addEventListener("click", (e) => {
+    if (held() && e.target.closest(".adgo, button.ad.sw, .scx")) return;
     if (e.target.closest(".adgo")) { setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
     if (a) {
