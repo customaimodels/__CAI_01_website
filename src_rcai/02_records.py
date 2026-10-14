@@ -3,7 +3,7 @@
 Reads the hub's people / companies / projects / access.json. Hands out ONLY the client-safe
 fields below. Internal notes, money and estimates never leave this file -- the hub's records
 disagree with each other on balances today, so billing stays off the portal until they agree.
-One exception: a Phase 2 proposal's `pay:` line in delivery.yml, which he writes by hand.
+One exception: a Phase 2 proposal's `price:` / add-on prices / `invoice:` lines in delivery.yml, written by hand.
 """
 import base64
 import json
@@ -85,20 +85,29 @@ def _delivery(path):
                 sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
                 if item.strip():
                     sc["items"].append(item.strip())
-            elif k == "addon":                    # `addon: Phase 2 | title | one line` -- NOT in the build, offered first; no price shipped
+            elif k == "addon":                    # `addon: Phase 2 | title | one line | 166` -- NOT in the build, offered FIRST.
+                # 3-5 per phase (--check). Added = they join the deliverables and their price joins the total;
+                # the page never says what one costs. Only these toggle, and only in "Ask to change the scope".
                 name, _, rest = v.partition("|")
-                title, _, why = rest.partition("|")
+                title, _, rest = rest.partition("|")
+                why, _, price = rest.partition("|")
                 sc = cur.setdefault("scope", {"name": name.strip(), "items": []})
                 if title.strip():
-                    sc.setdefault("addons", []).append({"title": title.strip(), "why": why.strip()})
+                    sc.setdefault("addons", []).append({"title": title.strip(), "why": why.strip(),
+                                                        "p": int(re.sub(r"\D", "", price) or 0)})
+            elif k == "price":                    # `price: 1660 | 50` -- the fixed total and the % paid to start
+                tot, _, pct = v.partition("|")
+                cur["price"] = {"base": int(re.sub(r"\D", "", tot) or 0), "pct": int(re.sub(r"\D", "", pct) or 50)}
             elif k == "timeline":                 # `timeline: when | what`, in order
                 when, _, what = v.partition("|")
                 cur.setdefault("timeline", []).append({"when": when.strip(), "what": what.strip()})
             elif k == "pay":                      # `pay: $3,250 | what it starts` -- the ONE money line, written on purpose
                 amt, _, what = v.partition("|")
                 cur["pay"] = {"amount": amt.strip(), "what": what.strip()}
-            elif k == "invoice":                  # the real invoice link, or nothing
-                cur["invoice"] = v
+            elif k == "invoice":                  # `invoice: <url>` = the build alone · `invoice: 3 | <url>` = with 3 add-ons in
+                n, bar, url = v.partition("|")
+                n, url = (n.strip(), url.strip()) if bar and n.strip().isdigit() else ("0", v)
+                cur.setdefault("invoices", {})[n] = url
             elif k == "owner":                    # `owner: Cory Anderson | President` -- who owns the project, on its square
                 name, _, role = v.partition("|")
                 cur["owner"] = {"name": name.strip(), "role": role.strip()}
@@ -154,7 +163,8 @@ def _card(db, cfg, pid):
     return {
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
-        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "pay_link": d.get("invoice")} if scope and scope["items"] else None),
+        "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "price": d.get("price"),
+                   "pay_links": d.get("invoices", {})} if scope and scope["items"] else None),
         "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
         "id": pid,

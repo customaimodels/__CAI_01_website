@@ -207,7 +207,20 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .adg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .ad{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border-radius:14px;
   border:1px solid var(--line-2);background:var(--card-2);transition:border-color .15s,background .15s,transform .15s}
-.ad:hover{border-color:rgba(255,255,255,.26);transform:translateY(-1px)}
+.ad.sw:hover{border-color:rgba(255,255,255,.26);transform:translateY(-1px)}
+.adg.pkg .ad{cursor:default}
+/* added: the package collapses to one quiet line; the items now sit in 01 Deliverables (gold dash) */
+.adds.in{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0}
+.adds.in .ok{align-self:center;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#0e0c12}
+.adds.in .ok .ico{width:11px;height:11px}
+.adds.in b{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.adds.in span{color:var(--ink);font-size:14px}
+.adds.in .few{margin-left:auto;font:500 10.5px/1.4 var(--mono);color:var(--mute)}
+.scope li.plus::marker{color:var(--gold)}
+/* inside Ask to change the scope: the only switches on the page */
+.swpk{margin:0 0 18px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.swpk .adh{margin-bottom:10px}
+.swpk .adh .few{flex-basis:auto;margin-top:0}
 .ad strong{font:600 15px/1.25 var(--head);letter-spacing:-.015em;color:var(--ink);padding-right:28px}
 .ad small{color:var(--ink-2);font-size:13px;line-height:1.45}
 .ad .tick{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);color:transparent}

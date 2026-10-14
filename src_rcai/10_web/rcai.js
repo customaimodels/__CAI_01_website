@@ -32,31 +32,23 @@
   function scope(p) {
     const s = p.scope;
     const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
-    const items = `<ul>${s.items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
     const tl = (s.timeline || []).length
       ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
-    const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}</div>`;
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
-    // add-ons FIRST (delivery.yml addon:): not in the build, small on the bill. Picked before any price shows;
-    // the page never carries their price -- it is quoted on its own small invoice, approved before anything is billed.
-    // Sold as ONE package (all ticked by default); small letters let them take a few instead.
-    const ad = s.addons || [], picked = addPicked(ad.length);
-    const adds = ad.length ? `<div class="adds"><div class="adh"><b>The package · not in the build</b><span>${ad.length > 1 ? `All ${ad.length}, small on the bill.` : "Small on the bill."}</span>
-          ${ad.length > 1 ? `<small class="few">or select a few · tap one to take it out</small>` : ""}</div>
-        <div class="adg pkg">${ad.map((a, j) => `<button type="button" class="ad" data-a="${j}" aria-pressed="${picked.includes(j)}">
-          <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div>
-        <div class="adk"><button type="button" class="adgo">${addLabel(picked, ad.length)}</button>
-          <span class="adn">Quoted on its own small invoice. Nothing is billed until you approve it.</span></div></div>` : "";
+    const ad = s.addons || [], picked = added();
     return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
-      ${adds}${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
-      <div class="sks">${key("accept", "Accept now, pay later")}
-        ${s.pay_link ? `<a class="sk stripe" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>` : `<span class="sk stripe off">Pay deposit through Stripe · link on its way</span>`}
-        ${key("deny", "Decline")}</div>
+      <div class="adslot">${addsHTML(s, picked)}</div>
+      ${part(1, "Deliverables", `<ul class="dl">${delivHTML(s, picked)}</ul>`)}${part(2, "Timeline", tl)}
+      ${part(3, "Start the build", `<div class="payrow">${payHTML(s, picked)}</div>`)}
+      <div class="sks">${key("accept", "Accept now, pay later")}<span class="stslot">${stripeHTML(s, picked)}</span>${key("deny", "Decline")}</div>
       <button type="button" class="scx" aria-expanded="false">Ask to change the scope of the project</button>
       <form class="scf" hidden>
         <ol class="steps"><li data-w="1">Write</li><li data-w="2">Review</li><li data-w="3">Questions</li><li data-w="4">Sent</li></ol>
         <div class="w" data-w="1">
+          ${ad.length ? `<div class="swpk"><div class="adh"><b>The package</b><small class="few">only these switch on and off</small></div>
+            <div class="adg">${ad.map((a, j) => `<button type="button" class="ad sw" data-a="${j}" aria-pressed="${picked.includes(j)}">
+              <i class="tick">${icon("i-check")}</i><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></button>`).join("")}</div></div>` : ""}
           <p class="lede">Comment on any deliverable, or add a capability. Every note saves on this device as you type, so nothing is lost.
             When you press Save, a first reader checks each note is specific enough to build from: what, where, for whom.</p>
           <ol class="its">${s.items.map((t, j) => `<li><span>${esc(t)}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
@@ -199,40 +191,60 @@
     window.scrollTo({ top: 0 });
   });
 
-  // add-ons: a pick is kept on this device per client + project; "Add … to my build" sends the picks (the filled-in email).
-  // Accept carries them too, so a fast yes still lands them in the build.
-  const ADDKEY = () => `rcai.addons.${view?.email || ""}.${+location.hash.slice(4)}`;
-  // nothing stored yet = the whole package is in.
-  function addPicked(n) {
-    try { const v = localStorage.getItem(ADDKEY()); if (v) return JSON.parse(v); } catch {}
-    return [...Array(n || $$(".ad").length).keys()];
-  }
-  const addLabel = (picked, n) => picked.length === n && n > 1 ? "Add the package to my build →"
-    : picked.length ? `Add ${picked.length === 1 ? "this one" : picked.length} to my build →` : "Add the package to my build →";
+  // add-ons (delivery.yml addon:, 3-5): FIRST on the page, NOT in the build, sold as one package. One key adds all of them:
+  // they join the deliverables and the total moves (base + each add-on's price; the page never says what one costs).
+  // Only "Ask to change the scope" switches them off and on, one by one. Kept on this device per client + project.
+  const ADDKEY = () => `rcai.added.${view?.email || ""}.${+location.hash.slice(4)}`;
+  function added() { try { return JSON.parse(localStorage.getItem(ADDKEY()) || "[]"); } catch { return []; } }
   const addNames = (s, idx) => idx.map((j) => (s.addons || [])[j]?.title).filter(Boolean);
+  const money = (n) => "$" + n.toLocaleString("en-US");
+  function bill(s, picked) {
+    if (!s.price) return null;
+    const tot = s.price.base + picked.reduce((a, j) => a + ((s.addons || [])[j]?.p || 0), 0), dep = Math.round(tot * s.price.pct / 100);
+    return { tot, dep, rest: tot - dep, pct: s.price.pct };
+  }
+  function addsHTML(s, picked) {
+    const ad = s.addons || [];
+    if (!ad.length) return "";
+    if (picked.length) return `<div class="adds in"><span class="ok">${icon("i-check")}</span><b>In your build</b>
+      <span>${addNames(s, picked).map(esc).join(" · ")}</span><small class="few">change it in Ask to change the scope</small></div>`;
+    return `<div class="adds"><div class="adh"><b>The package · not in the build</b><span>All ${ad.length}, small on the bill.</span>
+        <small class="few">or select a few when you ask to change the scope</small></div>
+      <div class="adg pkg">${ad.map((a) => `<div class="ad"><strong>${esc(a.title)}</strong><small>${esc(a.why)}</small></div>`).join("")}</div>
+      <div class="adk"><button type="button" class="adgo">Add the package to my build →</button></div></div>`;
+  }
+  const delivHTML = (s, picked) => s.items.map((t) => `<li>${esc(t)}</li>`).join("")
+    + picked.map((j) => (s.addons || [])[j]).filter(Boolean).map((a) => `<li class="plus">${esc(a.title)}: ${esc(a.why)}</li>`).join("");
+  function payHTML(s, picked) {
+    const b = bill(s, picked);
+    if (b) return `<strong>${money(b.dep)}</strong><p>${b.pct}% of ${money(b.tot)} fixed, to start. The other ${money(b.rest)} on go-live.</p>`;
+    return s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : "";
+  }
+  // the deposit invoice must match what is in the build: delivery.yml `invoice: N | link` per number of add-ons.
+  function stripeHTML(s, picked) {
+    const link = (s.pay_links || {})[String(picked.length)];
+    return link ? `<a class="sk stripe" href="${esc(link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>`
+      : `<span class="sk stripe off">Pay deposit through Stripe · ${picked.length ? "updated invoice" : "link"} on its way</span>`;
+  }
+  function setAdded(picked) {
+    const s = view.projects[+location.hash.slice(4)].scope;
+    picked = [...new Set(picked)].sort();
+    localStorage.setItem(ADDKEY(), JSON.stringify(picked));
+    $(".adslot").innerHTML = addsHTML(s, picked);
+    $(".dl").innerHTML = delivHTML(s, picked);
+    $(".payrow").innerHTML = payHTML(s, picked);
+    $(".stslot").innerHTML = stripeHTML(s, picked);
+    $$(".ad.sw").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
+  }
 
   const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
   $("#scopes").addEventListener("click", (e) => {
-    const a = e.target.closest("button.ad");
+    if (e.target.closest(".adgo")) { setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
+    const a = e.target.closest("button.ad.sw");
     if (a) {
-      const j = +a.dataset.a, set = new Set(addPicked());
+      const j = +a.dataset.a, set = new Set(added());
       set.has(j) ? set.delete(j) : set.add(j);
-      const picked = [...set].sort();
-      localStorage.setItem(ADDKEY(), JSON.stringify(picked));
-      a.setAttribute("aria-pressed", String(set.has(j)));
-      $(".adgo").innerHTML = addLabel(picked, $$(".ad").length);
-      return;
-    }
-    if (e.target.closest(".adgo")) {
-      const p = view.projects[+location.hash.slice(4)], s = p.scope;
-      let picked = addPicked();
-      if (!picked.length) picked = (s.addons || []).map((_, j) => j);
-      localStorage.setItem(ADDKEY(), JSON.stringify(picked));
-      $$(".ad").forEach((b) => b.setAttribute("aria-pressed", String(picked.includes(+b.dataset.a))));
-      $(".adgo").innerHTML = `Added ✓ · ${picked.length} in your build`;
-      $(".adgo").classList.add("done");
-      mail(`[R-CAI] ${s.name} · Add to my build · ${p.name}`,
-        `Please add to ${s.name}:\n${addNames(s, picked).map((t) => "· " + t).join("\n")}\n\nSend me the small invoice for these to approve.` + sign());
+      setAdded([...set]);
       return;
     }
     const x = e.target.closest(".scx");
@@ -246,8 +258,10 @@
     const b = e.target.closest("button.sk");
     if (!b) return;
     const lead = { accept: "We accept this proposal. We'll pay the deposit later.", deny: "We decline this proposal." }[b.dataset.ans];
-    const p = view.projects[+location.hash.slice(4)], adn = b.dataset.ans === "accept" && p ? addNames(p.scope, addPicked()) : [];
-    const plus = adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "";
+    const p = view.projects[+location.hash.slice(4)], pk = added(), yes = b.dataset.ans === "accept" && p;
+    const adn = yes ? addNames(p.scope, pk) : [], bl = yes && bill(p.scope, pk);
+    const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
+      + (bl ? `\n\nTotal ${money(bl.tot)} · ${money(bl.dep)} to start.` : "");
     mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + plus + sign());
   });
 
@@ -315,7 +329,7 @@
         const body = Object.entries(ns.items).map(([j, v]) => `• ${s.items[j]}\n  → ${v}`).join("\n\n");
         const qa = qs.map((q, j) => `Q: ${q}\nA: ${f["q" + j].value.trim()}`).join("\n\n");
         mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${p.name}`,
-          `Comments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
+          `The package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
         try { localStorage.removeItem(KEY()); } catch {}
         step(f, 4);
       }
