@@ -9,262 +9,215 @@
 <link rel="icon" href="03_img/05_knot_gold.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="01_css/00_tokens.css?v=93b2c2a7a4">
-<link rel="stylesheet" href="01_css/01_site.css?v=93b2c2a7a4">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="01_css/00_tokens.css?v=8df89c6ea9">
+<link rel="stylesheet" href="01_css/01_site.css?v=8df89c6ea9">
 </head>
 <body>
 
-<!-- icons: Icon Motion Atlas grammar — 24px grid, one stroke, round joins, circles · arcs · lines -->
+<!-- icons: CID Icon Atlas grammar -- 72 grid, one stroke, round joins, one blue signal node (var(--sig)) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
- <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6H9l2 2h8.5A1.5 1.5 0 0 1 21 9.5v8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/></symbol>
- <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
- <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></symbol>
- <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
- <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16 9.5"/></symbol>
- <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9c0 5-6 4-11.2 8.6"/></symbol>
- <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.3 9.2 4.4 4.4 0 0 0 7 18z"/></symbol>
- <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
- <symbol id="i-deploy" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4 14v4.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V14"/></symbol>
- <symbol id="i-loop" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14.3 4.9M4 12a8 8 0 0 1 14.3-4.9"/><path d="M18.5 3v4.2h-4.2M5.5 21v-4.2h4.2"/></symbol>
- <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></symbol>
- <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4A1.5 1.5 0 0 1 4 14.5z"/></symbol>
- <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></symbol>
- <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z"/></symbol>
- <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6.5 8h11v3a5.5 5.5 0 0 1-11 0zM12 16.5V21"/></symbol>
- <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
- <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
- <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/><path d="m14 7 3 3"/></symbol>
- <symbol id="i-wrap" viewBox="0 0 24 24"><path d="M8 4H6.5A1.5 1.5 0 0 0 5 5.5v4L3 12l2 2.5v4A1.5 1.5 0 0 0 6.5 20H8M16 4h1.5A1.5 1.5 0 0 1 19 5.5v4l2 2.5-2 2.5v4a1.5 1.5 0 0 1-1.5 1.5H16"/><rect x="9" y="9" width="6" height="6" rx="1"/></symbol>
- <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
- <symbol id="i-core" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5"/></symbol>
- <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20.5c1.2-3.8 4.3-6 8-6s6.8 2.2 8 6"/></symbol>
- <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
- <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 72 72"><path d="M14 36h44M44 22l14 14-14 14"/></symbol>
+ <symbol id="i-house" viewBox="0 0 72 72"><path d="M12 34 36 15l24 19"/><path d="M18 30v26h36V30"/><rect x="27" y="36" width="18" height="12" rx="2"/><circle cx="36" cy="42" r="3" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-website" viewBox="0 0 72 72"><rect x="14" y="17" width="44" height="38" rx="4"/><path d="M14 27h44"/><circle cx="21" cy="22" r="1.6" style="fill:var(--sig);stroke:none"/><circle cx="36" cy="41" r="7"/></symbol>
+ <symbol id="i-phone" viewBox="0 0 72 72"><rect x="23" y="12" width="26" height="48" rx="6"/><path d="M32 18h8"/><circle cx="36" cy="52" r="2.6" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-webapp" viewBox="0 0 72 72"><rect x="13" y="15" width="46" height="42" rx="5"/><circle cx="36" cy="37" r="8"/><circle cx="33" cy="37" r="3" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-builder" viewBox="0 0 72 72"><rect x="14" y="16" width="16" height="16"/><rect x="42" y="16" width="16" height="16"/><rect x="28" y="42" width="16" height="16" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-analytics" viewBox="0 0 72 72"><path d="M16 56V18M16 56h42"/><path d="M27 48v-8M39 48V32"/><path d="M51 48V22" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-ai" viewBox="0 0 72 72"><circle cx="36" cy="36" r="22"/><circle cx="29" cy="36" r="5" style="fill:var(--sig);stroke:none"/><path d="M42 36h18"/></symbol>
+ <symbol id="i-auto" viewBox="0 0 72 72"><path d="M17 39a20 20 0 1 1 7 13"/><path d="M18 51l6 1-1-6"/><circle cx="43" cy="28" r="4" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 72 72"><path d="M13 18h34a7 7 0 0 1 7 7v15a7 7 0 0 1-7 7H30l-10 8v-8h-7z"/><circle cx="28" cy="32" r="3" style="fill:var(--sig);stroke:none"/><circle cx="38" cy="32" r="3" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-db" viewBox="0 0 72 72"><ellipse cx="36" cy="21" rx="20" ry="8"/><path d="M16 21v28c0 4 9 8 20 8s20-4 20-8V21M16 35c0 4 9 8 20 8s20-4 20-8"/></symbol>
+ <symbol id="i-validate" viewBox="0 0 72 72"><rect x="15" y="18" width="42" height="36" rx="4"/><path d="M24 37l8 8 16-18" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-page" viewBox="0 0 72 72"><path d="M22 14h22l8 8v36H22z"/><path d="M44 14v10h10M28 34h18M28 42h14"/></symbol>
+ <symbol id="i-workflow" viewBox="0 0 72 72"><circle cx="15" cy="36" r="5"/><circle cx="36" cy="36" r="5" style="fill:var(--sig);stroke:none"/><circle cx="57" cy="36" r="5"/><path d="M20 36h11M41 36h11"/></symbol>
+ <symbol id="i-edit" viewBox="0 0 72 72"><rect x="14" y="16" width="38" height="40" rx="4"/><path d="M29 45l4-12 15-15 7 7-15 15z"/><path d="M33 33l7 7" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-api" viewBox="0 0 72 72"><rect x="10" y="26" width="18" height="20" rx="3"/><rect x="44" y="26" width="18" height="20" rx="3"/><path d="M28 36h16" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-deploy" viewBox="0 0 72 72"><rect x="14" y="24" width="28" height="28" rx="3"/><path d="M35 18h21v21M56 18L34 40" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-domain" viewBox="0 0 72 72"><circle cx="31" cy="36" r="16"/><path d="M47 36h12M55 32l4 4-4 4"/><circle cx="31" cy="36" r="4" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-notify" viewBox="0 0 72 72"><path d="M24 49h24l-3-6V32a9 9 0 0 0-18 0v11z"/><circle cx="48" cy="21" r="4" style="fill:var(--sig);stroke:none"/><path d="M32 54a5 5 0 0 0 8 0"/></symbol>
+ <symbol id="i-shield" viewBox="0 0 72 72"><path d="M36 13 17 20v15c0 12 8 21 19 25 11-4 19-13 19-25V20z"/><circle cx="36" cy="35" r="4" style="fill:var(--sig);stroke:none"/></symbol>
+ <symbol id="i-link" viewBox="0 0 72 72"><circle cx="22" cy="36" r="8"/><circle cx="50" cy="36" r="8"/><path d="M30 36h12" style="stroke:var(--sig)"/></symbol>
+ <symbol id="i-user" viewBox="0 0 72 72"><circle cx="36" cy="26" r="10"/><path d="M18 58c2-10 9-16 18-16s16 6 18 16"/></symbol>
+ <symbol id="i-credits" viewBox="0 0 72 72"><circle cx="34" cy="36" r="20"/><path d="M34 27v18M25 36h18"/><circle cx="54" cy="20" r="4" style="fill:var(--sig);stroke:none"/></symbol>
 </svg>
 
 <header id="bar">
  <div class="wrap">
   <a class="brand" href="#top"><img src="03_img/05_knot_gold.png" alt="">Custom AI Models</a>
   <nav>
-   <a href="#build">Build</a>
-   <a href="#deploy">Deploy</a>
+   <a href="#ship">How it ships</a>
+   <a href="#build">What we build</a>
    <a href="#ask">Ask</a>
+   <a href="/r-cai/">R-CAI</a>
    <a class="yv" href="/y-vault/">Y_VAULT</a>
   </nav>
   <div class="act">
-   <a class="btn line" href="/r-cai/"><svg class="ico"><use href="#i-user"/></svg>Client login</a>
-   <a class="btn go" href="mailto:customaimodels@gmail.com?subject=A%20new%20project">Start a project</a>
+   <a class="btn line" href="/r-cai/"><svg class="ico"><use href="#i-user"/></svg>R-CAI</a>
+   <a class="btn ink" href="mailto:customaimodels@gmail.com?subject=A%20new%20project">Start a project</a>
   </div>
  </div>
 </header>
 
 <main id="top">
 
+<!-- 01 · HERO: paper left, night right -->
 <section class="hero">
- <div class="wrap">
- <div class="field">
-  <div>
-   <span class="cap rv">Custom AI Models</span>
-   <h1 class="rv" style="--i:1">Custom solutions<br>from <em>your</em> data.</h1>
-   <span class="cap rv" style="--i:2">Delivered local · on the web · in your pocket</span>
-   <div class="row rv" style="--i:3">
-    <a class="btn go" href="mailto:customaimodels@gmail.com?subject=A%20new%20project">Start a project<svg class="ico"><use href="#i-arrow"/></svg></a>
-    <a class="btn" href="#deploy">See how it ships</a>
+ <div class="wrap grid">
+  <div class="say">
+   <span class="idx rv"><b>01</b><i></i></span>
+   <span class="tag rv" style="--i:1">Custom AI models · local · web · phone</span>
+   <h1 class="rv" style="--i:2">Custom solutions from <em>your data.</em></h1>
+   <p class="lede rv" style="--i:3">Python you own, the model behind it, and one link to open it. Built from what you already have.</p>
+   <div class="row rv" style="--i:4">
+    <a class="btn ink big" href="mailto:customaimodels@gmail.com?subject=A%20new%20project">Start a project<svg class="ico"><use href="#i-arrow"/></svg></a>
+    <a class="btn ghost big" href="#ship">See how it ships</a>
+   </div>
+   <ul class="vow rv" style="--i:5">
+    <li><svg class="ico"><use href="#i-shield"/></svg><span><b>Your data stays yours.</b> It never leaves your hands.</span></li>
+    <li><svg class="ico"><use href="#i-ai"/></svg><span><b>Python you own.</b> Not a model that changes under you.</span></li>
+    <li><svg class="ico"><use href="#i-link"/></svg><span><b>One link.</b> Hundreds of Python processes behind it.</span></li>
+   </ul>
+  </div>
+
+  <div class="night stage rv" style="--i:2">
+   <svg class="land" viewBox="0 0 700 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0c13"/><stop offset=".65" stop-color="#1a1827"/><stop offset="1" stop-color="#121119"/></linearGradient>
+     <radialGradient id="moon" cx=".38" cy=".35" r=".7"><stop offset="0" stop-color="#f3f1f8"/><stop offset=".6" stop-color="#bdb8cc"/><stop offset="1" stop-color="#6f6a82"/></radialGradient>
+     <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#c9c3ff" stop-opacity=".22"/><stop offset="1" stop-color="#c9c3ff" stop-opacity="0"/></radialGradient>
+     <linearGradient id="town" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0c46a" stop-opacity="0"/><stop offset=".35" stop-color="#f0c46a"/><stop offset=".7" stop-color="#8f84ff"/><stop offset="1" stop-color="#8f84ff" stop-opacity="0"/></linearGradient>
+    </defs>
+    <rect width="700" height="560" fill="url(#sky)"/>
+    <g fill="#e9e6f2" opacity=".55"><circle cx="80" cy="60" r="1"/><circle cx="190" cy="34" r=".8"/><circle cx="260" cy="92" r="1"/><circle cx="340" cy="44" r=".7"/><circle cx="610" cy="70" r=".9"/><circle cx="660" cy="150" r=".7"/><circle cx="130" cy="140" r=".7"/><circle cx="420" cy="120" r=".8"/></g>
+    <circle cx="360" cy="150" r="130" fill="url(#halo)"/>
+    <circle cx="360" cy="150" r="46" fill="url(#moon)"/>
+    <path d="M0 300 90 238l70 40 110-92 90 70 70-48 120 86 80-44 70 30v280H0z" fill="#1b1926"/>
+    <path d="M0 300 90 238l70 40 110-92 90 70 70-48 120 86 80-44 70 30" fill="none" stroke="rgba(255,255,255,.07)"/>
+    <path d="M0 352 120 300l110 44 130-56 140 62 110-40 90 30v260H0z" fill="#15141d"/>
+    <path d="M0 392h700v168H0z" fill="#100f16"/>
+    <path d="M120 349h460" stroke="url(#town)" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round"/>
+    <path d="M120 349h460" stroke="url(#town)" stroke-width="8" opacity=".14"/>
+   </svg>
+   <span class="tag n-tag">Delivered three ways</span>
+   <ul class="rail">
+    <li>Describe</li><li>Shape</li><li>Build</li><li>Deploy</li>
+   </ul>
+   <div class="trio">
+    <figure><span class="fi"><svg class="ico"><use href="#i-house"/></svg></span><figcaption><b>Local</b>On your machine.</figcaption></figure>
+    <figure><span class="fi"><svg class="ico"><use href="#i-website"/></svg></span><figcaption><b>Website</b>One link, live.</figcaption></figure>
+    <figure><span class="fi"><svg class="ico"><use href="#i-phone"/></svg></span><figcaption><b>Phone</b>In your pocket.</figcaption></figure>
    </div>
   </div>
-  <div class="screens">
+ </div>
+</section>
+
+<!-- 02 · HOW IT SHIPS: the one night field with the three hero objects -->
+<section class="ship" id="ship">
+ <div class="wrap">
+  <div class="night field">
+   <div class="head">
+    <div><span class="idx"><b>02</b><i></i></span><h2>Three steps.<br>One live URL.</h2></div>
+    <span class="tag">From your idea to a live system</span>
+   </div>
+
    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-    <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dcd8ff"/><stop offset="1" stop-color="#6b5ee0"/></linearGradient>
-    <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset="1" stop-color="#b8821a"/></linearGradient>
-    <radialGradient id="hp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#6b5ee0" stop-opacity=".32"/><stop offset="1" stop-color="#6b5ee0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9c3ff" stop-opacity=".34"/><stop offset="1" stop-color="#4a63ff" stop-opacity=".06"/></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".75"/><stop offset="1" stop-color="#4a63ff" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset=".6" stop-color="#f0c46a" stop-opacity=".5"/><stop offset="1" stop-color="#f0a040"/></linearGradient>
+    <radialGradient id="pool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#4a63ff" stop-opacity=".45"/><stop offset="1" stop-color="#4a63ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="poolg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f0a040" stop-opacity=".35"/><stop offset="1" stop-color="#f0a040" stop-opacity="0"/></radialGradient>
+    <radialGradient id="orb" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff" stop-opacity=".16"/><stop offset="1" stop-color="#121119" stop-opacity=".2"/></radialGradient>
    </defs></svg>
-   <figure class="scr rv" style="--i:4">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="58" ry="11" fill="url(#hp)"/>
-     <path d="M22 62 75 20l53 42" fill="none" stroke="url(#hg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M32 54v56h86V54" fill="#120a55" stroke="rgba(255,255,255,.16)"/>
-     <rect x="48" y="66" width="54" height="34" rx="4" fill="#170d66" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M54 74h28" stroke="#b9b2ff" stroke-width="2.2" stroke-linecap="round"/>
-     <path d="M66 100v6h18v-6" fill="none" stroke="rgba(255,255,255,.3)"/>
-    </svg>
-    <figcaption><b>Local</b>Runs on your machine.</figcaption>
-   </figure>
-   <figure class="scr rv" style="--i:5">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="58" ry="11" fill="url(#hp)"/>
-     <rect x="18" y="26" width="114" height="80" rx="7" fill="#170d66" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M18 40h114" stroke="rgba(255,255,255,.14)"/>
-     <circle cx="28" cy="33" r="2" fill="rgba(255,255,255,.3)"/><circle cx="36" cy="33" r="2" fill="rgba(255,255,255,.3)"/>
-     <circle cx="75" cy="73" r="20" fill="none" stroke="rgba(255,226,160,.5)" stroke-width="1.2"/>
-     <ellipse cx="75" cy="73" rx="9" ry="20" fill="none" stroke="rgba(255,226,160,.4)" stroke-width="1.1"/>
-     <path d="M55 73h40" stroke="rgba(255,226,160,.4)" stroke-width="1.1"/>
-     <path d="M60 58a20 20 0 0 1 22-5" fill="none" stroke="#ffe2a0" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
-    <figcaption><b>Website</b>One link, live.</figcaption>
-   </figure>
-   <figure class="scr rv" style="--i:6">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="44" ry="10" fill="url(#hp)"/>
-     <rect x="52" y="14" width="46" height="94" rx="10" fill="#170d66" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M68 22h14" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-     <path d="M60 40h22" stroke="#b9b2ff" stroke-width="2.2" stroke-linecap="round"/>
-     <path d="M60 50h30M60 58h26" stroke="rgba(255,255,255,.16)" stroke-width="2" stroke-linecap="round"/>
-     <circle cx="75" cy="99" r="2.5" fill="#ffe2a0"/>
-    </svg>
-    <figcaption><b>Phone</b>In your pocket.</figcaption>
-   </figure>
-  </div>
-  <ul class="vow rv" style="--i:7">
-   <li><svg class="ico"><use href="#i-shield"/></svg><span><b>Your data stays yours.</b> Whatever you need, it never leaves your hands.</span></li>
-   <li><svg class="ico"><use href="#i-core"/></svg><span><b>Python you own.</b> Not a model that changes under you. It stays good until you decide.</span></li>
-   <li><svg class="ico"><use href="#i-link"/></svg><span><b>One link.</b> Hundreds of Python processes behind it, ready for your idea.</span></li>
-  </ul>
- </div>
- </div>
-</section>
 
-<section class="blk" id="deploy">
- <div class="wrap">
-  <div class="head">
-   <div><span class="cap">How it ships</span><h2>Three steps. One live URL.</h2></div>
-   <p>You describe it. We shape it into a proposal. Then it is built, deployed, and you are told it is live.</p>
-  </div>
-
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-   <defs>
-    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dcd8ff"/><stop offset="1" stop-color="#6b5ee0"/></linearGradient>
-    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset="1" stop-color="#b8821a"/></linearGradient>
-    <radialGradient id="pool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#6b5ee0" stop-opacity=".35"/><stop offset="1" stop-color="#6b5ee0" stop-opacity="0"/></radialGradient>
-    <radialGradient id="poolg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#d9a62c" stop-opacity=".28"/><stop offset="1" stop-color="#d9a62c" stop-opacity="0"/></radialGradient>
-   </defs>
-  </svg>
-
-  <div class="steps">
-   <article class="step rv">
-    <span class="n">01</span>
-    <h3>Describe</h3>
-    <p>Tell us what is slow. Plain words are enough.</p>
-    <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="118" rx="60" ry="14" fill="url(#pool)"/>
-     <path d="M28 52a6 6 0 0 1 6-6h26l9 9h47a6 6 0 0 1 6 6v50a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6z" fill="#120a55" stroke="rgba(255,255,255,.18)"/>
-     <path d="M22 68a6 6 0 0 1 6-6h96a6 6 0 0 1 6 6l-4 44a6 6 0 0 1-6 6H32a6 6 0 0 1-6-6z" fill="#170d66" stroke="url(#gb)" stroke-width="1.6"/>
-     <path d="M28 64h92" stroke="#b9b2ff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>
-    </svg></div>
-    <ul>
-     <li><svg class="ico"><use href="#i-chat"/></svg>Your idea, in a sentence</li>
-     <li><svg class="ico"><use href="#i-db"/></svg>The data you have</li>
-     <li><svg class="ico"><use href="#i-check"/></svg>What done looks like</li>
-    </ul>
-   </article>
-   <div class="arw"><svg class="ico"><use href="#i-arrow"/></svg></div>
-   <article class="step mid rv" style="--i:1">
-    <span class="n">02</span>
-    <h3>Shape</h3>
-    <p>A proposal: scope, phases, dates. You sign off.</p>
-    <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="118" rx="62" ry="15" fill="url(#pool)"/>
-     <g stroke="url(#gb)" stroke-width="1.6" fill="#120a55">
-      <path d="M30 96v12c0 8 20 14 45 14s45-6 45-14V96"/><ellipse cx="75" cy="96" rx="45" ry="14"/>
-      <path d="M30 70v12c0 8 20 14 45 14s45-6 45-14V70"/><ellipse cx="75" cy="70" rx="45" ry="14"/>
-      <path d="M30 44v12c0 8 20 14 45 14s45-6 45-14V44"/><ellipse cx="75" cy="44" rx="45" ry="14"/>
-     </g>
-     <ellipse cx="75" cy="44" rx="45" ry="14" fill="none" stroke="#b9b2ff" stroke-width="2.4" opacity=".8"/>
-    </svg></div>
-    <ul>
-     <li><svg class="ico"><use href="#i-doc"/></svg>Proposal</li>
-     <li><svg class="ico"><use href="#i-layers"/></svg>Phases and dates</li>
-     <li><svg class="ico"><use href="#i-pen"/></svg>Your sign-off</li>
-    </ul>
-   </article>
-   <div class="arw"><svg class="ico"><use href="#i-arrow"/></svg></div>
-   <article class="step rv" style="--i:2">
-    <span class="n">03</span>
-    <h3>Build &amp; deploy</h3>
-    <p>Built in Python, pushed to Git, live on Railway.</p>
-    <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="122" rx="56" ry="13" fill="url(#poolg)"/>
-     <circle cx="75" cy="70" r="46" fill="#140b40" stroke="url(#gg)" stroke-width="1.6"/>
-     <g fill="none" stroke="rgba(255,226,160,.45)" stroke-width="1.1">
-      <ellipse cx="75" cy="70" rx="20" ry="46"/><ellipse cx="75" cy="70" rx="38" ry="46"/>
-      <path d="M29 70h92M35 48h80M35 92h80"/>
-     </g>
-     <path d="M41 40a46 46 0 0 1 58-14" fill="none" stroke="#ffe2a0" stroke-width="2.4" stroke-linecap="round"/>
-    </svg></div>
-    <ul>
-     <li><svg class="ico"><use href="#i-branch"/></svg>Code in Git</li>
-     <li><svg class="ico"><use href="#i-cloud"/></svg>Deploy to Railway</li>
-     <li><svg class="ico"><use href="#i-globe"/></svg>Your domain, live</li>
-     <li><svg class="ico"><use href="#i-mail"/></svg>You are notified</li>
-    </ul>
-   </article>
+   <div class="steps">
+    <article class="step rv">
+     <span class="n gold">01<i></i></span>
+     <h3>Describe</h3>
+     <p>Tell us what is slow. Plain words are enough.</p>
+     <div class="obj"><svg viewBox="0 0 160 150" aria-hidden="true">
+      <ellipse class="glow" cx="80" cy="128" rx="58" ry="10" fill="url(#pool)"/>
+      <path d="M34 40a6 6 0 0 1 6-6h28l10 10h40a6 6 0 0 1 6 6v58a6 6 0 0 1-6 6H40a6 6 0 0 1-6-6z" fill="url(#glass)" stroke="rgba(255,255,255,.28)"/>
+      <path d="M26 58a6 6 0 0 1 6-6h96a6 6 0 0 1 6 6l-6 56a6 6 0 0 1-6 6H38a6 6 0 0 1-6-6z" fill="url(#glass)" stroke="url(#edge)" stroke-width="1.4"/>
+      <path d="M40 119h84" stroke="#6f88ff" stroke-width="2.4" stroke-linecap="round"/>
+     </svg></div>
+     <ul>
+      <li><svg class="ico"><use href="#i-chat"/></svg>Your idea, in a sentence</li>
+      <li><svg class="ico"><use href="#i-db"/></svg>The data you have</li>
+      <li><svg class="ico"><use href="#i-validate"/></svg>What done looks like</li>
+     </ul>
+    </article>
+    <span class="arw"><svg class="ico"><use href="#i-arrow"/></svg></span>
+    <article class="step rv" style="--i:1">
+     <span class="n blue">02<i></i></span>
+     <h3>Shape</h3>
+     <p>A proposal: scope, phases, dates. You sign off.</p>
+     <div class="obj"><svg viewBox="0 0 160 150" aria-hidden="true">
+      <ellipse class="glow" cx="80" cy="128" rx="60" ry="11" fill="url(#pool)"/>
+      <g fill="url(#glass)" stroke="rgba(255,255,255,.3)">
+       <path d="M36 92v14c0 8 20 14 44 14s44-6 44-14V92"/><ellipse cx="80" cy="92" rx="44" ry="13"/>
+       <path d="M36 66v14c0 8 20 14 44 14s44-6 44-14V66"/><ellipse cx="80" cy="66" rx="44" ry="13"/>
+       <path d="M36 40v14c0 8 20 14 44 14s44-6 44-14V40"/><ellipse cx="80" cy="40" rx="44" ry="13"/>
+      </g>
+      <path d="M36 80c0 8 20 14 44 14s44-6 44-14" fill="none" stroke="#6f88ff" stroke-width="2.6"/>
+      <path d="M36 106c0 8 20 14 44 14s44-6 44-14" fill="none" stroke="#4a63ff" stroke-width="2.2" opacity=".8"/>
+     </svg></div>
+     <ul>
+      <li><svg class="ico"><use href="#i-page"/></svg>Proposal</li>
+      <li><svg class="ico"><use href="#i-workflow"/></svg>Phases and dates</li>
+      <li><svg class="ico"><use href="#i-edit"/></svg>Your sign-off</li>
+     </ul>
+    </article>
+    <span class="arw"><svg class="ico"><use href="#i-arrow"/></svg></span>
+    <article class="step rv" style="--i:2">
+     <span class="n gold">03<i></i></span>
+     <h3>Build &amp; deploy</h3>
+     <p>Python, in Git, live on Railway. You are told.</p>
+     <div class="obj"><svg viewBox="0 0 160 150" aria-hidden="true">
+      <ellipse class="glow" cx="80" cy="130" rx="54" ry="10" fill="url(#poolg)"/>
+      <circle cx="80" cy="70" r="48" fill="url(#orb)" stroke="rgba(255,255,255,.18)"/>
+      <g fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1">
+       <ellipse cx="80" cy="70" rx="20" ry="48"/><ellipse cx="80" cy="70" rx="38" ry="48"/>
+       <path d="M32 70h96M38 46h84M38 94h84"/>
+      </g>
+      <path d="M110 32a48 48 0 0 1 0 76" fill="none" stroke="url(#rim)" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M96 24a48 48 0 0 1 30 34" fill="none" stroke="#f0c46a" stroke-width="1.2" opacity=".6"/>
+     </svg></div>
+     <ul>
+      <li><svg class="ico"><use href="#i-api"/></svg>Code in Git</li>
+      <li><svg class="ico"><use href="#i-deploy"/></svg>Deploy to Railway</li>
+      <li><svg class="ico"><use href="#i-domain"/></svg>Your domain, live</li>
+      <li><svg class="ico"><use href="#i-notify"/></svg>You are notified</li>
+     </ul>
+    </article>
+   </div>
   </div>
  </div>
 </section>
 
-<section class="blk" id="build" style="padding-top:0">
- <div class="wrap">
-  <div class="head">
-   <div><span class="cap">What we build</span><h2>Small systems that do real work.</h2></div>
+<!-- 03 · WHAT WE BUILD: paper, doctrine rows, feature icons -->
+<section class="build" id="build">
+ <div class="wrap split">
+  <div class="side">
+   <span class="idx"><b>03</b><i></i></span>
+   <h2>Small systems that do real work.</h2>
    <p>Statistics first. Python all the way through. AI where it earns its place.</p>
   </div>
-  <div class="bento">
-   <article class="tile big rv">
-    <div class="ic"><svg class="ico"><use href="#i-globe"/></svg></div>
-    <span class="tag">Websites</span>
-    <h3>A website that opens a solution.</h3>
-    <p>Not a brochure. The page is the front door to the tool: sign in, ask, run, see the result.</p>
-    <div class="ui" style="margin-top:28px">
-     <div class="chrome"><i></i><i></i><i></i></div>
-     <div class="flow">
-      <span class="node"><svg class="ico"><use href="#i-db"/></svg>data</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node"><svg class="ico"><use href="#i-wrap"/></svg>run.py</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node"><svg class="ico"><use href="#i-core"/></svg>model</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node live"><svg class="ico"><use href="#i-globe"/></svg>live</span>
-     </div>
-    </div>
-   </article>
-   <article class="tile rv" style="--i:1">
-    <div class="ic"><svg class="ico"><use href="#i-wrap"/></svg></div>
-    <span class="tag">Python</span>
-    <h3>Python wrappers.</h3>
-    <p>Your model or script behind a button, an API, or a schedule.</p>
-   </article>
-   <article class="tile rv" style="--i:2">
-    <div class="ic"><svg class="ico"><use href="#i-chart"/></svg></div>
-    <span class="tag">Data</span>
-    <h3>Data to dashboards.</h3>
-    <p>Sources in, one clear view out, refreshed on its own.</p>
-   </article>
-   <article class="tile rv" style="--i:3">
-    <div class="ic"><svg class="ico"><use href="#i-core"/></svg></div>
-    <span class="tag">ML · LLM</span>
-    <h3>Models that check themselves.</h3>
-    <p>Forecasts, classifiers, LLM agents, each with a test it must pass.</p>
-   </article>
-   <article class="tile rv" style="--i:4">
-    <div class="ic"><svg class="ico"><use href="#i-loop"/></svg></div>
-    <span class="tag">Automation</span>
-    <h3>Work that runs itself.</h3>
-    <p>Email in, report out. Every morning, without a person in the middle.</p>
-   </article>
+  <div class="rows">
+   <article class="r rv"><span class="fi"><svg class="ico"><use href="#i-webapp"/></svg></span><div><h3>A website that opens a solution.</h3><p>The page is the front door to the tool: sign in, ask, run, see the result.</p></div><span class="k">Web</span></article>
+   <article class="r rv"><span class="fi"><svg class="ico"><use href="#i-builder"/></svg></span><div><h3>Python wrappers.</h3><p>Your model or script behind a button, an API, or a schedule.</p></div><span class="k">Python</span></article>
+   <article class="r rv"><span class="fi"><svg class="ico"><use href="#i-analytics"/></svg></span><div><h3>Data to dashboards.</h3><p>Sources in, one clear view out, refreshed on its own.</p></div><span class="k">Data</span></article>
+   <article class="r rv"><span class="fi"><svg class="ico"><use href="#i-ai"/></svg></span><div><h3>Models that check themselves.</h3><p>Forecasts, classifiers, LLM agents, each with a test it must pass.</p></div><span class="k">ML · LLM</span></article>
+   <article class="r rv"><span class="fi"><svg class="ico"><use href="#i-auto"/></svg></span><div><h3>Work that runs itself.</h3><p>Email in, report out. Every morning, without a person in the middle.</p></div><span class="k">Automation</span></article>
   </div>
  </div>
 </section>
 
-<div class="wrap">
- <div class="strip rv">
-  <div><svg class="ico"><use href="#i-bolt"/></svg><p style="margin:0"><b>Fast</b><span>Idea to live URL in weeks.</span></p></div>
-  <div><svg class="ico"><use href="#i-layers"/></svg><p style="margin:0"><b>Yours</b><span>Your code, your repo.</span></p></div>
-  <div><svg class="ico"><use href="#i-plug"/></svg><p style="margin:0"><b>Connected</b><span>Your tools and your data.</span></p></div>
-  <div><svg class="ico"><use href="#i-shield"/></svg><p style="margin:0"><b>Steady</b><span>Tested before it ships.</span></p></div>
- </div>
-</div>
-
-<section class="blk" id="ask" aria-label="Ask the assistant">
+<!-- 04 · ASK: the assistant (02_ask.js owns the behaviour) -->
+<section class="askx" id="ask" aria-label="Ask the assistant">
  <div class="wrap ask">
   <div>
-   <span class="cap">The assistant · live</span>
+   <span class="idx"><b>04</b><i></i></span>
    <h2>Ask what is slow.</h2>
    <p class="lede">It answers from what this business has written down. When you are ready, a person replies.</p>
    <div class="ai-try">
@@ -291,32 +244,30 @@
  </div>
 </section>
 
-<div class="wrap">
- <div class="hub rv">
-  <div>
-   <span class="cap">Already a client</span>
-   <h2>Open your hub.</h2>
-   <p>Every project, where it lives, and what is next. Request changes in one click.</p>
-   <a class="btn go" href="/r-cai/">Client login<svg class="ico"><use href="#i-arrow"/></svg></a>
+<!-- 05 · R-CAI: the client hub, night, with a window onto it (structure only, no client data) -->
+<section class="rc">
+ <div class="wrap">
+  <div class="night band">
+   <div class="say">
+    <span class="idx"><b>05</b><i></i></span>
+    <h2>R-CAI</h2>
+    <p>Your hub. Every project, where it lives, and what is next. Add credits or deploy changes in one click.</p>
+    <a class="btn lav big" href="/r-cai/">Open R-CAI<svg class="ico"><use href="#i-arrow"/></svg></a>
+   </div>
+   <a class="win" href="/r-cai/" aria-label="Open R-CAI">
+    <span class="chrome"><i></i><i></i><i></i><em>R-CAI</em></span>
+    <span class="body">
+     <span class="acts">
+      <span class="a"><span class="fi"><svg class="ico"><use href="#i-credits"/></svg></span><b>Add credits</b></span>
+      <span class="a"><span class="fi"><svg class="ico"><use href="#i-deploy"/></svg></span><b>Deploy changes</b><span class="dot"></span></span>
+     </span>
+     <span class="proj"><span class="ln w60"></span><span class="ln w35"></span><span class="trk"><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i><i></i></span></span>
+     <span class="where"><span><svg class="ico"><use href="#i-api"/></svg>Git</span><span><svg class="ico"><use href="#i-deploy"/></svg>Railway</span><span><svg class="ico"><use href="#i-domain"/></svg>Live</span></span>
+    </span>
+   </a>
   </div>
-  <span class="vr"></span>
-  <ul>
-   <li><svg class="ico"><use href="#i-layers"/></svg>Your projects and their stage</li>
-   <li><svg class="ico"><use href="#i-branch"/></svg>Where the code lives</li>
-   <li><svg class="ico"><use href="#i-deploy"/></svg>Deploy changes</li>
-   <li><svg class="ico"><use href="#i-bell"/></svg>Notices, as they happen</li>
-  </ul>
-  <a class="live" href="/r-cai/" aria-label="Client login">
-   <svg class="hills" viewBox="0 0 260 120" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 70 60 30l40 30 50-46 60 50 50-20v76H0z" fill="#1a1070"/>
-    <path d="M0 70 60 30l40 30 50-46 60 50 50-20" fill="none" stroke="rgba(185,178,255,.5)"/>
-    <path d="M0 100c60-30 120-20 170-30s70 0 90-10v60H0z" fill="#0d0750"/>
-   </svg>
-   <span class="lbl">Your site<br><i></i>Live</span>
-   <span class="o"><svg class="ico"><use href="#i-arrow"/></svg></span>
-  </a>
  </div>
-</div>
+</section>
 
 </main>
 
@@ -326,11 +277,11 @@
   <a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a>
   <form class="sp key" id="vkey" autocomplete="off"><input type="password" inputmode="numeric" aria-label="Key" placeholder="key" maxlength="12"><button type="submit" class="y" aria-label="Open Y_VAULT"><b>Y</b>_VAULT</button></form>
   <span>© 2022–2026 · customaimodels.com</span>
-  <a href="/r-cai/">Client login</a>
+  <a href="/r-cai/">R-CAI</a>
  </div>
 </footer>
 <a class="ai-fab" href="#ask"><img src="03_img/05_knot_gold.png" alt="">Ask CAI</a>
-<script src="02_js/01_site.js?v=93b2c2a7a4"></script>
-<script src="02_js/02_ask.js?v=93b2c2a7a4"></script>
+<script src="02_js/01_site.js?v=8df89c6ea9"></script>
+<script src="02_js/02_ask.js?v=8df89c6ea9"></script>
 </body>
 </html>
