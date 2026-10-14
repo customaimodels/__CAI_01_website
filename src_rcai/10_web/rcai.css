@@ -166,6 +166,19 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
   border:1px solid var(--line-2);color:var(--ink-2);font-size:12.5px;white-space:nowrap;transition:color .15s,border-color .15s}
 .gk:hover{color:#fff;border-color:rgba(192,192,200,.5)}
 .sec .sh .cap + .gk{margin-left:0}
+/* a demo square's own key: Request action → a box inside the square → "Sent · give us 24 hours" */
+.ra{margin-top:16px}
+.ra-go,.ra-x,.ra-s{all:unset;box-sizing:border-box;cursor:pointer;height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;
+  border:1px solid var(--line-2);color:var(--ink-2);font-size:12.5px;transition:color .15s,border-color .15s}
+.ra-go:hover,.ra-x:hover{color:#fff;border-color:rgba(192,192,200,.5)}
+.ra-s{background:#fff;color:#0e0c12;border-color:#fff;font-weight:500}
+.ra-s:disabled{opacity:.4;pointer-events:none}
+.ra-f textarea{width:100%;box-sizing:border-box;resize:vertical;background:rgba(255,255,255,.03);border:1px solid var(--line-2);border-radius:10px;
+  color:#fff;font:inherit;font-size:13px;padding:10px 12px}
+.ra-f textarea:focus{outline:none;border-color:rgba(192,192,200,.5)}
+.ra-row{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.ra-wait{display:inline-flex;align-items:center;gap:8px;height:32px;font-size:12.5px;color:var(--ink-2)}
+.ra-wait::before{content:"";width:6px;height:6px;border-radius:50%;background:#d9a62c}
 #demos{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:10px}
 /* the phase 2 page */
 .back{display:inline-block;margin-bottom:18px;color:var(--ink-2);font:500 12px/1 var(--mono);letter-spacing:.06em;text-decoration:none}

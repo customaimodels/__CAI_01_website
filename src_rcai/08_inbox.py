@@ -29,6 +29,7 @@ KINDS = {
     "build":    "Request build",
     "next":     "New project or phase",
     "demo":     "Request a demo",
+    "action":   "Demo · request action",
     "plug":     "Plug-in",
     "prefs":    "Preferences + review",
     "feedback": "Feedback",

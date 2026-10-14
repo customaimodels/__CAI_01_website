@@ -212,7 +212,7 @@
     const all = v.projects.map((p, i) => [p, i]);
     const real = all.filter(([p]) => !p.demo), demos = all.filter(([p]) => p.demo);
     $("#cards").innerHTML = real.length ? real.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No projects yet.</div>`;
-    $("#demos").innerHTML = demos.length ? demos.map(([p, i]) => card(p, v.stages, i)).join("") : `<div class="empty">No demos yet. Ask for one, built on your own data.</div>`;
+    $("#demos").innerHTML = demos.length ? demos.map(([p, i]) => card(p, v.stages, i).replace(/<\/article>\s*$/, `${raHTML(p)}</article>`)).join("") : `<div class="empty">No demos yet. Ask for one, built on your own data.</div>`;
     $(".ask select").innerHTML = v.projects.map((p) => `<option value="${esc(p.code || p.name)}">${esc(p.name)}</option>`).join("");
     badges(v);
     fab(v);
@@ -259,6 +259,30 @@
   };
   $("#cards").addEventListener("click", onCards);
   $("#demos").addEventListener("click", onCards);
+
+  // a demo square's own key: Request action → a box inside the square → Send (kind "action", that demo named)
+  // → the key becomes "Give us 24 hours". Inside any 24 h pause every demo square shows the same quiet line.
+  const raHTML = (p) => paused()
+    ? `<div class="ra"><span class="ra-wait">Sent · give us 24 hours</span></div>`
+    : `<div class="ra"><button type="button" class="ra-go" data-p="${esc(p.code || p.name)}">Request action</button>
+        <form class="ra-f" hidden><textarea name="m" rows="3" maxlength="1500" required placeholder="What should happen with this demo?"></textarea>
+        <div class="ra-row"><button type="button" class="ra-x">Cancel</button><button type="submit" class="ra-s">Send</button></div></form></div>`;
+  $("#demos").addEventListener("click", (e) => {
+    const go = e.target.closest(".ra-go"), x = e.target.closest(".ra-x");
+    if (!go && !x) return;
+    const ra = e.target.closest(".ra"), f = $(".ra-f", ra);
+    f.hidden = !!x; $(".ra-go", ra).hidden = !x;
+    if (go) f.m.focus({ preventScroll: true });
+  });
+  $("#demos").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target, ra = f.closest(".ra"), p = $(".ra-go", ra).dataset.p, t = f.m.value.trim();
+    if (!t) return;
+    $(".ra-s", f).disabled = true;
+    await send("action", t + sign(), p);
+    $$("#demos .ra").forEach((r) => { if (paused()) r.innerHTML = `<span class="ra-wait">Sent · give us 24 hours</span>`; });
+    if (!paused()) $(".ra-s", f).disabled = false;
+  });
 
   // R-CAI plug-ins (under Your preferences): a square opens the one window, that plug-in named in the subject.
   let plug = "";
