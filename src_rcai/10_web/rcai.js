@@ -22,6 +22,17 @@
   const LANE_OF = { deploy: "changes", changes: "changes", credits: "build", build: "build" };
   let view = null, lane = null;
 
+  // every step on a Phase 2 page goes to api/event (07_activity): run.py --activity says where the client stands.
+  // sendBeacon survives the mailto: jump; it carries pointers only (which step, picks, total), never note text.
+  function track(act, i = +location.hash.slice(4)) {
+    const p = view && view.projects[i], s = p && p.scope;
+    if (!s) return;
+    const picked = added(), bl = bill(s, picked);
+    const body = JSON.stringify({ i, act, picked, ...(bl ? { total: bl.tot, deposit: bl.dep } : {}) });
+    try { if (navigator.sendBeacon && navigator.sendBeacon("api/event", body)) return; } catch {}
+    fetch("api/event", { method: "POST", credentials: "same-origin", keepalive: true, body }).catch(() => {});
+  }
+
   // ?fresh wipes this device's test state (add-on picks, scope notes, the 24 h hold) and opens clean. Device only, nothing server-side.
   if (new URLSearchParams(location.search).has("fresh")) {
     try { Object.keys(localStorage).filter((k) => k.startsWith("rcai.")).forEach((k) => localStorage.removeItem(k)); } catch {}
@@ -168,6 +179,7 @@
     const on = !!(p && p.scope);
     $("#home").hidden = on; $("#p2page").hidden = !on;
     $("#scopes").innerHTML = on ? scope(p) : "";
+    if (on) track("open", +m[1]);
     window.scrollTo({ top: 0 });
   }
   window.addEventListener("hashchange", () => { if (view && !$("#hub").hidden) route(); });
@@ -292,10 +304,12 @@
 
   $("#scopes").addEventListener("click", (e) => {
     if (lock() && e.target.closest(".adgo, button.ad.sw, .scx, .sk.accept, .shipgo")) return;
-    if (e.target.closest(".adgo")) { setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
+    if (e.target.closest(".stripe:not(.off)")) { track("stripe"); return; }
+    if (e.target.closest(".adgo")) { track("add_pkg"); setAdded((view.projects[+location.hash.slice(4)].scope.addons || []).map((_, j) => j)); return; }
     const a = e.target.closest("button.ad.sw");
     if (a) {
       const j = +a.dataset.a, set = new Set(added());
+      track(set.has(j) ? "addon_off" : "addon_on");
       set.has(j) ? set.delete(j) : set.add(j);
       setAdded([...set]);
       return;
@@ -305,24 +319,26 @@
       const f = $(".scf"), on = f.hidden;
       f.hidden = !on; x.setAttribute("aria-expanded", String(on)); tries = 0;
       f.querySelectorAll(".push").forEach((m) => (m.textContent = ""));
-      if (on) { step(f, 1); restore(f); f.querySelector("textarea").focus(); }
+      if (on) { track("scope_open"); step(f, 1); restore(f); f.querySelector("textarea").focus(); }
       return;
     }
-    if (e.target.closest(".back0")) { $(".shipslot").innerHTML = ""; return; }
+    if (e.target.closest(".back0")) { track("not_yet"); $(".shipslot").innerHTML = ""; return; }
     const b = e.target.closest("button.sk, .shipgo");
     if (!b || b.disabled) return;
     // first press on Accept only asks; SHIP TODAY is the yes
-    if (b.dataset.ans === "accept") { $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
+    if (b.dataset.ans === "accept") { track("accept"); $(".shipslot").innerHTML = shipHTML(); $(".shipgo").focus({ preventScroll: true }); return; }
     const p = view.projects[+location.hash.slice(4)], s = p.scope, pk = added(), bl = bill(s, pk), adn = addNames(s, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
       + (bl ? `\n\nTotal ${money(bl.tot)} · deposit ${money(bl.dep)}.` : "");
     const tag = `${s.name} · ${p.code || p.name}`;
     if (b.classList.contains("shipgo")) {
+      track("ship");
       try { localStorage.setItem(SHIPKEY(), String(Date.now())); } catch {}
       freeze("Scope locked · the build is shipping");
       return mail(`[R-CAI] Phase 2 · ${tag} · Accepted · SHIP TODAY`,
         "We accept this proposal and the build is OK as it stands. Ship today. We'll pay the deposit before go-live." + plus + sign());
     }
+    if (b.dataset.ans === "inv") track("invoice");
     if (b.dataset.ans === "inv") mail(`[R-CAI] Phase 2 · ${tag} · Invoice request`,
       `Please send us an invoice for the deposit${bl ? ` (${money(bl.dep)})` : ""}.\n\nWe'd like to pay by (keep one):\n· Bank transfer / ACH\n· Card\n· Check\n· Other: \n\nBilling name and address:\n` + plus + sign());
   });
@@ -376,12 +392,14 @@
         f.querySelectorAll(".its textarea, [name=add]").forEach((t) => t.classList.toggle("weak", (r.weak || []).includes(t.name === "add" ? "add" : t.name.slice(1))));
         msg.textContent = r.say || "";
         if (!r.ok) { if (r.weak) tries++; f.querySelector("textarea.weak")?.focus(); return; }
+        track("scope_saved");
         const ns = notesOf(f);
         $(".sum", f).innerHTML = Object.entries(ns.items).map(([j, v]) => `<dt>${esc(s.items[j])}</dt><dd>${esc(v)}</dd>`).join("")
           + (ns.add ? `<dt class="nw">New capability</dt><dd>${esc(ns.add)}</dd>` : "");
         step(f, 2);
       } else if (n === 2) {
         qs = (await ask("review", f)).questions || [];
+        track("scope_check");
         $(".qs", f).innerHTML = qs.map((q, j) => `<li><span>${esc(q)}</span><textarea name="q${j}" rows="2" maxlength="800" placeholder="Your answer"></textarea></li>`).join("");
         step(f, 3);
         f.q0?.focus();
@@ -392,6 +410,7 @@
         const qa = qs.map((q, j) => `Q: ${q}\nA: ${f["q" + j].value.trim()}`).join("\n\n");
         mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${p.name}`,
           `The package in the build: ${addNames(s, added()).join(" · ") || "none"}\n\nComments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${ns.add || "-"}\n\nReview questions:\n\n${qa}` + sign());
+        track("scope_sent");
         try { localStorage.removeItem(KEY()); } catch {}
         step(f, 4);
         setHold();

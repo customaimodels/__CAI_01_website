@@ -30,7 +30,7 @@ ai_cheap: mock
 ai_review: mock
 
 # Bump to wipe every browser's R-CAI test state (add-on picks, scope notes, the 24 h hold) on its next load.
-state_epoch: 2
+state_epoch: 5
 
 # ── _Y_VAULT ─────────────────────────────────────────────────────────────────────────
 # the vault PIN, as its sha256 (today: 0000). Ships in the bundle -- a 4-digit PIN hides nothing anyway.
