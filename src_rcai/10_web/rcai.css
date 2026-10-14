@@ -547,3 +547,45 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .scope .vis.two .half i{position:absolute;left:10px;bottom:10px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:600 11px/1 var(--mono);font-style:normal;color:#0e0c12;background:var(--gold)}
 .scope .vis.two figcaption{grid-column:1/-1;margin-top:2px}
 @media (max-width:640px){.fold[data-k="scope"] .pb,.fold[data-k="how"] .pb{padding-left:4px}.scope .vis.two{grid-template-columns:1fr}}
+/* 2026-10-14 · Phase 2, his 8 sections: add/modify key under the deliverables · infra = one big $0 + quiet rows ·
+   support = one question, three answers · payment plan = two invoices + the estimated total · the ±15–20% tick gates Accept. */
+.modk{all:unset;cursor:pointer;margin-top:14px;display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:9px;border:1px solid var(--line-2);font:500 13px/1 var(--sans);color:var(--ink)}
+.modk:hover{border-color:rgba(255,255,255,.3)}.modk:disabled{opacity:.35;pointer-events:none}
+.infra{display:grid;grid-template-columns:140px 1fr;gap:28px;align-items:start}
+.infra .zero{display:flex;flex-direction:column;gap:6px}
+.infra .zero b{font:600 44px/1 var(--head);letter-spacing:-.03em;color:var(--ink)}
+.infra .zero small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.infra ul{list-style:none;margin:0;padding:0}
+.infra li{display:grid;grid-template-columns:90px 130px 1fr;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+.infra li:last-child{border-bottom:0}
+.infra li b{font:600 14px/1.3 var(--head);color:var(--ink)}
+.infra li em{font:600 10px/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase}
+.infra li em.free{color:#9fd3a8}.infra li em.up{color:var(--gold)}
+.infra li small{font-size:13px;color:var(--ink-2)}
+.supl{margin:0 0 6px;color:var(--ink-2)}
+.supq{margin:14px 0 10px;font-size:14px;color:var(--ink)}.supq b{color:var(--gold);font-weight:600}
+.supk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.sup{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:14px 16px;border:1px solid var(--line-2);border-radius:12px;background:rgba(255,255,255,.02)}
+.sup b{font:600 14px/1.3 var(--head);color:var(--ink)}.sup small{font-size:12.5px;line-height:1.45;color:var(--ink-2)}
+.sup:hover{border-color:rgba(255,255,255,.28)}
+.sup[aria-pressed=true]{border-color:var(--go-hi);box-shadow:inset 0 0 0 1px var(--go-hi);background:rgba(38,178,103,.07)}
+.qcf textarea{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:9px;background:rgba(0,0,0,.28);color:var(--ink);font:500 13px/1.45 var(--sans);resize:vertical}
+.pplan{list-style:none;margin:0;padding:0;width:100%}
+.pplan li{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.pplan li i{font:500 11px/1 var(--mono);font-style:normal;color:var(--gold)}
+.pplan li span{display:flex;flex-direction:column;gap:3px}
+.pplan li span b{font:600 14.5px/1.3 var(--head);color:var(--ink)}.pplan li span small{font-size:12.5px;color:var(--ink-2)}
+.pplan li strong{font:600 20px/1 var(--head);letter-spacing:-.01em;color:var(--ink)}
+.pplan li.est{border-bottom:0}.pplan li.est strong{font-size:24px;color:#fff}
+.ppn{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.ppn.rec{padding:10px 12px;border:1px solid rgba(38,178,103,.4);border-radius:10px;background:rgba(38,178,103,.07);color:var(--ink)}
+.ack{display:flex;gap:10px;align-items:flex-start;margin:22px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;cursor:pointer;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.ack input{margin:3px 0 0;accent-color:var(--go-hi);width:15px;height:15px;flex:none}
+.ack.on{border-color:rgba(38,178,103,.5);color:var(--ink)}
+.sks .sk.accept:disabled{opacity:.38;cursor:not-allowed}
+.sks .sk.armed+.sk.inv{margin-left:0}
+.payrow{display:block}.payrow .ppn{flex:none;min-width:0}
+.fold[data-k="pay"] .pb{padding-left:38px;max-width:760px}
+.fold .pb:has(.supk),.fold .pb:has(.infra){padding-left:38px}
+@media (max-width:640px){.fold[data-k="pay"] .pb{padding-left:4px}}
+@media (max-width:640px){.infra{grid-template-columns:1fr;gap:14px}.infra li{grid-template-columns:80px 1fr}.infra li small{grid-column:1/-1}.supk{grid-template-columns:1fr}}

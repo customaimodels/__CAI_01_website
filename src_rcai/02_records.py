@@ -114,6 +114,10 @@ def _delivery(path):
             elif k == "price":                    # `price: 1660 | 50` -- the fixed total and the % paid to start
                 tot, _, pct = v.partition("|")
                 cur["price"] = {"base": int(re.sub(r"\D", "", tot) or 0), "pct": int(re.sub(r"\D", "", pct) or 50)}
+            elif k == "tax":                      # `tax: 7` -- % sales tax on the full phase, billed on the second invoice
+                cur["tax"] = float(re.sub(r"[^\d.]", "", v) or 0)
+            elif k == "payplan":                  # `payplan: one line` -- the payment plan's notes, in order (2026-10-14)
+                cur.setdefault("payplan", []).append(v)
             elif k == "timeline":                 # `timeline: when | what`, in order
                 when, _, what = v.partition("|")
                 cur.setdefault("timeline", []).append({"when": when.strip(), "what": what.strip()})
@@ -251,6 +255,7 @@ def _card(db, cfg, pid):
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
         "scope": ({**scope, "timeline": d.get("timeline", []), "terms": d.get("terms", []), "pay": d.get("pay"), "price": d.get("price"),
+                   "tax": d.get("tax", 0), "payplan": d.get("payplan", []),
                    "pay_links": d.get("invoices", {})} if scope and scope["items"] else None),
         "logo": (d["logo"] if isinstance(d.get("logo"), str) else f"api/logo/{pid}" if d.get("logo") else None),  # data URI local · sealed URL hosted
         "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
