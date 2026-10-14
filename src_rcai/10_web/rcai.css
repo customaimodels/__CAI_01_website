@@ -584,3 +584,5 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .fold .pb:has(.supk),.fold .pb:has(.infra){padding-left:38px}
 @media (max-width:640px){.fold[data-k="pay"] .pb{padding-left:4px}}
 @media (max-width:640px){.infra{grid-template-columns:1fr;gap:14px}.infra li{grid-template-columns:80px 1fr}.infra li small{grid-column:1/-1}.supk{grid-template-columns:1fr}}
+/* 2026-10-14 · his call: Phase 2 titles 01–08 in paper cream #faf6ea, read or not, hover included. */
+.fold>summary b,.fold.read>summary b,.fold>summary:hover b,.fold>summary b i{color:#faf6ea}
