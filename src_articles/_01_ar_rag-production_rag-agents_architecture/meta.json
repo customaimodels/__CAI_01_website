@@ -1,0 +1,16 @@
+{
+  "title": "RAG isn't a feature. It's an architecture.",
+  "deck": "Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.",
+  "date": "2026-10-14",
+  "tags": [
+    "RAG",
+    "Agents",
+    "Architecture"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 7,
+  "slug": "_01_ar_rag-production_rag-agents_architecture",
+  "category": "RAG & Agents",
+  "subcategory": "Architecture",
+  "url": "https://www.customaimodels.com/articles/_01_ar_rag-production_rag-agents_architecture/"
+}

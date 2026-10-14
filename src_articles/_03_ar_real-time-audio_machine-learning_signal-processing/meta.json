@@ -1,0 +1,15 @@
+{
+  "title": "Listening to a room in real time",
+  "deck": "A production audio-intelligence platform runs on 100+ DSP features and a continuous evaluation loop, not a clever model alone. Most of the engineering is in the loop.",
+  "date": "2026-10-14",
+  "tags": [
+    "Signal & ML",
+    "Architecture"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 6,
+  "slug": "_03_ar_real-time-audio_machine-learning_signal-processing",
+  "category": "Machine Learning",
+  "subcategory": "Signal Processing",
+  "url": "https://www.customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/"
+}

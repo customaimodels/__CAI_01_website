@@ -1,0 +1,102 @@
+/* src_articles-only additions. Reuses ADR-0005/0006 tokens, header/footer and .rsec/.reveal
+   scaffolding from 04_land.css verbatim. Two things this folder needed that no other page had:
+   a listing grid, and a long-form reading column tuned for actual paragraphs, not report copy. */
+
+/* ── index: single banner identity, not the six-panel mosaic (no project photos to mosaic here) ── */
+.articles-hero{background:var(--ink);color:var(--paper);padding:168px 0 96px;position:relative;overflow:hidden}
+.articles-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 70% at 18% 0%,rgb(90 74 120 / .22),transparent 60%)}
+.articles-hero .wrap{position:relative}
+.articles-hero .eyebrow{font:500 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--yolk)}
+.articles-hero h1{margin:20px 0 20px;font:500 clamp(42px,6.4vw,76px)/1.04 var(--serif);letter-spacing:-.02em;max-width:900px}
+.articles-hero p{font-size:19px;line-height:1.5;color:rgb(255 255 255 / .72);max-width:56ch;margin:0}
+
+.article-list{margin-top:0;display:grid;grid-template-columns:1fr;border-top:1px solid var(--rule)}
+.a-card{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start;padding:40px 0;border-bottom:1px solid var(--rule);transition:background-color .15s}
+.a-card:hover{background:var(--paper-y)}
+.a-card .thumb{height:140px;overflow:hidden;background:var(--carbon)}
+.a-card .thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(.92);display:block;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.a-card:hover .thumb img{transform:scale(1.04)}
+.a-card .meta{font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--quiet);display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.a-card .meta .tag{color:var(--violet-text)}
+.a-card h2{font:500 clamp(24px,2.4vw,32px)/1.25 var(--serif);letter-spacing:-.01em;margin:0 0 10px}
+.a-card .deck{margin:0;color:var(--quiet);font-size:16px;line-height:1.5;max-width:62ch}
+.a-card .go{display:inline-block;margin-top:14px;font:600 14px/1 var(--sans);color:var(--ink)}
+.a-card .go::after{content:" \2192";color:var(--pink)}
+@media (max-width:760px){
+  .a-card{grid-template-columns:1fr;gap:16px;padding:32px 0}
+  .a-card .thumb{height:180px}
+}
+
+/* ── read: banner strip + narrow column, built to be read, not scanned ── */
+.art-head{background:var(--ink);position:relative;overflow:hidden}
+.art-head .frame{height:min(46vh,420px);position:relative}
+.art-head .frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.6);display:block}
+.art-head .frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(14 12 18 / .15),rgb(14 12 18 / .88))}
+.art-head .cap{position:relative;padding:40px 0 48px;color:var(--paper)}
+.art-head .eyebrow{color:var(--yolk)}
+.art-head h1{margin:18px 0 16px;font:500 clamp(34px,5vw,56px)/1.08 var(--serif);letter-spacing:-.02em;max-width:820px}
+.art-head .deck{font-size:19px;line-height:1.5;color:rgb(255 255 255 / .78);max-width:62ch;margin:0 0 24px}
+.art-head .byline{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:rgb(255 255 255 / .55)}
+.art-head .byline img{width:22px;height:22px;border-radius:50%}
+.art-head .byline b{color:var(--paper);font-style:normal}
+
+.art-body{max-width:680px;margin:0 auto;padding:72px 32px 24px;font-size:18px;line-height:1.75;color:var(--text)}
+.art-body h2{font:500 clamp(24px,2.6vw,30px)/1.3 var(--serif);letter-spacing:-.01em;margin:52px 0 18px}
+.art-body h2:first-child{margin-top:0}
+.art-body p{margin:0 0 24px}
+.art-body p:last-child{margin-bottom:0}
+.art-body strong{font-weight:600}
+.art-body ul,.art-body ol{margin:0 0 24px;padding-left:1.3em}
+.art-body li{margin-bottom:8px}
+/* the relaxed beat: one non-numerical statement per article, on a flat pastel surface instead of a
+   data callout. Composition borrowed from an editorial reference (flat tint, no shadow, no border,
+   generous padding, rounded corners) -- never a new colour, only the two pale panel tones
+   00_tokens.css already carries (paper-c lavender / paper-y warm) alternating by article. Keeps the
+   italic serif violet voice the pull-quote already had; the surface is what changed. */
+.art-body blockquote{margin:48px 0;padding:40px 36px;border-radius:16px;background:var(--paper-c);font:italic 500 27px/1.4 var(--serif);color:var(--violet-text,var(--violet))}
+.art-body blockquote.warm{background:var(--paper-y)}
+.art-body code{font:500 .86em var(--mono);background:var(--paper-y);padding:.15em .4em}
+.art-body pre{margin:0 0 28px;padding:20px;background:var(--carbon);color:var(--paper);overflow-x:auto;font:500 14px/1.6 var(--mono)}
+.art-body pre code{background:none;padding:0;font-size:inherit}
+.art-body hr{border:0;border-top:1px solid var(--rule);margin:48px 0}
+
+/* small-caps-style section eyebrow used inline inside long articles, between h2s when a beat needs a label */
+.art-label{display:block;font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--quiet);margin:0 0 10px}
+
+.art-foot{max-width:680px;margin:0 auto;padding:16px 32px 64px}
+.art-back{display:inline-block;font:600 14px/1 var(--sans);color:var(--quiet)}
+.art-back::before{content:"\2190 "}
+.art-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:28px;border-top:1px solid var(--rule)}
+.art-tags span{font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--violet-text);border:1px solid var(--rule);padding:6px 10px}
+
+.art-related{margin-top:40px;padding-top:32px;border-top:1px solid var(--rule)}
+.art-related .label{display:block;font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--quiet);margin:0 0 16px}
+.art-related a{display:block;padding:14px 0;font:600 17px/1.3 var(--sans);color:var(--text);border-top:1px solid var(--rule)}
+.art-related a:first-of-type{border-top:0}
+.art-related a span{display:block;font:400 14px/1.4 var(--sans);color:var(--quiet);margin-top:4px}
+
+/* ── hire-me close: same grammar as the resume's cta-report, worded for the reader, not the author ── */
+.art-cta{background:var(--ink);color:var(--paper);padding:88px 0}
+.art-cta .inner{max-width:680px;margin:0 auto;padding:0 32px}
+.art-cta h2{font:500 clamp(32px,4.4vw,48px)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 16px}
+.art-cta p{margin:0 0 32px;font-size:18px;line-height:1.5;color:rgb(255 255 255 / .75);max-width:52ch}
+.art-cta .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.art-cta .who{display:flex;align-items:center;gap:12px;margin-top:40px;padding-top:32px;border-top:1px solid var(--hair)}
+.art-cta .who img{width:40px;height:40px}
+.art-cta .who b{display:block;font:600 15px/1.3 var(--sans)}
+.art-cta .who span{display:block;font-size:14px;color:rgb(255 255 255 / .6)}
+
+@media (max-width:620px){
+  .articles-hero{padding:116px 0 72px}
+  .art-head .frame{height:240px}
+  .art-head .cap{padding:28px 0 36px}
+  .art-body{padding:48px 20px 16px;font-size:17px}
+  .art-body blockquote{padding:28px 24px;font-size:22px;margin:36px 0}
+  .art-foot{padding:16px 20px 48px}
+  .art-cta{padding:64px 0}
+  .art-cta .inner{padding:0 20px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .a-card:hover .thumb img{transform:none}
+}

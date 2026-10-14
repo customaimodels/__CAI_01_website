@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What replacing four spreadsheets actually took · Custom AI Models</title>
+<meta name="description" content="Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.">
+<link rel="canonical" href="https://www.customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">
+<meta name="keywords" content="AI infrastructure, data infrastructure, enterprise AI assistant, AI systems architect, RAG for business data">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="What replacing four spreadsheets actually took">
+<meta property="og:description" content="Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.">
+<meta property="og:url" content="https://www.customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">
+<meta property="og:image" content="https://www.customaimodels.com/articles/03_img/work-distribution.jpg">
+<meta property="article:published_time" content="2026-10-14">
+<meta property="article:author" content="Yeriko Vargas">
+<meta property="article:section" content="AI Systems">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What replacing four spreadsheets actually took">
+<meta name="twitter:description" content="Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.">
+<meta name="twitter:image" content="https://www.customaimodels.com/articles/03_img/work-distribution.jpg">
+<link rel="icon" href="../03_img/05_knot_gold.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=bc45e78eb6">
+<link rel="stylesheet" href="../01_css/01_site.css?v=bc45e78eb6">
+<link rel="stylesheet" href="../01_css/04_land.css?v=bc45e78eb6">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=bc45e78eb6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What replacing four spreadsheets actually took",
+  "description": "Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.",
+  "url": "https://www.customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/",
+  "datePublished": "2026-10-14",
+  "dateModified": "2026-10-14",
+  "image": "https://www.customaimodels.com/articles/03_img/work-distribution.jpg",
+  "articleSection": "AI Systems",
+  "keywords": "AI infrastructure, data infrastructure, enterprise AI assistant, AI systems architect, RAG for business data",
+  "author": {"@type": "Person", "name": "Yeriko Vargas", "url": "https://www.linkedin.com/in/yeriko-vargas"},
+  "publisher": {"@type": "Organization", "name": "Custom AI Models", "url": "https://www.customaimodels.com/"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/"}
+}
+</script>
+</head>
+<body class="report">
+
+<header id="bar">
+ <div class="wrap">
+  <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+  <nav>
+   <a href="/articles/">Articles</a>
+  </nav>
+  <div class="act">
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+   <a class="btn fill" href="/#ask">Start a project</a>
+  </div>
+ </div>
+</header>
+
+<main id="top">
+
+<div class="art-head">
+ <div class="frame"><img src="../03_img/work-distribution.jpg" alt="Distribution warehouse, the world the AI training hub and assistant runs in" loading="eager"></div>
+ <div class="wrap cap">
+  <span class="eyebrow">Systems</span>
+  <h1>What replacing four spreadsheets actually took</h1>
+  <p class="deck">Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.</p>
+  <div class="byline"><img src="../03_img/01_mark.png" alt=""><b>Yeriko Vargas</b> · Founder, Custom AI Models · Oct 2026</div>
+ </div>
+</div>
+
+<article class="art-body reveal">
+
+<p>When a distribution company asked me to build a training hub and assistant, the request sounded like one project: "give us an AI tool for training." What actually existed underneath that request was 4 separate spreadsheets, a paper sign-up process, and no single place that knew who had attended what, who was certified, or what the company's own policies actually said when someone asked. The AI assistant was the last thing I built. It was also the smallest part of the work.</p>
+
+<h2>The model is not the bottleneck</h2>
+<p>Every company I've worked with that wanted "an AI tool" already had a reasonably good sense of what they wanted a model to say. What they didn't have was one trustworthy place for the model to say it from. 4 spreadsheets means 4 sources of truth, which in practice means 0 sources of truth, each one slightly out of date, maintained by a different person, contradicting at least one of the others by the time anyone needs an answer.</p>
+<p>So before anything resembling retrieval or an assistant got built, the actual first job was data infrastructure: 1 registration system, 1 attendance record, 1 retention record, 1 place access rules live. Natural-language access to business data only works if the data underneath it is actually unified. Point a well-built RAG system at 4 contradicting spreadsheets and you've built a very articulate way to be wrong.</p>
+
+<h2>Replacing a paper process is a trust problem, not a technical one</h2>
+<p>The paper sign-up process wasn't slow because paper is slow. It was trusted because everyone could see it, and because nobody had to wonder whether a system was quietly deciding who counted as "trained" and who didn't. Replacing it meant the new system had to be more legible than the thing it replaced, not just faster. That shaped real decisions: what the assistant is allowed to say with certainty versus what it should hand off to a person, what gets logged, and where a human can always see the underlying record a given answer came from.</p>
+
+<blockquote class="warm">A system nobody trusts gets routed around, quietly, until it's just an expensive dashboard nobody opens.</blockquote>
+
+<h2>Owning it end to end changes what you build</h2>
+<p>As the sole architect, with 1 person accountable for every layer instead of 5, I didn't have the option of treating this as "build the model, hand off the integration." Registration, training delivery, attendance, retention, and natural-language access to all of it are 1 system, not 5 handoffs between 5 teams, and the seams between those pieces are exactly where most AI projects I've seen elsewhere quietly fail. Owning the whole thing meant the data model, the access rules, and the assistant were designed together, from the start, instead of a model bolted onto whatever data happened to exist.</p>
+<p>That's also why it's still running, and still mine. A system designed as 5 separate handoffs tends to need 5 separate people to keep it alive. One designed as a single system, by the person who understands every layer of it, doesn't.</p>
+
+<h2>What actually mattered, in order</h2>
+<ul>
+ <li><strong>One data model.</strong> Registration, attendance, retention, and access as 1 structure, not 4 spreadsheets reconciled by hand.</li>
+ <li><strong>Legible rules.</strong> Who can see what, and why, written down and enforced the same way every time, not a judgment call buried in someone's head.</li>
+ <li><strong>The assistant last.</strong> Natural-language access to business data is the payoff of unified data, not a substitute for it.</li>
+</ul>
+
+</article>
+
+<div class="art-foot">
+ <a class="art-back" href="/articles/">All articles</a>
+ <div class="art-tags"><span>Systems</span><span>Data infrastructure</span><span>RAG</span></div>
+</div>
+
+<div class="art-related">
+ <span class="label">More from Custom AI Models</span>
+  <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
+  <a href="/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">Listening to a room in real time<span>A production ML system built on DSP features, not a prompt.</span></a>
+  <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
+</div>
+
+</main>
+
+<div class="art-cta">
+ <div class="inner">
+  <h2>Need someone to own this end to end?</h2>
+  <p>I design and build the whole system: the data model, the access rules, the assistant on top. Not one piece handed off to the next person. If that's what you're hiring for, let's talk.</p>
+  <div class="row">
+   <a class="btn fill" href="/#ask">Start a project</a>
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+  <div class="who">
+   <img src="../03_img/01_mark.png" alt="">
+   <div><b>Yeriko Vargas</b><span>AI Systems Architect · Detroit, MI · remote-first</span></div>
+  </div>
+ </div>
+</div>
+
+<footer>
+ <div class="wrap">
+  <div class="row1">
+   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+   <span>© 2026</span>
+   <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+  <p class="credits">Article photograph: <a href="https://www.rawpixel.com/image/3306942/free-photo-image-worker-factory-warehouse-agriculture-us">Pallets of USDA Emergency Food</a> by U.S. Department of Agriculture, CC0, via rawpixel. Used as atmosphere, not as any employer's own photograph.</p>
+ </div>
+</footer>
+<script src="../02_js/01_site.js?v=bc45e78eb6"></script>
+<script src="../02_js/03_reveal.js?v=bc45e78eb6"></script>
+</body>
+</html>

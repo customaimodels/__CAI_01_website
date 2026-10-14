@@ -1,0 +1,39 @@
+/* ADR-0006 repoints the dark/accent family to indigo + violet (his pasted Genway reference, his word: "I like
+   the purple, and gold actually"). ADR-0005's structure/imagery/motion stand. Hex values PROPOSAL. The only place a hex lives. */
+:root{
+  /* canvas + fields -- indigo + violet lead, gold stays the one warm accent */
+  --paper:#ffffff;      /* default canvas, cards, reversed type */
+  --paper-y:#faf6ea;    /* pale warm panel, pairs with the gold accent */
+  --paper-c:#f7f6fd;    /* pale lavender panel -- was cool gray */
+  --ink:#0e0c12;        /* deep indigo: dark fields, header, footer, inverted CTA -- was midnight navy */
+  --carbon:#1a1622;     /* indigo panel: one step lighter than --ink, for floating panels -- was frame navy */
+  --violet:#8a78b0;     /* vivid violet: the live accent, for fills/glows/dark-ground text */
+  --violet-text:#4a3d63; /* darker violet for text-on-white -- --violet itself fails AA body-text contrast on paper */
+  --signal:#2b6cb0;     /* cai_blue: kept defined, demoted to near-unused -- his blue touches are "yet to come" */
+  --yolk:#d9a62c;       /* the one warm accent: deliverable line, hero emphasis, mark gold -- unchanged */
+  --wisteria-1:#e2e0f9; --wisteria-2:#cfccf5; /* atmospheric wash -- used sparingly, never a loud section gradient */
+  --field:var(--carbon); /* flat colour fields replace the old decorative gradient -- no gradients */
+
+  /* rules + text */
+  --rule:#e4e2dc;  --steel:#c9cdd6;  --quiet:#55565e;  --text:#111218;
+
+  /* ADR-0002 roles -- small accents only, never primary */
+  --magenta:#d23c9b;
+  --cyan:#4fc3d9;
+  --red:#d9474a;      /* flags only */
+  --pink:#ec6fa6;     /* tiny points */
+
+  /* type: IBM Plex Mono stays, but ONLY inside real code/tabular figures now -- see ADR-0005 */
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"DM Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; /* taste-skill-ignore: token definition, used only inside real code/tabular figures */
+
+  /* shape */
+  --max:1360px; --pad:20px; --gap:12px; --r:0px;
+  --axis:42%; /* the report's fixed column line -- ADR-0005 */
+
+  /* legacy aliases -- systems.html still runs ADR-0003's grammar, untouched by ADR-0005. Not used by index.html. */
+  --yellow:var(--yolk);
+  --grid:rgb(43 108 176 / .14);
+  --hair:rgb(255 255 255 / .16);
+}
