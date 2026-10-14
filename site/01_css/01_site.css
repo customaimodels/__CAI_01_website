@@ -168,6 +168,9 @@ footer .key input{width:64px;height:28px;padding:0 10px;background:var(--bg-3);b
 footer .key input::placeholder{color:var(--mute);letter-spacing:.08em}
 footer .key input:focus{border-color:var(--line-2);width:96px}
 footer .key.no input{border-color:var(--bad)}
+footer .key{display:inline-flex;align-items:center;gap:6px}
+footer .key .y{width:28px;height:28px;border:1px solid var(--gold);border-radius:var(--r-s);background:transparent;color:var(--gold);font:400 16px/1 var(--serif);cursor:pointer;transition:background .2s var(--ease),color .2s var(--ease)}
+footer .key .y:hover{background:var(--gold);color:var(--bg)}
 
 /* the assistant launcher */
 .ai-fab{position:fixed;right:22px;bottom:22px;z-index:30;display:flex;align-items:center;gap:9px;height:44px;padding:0 16px 0 10px;border-radius:12px;
