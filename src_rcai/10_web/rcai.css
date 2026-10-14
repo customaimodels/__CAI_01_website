@@ -221,7 +221,23 @@ button{font:inherit;color:inherit}
 .gpop{position:absolute;top:84px;left:0;z-index:5;width:260px;display:flex;flex-direction:column;gap:2px;background:var(--card-2);border:1px solid var(--line-2);border-radius:14px;padding:14px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
 .gpop .cn{font:600 14px/1.3 var(--head)}
 .gpop .em{color:var(--mute);font:500 12px/1.4 var(--mono);margin-bottom:10px;word-break:break-all}
-.gpop .out{justify-content:center;border-color:var(--line-2)}
+/* settings: details on top, then quiet rows -- change password (opens its form in place) · master table (owners) · sign out */
+.gpop{width:290px;gap:2px}
+.gpop .em{margin-bottom:0}
+.gpop .pwstate{color:var(--mute);font:500 11px/1.4 var(--sans);margin:2px 0 10px}
+.gpop .opt{all:unset;box-sizing:border-box;cursor:pointer;height:36px;padding:0 10px;display:flex;align-items:center;gap:10px;border-radius:9px;font:500 13px/1 var(--sans);color:var(--ink-2)}
+.gpop .opt .ico{width:15px;height:15px}
+.gpop .opt:hover,.gpop .opt[aria-expanded="true"]{background:rgba(255,255,255,.05);color:var(--ink)}
+.gpop .out{margin-top:6px;border-top:1px solid var(--line);border-radius:0;padding-top:8px;height:42px}
+.pwf{display:flex;flex-direction:column;gap:6px;padding:4px 0 8px}
+.pwf input{all:unset;box-sizing:border-box;width:100%;height:36px;padding:0 11px;border:1px solid var(--line-2);border-radius:8px;font:500 13px/1 var(--sans);color:var(--ink);background:rgba(0,0,0,.28)}
+.pwf input:focus{border-color:rgba(255,255,255,.35)}
+.pwf input::placeholder{color:var(--mute)}
+.pwf button{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;height:36px;line-height:36px;border-radius:8px;background:var(--ink);color:#0e0c12;font:600 13px/36px var(--sans)}
+.pwf button:disabled{opacity:.5;cursor:default}
+.pwf .msg{font:500 12px/1.4 var(--sans);color:var(--mute)}
+.pwf .msg:empty{display:none}
+.pwf .msg.bad{color:#e08a8a}.pwf .msg.ok{color:#9fd3a8}
 .proj .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .proj .plogo{height:18px;width:auto;max-width:80px;object-fit:contain;opacity:.9}
 .duo .dh .plogo{align-self:center;height:20px}

@@ -1,6 +1,7 @@
-"""Sign in = a hub email + the code word. A signed cookie carries the email, nothing else.
+"""Sign in = a hub email + its password. A signed cookie carries the email and its password version.
 
-The code word is shared, so it is a gate, not identity: the email decides what is shown.
+No own password yet (05_users) = the shared code word opens, and the email decides what is shown.
+Own password set = only the newest one opens; changing it bumps the version, so every older cookie dies.
 Wrong tries are counted per address and locked out for a while.
 """
 import hashlib
@@ -12,6 +13,7 @@ import secrets
 import time
 
 C = importlib.import_module("src_rcai.01_config")
+U = importlib.import_module("src_rcai.05_users")
 _FAILS = {}  # ip -> [timestamps]
 
 
@@ -32,36 +34,46 @@ def locked(cfg, ip):
     return len(hits) >= cfg["max_fails"]
 
 
-def check_code(cfg, ip, code):
-    # local preview only (hub read from disk, no RCAI_HUB_JSON): any 4 digits opens it.
+def fail(ip):
+    _FAILS.setdefault(ip, []).append(time.time())
+
+
+def check_code(cfg, ip, code, email=""):
+    own = U.check(email, code or "")              # own password set: only the newest opens, nothing else
+    if own is not None:
+        if not own:
+            fail(ip)
+        return own
+    # local preview only (hub read from disk, no RCAI_HUB_JSON): any 4 digits opens an email with no own password.
     # hosted (Railway) never takes this path -- the public site keeps the real code word.
     if cfg["hub"] is not None and re.fullmatch(r"\d{4}", (code or "").strip()):
         return True
     ok = hmac.compare_digest(hashlib.sha256((code or "").strip().lower().encode()).hexdigest(), cfg["code_sha256"])
     if not ok:
-        _FAILS.setdefault(ip, []).append(time.time())
+        fail(ip)
     return ok
 
 
 def issue(cfg, email):
+    email = email.strip().lower()
     exp = int(time.time() + cfg["session_hours"] * 3600)
-    body = f"{email.strip().lower()}|{exp}"
+    body = f"{email}|{U.version(email)}|{exp}"
     sig = hmac.new(_secret(), body.encode(), hashlib.sha256).hexdigest()
     return f"{body}|{sig}"
 
 
 def read(token):
     try:
-        email, exp, sig = (token or "").rsplit("|", 2)
+        email, ver, exp, sig = (token or "").rsplit("|", 3)
     except ValueError:
         return None
-    good = hmac.new(_secret(), f"{email}|{exp}".encode(), hashlib.sha256).hexdigest()
-    if not hmac.compare_digest(sig, good) or int(exp) < time.time():
+    good = hmac.new(_secret(), f"{email}|{ver}|{exp}".encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(sig, good) or int(exp) < time.time() or ver != str(U.version(email)):
         return None
     return email
 
 
-def log(email, ok, ip):
+def log(email, ok, ip, what="login"):
     C.LOG.parent.mkdir(parents=True, exist_ok=True)
     with C.LOG.open("a", encoding="utf-8") as f:
-        f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')}\t{'ok' if ok else 'no'}\t{email.strip().lower()[:80]}\t{ip}\n")
+        f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')}\t{'ok' if ok else 'no'}\t{email.strip().lower()[:80]}\t{ip}\t{what}\n")

@@ -1,5 +1,5 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
-// The hub: one small key top right (request build) + the bell for every notice. Top of the body: logo · Hi, John · ⚙ (email · sign out).
+// The hub: one small key top right (request build) + the bell for every notice. Top of the body: logo · Hi, John · ⚙ (details · change password · sign out; owners + master table).
 // Request changes sits on each project square, only when that project is signed or paid (can_change from 02_records).
 // Ghost keys beside the titles: "+ New project or phase" (Your projects) · "Request a demo" (Your demos), same window.
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
@@ -89,6 +89,10 @@
     lg.hidden = !v.logo; if (v.logo) { lg.src = v.logo; lg.alt = v.company || ""; }
     $(".gpop .cn").textContent = v.owner ? "Owner" : v.company || "";
     $(".gpop .em").textContent = v.email || "";
+    $(".gpop .pwstate").textContent = v.own_pw ? "Your own password is set." : "Signed in with the shared code word.";
+    $(".pwf [name=username]").value = v.email || "";
+    $(".gpop .master").hidden = !v.owner;
+    $('.opt[data-opt="pw"]').hidden = !v.pw_on;
     $(".co").textContent = v.owner ? `Owner view · ${n} projects · ${v.clients} clients` : v.company || "";
     // status demo_sent lives under Your demos, the rest under Your projects. i stays the index in v.projects (the #p2-<i> page).
     const all = v.projects.map((p, i) => [p, i]);
@@ -178,6 +182,31 @@
     if (!e.target.closest(".gear, .gpop")) { $(".gpop").hidden = true; $(".gear").setAttribute("aria-expanded", "false"); }
   });
 
+  // change password: the current one (or the shared code word) + the new one twice. Saved = a new pw_N column
+  // in users.csv (05_users); this tab stays signed in, every other session ends.
+  $('.opt[data-opt="pw"]').addEventListener("click", (e) => {
+    const f = $(".pwf"), on = f.hidden;
+    f.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
+    if (on) { f.reset(); f.username.value = view?.email || ""; $(".msg", f).textContent = ""; f.current.focus(); }
+  });
+  $(".pwf").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.currentTarget, msg = $(".msg", f), btn = $("button", f);
+    const say = (text, cls) => { msg.textContent = text; msg.className = "msg " + cls; };
+    if (f.new.value !== f.again.value) return say("The two new passwords don't match.", "bad");
+    btn.disabled = true;
+    try {
+      const r = await fetch("api/password", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current: f.current.value, new: f.new.value }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) return say(j.error || "That didn't save.", "bad");
+      f.reset(); f.username.value = view?.email || "";
+      say("Saved. Use it next time you sign in.", "ok");
+      $(".gpop .pwstate").textContent = "Your own password is set.";
+    } catch { say("Offline. Try again.", "bad"); }
+    finally { btn.disabled = false; }
+  });
+
   $(".bell").addEventListener("click", (e) => {
     const pop = $(".pop"), on = pop.hidden;
     pop.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
@@ -233,7 +262,7 @@
 
   $(".out").addEventListener("click", async () => {
     await fetch("api/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
-    $(".gpop").hidden = true; $("#login").reset(); gate();
+    $(".gpop").hidden = true; $(".pwf").hidden = true; $("#login").reset(); gate();
   });
 
   me().then((v) => (v ? hub(v) : gate()));

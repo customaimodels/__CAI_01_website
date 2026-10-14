@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=217a2c9733">
-<link rel="stylesheet" href="rcai.css?v=217a2c9733">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=29a3939615">
+<link rel="stylesheet" href="rcai.css?v=29a3939615">
 </head>
 <body>
 
@@ -27,6 +27,7 @@
  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4A1.5 1.5 0 0 1 4 14.5z"/></symbol>
  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+ <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M16.5 6.5l2.5 2.5M14 9l2 2"/></symbol>
  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8"/></symbol>
  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/><path d="m14 7 3 3"/></symbol>
@@ -118,7 +119,20 @@
    <img class="clogo" alt="" hidden>
    <h1>Hi, <span class="nm"></span></h1>
    <button class="gear" type="button" aria-label="Settings" aria-expanded="false"><svg class="ico"><use href="#i-gear"/></svg></button>
-   <div class="gpop" hidden><b class="cn"></b><small class="em"></small><button class="out" type="button">Sign out</button></div>
+   <!-- settings: 01 your details · 02 change password (each change = a new pw_N column, 05_users) · 03 sign out. owners: + the master table. -->
+   <div class="gpop" hidden>
+    <b class="cn"></b><small class="em"></small><small class="pwstate"></small>
+    <button class="opt" type="button" data-opt="pw" aria-expanded="false"><svg class="ico"><use href="#i-key"/></svg>Change password</button>
+    <form class="pwf" hidden>
+     <input type="hidden" name="username" autocomplete="username">
+     <input name="current" type="password" required autocomplete="current-password" placeholder="Current password or code word">
+     <input name="new" type="password" required minlength="8" autocomplete="new-password" placeholder="New password · 8+ characters">
+     <input name="again" type="password" required minlength="8" autocomplete="new-password" placeholder="New password, again">
+     <button type="submit">Save</button><small class="msg"></small>
+    </form>
+    <a class="opt master" href="api/master.csv" hidden><svg class="ico"><use href="#i-doc"/></svg>Master table</a>
+    <button class="opt out" type="button"><svg class="ico"><use href="#i-arrow"/></svg>Sign out</button>
+   </div>
   </div>
   <section class="sec">
    <div class="sh"><h2>Your projects</h2><span class="cap co"></span><button class="gk" type="button" data-lane="next">+ New project or phase</button></div>
@@ -164,6 +178,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=217a2c9733"></script>
+<script src="rcai.js?v=29a3939615"></script>
 </body>
 </html>
