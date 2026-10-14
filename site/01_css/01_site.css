@@ -209,6 +209,22 @@ section{position:relative}
 .hub .live .o{position:absolute;right:14px;bottom:14px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center}
 .hub .live .o .ico{width:15px;height:15px}
 
+/* the toolbelt: grown-up yellow (the mark's gold, matured), slate one-stroke marks, relaxed */
+.belt{margin-top:128px;background:#e3b84a;color:#2a2d33;border-radius:28px;padding:44px 48px 40px;text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 30px 70px -40px rgba(217,166,44,.45)}
+.belt .eb{display:inline-flex;align-items:center;gap:10px;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#5a4a1c}
+.belt .eb i{width:6px;height:6px;border-radius:50%;background:#2a2d33;opacity:.55}
+.belt h2{font:600 clamp(24px,3vw,34px)/1.12 var(--serif);letter-spacing:-.025em;margin:14px auto 34px;max-width:36ch;text-wrap:balance;color:#22252a}
+.belt ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:26px 6px}
+.belt li{width:84px;display:flex;flex-direction:column;align-items:center;gap:10px;font:500 11px/1 var(--mono);letter-spacing:.02em;color:#4b4535}
+.belt li.gap{margin-left:22px}
+.belt li.br{flex-basis:100%;height:0;width:auto;margin-bottom:-26px}
+.belt svg .w{stroke-width:2.1}
+.belt svg{width:34px;height:34px;fill:none;stroke:#2a2d33;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+.belt svg .f{fill:#2a2d33;stroke:none}
+.belt svg .d{stroke-dasharray:1.5 2.6}
+.belt li:hover svg{transform:translateY(-2px)}
+
 /* footer: key + Y_VAULT */
 footer{border-top:1px solid var(--line);margin-top:128px}
 footer .wrap{display:flex;align-items:center;gap:28px;height:96px;color:var(--mute);font-size:13px}
@@ -272,6 +288,9 @@ footer .key .y:hover{background:var(--violet)}
 
 /* phone */
 @media (max-width:980px){
+  .belt{margin-top:88px;padding:32px 16px 28px;border-radius:22px}
+  .belt li{width:70px}.belt li.gap{margin-left:0}.belt li.br{display:none}
+  .belt svg{width:28px;height:28px}
   .wrap{padding:0 16px}
   #bar nav{display:none}
   #bar .btn.go{display:none}
