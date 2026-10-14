@@ -1,6 +1,7 @@
 // R-CAI: one call decides which face shows. Signed in → the hub; not → the gate.
 // The hub: one small key top right (request build) + the bell for every notice. Top of the body: logo · Hi, John · ⚙ (details · change password · sign out; owners + master table).
-// Request changes sits on each project square, only when that project is signed or paid (can_change from 02_records).
+// Phase 1 edits: a small ✎ key on the square (only when signed or paid, can_change from 02_records) → one box, answered within 24 h.
+// Phase 2 changes are scope changes, asked on its own page: a comment per deliverable + new capabilities, pushed twice to be specific.
 // Ghost keys beside the titles: "+ New project or phase" (Your projects) · "Request a demo" (Your demos), same window.
 // Body: projects as small squares (+ a quiet Phase 2 square when a scope waits → its proposal: logo · deliverables · timeline · pay · Accept · Ask changes · Deny) · preferences (survey + review) · feedback.
 // Every send opens a filled-in email: there is no request queue yet.
@@ -10,10 +11,11 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const WHERE = { live: ["i-globe", "Live"], git: ["i-branch", "Git"], railway: ["i-cloud", "Railway"], email: ["i-mail", "Account email"] };
   const LANES = {
-    changes: { title: "Request changes", ph: "What should change? Pages, wording, a bug…" },
+    changes: { title: "Edits", ph: "Changes, edits or concerns. All of it, in one place.", note: "We're back to you within 24 hours." },
     build: { title: "Request build", ph: "What should we build next?" },
     next: { title: "New project or phase", ph: "A new project, or the next phase of one you have. What should it do?", free: true },
     demo: { title: "Request a demo", ph: "What would you like to see working? Your data, your process…", free: true },
+    plug: { title: "Plug-in", ph: "What should it do for you?", free: true },
   };
   // the records still tag notices deploy / credits: they land on the matching key.
   const LANE_OF = { deploy: "changes", changes: "changes", credits: "build", build: "build" };
@@ -24,24 +26,36 @@
   const mail = (subject, body) => { location.href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; };
 
   // a phase 2 proposal waiting on the client: their logo, then 01 deliverables · 02 timeline · 03 start the build
-  // (pay the invoice), then Accept · Ask changes · Deny. Each answer opens a filled-in email. No pay link = a quiet "on its way".
+  // (the amount), then Accept now, pay later · Pay deposit through Stripe (delivery.yml invoice:) · Decline, and in small
+  // letters "Ask to change the scope": a comment per deliverable + new capabilities. Each answer opens a filled-in email.
   function scope(p) {
     const s = p.scope;
     const part = (n, title, body) => `<div class="part"><b><i>0${n}</i>${title}</b><div>${body}</div></div>`;
     const items = `<ul>${s.items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
     const tl = (s.timeline || []).length
       ? `<ul class="tl">${s.timeline.map((t) => `<li><span>${esc(t.when)}</span>${esc(t.what)}</li>`).join("")}</ul>` : `<p class="mute">Set together on the first call.</p>`;
-    const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}
-      ${s.pay_link ? `<a class="paygo" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay invoice →</a>` : `<span class="paygo off">Invoice on its way</span>`}</div>`;
+    const pay = `<div class="payrow">${s.pay ? `<strong>${esc(s.pay.amount)}</strong><p>${esc(s.pay.what)}</p>` : ""}</div>`;
     const key = (a, label) => `<button type="button" class="sk ${a}" data-ans="${a}" data-p="${esc(p.code || p.name)}" data-s="${esc(s.name)}">${label}</button>`;
     return `<div class="scope"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
         <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Waiting on you</span></div>
       ${part(1, "Deliverables", items)}${part(2, "Timeline", tl)}${part(3, "Start the build", pay)}
-      <div class="sks">${key("accept", "Accept")}${key("change", "Ask changes")}${key("deny", "Deny")}</div></div>`;
+      <div class="sks">${key("accept", "Accept now, pay later")}
+        ${s.pay_link ? `<a class="sk stripe" href="${esc(s.pay_link)}" target="_blank" rel="noopener">Pay deposit through Stripe →</a>` : `<span class="sk stripe off">Pay deposit through Stripe · link on its way</span>`}
+        ${key("deny", "Decline")}</div>
+      <button type="button" class="scx" aria-expanded="false">Ask to change the scope of the project</button>
+      <form class="scf" hidden>
+        <p class="lede">Comment on any deliverable, or add a capability. Be specific: what, where, for whom.</p>
+        <ol class="its">${s.items.map((t, j) => `<li><span>${esc(t)}</span><textarea name="c${j}" rows="1" maxlength="800" placeholder="Comment on this one (optional)"></textarea></li>`).join("")}</ol>
+        <label class="add"><span>+ Add a new capability</span><textarea name="add" rows="2" maxlength="1500" placeholder="What should it also do? Who uses it, when, and what do they see?"></textarea></label>
+        <p class="push" role="alert"></p>
+        <button class="send2" type="submit">Send scope change<svg class="ico"><use href="#i-arrow"/></svg></button>
+      </form></div>`;
   }
 
   // one project = one small square: state, name, company, the stage track, and two small keys: git · railway.
   // The square itself does nothing on click. A git value "github.com/o/r · main" links to the repo; railway opens the dashboard.
+  // Owned by <name> · <role> (delivery.yml owner:), set like a signature line on the square.
+  const owned = (o) => o && o.name ? `<span class="own"><i>Owned by</i><b>${esc(o.name)}</b>${o.role ? `<small>${esc(o.role)}</small>` : ""}</span>` : "";
   const href = (k, v) => k === "git" ? "https://" + v.split(" ")[0].replace(/^https?:\/\//, "") : "https://railway.com/dashboard";
   function card(p, stages, i) {
     p.where = p.where || []; p.notices = p.notices || [];
@@ -50,16 +64,16 @@
       .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</a>`).join("");
     const sq = `<article class="proj">
       <div class="top"><span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="">` : ""}</div>
-      <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>
+      <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}
       <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
-      <div class="foot">${keys}${p.can_change ? `<button type="button" class="rc" data-p="${esc(p.code || p.name)}">${icon("i-pen")}Request changes${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
+      <div class="foot">${keys}${p.can_change ? `<button type="button" class="sq ed" data-p="${esc(p.code || p.name)}" title="Edits, changes or concerns · back to you in 24 h">${icon("i-pen")}${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
     </article>`;
     // a real phase 2 scope = ONE wide square, the same website: phase 1 left, phase 2 right (its key opens its own page).
     if (!p.scope) return sq;
     const inner = sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))
-      .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>/, `<h3>Phase 1</h3>`).replace(/<img class="plogo"[^>]*>/, "");
+      .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>(<span class="own">.*?<\/span>)?/, `<h3>Phase 1</h3>`).replace(/<img class="plogo"[^>]*>/, "");
     return `<article class="proj duo">
-      <div class="dh">${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}<h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span></div>
+      <div class="dh">${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}<h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}</div>
       <div class="pane">${inner}</div>
       <div class="pane p2">
         <span class="tag bad">${esc(p.scope.name)} awaits</span>
@@ -122,6 +136,7 @@
     form.hidden = false;
     form.project.hidden = !!LANES[which].free;
     form.msg.placeholder = LANES[which].ph;
+    $("small", form).textContent = LANES[which].note || "Opens your email, filled in. A person replies.";
     if (proj) form.project.value = proj;
     form.msg.focus({ preventScroll: true });
   }
@@ -130,9 +145,9 @@
   // the ghost keys beside a section title open the same one message window, at the top.
   document.querySelectorAll(".gk").forEach((b) => b.addEventListener("click", () => { open(b.dataset.lane); window.scrollTo({ top: 0 }); }));
 
-  // Request changes on a square → the window with that project picked; Review Phase 2 → its own page.
+  // ✎ on a square → the edits box with that project picked; Review Phase 2 → its own page.
   const onCards = (e) => {
-    const rc = e.target.closest(".rc");
+    const rc = e.target.closest(".ed");
     if (rc) { open("changes", rc.dataset.p); window.scrollTo({ top: 0 }); return; }
     const b = e.target.closest(".p2go");
     if (b) location.hash = "p2-" + b.dataset.i;
@@ -140,12 +155,51 @@
   $("#cards").addEventListener("click", onCards);
   $("#demos").addEventListener("click", onCards);
 
-  const ANSWER = { accept: "Accept", change: "Ask changes", deny: "Deny" };
-  $("#scopes").addEventListener("click", (e) => {
-    const b = e.target.closest(".sk");
+  // R-CAI plug-ins (under Your preferences): a square opens the one window, that plug-in named in the subject.
+  let plug = "";
+  $("#plugs").addEventListener("click", (e) => {
+    const b = e.target.closest(".plug");
     if (!b) return;
-    const lead = { accept: "We accept this proposal.", deny: "We decline this proposal.", change: "We'd like these changes to the proposal:\n\n" }[b.dataset.ans];
+    plug = b.dataset.plug;
+    open("plug");
+    $(".ask").msg.placeholder = `${plug}: what should it do for you?`;
+    window.scrollTo({ top: 0 });
+  });
+
+  const ANSWER = { accept: "Accept now, pay later", deny: "Decline" };
+  $("#scopes").addEventListener("click", (e) => {
+    const x = e.target.closest(".scx");
+    if (x) {
+      const f = $(".scf"), on = f.hidden;
+      f.hidden = !on; x.setAttribute("aria-expanded", String(on)); tries = 0; $(".push", f).textContent = "";
+      if (on) f.querySelector("textarea").focus();
+      return;
+    }
+    const b = e.target.closest("button.sk");
+    if (!b) return;
+    const lead = { accept: "We accept this proposal. We'll pay the deposit later.", deny: "We decline this proposal." }[b.dataset.ans];
     mail(`[R-CAI] Phase 2 · ${b.dataset.s} · ${ANSWER[b.dataset.ans]} · ${b.dataset.p}`, lead + sign());
+  });
+
+  // scope change: rules, not a model. A note is vague when it is short or leans on filler words. The first two sends
+  // with vague notes are pushed back (marked, a sharper ask each time); the third goes through as written.
+  const VAGUE = /\b(better|nicer|improve|more|less|stuff|things?|something|etc|fix|change it|update|cleaner|modern|good|bad)\b/i;
+  const vague = (t) => t.split(/\s+/).length < 8 || (VAGUE.test(t) && !/\d/.test(t) && t.split(/\s+/).length < 16);
+  const PUSH = ["Be more specific on the marked notes: what exactly, on which page or step, for whom.",
+    "One more pass: give an example. \"When X happens, Y should see Z\" works best."];
+  let tries = 0;
+  $("#scopes").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = e.target, s = view.projects[+location.hash.slice(4)].scope;
+    const notes = [...f.querySelectorAll("textarea")], msg = $(".push", f);
+    const said = notes.filter((t) => t.value.trim());
+    if (!said.length) { msg.textContent = "Write at least one comment or a new capability."; return; }
+    const weak = said.filter((t) => vague(t.value.trim()));
+    notes.forEach((t) => t.classList.toggle("weak", weak.includes(t)));
+    if (weak.length && tries < 2) { msg.textContent = PUSH[tries++]; weak[0].focus(); return; }
+    const body = s.items.map((it, j) => f["c" + j].value.trim() ? `• ${it}\n  → ${f["c" + j].value.trim()}` : "").filter(Boolean).join("\n\n");
+    mail(`[R-CAI] Phase 2 · ${s.name} · Change the scope · ${view.projects[+location.hash.slice(4)].name}`,
+      `Comments on the deliverables:\n\n${body || "-"}\n\nNew capabilities:\n${f.add.value.trim() || "-"}` + sign());
   });
 
   // preferences: one chip per question (tap again to clear), a review if they want, one send.
@@ -170,7 +224,7 @@
   $(".ask").addEventListener("submit", (e) => {
     e.preventDefault();
     const f = e.currentTarget;
-    mail(`[R-CAI] ${LANES[lane].title}${LANES[lane].free ? "" : " · " + f.project.value}`, f.msg.value.trim() + sign());
+    mail(`[R-CAI] ${LANES[lane].title}${lane === "plug" ? " · " + plug : LANES[lane].free ? "" : " · " + f.project.value}`, f.msg.value.trim() + sign());
   });
 
   $(".gear").addEventListener("click", (e) => {

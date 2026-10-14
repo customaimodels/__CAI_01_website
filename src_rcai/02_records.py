@@ -93,6 +93,9 @@ def _delivery(path):
                 cur["pay"] = {"amount": amt.strip(), "what": what.strip()}
             elif k == "invoice":                  # the real invoice link, or nothing
                 cur["invoice"] = v
+            elif k == "owner":                    # `owner: Cory Anderson | President` -- who owns the project, on its square
+                name, _, role = v.partition("|")
+                cur["owner"] = {"name": name.strip(), "role": role.strip()}
             elif k == "logo":                     # the client's own logo file, carried as a data URI: behind login, never in git
                 f = (path.parent / v).resolve()
                 mime = {".png": "image/png", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}.get(f.suffix.lower())
@@ -146,7 +149,8 @@ def _card(db, cfg, pid):
         "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
         "notices": notices,
         "scope": ({**scope, "timeline": d.get("timeline", []), "pay": d.get("pay"), "pay_link": d.get("invoice")} if scope and scope["items"] else None),
-        "logo": d.get("logo"),                  # the client's logo (data URI): on the square, the greeting, the phase 2 page
+        "logo": d.get("logo"),                  # the client's logo (data URI): on the square and the phase 2 page
+        "owner": d.get("owner"),                # {name, role}: "Owned by" on the square
         "id": pid,
         "code": p.get("project_id"),
         "name": p.get("name"),

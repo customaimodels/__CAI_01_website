@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=d47d921dc4">
-<link rel="stylesheet" href="rcai.css?v=d47d921dc4">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=3fd549c4dc">
+<link rel="stylesheet" href="rcai.css?v=3fd549c4dc">
 </head>
 <body>
 
@@ -32,6 +32,9 @@
  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></symbol>
  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/><path d="m14 7 3 3"/></symbol>
  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16 9.5"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 4v-4A1.5 1.5 0 0 1 4 14.5z"/><path d="M8.5 10h.01M12 10h.01M15.5 10h.01"/></symbol>
+ <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16v-4M12 16V7M17 16V9"/></symbol>
+ <symbol id="i-vault" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1"/><path d="M5 9v9.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M10 13h4"/></symbol>
  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
 </svg>
 
@@ -93,7 +96,7 @@
 <!-- THE HUB (2026-10-14, minimal on purpose: more lands here later).
      Top right: one small key (request build) + the bell; it drops one message window.
      Request changes sits on each project square, only once that project is signed or paid.
-     Body, three sections: 01 your projects (small squares; one website with a phase 2 = ONE wide square, phase 1 | phase 2; phase 2 opens its own page) · 02 your preferences (survey + review) · 03 feedback. -->
+     Body, three sections: 01 your projects (small squares; one website with a phase 2 = ONE wide square, phase 1 | phase 2; phase 2 opens its own page) · 02 your preferences (survey + review + R-CAI plug-ins) · 03 feedback. -->
 <div id="hub" hidden>
  <header>
   <div class="wrap">
@@ -153,6 +156,13 @@
     <label class="rv"><span>Thank you. Please leave a review.</span><textarea name="review" rows="3" maxlength="1500" placeholder="A line or two we can share."></textarea></label>
     <button class="send2" type="submit">Send<svg class="ico"><use href="#i-arrow"/></svg></button>
    </form>
+   <!-- R-CAI plug-ins: add-ons a client can ask for. Each square opens the one message window, that plug-in named. -->
+   <div class="sh sub2"><h3>R-CAI plug-ins</h3><span class="cap">Add-ons · ask to switch one on</span></div>
+   <div id="plugs">
+    <button type="button" class="plug" data-plug="Chatbot"><svg class="ico"><use href="#i-chat"/></svg><b>Chatbot</b><span>Answers your people from your own data, day and night.</span><i>Ask about it →</i></button>
+    <button type="button" class="plug" data-plug="Stats hub"><svg class="ico"><use href="#i-bars"/></svg><b>Stats hub</b><span>Conversions for each team member, in one view.</span><i>Ask about it →</i></button>
+    <button type="button" class="plug" data-plug="FSR_vault"><svg class="ico"><use href="#i-vault"/></svg><b>FSR_vault</b><span>Class archive, tests and normalized class content, growing with every class.</span><i>Ask about it →</i></button>
+   </div>
   </section>
 
   <section class="sec">
@@ -175,6 +185,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><a href="mailto:customaimodels@gmail.com">customaimodels@gmail.com</a></footer>
 </div>
 
-<script src="rcai.js?v=d47d921dc4"></script>
+<script src="rcai.js?v=3fd549c4dc"></script>
 </body>
 </html>
