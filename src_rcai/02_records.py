@@ -129,12 +129,23 @@ def _delivery(path):
 DOCS = pathlib.Path(__file__).parent / "20_docs"   # sealed handbooks: <id>.bin, the only form that ever reaches git
 
 
-def seal(data, key):
-    """SHA-256 counter keystream, XOR. Symmetric: seal(seal(x, k), k) == x. The key never leaves the laptop + Railway."""
+def _stream(data, key, nonce):
     import hashlib
-    k = bytes.fromhex(key)
+    k = bytes.fromhex(key) + nonce
     stream = b"".join(hashlib.sha256(k + i.to_bytes(8, "big")).digest() for i in range(len(data) // 32 + 1))
     return bytes(a ^ b for a, b in zip(data, stream))
+
+
+def seal(data, key):
+    """SHA-256 counter keystream with a fresh 16-byte nonce up front (a re-sealed handbook never reuses a stream).
+    The key never leaves the laptop + Railway."""
+    import secrets
+    nonce = secrets.token_bytes(16)
+    return nonce + _stream(data, key, nonce)
+
+
+def unseal(blob, key):
+    return _stream(blob[16:], key, blob[:16])
 
 
 def handbook_bytes(cfg, pid):
@@ -147,7 +158,7 @@ def handbook_bytes(cfg, pid):
     f, key = DOCS / f"{pid}.bin", os.environ.get("RCAI_DOC_KEY", "")
     if not key or not re.fullmatch(r"[\w-]+", pid) or not f.is_file():
         return None
-    pdf = seal(f.read_bytes(), key)
+    pdf = unseal(f.read_bytes(), key)
     return pdf if pdf.startswith(b"%PDF-") else None
 
 
