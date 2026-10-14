@@ -107,13 +107,13 @@
     ];
     const read = secs.filter(([k]) => seen().includes(k)).length;
     return `<div class="scope" data-n="${secs.length}"><div class="sh">${p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}
-        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Action required</span></div>
-      <div class="actreq"><b>Action required</b><span>Review the proposal, then choose one: accept, pay the deposit, request an invoice, or request a different build.
-        Questions from us come by email. Every request is kept in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
+        <span class="cap">${esc(p.name)} · ${esc(s.name)}</span><span class="wait">Your move</span></div>
+      <div class="actreq"><b>Your move</b><span>Phase 2 is ready when you are. Take a look, pick what fits, and we'll take it from there.
+        Got a question? We'll catch you by email, and everything we agree lives in the Handbook.</span><small class="rd">${read} of ${secs.length} sections read</small></div>
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
       <div class="holdslot">${holdHTML()}</div>
-      <p class="actlbl"><i></i>Your decision · choose one</p>
+      <p class="actlbl"><i></i>Ready? Pick one</p>
       <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Proposal closed" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${key("rebuild", "Request a different build", lock())}${key("inv", "Request invoice")}</div>
       <div class="shipslot"></div>
       <button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : closed() ? "Proposal closed · a different build is on its way" : "Ask to change the scope of the project"}</button>
@@ -194,10 +194,10 @@
       <div class="dh">${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}<h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}</div>
       <div class="pane">${inner}</div>
       <div class="pane p2">
-        <span class="tag bad">Your decision</span>
+        <span class="tag bad">Ready for you</span>
         <h3>${esc(p.scope.name)}</h3><span class="co">New build · ${p.scope.items.length} items</span>
-        <button type="button" class="p2go" data-i="${i}">Review and decide →</button>
-        <p class="dec">Every request between us is kept in the Handbook. Questions come by email.</p>
+        <button type="button" class="p2go" data-i="${i}">See what's next →</button>
+        <p class="dec">Your next build is waiting. One look, one click.</p>
       </div>
     </article>`;
   }

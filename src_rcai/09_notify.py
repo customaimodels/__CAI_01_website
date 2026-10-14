@@ -121,13 +121,23 @@ def text(row):
         + f"\n\n{row.get('text') or '-'}\n"
 
 
+def from_name(row):
+    """What HE sees on the From line: RCAI | JohnW M&A · RCAI | CoryA M&A · RCAI | Schuggie Ceilidhs (no person = the company)."""
+    co = (row.get("company") or "").replace("'s", "").replace("’s", "")
+    name = (row.get("person") or "").split()
+    if not name:
+        return f"RCAI | {co or row.get('email') or 'client'}".strip()
+    who = name[0] + (name[-1][0] if len(name) > 1 else "")
+    return f"RCAI | {who} {co.split()[0] if co else ''}".strip()
+
+
 def _send(row, cfg):
     out = {"at": row["at"], "kind": row["kind"], "email": row.get("email"), "to": cfg.get("admin_email")}
     key = _key()
     if not key or not cfg.get("admin_email"):
         out["ok"], out["why"] = False, "no BREVO_API_KEY" if not key else "no admin_email"
     else:
-        msg = {"sender": {"name": cfg.get("admin_from_name", "R-CAI"), "email": cfg.get("admin_from") or cfg["admin_email"]},
+        msg = {"sender": {"name": from_name(row),"email": cfg.get("admin_from") or cfg["admin_email"]},
                "to": [{"email": cfg["admin_email"]}], "subject": subject(row), "htmlContent": body(row, cfg),
                "textContent": text(row), "tags": ["rcai-admin", row["kind"]]}
         # no replyTo while testing: a reply from his inbox must never reach a real client (YERIKO_SAYS 2026-10-14)
