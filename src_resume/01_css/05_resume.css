@@ -13,3 +13,16 @@
 .cta-sub a{text-decoration:underline}
 
 .lede-support{font-size:18px;line-height:1.55;color:var(--quiet);max-width:62ch;margin:20px 0 72px}
+
+/* skills: the shared stacklist squeezed six rows into a 5fr column, right-aligned, wrapping
+   every line. On the resume it runs the full width as a ledger: name left, stack beside it. */
+#skills .stacklist-head{text-indent:0}
+#skills .stacklist{display:block;margin-top:40px}
+#skills .stacklist .label{display:block;margin:0 0 4px;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+#skills .stacklist .row{display:grid;grid-template-columns:1fr;gap:6px;padding:18px 0;border-top:1px solid rgb(0 0 0 / .1)}
+#skills .stacklist .row:last-child{border-bottom:1px solid rgb(0 0 0 / .1)}
+@media (min-width:860px){#skills .axis-row{grid-template-columns:300px 1fr}
+  #skills .stacklist .row{grid-template-columns:260px 1fr;gap:40px;align-items:start}}
+#skills .stacklist .row b{flex:none;line-height:1.5;align-items:flex-start}
+#skills .stacklist .row b .icon{margin-top:3px;flex:none}
+#skills .stacklist .row span{text-align:left;line-height:1.5}
