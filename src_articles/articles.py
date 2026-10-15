@@ -6,7 +6,7 @@ HERE = Path(__file__).resolve().parent
 MOUNT = "/articles"
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".xml": "application/xml",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp",
-         ".json": "application/json"}
+         ".json": "application/json", ".ico": "image/x-icon"}
 HIDDEN = ("04_inspiration",)
 
 

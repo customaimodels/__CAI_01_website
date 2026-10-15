@@ -445,6 +445,19 @@ footer .key .y:hover{background:var(--violet)}
   background:rgba(26,19,35,.92);backdrop-filter:blur(10px);font:500 14px/1 var(--sans);box-shadow:0 12px 30px -12px rgba(0,0,0,.6);transition:opacity .3s,transform .3s var(--ease)}
 .ai-fab img{width:24px;height:24px}
 .ai-fab.away{opacity:0;transform:translateY(10px);pointer-events:none}
+@media (max-width:767px){.ai-fab{display:none}}   /* phones: no floating launcher -- the invitation below Our approach leads in */
+
+/* the quiet invitation: one ruled row at the foot of Our approach, no logo, no card */
+.ai-invite{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:56px;padding:22px 0 0;border-top:1px solid rgba(239,236,230,.12);color:var(--ink);text-decoration:none}
+.ai-invite .t{font:400 16px/1.5 var(--sans);color:#c4bfcc}
+.ai-invite .t b{font-weight:600;color:var(--ink)}
+.ai-invite .go{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:500 15px/1 var(--sans);color:#f2cd57;white-space:nowrap;transition:color .16s}
+.ai-invite .ar{transition:transform .18s cubic-bezier(.22,1,.36,1)}
+.ai-invite:hover .go{color:#f8e08f}
+.ai-invite:hover .ar{transform:translateX(3px)}
+.ai-invite:active .go{transform:scale(.985)}
+.ai-invite:focus-visible{outline:2px solid var(--gold);outline-offset:6px;border-radius:4px}
+@media (max-width:767px){.ai-invite{flex-direction:column;align-items:flex-start;gap:8px;margin-top:40px}.ai-invite .t span{display:block}}
 
 /* motion: one entrance, then still. Runs with Reduce Motion on (his rule). ?still = off, for captures. */
 .js .rv{opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--i,0)*90ms)}

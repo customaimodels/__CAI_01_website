@@ -133,6 +133,13 @@
     box.setSelectionRange(6, 6);
   });
 
+  // The quiet invitation: scroll to the console and put the cursor in the box. The conversation is never reset.
+  const inv = document.querySelector(".ai-invite");
+  if (inv) inv.addEventListener("click", e => {
+    e.preventDefault();
+    root.querySelector(".ai-con").scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => box.focus({ preventScroll: true }), 500);
+  });
   // The launcher steps away while the console is on screen.
   const fab = document.querySelector(".ai-fab");
   if (fab) {
