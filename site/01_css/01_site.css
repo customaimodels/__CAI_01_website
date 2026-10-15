@@ -148,11 +148,11 @@ h3{font-family:var(--sans);font-weight:600;letter-spacing:-.025em;color:inherit}
   .h8-env b{font-size:16px;margin-bottom:3px}
 }
 @media (max-width:520px){
-  .h8-copy{padding:44px 22px 4px}
+  .h8-copy{padding:30px 22px 4px}
   .f8 h1{font-size:clamp(31px,9.1vw,44px);margin:20px 0 18px}
   .h8-cta{margin-top:30px;gap:10px}
   .h8b{height:48px;flex:1 1 auto;justify-content:center;padding:0 18px}
-  .h8-env{font-size:12px;padding-bottom:26px}
+  .h8-env{font-size:12px;margin-top:-10px;padding-bottom:8px}   /* phones: ~38px shorter hero, art + type unchanged */
   .h8-env b{font-size:15px}
 }
 
