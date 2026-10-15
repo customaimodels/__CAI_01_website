@@ -2,8 +2,11 @@
 
     email, pw_1, pw_1_set, pw_2, pw_2_set, ...     a change never overwrites: it adds the next pair of columns.
 
-Only salted pbkdf2 hashes are stored, never a password. No own password yet = the shared code word still opens.
+Only salted pbkdf2 hashes are stored, never a password. No own password yet = the shared code word still opens
+(unless RCAI_REQUIRE_OWN=1, see 03_auth).
 Where it lives: RCAI_DATA_DIR if set (Railway: a volume), else dta/_1_processed/rcai locally.
+Hosted with RCAI_USERS_JSON (run.py --users-snapshot, hashes only): passwords are READ from that variable and
+changes are off -- users.csv on his laptop stays the one source, so live can never hold a newer password.
 Hosted with no RCAI_DATA_DIR = changes are OFF (a container's disk forgets on every deploy: a password
 that silently reverts is worse than none). Never in git, never in the bundle.
 
@@ -15,7 +18,9 @@ import hashlib
 import hmac
 import importlib
 import io
+import json
 import os
+import re
 import secrets
 import time
 from pathlib import Path
@@ -23,10 +28,15 @@ from pathlib import Path
 C = importlib.import_module("src_rcai.01_config")
 ITER = 200_000
 MIN_LEN = 8
+HASH = re.compile(r"pbkdf2\$\d{5,7}\$[0-9a-f]{32}\$[0-9a-f]{64}")
+EMAIL = re.compile(r"[^@\s|,]+@[^@\s|,]+\.[a-z]{2,}")
+_JSON = {}  # raw RCAI_USERS_JSON -> parsed, so a request never re-parses it
 
 
 def store():
-    """The folder that holds users.csv, or None when changes are off (hosted without a volume)."""
+    """The folder that holds users.csv, or None when changes are off (hosted without a volume, or RCAI_USERS_JSON)."""
+    if os.environ.get("RCAI_USERS_JSON"):
+        return None
     if os.environ.get("RCAI_DATA_DIR"):
         return Path(os.environ["RCAI_DATA_DIR"])
     if os.environ.get("RCAI_HUB_JSON"):
@@ -39,8 +49,50 @@ def _file():
     return s / "users.csv" if s else None
 
 
+def snapshot_problems(obj):
+    """Why an RCAI_USERS_JSON value is unsafe or malformed: [] = only emails, hashes and set-dates."""
+    if not isinstance(obj, dict) or set(obj) != {"v", "made", "users"} or obj["v"] != 1 or not isinstance(obj["users"], dict):
+        return ["users snapshot: shape is not {v:1, made, users:{email:[[hash,set_at],...]}}"]
+    bad = []
+    for email, pws in obj["users"].items():
+        if not EMAIL.fullmatch(email) or email != email.lower():
+            bad.append(f"users snapshot: {email[:40]!r} is not a lower-case email")
+        if not isinstance(pws, list) or not pws:
+            bad.append(f"users snapshot: {email[:40]} has no hashes")
+            continue
+        for pw in pws:
+            if not (isinstance(pw, list) and len(pw) == 2 and isinstance(pw[0], str) and HASH.fullmatch(pw[0])
+                    and isinstance(pw[1], str) and len(pw[1]) <= 16):
+                bad.append(f"users snapshot: {email[:40]} holds something that is not a pbkdf2 hash + date")
+    return bad
+
+
+def _from_json(raw):
+    if raw not in _JSON:
+        try:
+            obj = json.loads(raw)
+        except ValueError:
+            obj = None
+        # malformed = nobody has an own password; with RCAI_REQUIRE_OWN=1 that closes every login (fails shut)
+        _JSON.clear()
+        _JSON[raw] = {} if snapshot_problems(obj) else {e: [tuple(pw) for pw in v] for e, v in obj["users"].items()}
+    return _JSON[raw]
+
+
 def load():
     """email -> [(hash, set_at), ...] oldest first."""
+    if os.environ.get("RCAI_USERS_JSON"):
+        return _from_json(os.environ["RCAI_USERS_JSON"])
+    return _load_csv()
+
+
+def snapshot():
+    """users.csv → the RCAI_USERS_JSON value: hashes + set-dates only. Never from the variable itself."""
+    return {"v": 1, "made": time.strftime("%Y-%m-%d %H:%M"),
+            "users": {e: [list(pw) for pw in pws] for e, pws in sorted(_load_csv().items()) if pws}}
+
+
+def _load_csv():
     f = _file()
     if not f or not f.exists():
         return {}

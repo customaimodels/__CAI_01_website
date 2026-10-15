@@ -3,6 +3,10 @@
 No own password yet (05_users) = the shared code word opens, and the email decides what is shown.
 Own password set = only the newest one opens; changing it bumps the version, so every older cookie dies.
 Wrong tries are counted per address and locked out for a while.
+RCAI_REQUIRE_OWN=1 (hosted): an email without its own password is refused -- the shared code and the local
+4-digit door are both shut. Unset it and the shared code is back after one restart (the rollback).
+The same gate ends every shared-code (v0) session, so no secret rotation is needed for it.
+RCAI_SECRET signs this cookie AND the _Y_VAULT cookie (src_y_vault/vault.py): rotating it ends both.
 """
 import hashlib
 import hmac
@@ -38,12 +42,19 @@ def fail(ip):
     _FAILS.setdefault(ip, []).append(time.time())
 
 
+def require_own():
+    return os.environ.get("RCAI_REQUIRE_OWN") == "1"
+
+
 def check_code(cfg, ip, code, email=""):
     own = U.check(email, code or "")              # own password set: only the newest opens, nothing else
     if own is not None:
         if not own:
             fail(ip)
         return own
+    if require_own():                             # no own password = no way in; never falls back to the shared code
+        fail(ip)
+        return False
     # local preview only (hub read from disk, no RCAI_HUB_JSON): any 4 digits opens an email with no own password.
     # hosted (Railway) never takes this path -- the public site keeps the real code word.
     if cfg["hub"] is not None and re.fullmatch(r"\d{4}", (code or "").strip()):
@@ -69,6 +80,8 @@ def read(token):
         return None
     good = hmac.new(_secret(), f"{email}|{ver}|{exp}".encode(), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(sig, good) or int(exp) < time.time() or ver != str(U.version(email)):
+        return None
+    if ver == "0" and require_own():              # every shared-code session ends the moment the gate closes
         return None
     return email
 
