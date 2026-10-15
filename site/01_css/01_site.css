@@ -28,6 +28,15 @@
   --wrap:1200px;
   --lift:0 1px 2px rgba(0,0,0,.3),0 24px 60px -36px rgba(0,0,0,.7);
 }
+/* P0 refresh jump (2026-10-15): on phones the Inter / Inter Tight swap re-wrapped the copy twice (height 9341→9274→9323)
+   and dragged a restored scroll up and down. These Arial faces are sized to the web fonts' measure (tuned in
+   dta/_1_processed/landing/p0/font_tune.mjs), so the swap no longer moves lines. Desktop keeps its stack: it was already stable. */
+@font-face{font-family:"CAI Inter Fallback";src:local("Arial"),local("ArialMT");font-weight:100 449;size-adjust:105%;ascent-override:92.26%;descent-override:23.07%;line-gap-override:0%}
+@font-face{font-family:"CAI Inter Fallback";src:local("Arial"),local("ArialMT");font-weight:450 900;size-adjust:104%;ascent-override:93.15%;descent-override:23.29%;line-gap-override:0%}
+@font-face{font-family:"CAI Tight Fallback";src:local("Arial"),local("ArialMT");font-weight:100 900;size-adjust:92%;ascent-override:105.30%;descent-override:26.33%;line-gap-override:0%}
+@media (max-width:980px){:root{
+  --serif:"Inter Tight","CAI Tight Fallback","SF Pro Display",-apple-system,sans-serif;
+  --sans:"Inter","CAI Inter Fallback","SF Pro Text",-apple-system,system-ui,sans-serif}}
 .paper{--bg:#f5f3ef;--card:#fbfaf7;--well:#efede6;--ink:#0e0c12;--ink-2:#55525e;--mute:#8a8793;
   --line:rgba(26,19,35,.08);--line-2:rgba(26,19,35,.16);--violet-text:#4a3d63;
   --lift:0 1px 2px rgba(26,19,35,.04),0 24px 60px -36px rgba(26,19,35,.22);

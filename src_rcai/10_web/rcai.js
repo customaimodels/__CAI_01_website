@@ -125,10 +125,8 @@
       <div class="adslot">${addsHTML(s, picked)}</div>
       ${secs.map(([k, t, pk, body], j) => fold(k, j + 1, t, pk, body)).join("")}
       <div class="holdslot">${holdHTML()}</div>
-      <label class="ack${acked() ? " on" : ""}"><input type="checkbox"${acked() ? " checked" : ""}${lock() ? " disabled" : ""}>
-        <span>I understand the pricing: the final cost may vary by ±15–20% of the estimated total.</span></label>
       <p class="actlbl"><i></i>Ready? Pick one</p>
-      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Scope archived" : "Accept now, pay later", lock() || !acked())}<span class="stslot">${stripeHTML(s)}</span>${shipped() ? key("inv", "Request invoice") : ""}</div>
+      <div class="sks${lock() ? " frozen" : ""}">${key("accept", shipped() ? "Accepted · shipping" : closed() ? "Scope archived" : "Accept now, pay later", lock())}<span class="stslot">${stripeHTML(s)}</span>${shipped() ? key("inv", "Request invoice") : ""}</div>
       <div class="shipslot"></div>
       <div class="endrow"><button type="button" class="scx" aria-expanded="false"${lock() ? " disabled" : ""}>${held() ? "Scope change in review" : shipped() ? "Scope locked · the build is shipping" : closed() ? "Scope archived · a different build is on its way" : "Ask to change the scope of the project"}</button>
         ${key("rebuild", "Request a different build · archive this scope", lock())}</div>
@@ -438,9 +436,6 @@
   const CLOSEKEY = () => `rcai.closed.${PK()}`;
   const closed = () => +(localStorage.getItem(CLOSEKEY()) || 0);
   const lock = () => held() || shipped() || closed();
-  // "I understand the pricing" (±15–20%): Accept stays off until it is ticked. Stripe never waits on it.
-  const ACKKEY = () => `rcai.ack.${PK()}`;
-  const acked = () => +(localStorage.getItem(ACKKEY()) || 0);
   function holdHTML() {
     if (closed()) return `<div class="hold"><i></i><span><b>Scope archived. A different build is on its way.</b> We write back within 24 hours with a new demo.</span></div>`;
     if (shipped()) return `<div class="hold ok"><i></i><span><b>Accepted. The build is shipping.</b> The deposit is due before go-live: Stripe, or ask for an invoice by another method.</span></div>`;
@@ -452,7 +447,6 @@
     $(".sks").classList.add("frozen");
     const a = $(".sks .sk.accept"); a.disabled = true; a.classList.remove("shipgo", "armed");
     if (shipped()) a.textContent = "Accepted · shipping"; if (closed()) a.textContent = "Scope archived";
-    const ck = $(".ack input"); if (ck) ck.disabled = true;
     $$(".modk").forEach((m) => (m.disabled = true));
     // once shipped, Request invoice joins the row for good: the second way to pay
     if (shipped() && !$(".sks .sk.inv")) $(".sks").insertAdjacentHTML("beforeend", `<button type="button" class="sk inv" data-ans="inv">Request invoice</button>`);
@@ -531,11 +525,10 @@
       freeze("Scope archived · a different build is on its way");
       return;
     }
-    if (b.dataset.ans === "accept" && !b.classList.contains("armed")) { if (!acked()) return; track("accept"); $(".rbslot").innerHTML = ""; arm(true); return; }
+    if (b.dataset.ans === "accept" && !b.classList.contains("armed")) { track("accept"); $(".rbslot").innerHTML = ""; arm(true); return; }
     const p = view.projects[+location.hash.slice(4)], s = p.scope, pk = added(), bl = bill(s, pk), adn = addNames(s, pk);
     const plus = (adn.length ? `\n\nAlso in the build:\n${adn.map((t) => "· " + t).join("\n")}` : "")
-      + (bl ? `\n\nEstimated total ${money(bl.tot)}${s.tax ? ` (incl. ${s.tax}% tax)` : ""} · deposit ${money(bl.dep)}.` : "")
-      + (acked() ? "\nPricing understood: the final cost may vary by ±15–20% of the estimated total." : "");
+      + (bl ? `\n\nEstimated total ${money(bl.tot)}${s.tax ? ` (incl. ${s.tax}% tax)` : ""} · deposit ${money(bl.dep)}.` : "");
     const tag = `${s.name} · ${p.code || p.name}`;
     if (b.classList.contains("shipgo")) {
       if (!(await send("ship", `${tag}\n\nWe accept this proposal and the build is OK as it stands. Ship today. We'll pay the deposit within 7 days.` + plus + sign(),
@@ -560,14 +553,6 @@
       $(".ra-s", f).textContent = "Sent · give us 24 hours"; $(".ra-s", f).disabled = true;
     }
   }, true);
-  $("#scopes").addEventListener("change", (e) => {
-    if (!e.target.closest(".ack input")) return;
-    const on = e.target.checked;
-    try { on ? localStorage.setItem(ACKKEY(), String(Date.now())) : localStorage.removeItem(ACKKEY()); } catch {}
-    track(on ? "ack" : "ack_off");
-    $(".ack").classList.toggle("on", on);
-    const a = $(".sks .sk.accept"); if (!lock()) { a.disabled = !on; if (!on) arm(false); }
-  });
   $("#scopes").addEventListener("toggle", (e) => {
     const d = e.target;
     if (!d.matches?.("details.fold") || !d.open || d.classList.contains("read")) return;

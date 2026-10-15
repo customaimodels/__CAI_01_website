@@ -584,7 +584,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .scope .vis.two figcaption{grid-column:1/-1;margin-top:2px}
 @media (max-width:640px){.fold[data-k="scope"] .pb,.fold[data-k="how"] .pb{padding-left:4px}.scope .vis.two{grid-template-columns:1fr}}
 /* 2026-10-14 · Phase 2, his 8 sections: add/modify key under the deliverables · infra = one big $0 + quiet rows ·
-   support = one question, three answers · payment plan = two invoices + the estimated total · the ±15–20% tick gates Accept. */
+   support = one question, three answers · payment plan = two invoices + the estimated total . */
 .modk{all:unset;cursor:pointer;margin-top:14px;display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:9px;border:1px solid var(--line-2);font:500 13px/1 var(--sans);color:var(--ink)}
 .modk:hover{border-color:rgba(255,255,255,.3)}.modk:disabled{opacity:.35;pointer-events:none}
 .infra{display:grid;grid-template-columns:140px 1fr;gap:28px;align-items:start}
