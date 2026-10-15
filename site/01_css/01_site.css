@@ -145,6 +145,20 @@ section{position:relative}
 .ui .wire{color:rgba(255,255,255,.4);display:flex}
 .ui .wire .ico{width:14px;height:14px}
 
+/* start here: the red starter offer, four squares (2026-10-14) */
+.start{margin:0 0 28px;padding:30px 30px 24px;border:1px solid #6e1d26;border-top:3px solid #b3262f;border-radius:var(--r);background:linear-gradient(180deg,#1d0f13,#140c10);box-shadow:var(--lift)}
+.start .cap{color:#e0656b}
+.start-h h2{margin:6px 0 20px;font:600 clamp(24px,2.6vw,32px)/1.15 var(--sans);letter-spacing:-.025em;color:#faf6ea}
+.start-g{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.start-g div{padding:18px 18px 16px;border:1px solid rgba(179,38,47,.35);border-radius:var(--r-s);background:rgba(179,38,47,.07)}
+.start-g b{display:block;margin:10px 0 4px;font:600 30px/1 var(--sans);letter-spacing:-.03em;color:#faf6ea}
+.start-g b i{font-style:normal;font-size:.5em;color:#c9a9ab;margin-left:2px}
+.start-g p{margin:0;font-size:13.5px;color:#c9bfc2}
+.start-t{margin:18px 0 0;font:500 16px/1.4 var(--sans);color:#e8dfe0}
+.start-t b{color:#faf6ea}
+.start-t a{margin-left:8px;color:#e0656b;text-decoration:none;font-weight:600}
+@media(max-width:820px){.start-g{grid-template-columns:1fr 1fr}.start{padding:22px 18px}}
+
 /* strip: four promises */
 .strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--lift)}
 .strip div{display:flex;gap:16px;align-items:center;padding:28px 26px}
