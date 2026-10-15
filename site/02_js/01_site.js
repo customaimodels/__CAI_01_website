@@ -4,6 +4,8 @@
   const set = () => bar && bar.classList.toggle("solid", scrollY > 8);
   addEventListener("scroll", set, { passive: true });
   set();
+  // In-page links glide only once the page has settled; before that, restore / #anchor landing must be instant.
+  addEventListener("load", () => requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add("glide"))));
   if (/[?&]still\b/.test(location.search) || !("IntersectionObserver" in window)) return;
   document.documentElement.classList.add("js");
   const io = new IntersectionObserver((es) => es.forEach((e) => {

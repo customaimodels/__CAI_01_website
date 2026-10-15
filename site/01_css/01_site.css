@@ -33,7 +33,8 @@
   --lift:0 1px 2px rgba(26,19,35,.04),0 24px 60px -36px rgba(26,19,35,.22);
   background:var(--bg);color:var(--ink)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;background:var(--bg)}
+html{background:var(--bg)}
+html.glide{scroll-behavior:smooth}   /* on only after load: the browser's refresh restore + anchor landing stay instant, never a glide */
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.47 var(--sans);letter-spacing:-.011em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
@@ -471,8 +472,8 @@ footer .key .y:hover{background:var(--violet)}
 @keyframes breathe{50%{opacity:.55}}
 
 /* uses: the selling banner, a rail of small dashboards (his reference 2026-10-14). Shapes only, no figures. */
-.uses{padding:112px 0 8px}
-.uhead{margin-bottom:28px}
+.uses{padding:123px 0 60px}
+.uhead{margin-bottom:40px}
 .uhead .cap{display:block}
 .uhead h2{font-size:clamp(30px,4vw,52px);margin:0;text-transform:uppercase;letter-spacing:-.02em;line-height:1.02}
 .urail{--pad:max(32px,calc((100vw - var(--wrap))/2 + 32px));display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-inline:var(--pad);padding:4px var(--pad) 18px;scrollbar-width:none}
@@ -534,7 +535,7 @@ footer .key .y:hover{background:var(--violet)}
   transition:opacity .42s var(--u),transform .42s var(--u),translate .22s var(--u),box-shadow .22s var(--u);
   transition-delay:calc(var(--k,0)*35ms),calc(var(--k,0)*35ms),0s,0s}
 .js .urail.in .ut{opacity:1;transform:none}
-@media (max-width:980px){.uses{padding-top:72px}.urail{--pad:16px;overscroll-behavior-x:contain}.ut{height:220px}.w3{width:280px}.w4{width:320px}.wh figcaption b{font-size:24px}}
+@media (max-width:980px){.uses{padding-top:83px}.urail{--pad:16px;overscroll-behavior-x:contain}.ut{height:220px}.w3{width:280px}.w4{width:320px}.wh figcaption b{font-size:24px}}
 @media (max-width:520px){.urail{scroll-snap-type:x mandatory}.w3,.w4{width:calc(100vw - 32px - 18vw)}.w2{width:200px}}
 
 /* phone */
