@@ -1,7 +1,7 @@
 /* ADR-0005 · the printed annual. One axis (--axis, 42%), flat colour fields, real pictures, no eyebrows,
    no 01/02/03, no thin rules, no gradients. Scoped to body.report only -- systems.html (ADR-0003) is untouched. */
 
-body.report{background:var(--paper);color:var(--text);font:400 17px/1.55 var(--sans)}
+body.report{background:#f5f3ef;color:var(--text);font:400 17px/1.55 var(--sans)}
 body.report h1,body.report h2,body.report h3{margin:0;font-weight:500}
 body.report .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
 body.report a{color:inherit;text-decoration:none;overflow-wrap:anywhere}
