@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=3561d24341">
-<link rel="stylesheet" href="rcai.css?v=3561d24341">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=f43ab63782">
+<link rel="stylesheet" href="rcai.css?v=f43ab63782">
 </head>
 <body>
 
@@ -43,28 +43,24 @@
  <section class="field">
   <a class="home" href="/"><img src="knot.png" alt="">Custom AI Models</a>
   <div class="say">
-   <span class="cap">Organize</span>
-   <h1><span class="in">in</span> <b class="gold">R-CAI</b></h1>
-   <p class="yours">Your hub.</p>
+   <span class="cap">Your work.</span>
+   <h1><b class="gold">R-CAI</b></h1>
+   <p class="yours">One hub.</p>
   </div>
   <div class="peek" aria-hidden="true">
-   <div class="pk"><svg class="ico"><use href="#i-layers"/></svg><b>Projects</b><i class="live"></i><span>Live</span></div>
+   <div class="pk"><svg class="ico"><use href="#i-layers"/></svg><b>Projects</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
    <div class="pk"><svg class="ico"><use href="#i-pen"/></svg><b>Request changes</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
    <div class="pk"><svg class="ico g"><use href="#i-code"/></svg><b>Request build</b><svg class="ico a"><use href="#i-arrow"/></svg></div>
   </div>
  </section>
 
  <section class="desk">
-  <div class="seg" role="tablist">
-   <button type="button" role="tab" data-face="login" aria-selected="true">Log in</button>
-   <button type="button" role="tab" aria-selected="false" disabled title="Opens soon">Sign up · soon</button>
-  </div>
-
+  <!-- sign up tab hidden until its data pipeline exists; #signup form + /api/signup kept (2026-10-14) -->
   <form id="login" class="face" autocomplete="on">
    <h2>Welcome back.</h2>
-   <p class="lede">Your email and the code word we gave you.</p>
+   <p class="lede">Sign in with your email and access code.</p>
    <label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
-   <label><span>Code word</span><input name="code" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
+   <label><span>Access code</span><input name="code" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
    <button class="key" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
    <p class="err" role="alert"></p>
   </form>
@@ -189,6 +185,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><span>customaimodels.com</span></footer>
 </div>
 
-<script src="rcai.js?v=3561d24341"></script>
+<script src="rcai.js?v=f43ab63782"></script>
 </body>
 </html>

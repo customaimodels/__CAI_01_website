@@ -191,29 +191,42 @@
     else if (!e.target.closest("#hbfab")) l.hidden = true;
   });
   const href = (k, v) => k === "git" ? "https://" + v.split(" ")[0].replace(/^https?:\/\//, "") : "https://railway.com/dashboard";
+  // what each small key does, said plainly: its accessible name and its tooltip are the same words.
+  const KEYNAME = { git: "View repository", railway: "Open Railway", ed: "Request a change" };
+  // the phase 2 square says where the proposal stands, read from the same device keys the phase 2 page writes.
+  function p2state(p) {
+    const k = `${view?.email || ""}.${p.id}`, n = (s) => +(localStorage.getItem(`rcai.${s}.${k}`) || 0);
+    if (n("closed")) return ["Proposal archived", "A different build is on its way. We write back within 24 hours.", ""];
+    if (n("ship")) return ["Accepted · shipping", "The build is on. The deposit is due before go-live.", "ok"];
+    const h = n("hold");
+    if (h && Date.now() - h < 864e5) return ["Scope change in review", "We have your notes. Back to you within 24 hours.", ""];
+    return ["Proposal · your decision", "Phase 2 is ready. Take a look and pick what fits.", "bad"];
+  }
   function card(p, stages, i) {
     p.where = p.where || []; p.notices = p.notices || [];
     const track = stages.map((_, j) => `<i class="${j < p.stage ? "on" : j === p.stage ? "now" : ""}"></i>`).join("");
     const keys = p.where.filter((w) => w.k === "git" || w.k === "railway")
-      .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" title="${esc(WHERE[w.k][1])}: ${esc(w.v)}">${icon(WHERE[w.k][0])}</a>`).join("");
+      .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" aria-label="${KEYNAME[w.k]}" data-tip="${KEYNAME[w.k]}">${icon(WHERE[w.k][0])}</a>`).join("");
     const sq = `<article class="proj">
       <div class="top"><span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="">` : ""}</div>
       <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}
-      <div class="track" title="${esc(stages[p.stage] || "")}">${track}</div>
-      <div class="foot">${keys}${p.can_change ? `<button type="button" class="sq ed" data-p="${esc(p.code || p.name)}" title="Edits, changes or concerns · back to you in 24 h">${icon("i-pen")}${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
+      <div class="track" title="${esc(stages.join(" → "))}">${track}</div>
+      <div class="stg"><span>${p.stage + 1} of ${stages.length}</span><span>${stages[p.stage + 1] ? `Next · ${esc(stages[p.stage + 1])}` : esc(stages[p.stage] || "")}</span></div>
+      <div class="foot">${keys}${p.can_change ? `<button type="button" class="sq ed" data-p="${esc(p.code || p.name)}" aria-label="${KEYNAME.ed}" data-tip="${KEYNAME.ed}">${icon("i-pen")}${p.notices.some((n) => LANE_OF[n.lane] === "changes") ? `<i class="dot"></i>` : ""}</button>` : ""}</div>
     </article>`;
     // a real phase 2 scope = ONE wide square, the same website: phase 1 left, phase 2 right (its key opens its own page).
     if (!p.scope) return sq;
     const inner = sq.slice(sq.indexOf(">") + 1, sq.lastIndexOf("</article>"))
       .replace(/<h3>.*?<\/h3><span class="co">.*?<\/span>(<span class="own">.*?<\/span>)?/, `<h3>Phase 1</h3>`).replace(/<img class="plogo"[^>]*>/, "");
+    const [st, line, cls] = p2state(p);
     return `<article class="proj duo">
       <div class="dh">${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="${esc(p.company || "")}">` : ""}<h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}</div>
       <div class="pane">${inner}</div>
       <div class="pane p2">
-        <span class="tag bad">Ready for you</span>
+        <span class="tag ${cls}">${esc(st)}</span>
         <h3>${esc(p.scope.name)}</h3><span class="co">New build · ${p.scope.items.length} items</span>
-        <button type="button" class="p2go" data-i="${i}">See what's next →</button>
-        <p class="dec">Your next build is waiting. One look, one click.</p>
+        <button type="button" class="p2go" data-i="${i}">${cls === "bad" ? "Review and decide" : "Open Phase 2"} <span class="ar">→</span></button>
+        <p class="dec">${esc(line)}</p>
       </div>
     </article>`;
   }

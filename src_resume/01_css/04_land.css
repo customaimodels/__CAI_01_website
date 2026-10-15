@@ -289,3 +289,11 @@ body.report .btn:active{transform:scale(.97)}
   .strip:hover img{transform:none}
   .m-automotive img{animation:none}
 }
+
+/* 2026-10-14 brand + anchor (only these two): CAI knot is the landing's exact file; the company wordmark
+   wears the landing's sans; anchors land below the 76px sticky bar so #skills shows "Everything I build with." */
+body.report .cai-mark{font:600 13.5px/1 'Inter',system-ui,-apple-system,sans-serif;letter-spacing:-.02em;color:rgba(243,238,228,.62);padding-left:14px;margin-left:-18px;border-left:1px solid rgba(243,238,228,.18);white-space:nowrap;transition:color .15s}
+body.report .cai-mark:hover{color:#f3eee4}
+@media (max-width:900px){body.report .cai-mark{display:none}}
+html{scroll-padding-top:84px}
+body.report section[id]{scroll-margin-top:84px}

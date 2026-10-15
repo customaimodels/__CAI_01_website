@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="01_css/00_tokens.css?v=3561d24341">
-<link rel="stylesheet" href="01_css/01_site.css?v=3561d24341">
+<link rel="stylesheet" href="01_css/00_tokens.css?v=f43ab63782">
+<link rel="stylesheet" href="01_css/01_site.css?v=f43ab63782">
 </head>
 <body>
 
@@ -45,95 +45,63 @@
 
 <header id="bar">
  <div class="wrap">
-  <a class="brand" href="#top"><img src="03_img/05_knot_gold.png" alt="">Custom AI Models</a>
-  <nav>
-   <a href="#build">Build</a>
-   <a href="#deploy">Deploy</a>
-   <a href="#ask">Ask</a>
-   <a href="/articles/">Read</a>
-   <a href="/r-cai/">R-CAI</a>
+  <a class="brand" href="/"><img src="03_img/05_knot_gold.png" width="24" height="24" alt="">Custom AI Models</a>
+  <nav class="nv" aria-label="Main">
+   <a href="#build">Solutions</a>
+   <a href="/behind-the-models/#skills">Expertise</a>
+   <a href="/articles/">Insights</a>
   </nav>
   <div class="act">
-   <a class="btn line" href="/r-cai/">Log in</a>
-   <a class="btn go" href="/r-cai/#signup">Get started</a>
+   <a class="portal" href="/r-cai/">Client Portal</a>
+   <a class="cta" href="/r-cai/#signup">Start a Project<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+   <button class="mnu" type="button" aria-expanded="false" aria-controls="mnu" aria-label="Open menu"><i></i><i></i></button>
   </div>
  </div>
+ <nav class="sheet" id="mnu" aria-label="Menu" hidden>
+  <a href="#build">Solutions</a>
+  <a href="/behind-the-models/#skills">Expertise</a>
+  <a href="/articles/">Insights</a>
+  <a href="/r-cai/">Client Portal</a>
+  <a class="cta" href="/r-cai/#signup">Start a Project<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 16 16 8M9.5 8H16v6.5"/></svg></a>
+ </nav>
 </header>
 
 <main id="top">
 
 <section class="hero">
  <div class="wrap">
- <div class="field">
-  <div>
+ <div class="field f8">
+  <div class="h8-copy">
    <span class="cap rv">Custom AI Models</span>
-   <h1 class="rv" style="--i:1">Custom solutions<br>from <em>your</em> data.</h1>
-   <span class="cap rv" style="--i:2">Delivered local · on the web · in your pocket</span>
-   <div class="row rv" style="--i:3">
-    <a class="btn go" href="/r-cai/#signup">Start a project<svg class="ico"><use href="#i-arrow"/></svg></a>
-    <a class="btn" href="#deploy">See how it ships</a>
+   <h1 class="rv" style="--i:1">Custom AI Systems.<br>Built Around<br><em>Your</em> Business.</h1>
+   <p class="h8-sub rv" style="--i:2">Data-first architecture. Python-powered engineering. Systems you own.</p>
+   <div class="h8-cta rv" style="--i:3">
+    <a class="h8b go" href="/r-cai/#signup">Start a Project<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a class="h8b" href="/behind-the-models/">Explore Our Work<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
    </div>
   </div>
-  <div class="screens">
-   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-    <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dcd7e3"/><stop offset="1" stop-color="#5a4a78"/></linearGradient>
-    <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset="1" stop-color="#b8821a"/></linearGradient>
-    <radialGradient id="hp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#5a4a78" stop-opacity=".32"/><stop offset="1" stop-color="#5a4a78" stop-opacity="0"/></radialGradient>
-   </defs></svg>
-   <figure class="scr rv" style="--i:4">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="58" ry="11" fill="url(#hp)"/>
-     <path d="M22 62 75 20l53 42" fill="none" stroke="url(#hg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M32 54v56h86V54" fill="#20162f" stroke="rgba(255,255,255,.16)"/>
-     <rect x="48" y="66" width="54" height="34" rx="4" fill="#221c2b" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M54 74h28" stroke="#c3bbd1" stroke-width="2.2" stroke-linecap="round"/>
-     <path d="M66 100v6h18v-6" fill="none" stroke="rgba(255,255,255,.3)"/>
-    </svg>
-    <figcaption><b>Local</b>Runs on your machine.</figcaption>
-   </figure>
-   <figure class="scr rv" style="--i:5">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="58" ry="11" fill="url(#hp)"/>
-     <rect x="18" y="26" width="114" height="80" rx="7" fill="#221c2b" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M18 40h114" stroke="rgba(255,255,255,.14)"/>
-     <circle cx="28" cy="33" r="2" fill="rgba(255,255,255,.3)"/><circle cx="36" cy="33" r="2" fill="rgba(255,255,255,.3)"/>
-     <circle cx="75" cy="73" r="20" fill="none" stroke="rgba(255,226,160,.5)" stroke-width="1.2"/>
-     <ellipse cx="75" cy="73" rx="9" ry="20" fill="none" stroke="rgba(255,226,160,.4)" stroke-width="1.1"/>
-     <path d="M55 73h40" stroke="rgba(255,226,160,.4)" stroke-width="1.1"/>
-     <path d="M60 58a20 20 0 0 1 22-5" fill="none" stroke="#ffe2a0" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
-    <figcaption><b>Website</b>One link, live.</figcaption>
-   </figure>
-   <figure class="scr rv" style="--i:6">
-    <svg viewBox="0 0 150 130" aria-hidden="true">
-     <ellipse class="glow" cx="75" cy="116" rx="44" ry="10" fill="url(#hp)"/>
-     <rect x="52" y="14" width="46" height="94" rx="10" fill="#221c2b" stroke="url(#hb)" stroke-width="1.6"/>
-     <path d="M68 22h14" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
-     <path d="M60 40h22" stroke="#c3bbd1" stroke-width="2.2" stroke-linecap="round"/>
-     <path d="M60 50h30M60 58h26" stroke="rgba(255,255,255,.16)" stroke-width="2" stroke-linecap="round"/>
-     <circle cx="75" cy="99" r="2.5" fill="#ffe2a0"/>
-    </svg>
-    <figcaption><b>Phone</b>In your pocket.</figcaption>
-   </figure>
-  </div>
-  <ul class="vow rv" style="--i:7">
-   <li><svg class="ico"><use href="#i-shield"/></svg><span><b>Your data stays yours.</b> Whatever you need, it never leaves your hands.</span></li>
-   <li><svg class="ico"><use href="#i-core"/></svg><span><b>Python replaces AI spend.</b> Agent workflows, crystallised overnight into solid, automated Python. <a class="more" href="#build">Learn more →</a></span></li>
-   <li><svg class="ico"><use href="#i-link"/></svg><span><b>One link.</b> Hundreds of Python processes behind it, ready for your idea.</span></li>
-  </ul>
+  <figure class="h8-art rv" style="--i:4">
+   <div class="h8-pic"><img src="03_img/08_hero_art.jpg" width="1108" height="1106" fetchpriority="high" decoding="async"
+    alt="One Custom AI Models system, the gold emblem at its centre, delivered to three places: a machine at home, a live website and a phone."></div>
+   <figcaption class="h8-env">
+    <span><b>Local</b>Runs on your machine.</span>
+    <span><b>Website</b>One link, live.</span>
+    <span><b>Phone</b>In your pocket.</span>
+   </figcaption>
+  </figure>
  </div>
  </div>
 </section>
 
 <section class="uses" aria-label="What we build from your data">
  <div class="wrap"><div class="uhead"><span class="cap">From your data</span><h2>What it turns into.</h2></div></div>
- <div class="urail">
+ <div class="urail rv" tabindex="0" role="region" aria-label="Six example systems, scroll sideways">
   <figure class="ut dk w3">
    <figcaption><b>Finance</b><i>cash in · cash out · the month ahead</i></figcaption>
    <svg viewBox="0 0 300 120" aria-hidden="true">
     <path class="grid" d="M0 30h300M0 60h300M0 90h300"/>
     <polyline class="ln or" points="10,96 46,74 82,66 118,66 154,70 190,78 226,60 262,30 292,30"/>
-    <path class="cur" d="M154 22v86"/><circle cx="154" cy="70" r="5" fill="#fff"/>
+    <path class="cur" d="M154 22v86"/><circle class="halo" cx="154" cy="70" r="11" fill="#fff"/><circle class="pt" cx="154" cy="70" r="4.5" fill="#fff"/>
    </svg>
   </figure>
   <figure class="ut wh w4">
@@ -142,9 +110,12 @@
   </figure>
   <figure class="ut gr w2">
    <svg viewBox="0 0 120 120" aria-hidden="true">
-    <path d="M24 38h72v48H24z" fill="none" stroke="#7fe0a6" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M24 38l36 28 36-28" fill="none" stroke="#7fe0a6" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M84 92l14-10-14-10" fill="none" stroke="#7fe0a6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g class="env">
+     <rect x="22" y="38" width="70" height="48" rx="7" fill="rgba(127,224,166,.06)" stroke="#7fe0a6" stroke-opacity=".85" stroke-width="2.2"/>
+     <path d="M25 42.5l29.6 21.6a4.2 4.2 0 0 0 4.8 0L89 42.5" fill="none" stroke="#7fe0a6" stroke-opacity=".85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+     <circle cx="92" cy="38" r="12" fill="#7fe0a6"/>
+     <path d="M87.5 42.5l9-9M89.5 33.5h7v7" fill="none" stroke="#123f26" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
    </svg>
    <figcaption><b>Emails that send themselves</b></figcaption>
   </figure>
@@ -152,8 +123,9 @@
    <figcaption><b>Lost customers</b><i>who left · who is leaving · why</i></figcaption>
    <svg viewBox="0 0 400 120" aria-hidden="true">
     <path d="M10 14h90M108 14h90M206 14h90M304 14h90" stroke="rgba(255,255,255,.35)"/>
-    <rect x="10" y="30" width="90" height="86" fill="#e9e6ee"/><rect x="108" y="104" width="90" height="12" fill="#9a92ab"/>
-    <rect x="206" y="66" width="90" height="50" fill="#e9e6ee"/><rect x="304" y="86" width="90" height="30" fill="#9a92ab"/>
+    <path d="M10 116.5h384" stroke="rgba(255,255,255,.22)"/>
+    <rect class="hi" x="10" y="30" width="90" height="86" fill="#e9e6ee"/><rect class="lo" x="108" y="104" width="90" height="12" fill="#9a92ab"/>
+    <rect class="hi" x="206" y="66" width="90" height="50" fill="#e9e6ee"/><rect class="lo" x="304" y="86" width="90" height="30" fill="#9a92ab"/>
    </svg>
    <div class="lbl"><span>stayed</span><span>at risk</span><span>won back</span><span>left</span></div>
   </figure>
@@ -166,7 +138,7 @@
    <svg viewBox="0 0 300 120" aria-hidden="true">
     <polyline class="ln ink" points="8,96 30,80 44,86 58,56 70,48 84,60 98,50 112,58"/>
     <polyline class="ln fc" points="112,58 136,62 160,56 184,70 208,64 232,80 256,74 290,92"/>
-    <path class="cur dk" d="M112 20v90"/><circle cx="112" cy="58" r="4.5" fill="#0b0b12"/>
+    <path class="cur dk" d="M112 20v90"/><circle class="halo" cx="112" cy="58" r="11" fill="#0b0b12"/><circle class="pt" cx="112" cy="58" r="4.5" fill="#0b0b12"/>
     <circle cx="160" cy="56" r="3" fill="#d9a62c"/><circle cx="208" cy="64" r="3" fill="#5a4a78"/><circle cx="256" cy="74" r="3" fill="#2fb37a"/>
    </svg>
   </figure>
@@ -177,8 +149,8 @@
 <section class="blk paper" id="deploy">
  <div class="wrap">
   <div class="head">
-   <div><span class="cap">How it ships</span><h2>Three steps. One live URL.</h2></div>
-   <p>You describe it. We shape it into a proposal. Then it is built, deployed, and you are told it is live.</p>
+   <div class="rv"><span class="cap">How it ships</span><h2>Three steps.<br>One live URL.</h2></div>
+   <p class="rv" style="--i:1">From your first idea to a working system: designed, built, and deployed.</p>
   </div>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -194,10 +166,12 @@
    <article class="step rv">
     <span class="n">01</span>
     <h3>Describe</h3>
-    <p>Tell us what is slow. Plain words are enough.</p>
+    <p>Tell us what's slowing you down.</p>
     <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
      <ellipse class="glow" cx="75" cy="118" rx="60" ry="14" fill="url(#pool)"/>
      <path d="M28 52a6 6 0 0 1 6-6h26l9 9h47a6 6 0 0 1 6 6v50a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6z" fill="#20162f" stroke="rgba(255,255,255,.18)"/>
+     <g class="sheet"><rect x="46" y="44" width="58" height="34" rx="3" fill="#2a2138" stroke="rgba(195,187,209,.42)" stroke-width="1.1"/>
+      <path d="M54 53h30M54 60h20" stroke="rgba(195,187,209,.55)" stroke-width="1.6" stroke-linecap="round"/></g>
      <path d="M22 68a6 6 0 0 1 6-6h96a6 6 0 0 1 6 6l-4 44a6 6 0 0 1-6 6H32a6 6 0 0 1-6-6z" fill="#221c2b" stroke="url(#gb)" stroke-width="1.6"/>
      <path d="M28 64h92" stroke="#c3bbd1" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>
     </svg></div>
@@ -211,15 +185,15 @@
    <article class="step mid rv" style="--i:1">
     <span class="n">02</span>
     <h3>Shape</h3>
-    <p>A proposal: scope, phases, dates. You sign off.</p>
+    <p>We define the scope, architecture, and delivery plan.</p>
     <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
      <ellipse class="glow" cx="75" cy="118" rx="62" ry="15" fill="url(#pool)"/>
-     <g stroke="url(#gb)" stroke-width="1.6" fill="#20162f">
-      <path d="M30 96v12c0 8 20 14 45 14s45-6 45-14V96"/><ellipse cx="75" cy="96" rx="45" ry="14"/>
-      <path d="M30 70v12c0 8 20 14 45 14s45-6 45-14V70"/><ellipse cx="75" cy="70" rx="45" ry="14"/>
-      <path d="M30 44v12c0 8 20 14 45 14s45-6 45-14V44"/><ellipse cx="75" cy="44" rx="45" ry="14"/>
+     <g class="db" stroke="url(#gb)" stroke-width="1.6" fill="#20162f">
+      <g class="ly" style="--y:2px"><path d="M30 96v12c0 8 20 14 45 14s45-6 45-14V96"/><ellipse cx="75" cy="96" rx="45" ry="14"/></g>
+      <g class="ly" style="--y:-3px"><path d="M30 70v12c0 8 20 14 45 14s45-6 45-14V70"/><ellipse cx="75" cy="70" rx="45" ry="14"/></g>
+      <g class="ly" style="--y:-6px"><path d="M30 44v12c0 8 20 14 45 14s45-6 45-14V44"/><ellipse cx="75" cy="44" rx="45" ry="14"/>
+       <ellipse cx="75" cy="44" rx="45" ry="14" fill="none" stroke="#c3bbd1" stroke-width="2.4" opacity=".8"/></g>
      </g>
-     <ellipse cx="75" cy="44" rx="45" ry="14" fill="none" stroke="#c3bbd1" stroke-width="2.4" opacity=".8"/>
     </svg></div>
     <ul>
      <li><svg class="ico"><use href="#i-doc"/></svg>Proposal</li>
@@ -231,15 +205,15 @@
    <article class="step rv" style="--i:2">
     <span class="n">03</span>
     <h3>Build &amp; deploy</h3>
-    <p>Built in Python, pushed to Git, live on Railway.</p>
+    <p>We engineer, test, and launch your system.</p>
     <div class="obj"><svg viewBox="0 0 150 150" aria-hidden="true">
      <ellipse class="glow" cx="75" cy="122" rx="56" ry="13" fill="url(#poolg)"/>
      <circle cx="75" cy="70" r="46" fill="#1d1528" stroke="url(#gg)" stroke-width="1.6"/>
-     <g fill="none" stroke="rgba(255,226,160,.45)" stroke-width="1.1">
+     <g class="mer" fill="none" stroke="rgba(255,226,160,.45)" stroke-width="1.1">
       <ellipse cx="75" cy="70" rx="20" ry="46"/><ellipse cx="75" cy="70" rx="38" ry="46"/>
       <path d="M29 70h92M35 48h80M35 92h80"/>
      </g>
-     <path d="M41 40a46 46 0 0 1 58-14" fill="none" stroke="#ffe2a0" stroke-width="2.4" stroke-linecap="round"/>
+     <path class="arc" d="M41 40a46 46 0 0 1 58-14" fill="none" stroke="#ffe2a0" stroke-width="2.4" stroke-linecap="round"/>
     </svg></div>
     <ul>
      <li><svg class="ico"><use href="#i-branch"/></svg>Code in Git</li>
@@ -264,35 +238,35 @@
     <span class="tag">Websites</span>
     <h3>A website that opens a solution.</h3>
     <p>Not a brochure. The page is the front door to the tool: sign in, ask, run, see the result.</p>
-    <div class="ui" style="margin-top:28px">
-     <div class="chrome"><i></i><i></i><i></i></div>
+    <div class="ui sysmap" aria-label="System: data, python, models, live">
+     <div class="chrome"><i></i><i></i><i></i><span>system</span></div>
      <div class="flow">
-      <span class="node"><svg class="ico"><use href="#i-db"/></svg>data</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node"><svg class="ico"><use href="#i-wrap"/></svg>run.py</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node"><svg class="ico"><use href="#i-core"/></svg>model</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
-      <span class="node live"><svg class="ico"><use href="#i-globe"/></svg>live</span>
+      <span class="node" data-node="data"><svg class="ico"><use href="#i-db"/></svg>data</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
+      <span class="node" data-node="python"><svg class="ico"><use href="#i-wrap"/></svg>python</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
+      <span class="node" data-node="models"><svg class="ico"><use href="#i-core"/></svg>models</span><span class="wire"><svg class="ico"><use href="#i-arrow"/></svg></span>
+      <span class="node live" data-node="live"><svg class="ico"><use href="#i-globe"/></svg>live</span>
      </div>
     </div>
    </article>
-   <article class="tile rv" style="--i:1">
+   <article class="tile rv" style="--i:1" data-cap="python">
     <div class="ic"><svg class="ico"><use href="#i-wrap"/></svg></div>
     <span class="tag">Python</span>
     <h3>Python wrappers.</h3>
     <p>Your model or script behind a button, an API, or a schedule.</p>
    </article>
-   <article class="tile rv" style="--i:2">
+   <article class="tile rv" style="--i:2" data-cap="data">
     <div class="ic"><svg class="ico"><use href="#i-chart"/></svg></div>
     <span class="tag">Data</span>
     <h3>Data to dashboards.</h3>
     <p>Sources in, one clear view out, refreshed on its own.</p>
    </article>
-   <article class="tile rv" style="--i:3">
+   <article class="tile rv" style="--i:3" data-cap="models">
     <div class="ic"><svg class="ico"><use href="#i-core"/></svg></div>
     <span class="tag">ML · LLM</span>
     <h3>Models that check themselves.</h3>
     <p>Forecasts, classifiers, LLM agents, each with a test it must pass.</p>
    </article>
-   <article class="tile rv" style="--i:4">
+   <article class="tile rv" style="--i:4" data-cap="live">
     <div class="ic"><svg class="ico"><use href="#i-loop"/></svg></div>
     <span class="tag">Automation</span>
     <h3>Work that runs itself.</h3>
@@ -302,137 +276,126 @@
  </div>
 </section>
 
-<!-- starter offer (2026-10-14): his four squares + his numbers -->
-<div class="wrap">
- <section class="start rv" aria-label="Start here">
-  <div class="start-h"><span class="cap">Start here</span><h2>A business face and a live agent, 24/7.</h2></div>
-  <div class="start-g">
-   <div><span class="cap">01 · Landing page</span><b>$330</b><p>CAI custom website · one time</p></div>
-   <div><span class="cap">02 · Its tools</span><b>$70–100<i>/yr</i></b><p>URL · LLM · Git · Railway</p></div>
-   <div><span class="cap">03 · Chatbot</span><b>$280</b><p>CAI custom chatbot · one time</p></div>
-   <div><span class="cap">04 · Its API</span><b>$70–100<i>/yr</i></b><p>The model it talks with</p></div>
+<!-- our approach (2026-10-14, Task 04): one statement, three principles, one action.
+     The START HERE pricing, the Fast/Yours strip and the 85% line are parked in
+     dta/_1_processed/_erase/2026-10-14/approach_v_before (pricing waits for its own page). -->
+<section class="appr" aria-labelledby="appr-h">
+ <div class="wrap">
+  <div class="appr-top rv">
+   <div>
+    <span class="cap">Our approach</span>
+    <h2 id="appr-h"><span>Your data leads.</span> <span>The intelligence follows.</span></h2>
+   </div>
+   <div class="appr-side">
+    <p>We connect data, engineering, and AI into systems built for real operations.</p>
+    <a class="appr-cta" href="/behind-the-models/">Explore our work <span aria-hidden="true">→</span></a>
+   </div>
   </div>
-  <p class="start-t">And there you have it: <b>$610</b> to start, about <b>$160</b> a year. <a href="/r-cai/">Start now →</a></p>
- </section>
-</div>
-
-<div class="wrap">
- <div class="strip rv">
-  <div><svg class="ico"><use href="#i-bolt"/></svg><p style="margin:0"><b>Fast</b><span>Idea to live URL in weeks.</span></p></div>
-  <div><svg class="ico"><use href="#i-layers"/></svg><p style="margin:0"><b>Yours</b><span>Your code, your repo.</span></p></div>
-  <div><svg class="ico"><use href="#i-plug"/></svg><p style="margin:0"><b>Connected</b><span>Your tools and your data.</span></p></div>
-  <div><svg class="ico"><use href="#i-shield"/></svg><p style="margin:0"><b>Steady</b><span>Tested before it ships.</span></p></div>
- </div>
-</div>
-
-<!-- why clients come back (2026-10-14): his 85% line, data first, compact -->
-<section class="why rv" aria-label="Why clients come back">
- <div class="wrap why-in">
-  <div class="why-n">
-   <b>85<i>%</i></b>
-   <p>of clients come back for the next build.</p>
-  </div>
-  <div class="why-r">
-   <div class="why-df"><svg class="ico"><use href="#i-db"/></svg><div><span class="cap">Data first</span><h3>Your data leads. The model follows.</h3></div></div>
-   <ul>
-    <li>Architecture before prompting</li>
-    <li>Measured, not hyped</li>
-    <li>Tested from day one</li>
-    <li>You talk to the engineer</li>
-    <li>Data to deployment, one owner</li>
-    <li>Built to outlive the demo</li>
-   </ul>
-  </div>
+  <ol class="appr-p rv">
+   <li style="--k:0"><span class="n">01</span><h3>Data first</h3><p>Connect and understand the information your business already produces.</p></li>
+   <li style="--k:1"><span class="n">02</span><h3>Engineered end to end</h3><p>From pipelines and models to interfaces, APIs, and deployment.</p></li>
+   <li style="--k:2"><span class="n">03</span><h3>Built for ownership</h3><p>Documented systems, transparent architecture, and maintainable code.</p></li>
+  </ol>
  </div>
 </section>
 
-<section class="blk paper" id="ask" aria-label="Ask the assistant">
+<section class="blk paper ask-sec" id="ask" aria-label="Ask the assistant">
  <div class="wrap ask">
-  <div>
-   <span class="cap">AI assistant · live</span>
+  <!-- ask v2 (2026-10-14, Task 03): a working instrument, not a widget. Status says only what /api/chat/status proves:
+       mode=model → the model's name · mode=record → "From our notes" · else Offline. "Talk to a person" fills the
+       chatbot's own Name/Email/Project lead form (src/08_leads.py), so it works without a new endpoint.
+       ask v3 (2026-10-14): ONE logo -- the gold knot + wordmark on a plum header, fine gold rule under it.
+       Left = headline + 3 questions (lede and "Try one" gone); welcome is one sentence. -->
+
+  <div class="ask-l">
+   <span class="cap">AI assistant</span>
    <h2>What eats your team's week?</h2>
-   <p class="lede">Name one task you repeat. The assistant tells you if it can be automated with Python and AI, and what the first build looks like.</p>
    <div class="ai-try">
-    <button type="button" data-q="Can you automate our weekly reports?">Can you automate our weekly reports?<span class="go">→</span></button>
-    <button type="button" data-q="Can you turn my Python model into a web app?">Can you turn my Python model into a web app?<span class="go">→</span></button>
-    <button type="button" data-q="How does a first build start?">How does a first build start?<span class="go">→</span></button>
+    <button type="button" data-q="Can we automate reporting across departments?"><span>Can we automate reporting across departments?</span><svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
+    <button type="button" data-q="Can you turn my Python model into a web app?"><span>Can you turn my Python model into a web app?</span><svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
+    <button type="button" data-q="What would the first 30 days of a build look like?"><span>What would the first 30 days of a build look like?</span><svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></button>
    </div>
   </div>
   <div class="ai-con">
    <div class="ai-top">
-    <img src="03_img/05_knot_gold.png" alt="">
-    <div><b>CAI Assistant</b><small>answers from the record · <span data-docs>7</span> documents</small></div>
-    <span class="ai-st">Checking</span>
+    <img class="ai-knot" src="03_img/05_knot_gold.png" alt="" width="44" height="44">
+    <b class="ai-word">Custom AI Models</b>
+    <span class="ai-st" role="status">Checking…</span>
    </div>
    <div class="ai-log" aria-live="polite">
-    <div class="ai-msg bot"><span class="ai-who">CAI</span><div class="ai-txt"><p>Tell me one task your team does by hand every week. I'll tell you if it can run on its own, and what the first build looks like.</p></div></div>
+    <div class="ai-hello">
+     <p>Tell me one task your team does by hand, and I'll show you what a first build looks like.</p>
+    </div>
    </div>
    <form class="ai-form">
-    <textarea rows="1" maxlength="1200" placeholder="e.g. We copy sales numbers into Excel every Monday" aria-label="Your question"></textarea>
-    <button type="submit">Ask ↵</button>
-    <div class="ai-note"><span>Shift ↵ new line</span><span>Prefer a person? <a href="/r-cai/#signup">Write to us</a></span></div>
+    <div class="ai-field">
+     <textarea rows="1" maxlength="1200" placeholder="e.g. We copy sales into Excel every Monday" aria-label="Your question"></textarea>
+     <button type="submit" class="ai-send"><span>Ask</span><svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4"/></svg></button>
+    </div>
+    <div class="ai-note"><span class="ai-keys">↵ ask · Shift ↵ new line</span><span>Prefer a person? <button type="button" class="ai-human">Leave your details</button></span></div>
    </form>
   </div>
  </div>
 </section>
 
 <div class="wrap">
- <div class="hub rv">
-  <div>
+ <!-- hub v2 (2026-10-14, Task 02): a control surface, not an ad. Entry · what you control · a window onto R-CAI.
+      Only what R-CAI really does today. The window is shapes only: no live status, no figures. -->
+ <section class="hub rv" aria-labelledby="hub-h">
+  <div class="hub-in">
    <span class="cap">Already a client</span>
-   <h2>Open your hub.</h2>
-   <p>Every project, where it lives, and what is next. Request changes in one click.</p>
-   <a class="btn go" href="/r-cai/">Open R-CAI<svg class="ico"><use href="#i-arrow"/></svg></a>
+   <h2 id="hub-h">Open your hub.</h2>
+   <p>Every project, where its code lives, and what happens next. One place, always current.</p>
+   <a class="hbtn" href="/r-cai/">Open R-CAI<svg class="ico"><use href="#i-arrow"/></svg></a>
   </div>
-  <span class="vr"></span>
-  <ul>
-   <li><svg class="ico"><use href="#i-layers"/></svg>Your projects and their stage</li>
-   <li><svg class="ico"><use href="#i-branch"/></svg>Where the code lives</li>
-   <li><svg class="ico"><use href="#i-deploy"/></svg>Deploy changes</li>
-   <li><svg class="ico"><use href="#i-bell"/></svg>Notices, as they happen</li>
+  <ul class="hub-ops" aria-label="Inside R-CAI">
+   <li><span class="t"><svg class="ico"><use href="#i-layers"/></svg></span><b>Projects</b><span>Each one, and its stage</span></li>
+   <li><span class="t"><svg class="ico"><use href="#i-branch"/></svg></span><b>Code</b><span>Its repo and where it runs</span></li>
+   <li><span class="t"><svg class="ico"><use href="#i-pen"/></svg></span><b>Changes</b><span>Answered within 24 hours</span></li>
+   <li><span class="t"><svg class="ico"><use href="#i-bell"/></svg></span><b>Notices</b><span>What moved since last time</span></li>
   </ul>
-  <a class="live" href="/r-cai/" aria-label="R-CAI">
-   <svg class="hills" viewBox="0 0 260 120" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 70 60 30l40 30 50-46 60 50 50-20v76H0z" fill="#241e2e"/>
-    <path d="M0 70 60 30l40 30 50-46 60 50 50-20" fill="none" stroke="rgba(185,178,255,.5)"/>
-    <path d="M0 100c60-30 120-20 170-30s70 0 90-10v60H0z" fill="#1f1530"/>
-   </svg>
-   <span class="lbl">Your site<br><i></i>Live</span>
-   <span class="o"><svg class="ico"><use href="#i-arrow"/></svg></span>
+  <a class="hub-win" href="/r-cai/" aria-label="Open R-CAI">
+   <span class="wbar"><i></i><i></i><i></i><span class="url">r-cai</span></span>
+   <span class="wbody" aria-hidden="true">
+    <span class="wrow"><s class="sq"></s><s class="ln l1"></s><s class="chip"></s></span>
+    <span class="wrow"><s class="sq"></s><s class="ln l2"></s><s class="chip c2"></s></span>
+    <span class="wrow"><s class="sq"></s><s class="ln l3"></s><s class="chip c3"></s></span>
+   </span>
+   <span class="wfoot"><span>Your hub</span><span class="o"><svg class="ico"><use href="#i-arrow"/></svg></span></span>
   </a>
- </div>
-</div>
-
-<!-- the toolbelt (2026-10-14): one grown-up yellow card, relaxed one-stroke marks, in order:
-     models → code → what it does → what it makes. Drawn marks, not vendor files. -->
-<div class="wrap">
- <section class="belt rv" aria-label="What we build with">
-  <span class="eb"><i></i>Built with</span>
-  <h2>Systems that reproduce.<br>Solutions you own, that keep working.</h2>
-  <ul>
-   <li><svg viewBox="0 0 24 24"><path class="w" d="M13.2 12.2L21.4 13.3M12.9 12.7L18.3 16.9M12.4 13.1L15.7 21.1M11.8 13.2L10.9 19.5M11.3 12.9L6.3 19.2M10.9 12.4L4.2 15.1M10.8 11.8L2.5 10.7M11.1 11.3L5.9 7.2M11.6 10.9L8.5 3.3M12.2 10.8L13.1 3.9M12.7 11.1L18.1 4.2M13.1 11.6L19.3 9.0"/></svg>Claude</li>
-   <li><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="4.4"/><ellipse cx="12" cy="12" rx="9" ry="4.4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="4.4" transform="rotate(120 12 12)"/></svg>GPT</li>
-   <li><svg viewBox="0 0 24 24"><path class="f" d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10z"/></svg>Gemini</li>
-   <li><svg viewBox="0 0 24 24"><path d="M17.5 7.5A7.5 7.5 0 1 0 19 15M20.5 3.5 4 20.5"/></svg>Grok</li>
-   <li><svg viewBox="0 0 24 24"><path d="M12 2.5v19M5 7.5h14v8H5zM5 7.5l7 6 7-6M5 15.5l7-6 7 6M5 2.5l7 5 7-5"/></svg>Perplexity</li>
-   <li><svg viewBox="0 0 24 24"><path d="M4 12.5c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5v3.5c0 2-3.6 3.5-8 3.5s-8-1.5-8-3.5z"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/></svg>Copilot</li>
-   <li class="gap"><svg viewBox="0 0 24 24"><path d="M12 3H9a3 3 0 0 0-3 3v3h6M6 9H5a3 3 0 0 0-3 3v1.5a3 3 0 0 0 3 3h1.5M12 21h3a3 3 0 0 0 3-3v-3h-6M18 15h1a3 3 0 0 0 3-3v-1.5a3 3 0 0 0-3-3h-1.5M6 16.5V15a3 3 0 0 1 3-3h6a3 3 0 0 0 3-3V7.5"/><circle class="f" cx="9.5" cy="5.6" r=".9"/><circle class="f" cx="14.5" cy="18.4" r=".9"/></svg>Python</li>
-   <li><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M10.5 10v5.5a2 2 0 0 1-3.6 1.2M17.5 11a2 2 0 0 0-3.5.4c-.3 1 .4 1.6 1.6 2 1.3.4 2.2 1 1.9 2.3a2 2 0 0 1-3.7.4"/></svg>JavaScript</li>
-   <li><svg viewBox="0 0 24 24"><path d="M12 2.5 21.5 12 12 21.5 2.5 12z"/><circle class="f" cx="12" cy="8.5" r="1.3"/><circle class="f" cx="12" cy="15.5" r="1.3"/><circle class="f" cx="15.4" cy="12" r="1.3"/><path d="M12 8.5v7M12 8.5l3.4 3.5"/></svg>Git</li>
-   <li><svg viewBox="0 0 24 24"><path d="M12 2.5 20.5 7.3v9.4L12 21.5 3.5 16.7V7.3zM3.5 7.3 12 12l8.5-4.7M12 12v9.5"/></svg>Cursor</li>
-   <li><svg viewBox="0 0 24 24"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M13.5 5l-3 14"/></svg>HTML</li>
-   <li class="br" aria-hidden="true"></li>
-   <li><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M8 12.5l2-2.5 1.5 1.5 2-3"/></svg>SEO</li>
-   <li><svg viewBox="0 0 24 24"><path d="M2.5 19.5h19M3 19c3.5 0 4.5-13 9-13s5.5 13 9 13M12 6v13.5"/></svg>Stats</li>
-   <li><svg viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M2.5 9h19M7 16v-3M11 16v-5M15 16v-2M18.5 16v-4"/></svg>Dashboards</li>
-   <li><svg viewBox="0 0 24 24"><path d="M2.5 18 7 13l3.5 2.5L15 9"/><path class="d" d="M15 9l3-2.5 3.5-3"/><circle class="f" cx="15" cy="9" r="1.3"/></svg>Predict</li>
-   <li class="gap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M15.5 9a4 4 0 1 0 .4 5.6"/></svg>Canva</li>
-   <li><svg viewBox="0 0 24 24"><path d="M3 18c3-8 6-12 9-12s6 4 9 12M7 18c1.8-4.5 3.4-7 5-7s3.2 2.5 5 7M12 18v-3"/></svg>Higgsfield</li>
-   <li><svg viewBox="0 0 24 24"><path d="M3 12h1.5M7 8v8M10.5 5v14M14 9v6M17.5 6.5v11M21 11v2"/></svg>Whisper</li>
-   <li><svg viewBox="0 0 24 24"><path d="M15.7 12.7c0-2.3 1.9-3.4 2-3.5a4.3 4.3 0 0 0-3.4-1.8c-1.4-.1-2.8.8-3.5.8s-1.8-.8-3-.8C5.6 7.4 3.7 9 3.7 12.3c0 3.9 2.8 8.7 4.9 8.7 1.1 0 1.6-.7 3-.7s1.8.7 3 .7c2 0 3.6-3.7 3.9-4.6-.1 0-2.8-1.1-2.8-3.7zM13.4 5.4c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>Apple</li>
-  </ul>
  </section>
 </div>
+
+<!-- BUILT WITH (2026-10-14, v4): many technologies, one engineering system, the CAI knot at the centre.
+     Wide: one row, 6 · knot · 7 (Python beside the knot). Narrower: knot first, then a models row and an engineering row.
+     Phone: a 4-up grid (3-up under 400px). Official marks (Simple Icons CC0 · devicon · Higgsfield's own icon). One entrance, then still. -->
+<section class="belt rv" aria-labelledby="belt-h">
+ <div class="bh">
+  <span class="eb">Built with</span>
+  <h2 id="belt-h">The Right Tools. <br>Engineered Into One System.</h2>
+  <p>Models, data, and engineering—working together to solve real business problems.</p>
+ </div>
+ <div class="stack">
+  <ul class="grp l" aria-label="Models and platforms">
+    <li><a href="https://claude.ai" target="_blank" rel="noopener" aria-label="Claude (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#D97757" d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg></span><span class="n">Claude</span></a></li>
+    <li><a href="https://chatgpt.com" target="_blank" rel="noopener" aria-label="ChatGPT (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000000" d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></span><span class="n">ChatGPT</span></a></li>
+    <li><a href="https://gemini.google.com" target="_blank" rel="noopener" aria-label="Gemini (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1C7DFF"/><stop offset=".5" stop-color="#8E75B2"/><stop offset="1" stop-color="#E35D6A"/></linearGradient></defs><path fill="url(#gm)" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></svg></span><span class="n">Gemini</span></a></li>
+    <li><a href="https://www.perplexity.ai" target="_blank" rel="noopener" aria-label="Perplexity (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1FB8CD" d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z"/></svg></span><span class="n">Perplexity</span></a></li>
+    <li><a href="https://higgsfield.ai" target="_blank" rel="noopener" aria-label="Higgsfield (opens in a new tab)"><span class="t"><img src="03_img/07_higgsfield.png" width="36" height="36" alt="" decoding="async"></span><span class="n">Higgsfield</span></a></li>
+    <li><a href="https://cursor.com" target="_blank" rel="noopener" aria-label="Cursor (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000000" d="M11.503.131 1.891 5.678a.84.84 0 0 0-.42.726v11.188c0 .3.162.575.42.724l9.609 5.55a1 1 0 0 0 .998 0l9.61-5.55a.84.84 0 0 0 .42-.724V6.404a.84.84 0 0 0-.42-.726L12.497.131a1.01 1.01 0 0 0-.996 0M2.657 6.338h18.55c.263 0 .43.287.297.515L12.23 22.918c-.062.107-.229.064-.229-.06V12.335a.59.59 0 0 0-.295-.51l-9.11-5.257c-.109-.063-.064-.23.061-.23"/></svg></span><span class="n">Cursor</span></a></li>
+  </ul>
+  <a class="cai" href="#top" aria-label="Custom AI Models, back to top"><span class="t"><img src="03_img/05_knot_gold.png" width="192" height="192" alt="" decoding="async"></span><span class="n">Custom AI Models</span></a>
+  <ul class="grp r" aria-label="Engineering, data and production">
+    <li><a href="https://www.python.org" target="_blank" rel="noopener" aria-label="Python (opens in a new tab)"><span class="t"><svg viewBox="0 8 128 112" aria-hidden="true"><g transform="translate(0 10.26)"><path fill="#3776AB" d="M63.391 1.988c-4.222.02-8.252.379-11.8 1.007-10.45 1.846-12.346 5.71-12.346 12.837v9.411h24.693v3.137H29.977c-7.176 0-13.46 4.313-15.426 12.521-2.268 9.405-2.368 15.275 0 25.096 1.755 7.311 5.947 12.519 13.124 12.519h8.491V67.234c0-8.151 7.051-15.34 15.426-15.34h24.665c6.866 0 12.346-5.654 12.346-12.548V15.833c0-6.693-5.646-11.72-12.346-12.837-4.244-.706-8.645-1.027-12.866-1.008zM50.037 9.557c2.55 0 4.634 2.117 4.634 4.721 0 2.593-2.083 4.69-4.634 4.69-2.56 0-4.633-2.097-4.633-4.69-.001-2.604 2.073-4.721 4.633-4.721z"/><path fill="#FFD43B" d="M91.682 28.38v10.966c0 8.5-7.208 15.655-15.426 15.655H51.591c-6.756 0-12.346 5.783-12.346 12.549v23.515c0 6.691 5.818 10.628 12.346 12.547 7.816 2.297 15.312 2.713 24.665 0 6.216-1.801 12.346-5.423 12.346-12.547v-9.412H63.938v-3.138h37.012c7.176 0 9.852-5.005 12.348-12.519 2.578-7.735 2.467-15.174 0-25.096-1.774-7.145-5.161-12.521-12.348-12.521h-9.268zM77.809 87.927c2.561 0 4.634 2.097 4.634 4.692 0 2.602-2.074 4.719-4.634 4.719-2.55 0-4.633-2.117-4.633-4.719 0-2.595 2.083-4.692 4.633-4.692z"/></g></svg></span><span class="n">Python</span></a></li>
+    <li><a href="https://developer.mozilla.org/docs/Web/JavaScript" target="_blank" rel="noopener" aria-label="JavaScript (opens in a new tab)"><span class="t"><svg viewBox="0 0 128 128" aria-hidden="true"><path fill="#F0DB4F" d="M1.408 1.408h125.184v125.185H1.408z"/><path fill="#323330" d="M116.347 96.736c-.917-5.711-4.641-10.508-15.672-14.981-3.832-1.761-8.104-3.022-9.377-5.926-.452-1.69-.512-2.642-.226-3.665.821-3.32 4.784-4.355 7.925-3.403 2.023.678 3.938 2.237 5.093 4.724 5.402-3.498 5.391-3.475 9.163-5.879-1.381-2.141-2.118-3.129-3.022-4.045-3.249-3.629-7.676-5.498-14.756-5.355l-3.688.477c-3.534.893-6.902 2.748-8.877 5.235-5.926 6.724-4.236 18.492 2.975 23.335 7.104 5.332 17.54 6.545 18.873 11.531 1.297 6.104-4.486 8.08-10.234 7.378-4.236-.881-6.592-3.034-9.139-6.949-4.688 2.713-4.688 2.713-9.508 5.485 1.143 2.499 2.344 3.63 4.26 5.795 9.068 9.198 31.76 8.746 35.83-5.176.165-.478 1.261-3.666.38-8.581zM69.462 58.943H57.753l-.048 30.272c0 6.438.333 12.34-.714 14.149-1.713 3.558-6.152 3.117-8.175 2.427-2.059-1.012-3.106-2.451-4.319-4.485-.333-.584-.583-1.036-.667-1.071l-9.52 5.83c1.583 3.249 3.915 6.069 6.902 7.901 4.462 2.678 10.459 3.499 16.731 2.059 4.082-1.189 7.604-3.652 9.448-7.401 2.666-4.915 2.094-10.864 2.07-17.444.06-10.735.001-21.468.001-32.237z"/></svg></span><span class="n">JavaScript</span></a></li>
+    <li><a href="https://git-scm.com" target="_blank" rel="noopener" aria-label="Git (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F05032" d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z"/></svg></span><span class="n">Git</span></a></li>
+    <li><a href="https://support.apple.com/guide/terminal/welcome/mac" target="_blank" rel="noopener" aria-label="Terminal (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#24133F" d="M1.846 0A1.841 1.841 0 000 1.846v18.463c0 1.022.823 1.845 1.846 1.845h20.308A1.841 1.841 0 0024 20.31V1.846A1.841 1.841 0 0022.154 0H1.846zm0 .924h20.308c.512 0 .922.41.922.922v18.463c0 .511-.41.921-.922.921H1.846a.919.919 0 01-.922-.921V1.846c0-.512.41-.922.922-.922zm0 .922v18.463h20.308V1.846H1.846zm1.845 2.14l3.235 1.758v.836L3.69 8.477V7.385l2.243-1.207v-.033L3.69 5.076v-1.09zM7.846 9.23h3.693v.924H7.846V9.23zM0 21.736v.418C0 23.177.823 24 1.846 24h20.308A1.841 1.841 0 0024 22.154v-.418a2.334 2.334 0 01-1.846.918H1.846A2.334 2.334 0 010 21.736Z"/></svg></span><span class="n">Terminal</span></a></li>
+    <li><a href="https://railway.com" target="_blank" rel="noopener" aria-label="Railway (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0B0D0E" d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg></span><span class="n">Railway</span></a></li>
+    <li><a href="https://www.cloudflare.com" target="_blank" rel="noopener" aria-label="Cloudflare (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F38020" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></svg></span><span class="n">Cloudflare</span></a></li>
+    <li><a href="https://resend.com" target="_blank" rel="noopener" aria-label="Resend (opens in a new tab)"><span class="t"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000000" d="M14.679 0c4.648 0 7.413 2.765 7.413 6.434s-2.765 6.434-7.413 6.434H12.33L24 24h-8.245l-8.88-8.44c-.636-.588-.93-1.273-.93-1.86 0-.831.587-1.565 1.713-1.883l4.574-1.224c1.737-.465 2.936-1.81 2.936-3.572 0-2.153-1.761-3.4-3.939-3.4H0V0z"/></svg></span><span class="n">Resend</span></a></li>
+  </ul>
+ </div>
+</section>
 
 </main>
 
@@ -447,7 +410,7 @@
  </div>
 </footer>
 <a class="ai-fab" href="#ask"><img src="03_img/05_knot_gold.png" alt="">Ask CAI</a>
-<script src="02_js/01_site.js?v=3561d24341"></script>
-<script src="02_js/02_ask.js?v=3561d24341"></script>
+<script src="02_js/01_site.js?v=f43ab63782"></script>
+<script src="02_js/02_ask.js?v=f43ab63782"></script>
 </body>
 </html>

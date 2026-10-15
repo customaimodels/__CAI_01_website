@@ -100,3 +100,31 @@
 @media (prefers-reduced-motion:reduce){
   .a-card:hover .thumb img{transform:none}
 }
+
+/* ── 2026-10-14 · the 5% polish: same company as the landing. Layout + editorial serif headlines untouched.
+   Wordmark in the landing's Inter · keys rounded like the landing's · calmer bar · tactile hover/press/focus. ── */
+body.report header{height:64px}
+body.report header .wrap{gap:28px}
+body.report .brand{gap:10px;font:600 15.5px/1 "Inter",var(--sans);letter-spacing:-.02em}
+body.report .brand img{width:26px;height:26px;transform:translateY(-.5px)}
+body.report footer .brand{font-size:15px}
+body.report footer .brand img{width:22px;height:22px}
+nav{font:500 13.5px/1 "Inter",var(--sans);letter-spacing:-.005em}
+nav a{transition:opacity .16s cubic-bezier(.22,1,.36,1)}
+.btn{border-radius:999px;font:500 14px/1 "Inter",var(--sans);text-transform:none;letter-spacing:-.01em;gap:8px;
+  transition:background-color .18s cubic-bezier(.22,1,.36,1),border-color .18s cubic-bezier(.22,1,.36,1),transform .1s ease}
+header .btn{height:36px;padding:0 16px;font-size:13.5px}
+.btn:active{transform:scale(.985)}
+.btn:focus-visible,nav a:focus-visible,.brand:focus-visible,.a-card:focus-visible,.art-back:focus-visible{outline:2px solid var(--violet);outline-offset:3px}
+.btn.fill:hover{border-color:transparent}
+header .btn.fill:hover{background:#f3eee4}
+header.light .btn.fill:hover{background:var(--carbon)}
+.dark .btn.fill:hover,.art-cta .btn.fill:hover{background:#f3eee4;border-color:transparent}
+.art-cta .btn.line{border-color:rgb(255 255 255 / .22);color:var(--paper)}
+.art-cta .btn.line:hover{border-color:rgb(255 255 255 / .5)}
+.a-card .go::after{display:inline-block;transition:transform .18s cubic-bezier(.22,1,.36,1)}
+.a-card:hover .go::after{transform:translateX(3px)}
+.art-back::before{display:inline-block;transition:transform .18s cubic-bezier(.22,1,.36,1)}
+.art-back:hover::before{transform:translateX(-3px)}
+.art-tags span{border-radius:999px;padding:6px 12px}
+@media (max-width:620px){body.report header{height:58px}}

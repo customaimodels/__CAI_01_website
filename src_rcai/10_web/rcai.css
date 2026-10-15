@@ -25,7 +25,6 @@ button{font:inherit;color:inherit}
 .field .home img{width:26px;height:26px}
 .field h1{font:600 clamp(56px,7vw,104px)/.94 var(--head);letter-spacing:-.04em;margin:18px 0 18px}
 .field h1 em{font-style:normal;color:var(--violet-soft)}
-.field h1 .in{display:block;font-size:.34em;letter-spacing:-.02em;color:rgba(255,255,255,.62);margin-bottom:.12em}
 .field h1 .gold{font-weight:700;color:var(--gold);background:linear-gradient(180deg,#f0c968,#d9a62c 60%,#b8861e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .field .say p.yours{font:600 clamp(24px,2.4vw,34px)/1.1 var(--head);letter-spacing:-.03em;color:#fff}
 #gate .say .cap{display:block;text-transform:none;font:600 clamp(24px,2.4vw,34px)/1.1 var(--head);letter-spacing:-.03em;color:#fff}
@@ -36,9 +35,7 @@ button{font:inherit;color:inherit}
 .pk .ico{width:19px;height:19px;color:var(--violet-soft)}
 .pk .ico.g{color:var(--gold)}
 .pk .a{margin-left:auto;color:rgba(255,255,255,.4)}
-.pk .live{margin-left:auto;width:7px;height:7px;border-radius:50%;background:#5fe0a6;box-shadow:0 0 10px rgba(95,224,166,.7)}
-.pk span{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.desk{display:flex;flex-direction:column;align-items:center;padding:clamp(48px,14vh,150px) 24px 48px}
+.desk{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px}
 .seg{display:flex;padding:4px;border-radius:12px;background:var(--card);border:1px solid var(--line);margin-bottom:44px}
 .seg button{all:unset;cursor:pointer;height:34px;padding:0 22px;border-radius:9px;font:500 14px/34px var(--sans);color:var(--ink-2);transition:background .2s var(--ease),color .2s}
 .seg button:disabled{cursor:default;opacity:.4}
@@ -57,8 +54,11 @@ button{font:inherit;color:inherit}
   background:#fff;color:#0e0c12;font:600 15px/1 var(--sans);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 10px 30px -14px rgba(195,187,209,.5);transition:background .2s,transform .12s}
 .key:hover{background:#ebe8f0}
 .key:active{transform:scale(.985)}
-.key:disabled{opacity:.5}
-.key .ico{width:17px;height:17px}
+.key:focus-visible{outline:2px solid var(--violet-soft);outline-offset:3px}
+.key:disabled{opacity:.5;cursor:wait}
+.key .ico{width:17px;height:17px;transition:transform .18s var(--ease)}
+.key:hover .ico{transform:translateX(3px)}
+#login:has(.err:not(:empty)) input[name=code]{border-color:rgba(232,120,120,.55)}
 #sent .ok{width:40px;height:40px;color:var(--ok);margin-bottom:22px}
 .go{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:46px;padding:0 20px;border:1px solid #4a78f5;border-radius:var(--r-s);cursor:pointer;
   background:linear-gradient(180deg,#3f6ff0,#2a55d6);color:#fff;font:500 14px/1 var(--sans);box-shadow:0 8px 30px -10px rgba(63,111,240,.55),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .12s}
@@ -78,7 +78,7 @@ button{font:inherit;color:inherit}
   min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--sans);letter-spacing:-.011em}
 #hub .wrap{max-width:960px}
 #hub .ico{width:16px;height:16px;stroke-width:1.5}
-#hub .cap{font:500 11px/1.4 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--mute)}
+#hub .cap{font:500 11px/1.4 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 #hub .gold{font-weight:700;letter-spacing:-.02em;background:linear-gradient(180deg,#f0c968,#d9a62c 60%,#b8861e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
 #hub header{position:sticky;top:0;z-index:10;background:rgba(14,12,18,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
@@ -156,12 +156,51 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .p2go{all:unset;box-sizing:border-box;cursor:pointer;margin-top:auto;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;
   background:#fff;color:#0e0c12;font:600 13px/1 var(--sans);transition:background .15s}
 .p2go:hover{background:#ebe8f0}
-.duo .pane h3{margin:auto 0 4px}
+/* the pane reads top-down: tag · name · stage, keys pinned low. No dead gap in the middle. */
+.duo .pane h3{margin:14px 0 4px}
+.duo .pane .foot,.duo .pane .p2go{margin-top:auto}
+.duo .pane .dec{margin-bottom:0}
+.stg{display:flex;justify-content:space-between;gap:8px;margin:7px 0 0;font:500 10px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.stg span:last-child{color:var(--ink-2)}
 /* the duo is named by the project: one head across both phases */
-.proj.duo{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;aspect-ratio:auto;min-height:280px}
+.proj.duo{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;aspect-ratio:auto;min-height:236px}
 .duo .dh{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;padding:16px 18px 14px;border-bottom:1px solid var(--line)}
 .duo .dh h3{margin:0;font:600 17px/1.2 var(--head);letter-spacing:-.02em;color:#fff}
 .duo .pane.p2{border-radius:0 0 15px 0}
+/* duo finish: softer edge, a breath of plum from the top, quiet shadow. Same padding both panes, muted text one step brighter. */
+.proj.duo{border-color:rgba(255,255,255,.06);background:linear-gradient(180deg,#1a1520 0%,var(--card) 55%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 18px 40px -24px rgba(0,0,0,.6)}
+.duo .pane{padding:20px 22px}
+.duo .dh{padding:18px 22px 16px;align-items:center}
+.duo .pane.p2{background:linear-gradient(180deg,rgba(143,91,234,.045),transparent 65%)}
+.duo .co,.duo .dec{color:#8d8897}
+.duo .dec{font-size:12.5px;line-height:1.5;margin-top:12px}
+.duo .tag.ok::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok);margin-right:7px;display:inline-block;vertical-align:1px}
+/* real keys press; nothing else moves */
+.sq,button.sq{transition:color .15s,border-color .15s,background .15s,transform .1s}
+.sq:active,button.sq:active{transform:scale(.94)}
+.p2go{gap:6px;transition:background .18s,transform .1s}
+.p2go .ar{transition:transform .18s cubic-bezier(.22,1,.36,1)}
+.p2go:hover .ar{transform:translateX(3px)}
+.p2go:active{transform:scale(.985)}
+.sq:focus-visible,.p2go:focus-visible{outline:2px solid rgba(143,91,234,.7);outline-offset:2px}
+/* a restrained tooltip: the key's plain name, after a short pause, above the key */
+.sq[data-tip]{position:relative}
+.sq[data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%,3px);white-space:nowrap;
+  padding:5px 8px;border-radius:7px;background:#25202c;border:1px solid var(--line-2);color:var(--ink);font:500 11px/1 var(--sans);
+  opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:5}
+.sq.ed[data-tip]::after{left:auto;right:0;transform:translate(0,3px)}
+.sq[data-tip]:hover::after,.sq[data-tip]:focus-visible::after{opacity:1;transform:translate(-50%,0);transition-delay:.35s}
+.sq.ed[data-tip]:hover::after,.sq.ed[data-tip]:focus-visible::after{transform:translate(0,0)}
+@media (hover:none){.sq[data-tip]::after{display:none}}
+.duo .pane.p2 .co{margin-bottom:18px}
+.duo .tag{white-space:nowrap}
+/* phone: the two phases stack, so no label wraps and each pane keeps its air */
+@media (max-width:600px){
+  .proj.duo{grid-template-columns:1fr}
+  .duo .pane.p2{border-left:0;border-top:1px solid var(--line);border-radius:0 0 15px 15px}
+  .duo .pane .foot{margin-top:16px}
+}
 /* ghost keys beside a section title: transparent, a hairline, silver on hover */
 .gk{all:unset;box-sizing:border-box;cursor:pointer;margin-left:auto;height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:9px;
   border:1px solid var(--line-2);color:var(--ink-2);font-size:12.5px;white-space:nowrap;transition:color .15s,border-color .15s}
@@ -261,7 +300,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .adgo.done{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1px rgba(217,166,44,.6)}
 .adn{font:500 11px/1.4 var(--mono);color:var(--mute);letter-spacing:.02em}
 .part{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
-.part>b{font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.part>b{font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 .part>b i{font-style:normal;color:var(--gold);margin-right:8px}
 .scope ul{margin:0;padding:0 0 0 18px;color:var(--ink);font-size:14px}
 .scope li+li{margin-top:5px}
@@ -353,7 +392,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .sk.stripe:hover{filter:brightness(1.06)}
 /* deposit fixed · total moves with the package */
 .pay2{display:flex;gap:28px;align-items:flex-end}.pay2 span{display:flex;flex-direction:column;gap:4px}
-.pay2 small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.pay2 small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 .pay2 .tot b{font-size:18px;font-weight:600;color:var(--ink-2)}
 /* scope change in review: the 24 h notice; Accept + Stripe frozen behind a dim gradient */
 .hold{display:flex;gap:10px;align-items:flex-start;margin:18px 0 0;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:linear-gradient(90deg,rgba(217,166,44,.08),transparent 70%);font-size:13px;color:var(--ink-2)}
@@ -405,8 +444,10 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
   .field{padding:24px 24px 28px;border-radius:22px;gap:28px}
   .field h1{font-size:56px}
   .peek{display:none}
-  .desk{padding:36px 10px 48px}
-  .seg{margin-bottom:32px}
+  #gate{align-content:start}
+  .field{min-height:0}
+  .field h1{margin:10px 0}
+  .desk{padding:36px 10px 48px;justify-content:flex-start}
   .face h2{font-size:36px}
   .face .two{grid-template-columns:minmax(0,1fr);gap:0}
   .wrap{padding:0 18px}
@@ -549,7 +590,7 @@ button.sq:hover{color:#fff;border-color:rgba(192,192,200,.5);background:rgba(255
 .infra{display:grid;grid-template-columns:140px 1fr;gap:28px;align-items:start}
 .infra .zero{display:flex;flex-direction:column;gap:6px}
 .infra .zero b{font:600 44px/1 var(--head);letter-spacing:-.03em;color:var(--ink)}
-.infra .zero small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.infra .zero small{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
 .infra ul{list-style:none;margin:0;padding:0}
 .infra li{display:grid;grid-template-columns:90px 130px 1fr;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
 .infra li:last-child{border-bottom:0}
