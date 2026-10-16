@@ -65,17 +65,16 @@ def answer(history, question):
     msgs = [
         {"role": "system", "content": C.system_prompt()},
         {"role": "system", "content": (
-            "You must answer ONLY using the information in the CONTEXT block below. The ONLY projects, "
-            "clients and examples you may mention are the ones described there; never make up new ones, "
-            "even as illustrations. If the answer is not covered, say you don't know and suggest a short "
-            "scope call instead.\n\n" + _context(chunks))},
+            "Facts (past projects, clients, numbers, prices) come ONLY from the CONTEXT block below; "
+            "never make up a client or a result. How CAI would approach the visitor's task is yours to "
+            "explain confidently, in plain business steps.\n\n" + _context(chunks))},
         *[m for m in history if m.get("role") in ("user", "assistant")],
         # Small models obey the latest instruction best; re-pin grounding before the user turn
         # (not after: llama3.2 returns empty content when the conversation ends on a system message).
         {"role": "system", "content": (
-            "Reminder: every project, client, number and percentage in your reply must appear verbatim "
-            "in the CONTEXT block above. If CONTEXT has no concrete example for what was asked, say so "
-            "plainly and suggest a short scope call; do not invent one.")},
+            "Reminder: every project, client, number and percentage you name must appear verbatim in "
+            "CONTEXT. For the visitor's own task, answer directly: can it be automated, and the 2-4 steps "
+            "of how we'd build it. Then offer a short scope call.")},
         {"role": "user", "content": question},
     ]
     try:
