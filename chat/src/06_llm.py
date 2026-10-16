@@ -72,8 +72,9 @@ def _ask_api(messages):
     if not key:
         raise Unavailable("ANTHROPIC_API_KEY not set")
     system, _, turns = _split(messages)
+    # No temperature: claude-haiku-5-5 rejects it with a 400 ("deprecated for this model").
     body = {"model": C.get("api_model", "claude-haiku-5-5"), "max_tokens": 700,
-            "temperature": C.get("temperature", 0.1, float), "system": system, "messages": turns}
+            "system": system, "messages": turns}
     req = request.Request("https://api.anthropic.com/v1/messages", json.dumps(body).encode(),
                           {"Content-Type": "application/json", "x-api-key": key,
                            "anthropic-version": "2023-06-01"})
