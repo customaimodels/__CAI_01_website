@@ -3,6 +3,7 @@
     /recruiter/           a recruiter's own link     (this file)
     /y-vault/             the owner's PIN            (src_y_vault/vault.py)
 
+POST /recruiter/login       {code} the shared code word (2026-10-16; case-blind) → the yrec cookie, 14 days
 GET /recruiter/in/<token>   a link he minted (run.py --recruiter-link): sets the yrec cookie (Path=/recruiter) → /recruiter/
 GET /recruiter/...          the APPROVED pages only (signed in); everything else 401
 GET /recruiter/out          clears the cookie
@@ -25,8 +26,10 @@ import secrets
 import time
 from http.cookies import SimpleCookie
 from pathlib import Path
+from urllib.parse import parse_qs
 
 A = importlib.import_module("src_rcai.03_auth")
+C = importlib.import_module("src_rcai.01_config")
 R = importlib.import_module("src_rcai.02_records")      # seal / unseal (the handbook's)
 HERE = Path(__file__).resolve().parent
 APPROVED = HERE / "20_approved"
@@ -34,13 +37,20 @@ SEALED = HERE / "30_sealed" / "approved.bin"
 LOCAL = HERE.parent / "dta" / "_1_processed" / "recruiter"
 MOUNT = "/recruiter"
 MAX_DAYS = 30
+CODE_DAYS, MAX_FAILS, LOCK_MIN = 14, 5, 10
+_FAILS = {}
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".pdf": "application/pdf",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
 GATE = b"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Private</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f0a17;color:#ece8f2;font:16px/1.5 Inter,system-ui,sans-serif}
-main{max-width:30rem;padding:2rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}</style>
-</head><body><main><h1>%s</h1><p>%s</p></main></body></html>"""
+main{max-width:30rem;width:100%%;padding:2rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}</style>
+input{margin-top:1.2rem;width:100%%;box-sizing:border-box;padding:.8rem 1rem;background:#1a1226;color:#ece8f2;border:1px solid #3a2d4d;
+font:500 1rem/1 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}input:focus{outline:none;border-color:#f2cd57}
+button{margin-top:.8rem;padding:.7rem 1.2rem;background:#f2cd57;color:#0f0a17;border:0;font:600 .9rem Inter,system-ui,sans-serif;cursor:pointer}</style>
+</head><body><main><h1>%s</h1><p>%s</p>%s</main></body></html>"""
+FORM = b"""<form method="post" action="/recruiter/login" autocomplete="off"><input name="code" type="password" autocapitalize="characters"
+aria-label="Code" placeholder="code" maxlength="40" autofocus><button type="submit">Open</button></form>"""
 
 
 def _key():
@@ -57,6 +67,19 @@ def _revoked():
     if f.is_file():
         ids |= {l.strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip()}
     return ids
+
+
+def _code_hash():
+    if os.environ.get("RECRUITER_SHA256"):
+        return os.environ["RECRUITER_SHA256"]
+    m = re.search(r"^recruiter_sha256:\s*(\S+)", C.CONFIG.read_text(encoding="utf-8"), re.M)
+    return m.group(1) if m else ""
+
+
+def _code_token():
+    """The shared code's session: rec|code|exp|sig -- revocable like any link (RECRUITER_REVOKED=code)."""
+    body = f"rec|code|{int(time.time() + CODE_DAYS * 86400)}"
+    return f"{body}|{_sign(body)}"
 
 
 def mint(label, days=14):
@@ -131,8 +154,35 @@ def _send(h, code, body, ctype="text/html; charset=utf-8", headers=()):
     return True
 
 
-def _gate(h, code, title, line):
-    return _send(h, code, GATE % (title.encode(), line.encode()))
+def _gate(h, code, title, line, form=False):
+    return _send(h, code, GATE % (title.encode(), line.encode(), FORM if form else b""))
+
+
+def _ip(h):
+    fwd = h.headers.get("X-Forwarded-For", "") if os.environ.get("PORT") else ""
+    return fwd.split(",")[0].strip() or h.client_address[0]
+
+
+def _login(h):
+    ip, now = _ip(h), time.time()
+    _FAILS[ip] = [x for x in _FAILS.get(ip, []) if now - x < LOCK_MIN * 60]
+    if len(_FAILS[ip]) >= MAX_FAILS:
+        return _gate(h, 429, "Too many tries", "Wait a few minutes, then try again.")
+    raw = h.rfile.read(min(int(h.headers.get("Content-Length", 0) or 0), 512)).decode("utf-8", "ignore")
+    code = (parse_qs(raw).get("code") or [""])[0]
+    if raw.lstrip().startswith("{"):
+        try:
+            code = str(json.loads(raw).get("code", ""))
+        except (ValueError, AttributeError):
+            code = ""
+    want = _code_hash()
+    if not want or not hmac.compare_digest(hashlib.sha256(code.strip().upper().encode()).hexdigest(), want):
+        _FAILS[ip].append(now)
+        return _gate(h, 401, "Wrong code", "Check the code you were sent.", form=True)
+    if "code" in _revoked():
+        return _gate(h, 401, "This code has closed", "Ask for a personal link.")
+    tok = _code_token()
+    return _send(h, 303, b"", headers=[("Location", MOUNT + "/"), ("Set-Cookie", _cookie(tok, CODE_DAYS * 86400))])
 
 
 def _cookie(value, age):
@@ -144,6 +194,8 @@ def handle(h, method):
     path = h.path.split("?", 1)[0].split("#", 1)[0]
     if path != MOUNT and not path.startswith(MOUNT + "/"):
         return False
+    if method == "POST" and path == MOUNT + "/login":
+        return _login(h)
     if method != "GET":
         return _gate(h, 405, "Not here", "This page only opens.")
     if path == MOUNT:
@@ -158,7 +210,7 @@ def handle(h, method):
     if rel == "out":
         return _send(h, 303, b"", headers=[("Location", MOUNT + "/"), ("Set-Cookie", _cookie("", 0))])
     if not _who(h):
-        return _gate(h, 401, "Private", "This page opens from the link you were sent.")
+        return _gate(h, 401, "Private", "Enter the code you were sent, or open your personal link.", form=True)
     files = _files()
     f = files.get(rel or "index.html")
     if f is None:

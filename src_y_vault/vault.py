@@ -10,7 +10,7 @@ GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed 
 POST /y-vault/api/logout
 GET  /behind-the-models/... the same resume site, PUBLIC (the landing's "About the owner's work and portfolio")
 
-The PIN is config.yml vault_sha256 (or the YVAULT_SHA256 variable). A 4-digit PIN is a curtain, not a lock:
+The code is config.yml vault_sha256 (or the YVAULT_SHA256 variable), case-blind (2026-10-16). A short code is a curtain, not a lock:
 the repo is public, so anything put here can be read on GitHub.
 """
 import hashlib
@@ -174,7 +174,7 @@ def handle(h, method):
     except (ValueError, AttributeError):
         return _json(h, 400, {"error": "bad request"})
     want = _pin_hash()
-    if not want or not hmac.compare_digest(hashlib.sha256(pin.strip().encode()).hexdigest(), want):
+    if not want or not hmac.compare_digest(hashlib.sha256(pin.strip().upper().encode()).hexdigest(), want):
         _FAILS.setdefault(ip, []).append(time.time())
-        return _json(h, 401, {"error": "Wrong PIN."})
+        return _json(h, 401, {"error": "Wrong code."})
     return _json(h, 200, {"in": True}, _cookie(_issue(), HOURS * 3600))
