@@ -17,7 +17,9 @@ body.report nav{display:flex;gap:26px;font:400 15px/1 var(--sans)}
 body.report nav a{opacity:.8}
 body.report nav a:hover{opacity:1}
 body.report header .act{margin-left:auto;display:flex;gap:10px}
-@media (max-width:980px){body.report nav{display:none}}
+/* header words never split mid-word; the nav steps out before it runs out of room */
+body.report header a{overflow-wrap:normal;white-space:nowrap}
+@media (max-width:1240px){body.report nav{display:none}}
 @media (max-width:620px){body.report header .btn.line{display:none}}
 body.report .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;font:500 15px/1 var(--sans);border:1px solid transparent;overflow-wrap:anywhere;transition:background-color .15s,border-color .15s,color .15s}
 body.report .btn.fill{background:var(--yolk);color:var(--ink)}

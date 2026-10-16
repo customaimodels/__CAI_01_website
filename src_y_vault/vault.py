@@ -57,22 +57,25 @@ def pages():
     return out
 
 
-def _resume(h, rel):
-    """/y-vault/resume/<file> or /behind-the-models/<file>: a file inside src_resume, never outside it, never NOTE.md."""
+def _resume(h, rel, public=False):
+    """/y-vault/resume/<file> or /behind-the-models/<file>: a file inside src_resume, never outside it, never NOTE.md.
+    public=True ONLY from the OWNER branch of handle(): same bytes, indexable. Everything else stays private."""
     sub = rel.split("/", 1)[1] if "/" in rel else ""
     sub = sub or "index.html"
     f = (RESUME / sub).resolve()
     if RESUME.resolve() not in f.parents or not f.is_file() or f.suffix.lower() not in TYPES:
         return _json(h, 404, {"error": "not found"})
-    return _send(h, 200, f.read_bytes(), TYPES[f.suffix.lower()])
+    return _send(h, 200, f.read_bytes(), TYPES[f.suffix.lower()], public=public)
 
 
-def _send(h, code, body, ctype, cookie=None):
+def _send(h, code, body, ctype, cookie=None, public=False):
+    """Private by default: every vault answer carries noindex, nofollow. Only /behind-the-models/ files pass public=True."""
     h.send_response(code)
     h.send_header("Content-Type", ctype)
     h.send_header("Cache-Control", "no-store")
     h.send_header("Referrer-Policy", "no-referrer")
-    h.send_header("X-Robots-Tag", "noindex")
+    if not public:
+        h.send_header("X-Robots-Tag", "noindex, nofollow")
     if cookie is not None:
         h.send_header("Set-Cookie", cookie)
     h.send_header("Content-Length", str(len(body)))
@@ -95,19 +98,25 @@ def _cookie(value, age):
     return f"yvault={value}; Path={MOUNT}; Max-Age={age}; HttpOnly; SameSite=Strict{secure}"
 
 
+def _key():
+    """The owner's own signing key, derived from RCAI_SECRET. A token signed for R-CAI or /recruiter never verifies
+    here (2026-10-16: an R-CAI client cookie replayed as yvault opened the vault -- same secret, same body shape)."""
+    return hmac.new(A._secret(), b"role:owner-vault:v1", hashlib.sha256).digest()
+
+
 def _issue():
     body = f"vault|{int(time.time() + HOURS * 3600)}"
-    return f"{body}|{hmac.new(A._secret(), body.encode(), hashlib.sha256).hexdigest()}"
+    return f"{body}|{hmac.new(_key(), body.encode(), hashlib.sha256).hexdigest()}"
 
 
 def _in(h):
     jar = SimpleCookie(h.headers.get("Cookie", ""))
     try:
-        who, exp, sig = jar["yvault"].value.rsplit("|", 2)
+        who, exp, sig = jar["yvault"].value.split("|")
+        good = hmac.new(_key(), f"{who}|{exp}".encode(), hashlib.sha256).hexdigest()
+        return who == "vault" and hmac.compare_digest(sig, good) and int(exp) > time.time()
     except (KeyError, ValueError):
         return False
-    good = hmac.new(A._secret(), f"{who}|{exp}".encode(), hashlib.sha256).hexdigest()
-    return hmac.compare_digest(sig, good) and int(exp) > time.time()
 
 
 def _locked(ip):
@@ -125,7 +134,7 @@ def handle(h, method):
             h.send_header("Content-Length", "0")
             h.end_headers()
             return True
-        return _resume(h, path[1:])
+        return _resume(h, path[1:], public=True)
     if path != MOUNT and not path.startswith(MOUNT + "/"):
         return False
     if path == MOUNT:

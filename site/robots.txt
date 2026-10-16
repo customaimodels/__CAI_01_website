@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /r-cai/
 Disallow: /y-vault/
+Disallow: /recruiter/
 
 Sitemap: https://customaimodels.com/sitemap.xml
