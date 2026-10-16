@@ -15,4 +15,13 @@ read = import_module("src_articles.articles")
 GET, POST = door.Door.do_GET, door.Door.do_POST
 door.Door.do_GET = lambda h: portal.handle(h, "GET") or vault.handle(h, "GET") or read.handle(h, "GET") or GET(h)
 door.Door.do_POST = lambda h: portal.handle(h, "POST") or vault.handle(h, "POST") or POST(h)
+def _head(h):  # HEAD = GET's status + headers, body dropped (crawlers probe with HEAD; it was a 501)
+    import io
+    end = h.end_headers
+    def _end():
+        end()
+        h.wfile = io.BytesIO()
+    h.end_headers = _end
+    h.do_GET()
+door.Door.do_HEAD = _head
 door.serve()
