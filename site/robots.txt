@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /r-cai/
+Disallow: /y-vault/
+
+Sitemap: https://customaimodels.com/sitemap.xml
