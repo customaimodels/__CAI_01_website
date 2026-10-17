@@ -135,3 +135,13 @@ header.light .btn.fill:hover{background:var(--carbon)}
 .art-body .art-fig figcaption{margin-top:12px;font:500 13px/1.55 var(--mono);letter-spacing:.02em;color:var(--quiet)}
 .a-card .thumb.color img{filter:none}
 .art-head .cap:first-child{padding-top:112px}
+
+/* 10-17: the bar lists every article; the one you are on reads full white with a thin gold rule */
+body.report nav{gap:22px}
+body.report nav a[aria-current="page"]{opacity:1;box-shadow:inset 0 -1px 0 var(--yolk);padding-bottom:4px}
+@media (max-width:1240px) and (min-width:981px){body.report nav a:not(:first-child){display:none}}
+
+/* 10-17: hero photos wear a matte purple, gentle from the top down into the ink */
+.art-head .frame::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgb(92 66 150 / .55) 0%,rgb(70 50 118 / .32) 45%,rgb(40 30 70 / .10) 100%);mix-blend-mode:color}
+.art-head .frame::after{z-index:2}

@@ -26,7 +26,9 @@
       }
       io.unobserve(e.target);
     });
-  }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+  // threshold 0, not a fraction: the whole article body is one .reveal, and 18% of a tall body
+  // never fits a short window, so it stayed invisible (article 05, 2026-10-17).
   singles.forEach(t => io.observe(t));
   groups.forEach(t => io.observe(t));
 })();
