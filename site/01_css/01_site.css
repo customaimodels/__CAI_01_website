@@ -454,7 +454,7 @@ footer .key.no input{border-color:var(--bad)}
 footer .key .y{height:32px;padding:0 14px;border:1px solid rgba(255,255,255,.14);border-radius:980px;background:var(--indigo);color:#fff;font:600 12px/1 var(--sans);letter-spacing:.04em;cursor:pointer;transition:background .15s ease}
 footer .key .y b{color:var(--gold);font-weight:700}
 footer .key .y:hover{background:var(--violet)}
-footer .keys{display:inline-flex;align-items:center;gap:12px;margin-left:auto}
+footer .keys{display:inline-flex;align-items:center;gap:12px;margin-left:clamp(32px,6vw,96px);margin-right:auto}
 /* company accounts (2026-10-16): one quiet row under the line, mute marks, a rim on hover/focus */
 footer .soc{list-style:none;margin:0 auto;padding-top:0;padding-bottom:28px;height:auto;gap:6px;margin-top:-20px}
 footer .soc a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid transparent;border-radius:980px;color:var(--mute);transition:color .15s ease,border-color .15s ease}
