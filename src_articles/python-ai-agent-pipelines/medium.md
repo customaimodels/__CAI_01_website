@@ -4,7 +4,7 @@ subtitle: "How Custom AI Models calls Claude, ChatGPT, Gemini and nine other too
 date: 2026-10-17
 author: "Yeriko Vargas"
 tags: ["Automation", "Agents", "Python"]
-canonical_url: "https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/"
+canonical_url: "https://customaimodels.com/articles/python-ai-agent-pipelines/"
 ---
 
 # Twelve tools, one Python pipeline
@@ -15,17 +15,17 @@ I get asked which AI we use. The honest answer is 12 tools, and none of them is 
 
 *Fig. 1 · The toolbelt. Top row, models: Claude, ChatGPT, Gemini, Perplexity, Higgsfield, Cursor. Bottom row, engineering: Python, JavaScript, Git, Railway, Cloudflare, Resend. Python calls each one and checks what comes back.*
 
-## The model is one step, not the system
+## LLM orchestration: the model is one step, not the system
 
 Most AI projects start from the chat window and work outward. Someone gets a great answer from a model, then tries to build a product around that moment. We go the other way. I write the pipeline first: read the input, clean it, decide, act, record. A model only gets a slot in that line where judgment is actually needed, the way you would call any other function.
 
-In practice a model call is a subprocess. Python builds the prompt from real data, runs `claude -p` (or another model's API), asks for JSON back, and parses it. If the JSON doesn't parse, the step fails loudly instead of passing a paragraph of prose down the line. There's no magic prompt that says "send the email." A user clicks a button, the click fires a trigger, and the trigger runs a fixed, predictable process. Somewhere in the middle of that process, a model may write the draft.
+In practice a model call is a subprocess. Python builds the prompt from real data, runs `claude -p` (or another model's API), asks for JSON back, and parses it. **If the JSON doesn't validate, the step fails loudly** instead of passing a paragraph of prose down the line. There's no magic prompt that says "send the email." A user clicks a button, the click fires a trigger, and the trigger runs a fixed, predictable process. Somewhere in the middle of that process, a model may write the draft.
 
-## Every call returns a claim, not a result
+## Exit code and JSON validation: every call returns a claim, not a result
 
-This is the lesson that cost us the most, so it goes first in every build. A tool that exits with code 0 has only told you it didn't crash. It hasn't told you it worked.
+This is the lesson that cost us the most, so it goes first in every build. **A tool that exits with code 0 has only told you it didn't crash.** It hasn't told you it worked.
 
-We learned it on our own skill installer. It marked a research skill as ready the moment the skill's health check exited cleanly. Then the skills kept failing in use. When we finally read what the health check actually reported, only 4 of its 16 channels were live. The installer had trusted the exit code and never read the report. The fix took one change: parse the tool's own JSON output, channel by channel, and mark each one live or dead on its own. The planner that recommends routes now only sees the channels that work today.
+We learned it on our own skill installer. It marked a research skill as ready the moment the skill's health check exited cleanly. Then the skills kept failing in use. When we finally read what the health check actually reported, only 4 of its 16 channels were live. The installer had trusted the exit code and never read the report. The fix took one change: **parse the tool's own JSON output, channel by channel**, and mark each one live or dead on its own. The planner that recommends routes now only sees the channels that work today.
 
 An exit code of 0 tells you the tool didn't crash. It doesn't tell you the tool did its job. The same rule applies to models. A model that says "done" has made a claim. Python's job is to check it: does the file exist, does the page return 200, does the number match the source. If a check can be written as code, it is written as code, and it runs every time.
 
@@ -43,7 +43,7 @@ Anything deterministic never goes to a model at all. Checking a folder for new q
 
 ## Clean up after yourself
 
-A pipeline that calls outside tools has to own their lifecycle. I found a headless Chrome still running 2 hours after a screenshot test had finished. Nothing was broken, but nothing should have been running either. That probe now closes its browser when it exits, when it's interrupted, and after 45 seconds no matter what. The figure at the top of this page was rendered the same way: a Python script launched Chrome once, took the picture, and Chrome closed itself.
+A pipeline that calls outside tools has to own their lifecycle. I found **a headless Chrome still running 2 hours** after a screenshot test had finished: a resource leak. Nothing was broken, but nothing should have been running either. That probe now closes its browser when it exits, when it's interrupted, and after 45 seconds no matter what. The figure at the top of this page was rendered the same way: a Python script launched Chrome once, took the picture, and Chrome closed itself.
 
 The same goes for data. Every project keeps three tiers, raw, processed and exports, and a cleanup function moves data forward and parks what is unused. Nothing gets deleted outright. A parked file comes back with its receipt if someone needs it.
 
@@ -61,4 +61,4 @@ The toolbelt will change. Some of these 12 tools will be replaced within a year,
 
 ---
 
-*Originally published at [customaimodels.com](https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/).*
+*Originally published at [customaimodels.com](https://customaimodels.com/articles/python-ai-agent-pipelines/).*

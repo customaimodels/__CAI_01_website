@@ -4,18 +4,30 @@ subtitle: "A production audio-intelligence platform runs on 100+ DSP features an
 date: 2026-10-14
 author: "Yeriko Vargas"
 tags: ["Signal & ML", "Architecture"]
-canonical_url: "https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/"
+canonical_url: "https://customaimodels.com/articles/real-time-audio-machine-learning/"
 ---
 
 # Listening to a room in real time
 
 Not every production AI system is an LLM with a nice wrapper around it. I built one that listens to a live music venue and adapts in real time: over 100 DSP features run through PCA and KMeans into a similarity score, with a continuous evaluation loop checking its own output. No prompt anywhere in that sentence. It's still running in production, and it taught me more about what "production AI" actually means than most of the LLM work I've shipped since.
 
-## Feature engineering didn't go away. It just got less fashionable
+## DSP feature engineering and dimensionality reduction with PCA
 
-A lot of current AI conversation assumes the hard problem is always "which foundation model." For a real-time audio system, the hard problem was deciding which of the 100-plus features, pulled out with Librosa, Essentia, and Aubio, actually carried signal about what was happening in the room, versus which were just correlated noise that would fall apart the moment the venue changed its sound system. Dimensionality reduction through PCA wasn't a step before the "real" model: choosing what to keep and what to discard was most of the actual engineering judgment in the system.
+A lot of current AI conversation assumes the hard problem is always "which foundation model." For a real-time audio system, the hard problem was deciding which of the 100-plus features, pulled out with Librosa, Essentia, and Aubio, actually carried signal about what was happening in the room, versus which were just correlated noise that would fall apart the moment the venue changed its sound system. Feature engineering didn't go away. It just got less fashionable. Dimensionality reduction through PCA wasn't a step before the "real" model: choosing what to keep and what to discard was most of the actual engineering judgment in the system.
 
-## Unsupervised, on purpose
+The audio stack
+
+- **The math underneath.** Short windows of sound, a fast Fourier transform (FFT) on each, and spectral features built from what comes out.
+
+- **Librosa.** Spectral features, MFCCs, onsets and tempo.
+
+- **Essentia.** Loudness, rhythm and tonal descriptors.
+
+- **Aubio.** Fast onset, pitch and beat tracking, light enough to run live.
+
+- **Feature scaling, then PCA.** 100-plus features put on one scale, then reduced to the few that carry signal.
+
+## Unsupervised KMeans clustering for real-time audio, on purpose
 
 There's no labeled dataset of "this is what a good night sounds like" for a specific venue, and building one would have meant months of human annotation, likely 300 to 500 labeled examples at minimum, before a single useful output. KMeans-based similarity scoring sidesteps that: the system learns the structure of what's actually happening acoustically, usually settling into somewhere between 5 and 10 real clusters, and flags what's similar to, or diverging from, established patterns, without needing someone to have hand-labeled the answer first. The tradeoff is real: unsupervised systems are harder to explain in a sentence, and they demand a different kind of evaluation than a model with ground-truth labels and a clean accuracy number.
 
@@ -33,4 +45,4 @@ The specific techniques here (DSP feature extraction, PCA, KMeans) aren't what m
 
 ---
 
-*Originally published at [customaimodels.com](https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/).*
+*Originally published at [customaimodels.com](https://customaimodels.com/articles/real-time-audio-machine-learning/).*

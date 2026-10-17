@@ -4,7 +4,7 @@ subtitle: "Eight and a half years across biostatistics, deep learning, and agent
 date: 2026-10-14
 author: "Yeriko Vargas"
 tags: ["Career", "Architecture"]
-canonical_url: "https://customaimodels.com/articles/_04_ar_stats-to-llms_career_ai-engineering/"
+canonical_url: "https://customaimodels.com/articles/statistics-to-llm-ai-engineering/"
 ---
 
 # From statistics to LLMs: the same job, different tools
@@ -15,11 +15,11 @@ My first real analysis was mixed-effects models and survival analysis on longitu
 
 An MS and BS in Applied Statistics from Oakland University gave me something more durable than any specific technique: the habit of asking what a result would look like if it were wrong, before I trust that it's right. Cox proportional hazards models and Bayesian reasoning don't come up often in a conversation about LLM agents, but the instinct they built (a result isn't true because the output looks clean) carried through every system I've built since.
 
-## Deep learning, at the scale where it actually breaks
+## Predictive modeling and deep learning at FCA and Ford
 
 At FCA, I built deep learning models across roughly 250,000 vehicle configurations to optimize profitability, and the real work was reducing 108 predictors down to the 14 that actually drove the decision. That's a statistics problem wearing a deep learning coat: more inputs is not more insight, and the job of the model is as much about what it's allowed to ignore as what it attends to. At Ford, the same instinct showed up as unsupervised learning surfacing defect patterns across large-scale automotive datasets, with the pipeline work (SQL, Hadoop, AWS SageMaker) existing entirely to make that one insight reliable and repeatable.
 
-## The throughline shows up again in fraud detection
+## Random Forest and SHAP values for fraud detection
 
 At Soothsayer, building fraud-detection and segmentation models across automotive and insurance data meant Random Forest and clustering doing the modeling, and SHAP doing something just as important: making the finding legible to the people who had to act on it. A model that flags a high-risk location but can't say why doesn't get used. That's not a modeling failure. It's a communication failure wearing a modeling costume, and it's the same failure a RAG system has when it can't show its sources.
 
@@ -33,4 +33,4 @@ A lot of AI hiring right now optimizes for familiarity with the newest framework
 
 ---
 
-*Originally published at [customaimodels.com](https://customaimodels.com/articles/_04_ar_stats-to-llms_career_ai-engineering/).*
+*Originally published at [customaimodels.com](https://customaimodels.com/articles/statistics-to-llm-ai-engineering/).*

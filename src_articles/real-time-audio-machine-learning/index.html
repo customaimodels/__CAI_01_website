@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Listening to a room in real time · Custom AI Models</title>
 <meta name="description" content="A production audio-intelligence platform runs on 100+ DSP features and a continuous evaluation loop, not a clever model alone. Most of the engineering is in the loop.">
-<link rel="canonical" href="https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">
+<link rel="canonical" href="https://customaimodels.com/articles/real-time-audio-machine-learning/">
 <meta name="keywords" content="real-time audio intelligence, DSP feature engineering, unsupervised machine learning, KMeans clustering, PCA">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Custom AI Models">
 <meta property="og:title" content="Listening to a room in real time">
 <meta property="og:description" content="A production audio-intelligence platform runs on 100+ DSP features and a continuous evaluation loop, not a clever model alone. Most of the engineering is in the loop.">
-<meta property="og:url" content="https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">
+<meta property="og:url" content="https://customaimodels.com/articles/real-time-audio-machine-learning/">
 <meta property="og:image" content="https://customaimodels.com/articles/03_img/work-hospitality.jpg">
 <meta property="article:published_time" content="2026-10-14">
 <meta property="article:author" content="Yeriko Vargas">
@@ -38,7 +38,7 @@
   "@type": "BlogPosting",
   "headline": "Listening to a room in real time",
   "description": "A production audio-intelligence platform runs on 100+ DSP features and a continuous evaluation loop, not a clever model alone. Most of the engineering is in the loop.",
-  "url": "https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/",
+  "url": "https://customaimodels.com/articles/real-time-audio-machine-learning/",
   "datePublished": "2026-10-14",
   "dateModified": "2026-10-14",
   "image": "https://customaimodels.com/articles/03_img/work-hospitality.jpg",
@@ -46,7 +46,7 @@
   "keywords": "real-time audio intelligence, DSP feature engineering, unsupervised machine learning, KMeans clustering, PCA",
   "author": {"@type": "Person", "name": "Yeriko Vargas", "url": "https://www.linkedin.com/in/yeriko-vargas"},
   "publisher": {"@type": "Organization", "@id": "https://customaimodels.com/#org", "name": "Custom AI Models", "url": "https://customaimodels.com/"},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/_03_ar_real-time-audio_machine-learning_signal-processing/"}
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/real-time-audio-machine-learning/"}
 }
 </script>
 </head>
@@ -57,11 +57,11 @@
   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
   <nav aria-label="Articles">
    <a href="/articles/">Articles</a>
-   <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG</a>
-   <a href="/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">Training Hub</a>
-   <a href="/articles/_03_ar_real-time-audio_machine-learning_signal-processing/" aria-current="page">Real-time audio</a>
-   <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">Stats to LLMs</a>
-   <a href="/articles/_05_ar_tool-pipelines_ai-systems_automation/">Tool pipelines</a>
+   <a href="/articles/rag-production-architecture/">RAG</a>
+   <a href="/articles/replacing-spreadsheets-ai-infrastructure/">Training Hub</a>
+   <a href="/articles/real-time-audio-machine-learning/" aria-current="page">Real-time audio</a>
+   <a href="/articles/statistics-to-llm-ai-engineering/">Stats to LLMs</a>
+   <a href="/articles/python-ai-agent-pipelines/">Tool pipelines</a>
   </nav>
   <div class="act">
    <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
@@ -86,10 +86,18 @@
 
 <p>Not every production AI system is an LLM with a nice wrapper around it. I built one that listens to a live music venue and adapts in real time: over 100 DSP features run through PCA and KMeans into a similarity score, with a continuous evaluation loop checking its own output. No prompt anywhere in that sentence. It's still running in production, and it taught me more about what "production AI" actually means than most of the LLM work I've shipped since.</p>
 
-<h2>Feature engineering didn't go away. It just got less fashionable</h2>
-<p>A lot of current AI conversation assumes the hard problem is always "which foundation model." For a real-time audio system, the hard problem was deciding which of the 100-plus features, pulled out with Librosa, Essentia, and Aubio, actually carried signal about what was happening in the room, versus which were just correlated noise that would fall apart the moment the venue changed its sound system. Dimensionality reduction through PCA wasn't a step before the "real" model: choosing what to keep and what to discard was most of the actual engineering judgment in the system.</p>
+<h2>DSP feature engineering and dimensionality reduction with PCA</h2>
+<p>A lot of current AI conversation assumes the hard problem is always "which foundation model." For a real-time audio system, the hard problem was deciding which of the 100-plus features, pulled out with Librosa, Essentia, and Aubio, actually carried signal about what was happening in the room, versus which were just correlated noise that would fall apart the moment the venue changed its sound system. Feature engineering didn't go away. It just got less fashionable. Dimensionality reduction through PCA wasn't a step before the "real" model: choosing what to keep and what to discard was most of the actual engineering judgment in the system.</p>
+<p class="art-label">The audio stack</p>
+<ul>
+ <li><strong>The math underneath.</strong> Short windows of sound, a fast Fourier transform (FFT) on each, and spectral features built from what comes out.</li>
+ <li><strong>Librosa.</strong> Spectral features, MFCCs, onsets and tempo.</li>
+ <li><strong>Essentia.</strong> Loudness, rhythm and tonal descriptors.</li>
+ <li><strong>Aubio.</strong> Fast onset, pitch and beat tracking, light enough to run live.</li>
+ <li><strong>Feature scaling, then PCA.</strong> 100-plus features put on one scale, then reduced to the few that carry signal.</li>
+</ul>
 
-<h2>Unsupervised, on purpose</h2>
+<h2>Unsupervised KMeans clustering for real-time audio, on purpose</h2>
 <p>There's no labeled dataset of "this is what a good night sounds like" for a specific venue, and building one would have meant months of human annotation, likely 300 to 500 labeled examples at minimum, before a single useful output. KMeans-based similarity scoring sidesteps that: the system learns the structure of what's actually happening acoustically, usually settling into somewhere between 5 and 10 real clusters, and flags what's similar to, or diverging from, established patterns, without needing someone to have hand-labeled the answer first. The tradeoff is real: unsupervised systems are harder to explain in a sentence, and they demand a different kind of evaluation than a model with ground-truth labels and a clean accuracy number.</p>
 
 <blockquote>When there's no ground truth to score against, the evaluation loop has to become the ground truth.</blockquote>
@@ -112,16 +120,16 @@
 
 <div class="art-related">
  <span class="label">More from Custom AI Models</span>
-  <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
-  <a href="/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">What replacing four spreadsheets actually took<span>Why the hard part of AI infrastructure is never the model.</span></a>
-  <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
+  <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
+  <a href="/articles/replacing-spreadsheets-ai-infrastructure/">What replacing four spreadsheets actually took<span>Why the hard part of AI infrastructure is never the model.</span></a>
+  <a href="/articles/statistics-to-llm-ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
 </div>
 
 </main>
 
 <div class="art-cta">
  <div class="inner">
-  <h2>Need someone to own this end to end?</h2>
+  <h2>Build an ML system that checks itself in production</h2>
   <p>I design and build the whole system: feature engineering, the model, the evaluation loop that keeps it honest. Not one piece handed off to the next person. If that's what you're hiring for, let's talk.</p>
   <div class="row">
    <a class="btn fill" href="/#ask">Start a project</a>
@@ -138,7 +146,7 @@
  <div class="wrap">
   <div class="row1">
    <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
-   <span>© 2026</span>
+   <span>Est. 2022 · © 2026 Custom AI Models</span>
    <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
   </div>
   <p class="credits">Article photograph: <a href="https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg">Musician on stage</a> by Shixart1985, CC BY 2.0, via Wikimedia Commons. Used as atmosphere, not as any employer's own photograph.</p>

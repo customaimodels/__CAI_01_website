@@ -4,24 +4,24 @@ subtitle: "Why a production retrieval system lives or dies on the telemetry and 
 date: 2026-10-14
 author: "Yeriko Vargas"
 tags: ["RAG", "Agents", "Architecture"]
-canonical_url: "https://customaimodels.com/articles/_01_ar_rag-production_rag-agents_architecture/"
+canonical_url: "https://customaimodels.com/articles/rag-production-architecture/"
 ---
 
 # RAG isn't a feature. It's an architecture.
 
 Most RAG systems I see described in a sentence sound the same: embed the documents, retrieve the relevant ones, hand them to a model, get an answer. That sentence is true and it is also the least important part of the system. I've built one of these for real money, in production, since 2022, for financial decision support, paired with LSTM forecasting feeding the same decisions, and the part that took the work wasn't retrieval. It was everything wrapped around retrieval that makes it safe to trust.
 
-## The part everyone builds
+## Why basic RAG chunking and vector search became a commodity
 
 Chunking strategy, embedding model choice, vector store, reranking: this is the part with the most blog posts written about it, and it's also the part that's genuinely become a commodity. Pick a reasonable chunk size, pick a reasonable embedding model, and you'll retrieve something relevant most of the time. A retrieval-quality benchmark usually reports precision at 5 or recall at 10, numbers that look clean in a slide and tell you nothing about what happens in week 12. That's not nothing, but it's also not an architecture. It's a library call.
 
-## The part that actually breaks in production
+## Where production RAG breaks: semantic drift and stale documents
 
-A retrieval system doesn't fail by returning nothing. It fails by returning something confident and wrong, 3 weeks after you shipped it, after the underlying documents changed shape and nobody updated the ingestion pipeline. It fails when a model grounds an answer in a document that's technically relevant and substantively stale. It fails silently, which is the only kind of failure that costs real money in a decision-support system.
+A retrieval system doesn't fail by returning nothing. It fails by returning something confident and wrong, 3 weeks after you shipped it, after the underlying documents changed shape and nobody updated the ingestion pipeline. It fails when a model grounds an answer in a document that's technically relevant and substantively stale. It fails silently, which is the only kind of failure that costs real money in a decision-support system. Hybrid search, metadata filtering and a faster vector database all help retrieval, and none of them notice that a document is relevant on paper and out of date in substance.
 
 None of that shows up in a retrieval-quality benchmark run once before launch. It shows up in production, over weeks, as drift: in the data, in the query patterns, in what "correct" even means as the business changes around the system.
 
-## A system that can't tell you when it's wrong isn't an AI system. It's a guess with good production values. Telemetry is not optional
+## A system that can't tell you when it's wrong isn't an AI system. It's a guess with good production values. Production RAG telemetry and continuous evaluation
 
 Every step of the system I built, whether the call behind it goes to Claude, OpenAI, or a smaller fine-tuned model, logs what it retrieved, what it was given, what it generated, and, separately, whether that generation was later confirmed, corrected, or ignored by the person using it. That last signal is the one most teams skip, and it's the one that actually tells you if the system is getting better or quietly degrading. Evaluation isn't a notebook you run before a demo. It's a loop that runs the same way in week one and week fifty.
 
@@ -30,6 +30,8 @@ Concretely, that means three things live alongside the model call, not after it:
 - **Grounding checks.** Does the generated answer actually trace back to the retrieved context, or did the model fill a gap with something plausible-sounding?
 
 - **Confidence as a first-class output.** Not a number pulled from nowhere, a signal built from retrieval score, context coverage, and agreement across the forecasting side of the system where there is one.
+
+- **Freshness next to every source.** When was the retrieved document last changed? An answer grounded in a stale document is the most dangerous kind, because it looks correct and cites its source.
 
 - **A record of what happened after.** Was the output used, edited, or discarded? That's the only ground truth a production system ever gets.
 
@@ -59,4 +61,4 @@ Drop anything under 0.3 relevance before it reaches the model. Flag anything bet
 
 ---
 
-*Originally published at [customaimodels.com](https://customaimodels.com/articles/_01_ar_rag-production_rag-agents_architecture/).*
+*Originally published at [customaimodels.com](https://customaimodels.com/articles/rag-production-architecture/).*

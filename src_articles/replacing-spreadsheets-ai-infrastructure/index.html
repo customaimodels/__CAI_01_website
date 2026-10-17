@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>What replacing four spreadsheets actually took · Custom AI Models</title>
 <meta name="description" content="Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.">
-<link rel="canonical" href="https://customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">
+<link rel="canonical" href="https://customaimodels.com/articles/replacing-spreadsheets-ai-infrastructure/">
 <meta name="keywords" content="AI infrastructure, data infrastructure, enterprise AI assistant, AI systems architect, RAG for business data">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Custom AI Models">
 <meta property="og:title" content="What replacing four spreadsheets actually took">
 <meta property="og:description" content="Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.">
-<meta property="og:url" content="https://customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">
+<meta property="og:url" content="https://customaimodels.com/articles/replacing-spreadsheets-ai-infrastructure/">
 <meta property="og:image" content="https://customaimodels.com/articles/03_img/work-distribution.jpg">
 <meta property="article:published_time" content="2026-10-14">
 <meta property="article:author" content="Yeriko Vargas">
@@ -38,7 +38,7 @@
   "@type": "BlogPosting",
   "headline": "What replacing four spreadsheets actually took",
   "description": "Building a company's AI infrastructure from zero means the hard part was never the model. It was registration, retention, and who's allowed to see what.",
-  "url": "https://customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/",
+  "url": "https://customaimodels.com/articles/replacing-spreadsheets-ai-infrastructure/",
   "datePublished": "2026-10-14",
   "dateModified": "2026-10-14",
   "image": "https://customaimodels.com/articles/03_img/work-distribution.jpg",
@@ -46,7 +46,7 @@
   "keywords": "AI infrastructure, data infrastructure, enterprise AI assistant, AI systems architect, RAG for business data",
   "author": {"@type": "Person", "name": "Yeriko Vargas", "url": "https://www.linkedin.com/in/yeriko-vargas"},
   "publisher": {"@type": "Organization", "@id": "https://customaimodels.com/#org", "name": "Custom AI Models", "url": "https://customaimodels.com/"},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/"}
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/replacing-spreadsheets-ai-infrastructure/"}
 }
 </script>
 </head>
@@ -57,11 +57,11 @@
   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
   <nav aria-label="Articles">
    <a href="/articles/">Articles</a>
-   <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG</a>
-   <a href="/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/" aria-current="page">Training Hub</a>
-   <a href="/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">Real-time audio</a>
-   <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">Stats to LLMs</a>
-   <a href="/articles/_05_ar_tool-pipelines_ai-systems_automation/">Tool pipelines</a>
+   <a href="/articles/rag-production-architecture/">RAG</a>
+   <a href="/articles/replacing-spreadsheets-ai-infrastructure/" aria-current="page">Training Hub</a>
+   <a href="/articles/real-time-audio-machine-learning/">Real-time audio</a>
+   <a href="/articles/statistics-to-llm-ai-engineering/">Stats to LLMs</a>
+   <a href="/articles/python-ai-agent-pipelines/">Tool pipelines</a>
   </nav>
   <div class="act">
    <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
@@ -86,16 +86,22 @@
 
 <p>When a distribution company asked me to build a training hub and assistant, the request sounded like one project: "give us an AI tool for training." What actually existed underneath that request was 4 separate spreadsheets, a paper sign-up process, and no single place that knew who had attended what, who was certified, or what the company's own policies actually said when someone asked. The AI assistant was the last thing I built. It was also the smallest part of the work.</p>
 
-<h2>The model is not the bottleneck</h2>
-<p>Every company I've worked with that wanted "an AI tool" already had a reasonably good sense of what they wanted a model to say. What they didn't have was one trustworthy place for the model to say it from. 4 spreadsheets means 4 sources of truth, which in practice means 0 sources of truth, each one slightly out of date, maintained by a different person, contradicting at least one of the others by the time anyone needs an answer.</p>
-<p>So before anything resembling retrieval or an assistant got built, the actual first job was data infrastructure: 1 registration system, 1 attendance record, 1 retention record, 1 place access rules live. Natural-language access to business data only works if the data underneath it is actually unified. Point a well-built RAG system at 4 contradicting spreadsheets and you've built a very articulate way to be wrong.</p>
+<h2>Enterprise data silos: the model is not the bottleneck</h2>
+<p>Every company I've worked with that wanted "an AI tool" already had a reasonably good sense of what they wanted a model to say. What they didn't have was one trustworthy place for the model to say it from. 4 spreadsheets fail in 4 predictable ways:</p>
+<ul>
+ <li><strong>4 sources of truth.</strong> Which in practice means 0 sources of truth.</li>
+ <li><strong>Always slightly out of date.</strong> Each one is updated on its own schedule, by hand.</li>
+ <li><strong>4 owners.</strong> Each sheet is maintained by a different person, with a different idea of what a column means.</li>
+ <li><strong>Contradictions by default.</strong> By the time anyone needs an answer, at least one sheet disagrees with the others.</li>
+</ul>
+<p>So before anything resembling retrieval or an assistant got built, the actual first job was data infrastructure and data pipeline ingestion: 1 registration system, 1 attendance record, 1 retention record, 1 place the role-based access rules live. Natural-language access to business data only works if the data underneath it is actually unified. Point a well-built RAG system at 4 contradicting spreadsheets and you've built a very articulate way to be wrong.</p>
 
 <h2>Replacing a paper process is a trust problem, not a technical one</h2>
 <p>The paper sign-up process wasn't slow because paper is slow. It was trusted because everyone could see it, and because nobody had to wonder whether a system was quietly deciding who counted as "trained" and who didn't. Replacing it meant the new system had to be more legible than the thing it replaced, not just faster. That shaped real decisions: what the assistant is allowed to say with certainty versus what it should hand off to a person, what gets logged, and where a human can always see the underlying record a given answer came from.</p>
 
 <blockquote class="warm">A system nobody trusts gets routed around, quietly, until it's just an expensive dashboard nobody opens.</blockquote>
 
-<h2>Owning it end to end changes what you build</h2>
+<h2>Owning the data pipeline end to end: fewer handoffs, fewer seams</h2>
 <p>As the sole architect, with 1 person accountable for every layer instead of 5, I didn't have the option of treating this as "build the model, hand off the integration." Registration, training delivery, attendance, retention, and natural-language access to all of it are 1 system, not 5 handoffs between 5 teams, and the seams between those pieces are exactly where most AI projects I've seen elsewhere quietly fail. Owning the whole thing meant the data model, the access rules, and the assistant were designed together, from the start, instead of a model bolted onto whatever data happened to exist.</p>
 <p>That's also why it's still running, and still mine. A system designed as 5 separate handoffs tends to need 5 separate people to keep it alive. One designed as a single system, by the person who understands every layer of it, doesn't.</p>
 
@@ -115,19 +121,19 @@
 
 <div class="art-related">
  <span class="label">More from Custom AI Models</span>
-  <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
-  <a href="/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">Listening to a room in real time<span>A production ML system built on DSP features, not a prompt.</span></a>
-  <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
+  <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
+  <a href="/articles/real-time-audio-machine-learning/">Listening to a room in real time<span>A production ML system built on DSP features, not a prompt.</span></a>
+  <a href="/articles/statistics-to-llm-ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
 </div>
 
 </main>
 
 <div class="art-cta">
  <div class="inner">
-  <h2>Need someone to own this end to end?</h2>
-  <p>I design and build the whole system: the data model, the access rules, the assistant on top. Not one piece handed off to the next person. If that's what you're hiring for, let's talk.</p>
+  <h2>Let's clean up your data and build an assistant your team can trust</h2>
+  <p>Stop pointing RAG at broken spreadsheets. I rebuild the data foundation first: one source of truth, roles, the pipeline in. Then the assistant your team can trust.</p>
   <div class="row">
-   <a class="btn fill" href="/#ask">Start a project</a>
+   <a class="btn fill" href="/#ask">Let's clean up your company's data infrastructure and build a secure corporate assistant.</a>
    <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
   </div>
   <div class="who">
@@ -141,7 +147,7 @@
  <div class="wrap">
   <div class="row1">
    <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
-   <span>© 2026</span>
+   <span>Est. 2022 · © 2026 Custom AI Models</span>
    <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
   </div>
   <p class="credits">Article photograph: <a href="https://www.rawpixel.com/image/3306942/free-photo-image-worker-factory-warehouse-agriculture-us">Pallets of USDA Emergency Food</a> by U.S. Department of Agriculture, CC0, via rawpixel. Used as atmosphere, not as any employer's own photograph.</p>

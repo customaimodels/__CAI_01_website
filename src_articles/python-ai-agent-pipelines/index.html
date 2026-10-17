@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Twelve tools, one Python pipeline · Custom AI Models</title>
 <meta name="description" content="How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.">
-<link rel="canonical" href="https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/">
+<link rel="canonical" href="https://customaimodels.com/articles/python-ai-agent-pipelines/">
 <meta name="keywords" content="AI tool orchestration, Python pipelines, LLM tool calling, claude -p, AI automation, AI agents, deterministic AI workflows, AI systems architect, Custom AI Models">
 <meta name="author" content="Yeriko Vargas">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Custom AI Models">
 <meta property="og:title" content="Twelve tools, one Python pipeline">
 <meta property="og:description" content="How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.">
-<meta property="og:url" content="https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/">
+<meta property="og:url" content="https://customaimodels.com/articles/python-ai-agent-pipelines/">
 <meta property="og:image" content="https://customaimodels.com/articles/03_img/10_fig1_twelve_tools_one_pipeline_og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -46,7 +46,7 @@
   "@type": "BlogPosting",
   "headline": "Twelve tools, one Python pipeline",
   "description": "How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.",
-  "url": "https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/",
+  "url": "https://customaimodels.com/articles/python-ai-agent-pipelines/",
   "datePublished": "2026-10-17",
   "dateModified": "2026-10-17",
   "inLanguage": "en",
@@ -54,7 +54,7 @@
   "keywords": "AI tool orchestration, Python pipelines, LLM tool calling, claude -p, AI automation, AI agents, deterministic AI workflows",
   "image": {
     "@type": "ImageObject",
-    "@id": "https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/#fig1",
+    "@id": "https://customaimodels.com/articles/python-ai-agent-pipelines/#fig1",
     "contentUrl": "https://customaimodels.com/articles/03_img/10_fig1_twelve_tools_one_pipeline.png",
     "url": "https://customaimodels.com/articles/03_img/10_fig1_twelve_tools_one_pipeline.png",
     "width": 2400,
@@ -82,7 +82,7 @@
   ],
   "author": {"@type": "Person", "name": "Yeriko Vargas", "url": "https://www.linkedin.com/in/yeriko-vargas"},
   "publisher": {"@type": "Organization", "@id": "https://customaimodels.com/#org", "name": "Custom AI Models", "url": "https://customaimodels.com/"},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/"}
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://customaimodels.com/articles/python-ai-agent-pipelines/"}
 }
 </script>
 </head>
@@ -93,11 +93,11 @@
   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
   <nav aria-label="Articles">
    <a href="/articles/">Articles</a>
-   <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG</a>
-   <a href="/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">Training Hub</a>
-   <a href="/articles/_03_ar_real-time-audio_machine-learning_signal-processing/">Real-time audio</a>
-   <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">Stats to LLMs</a>
-   <a href="/articles/_05_ar_tool-pipelines_ai-systems_automation/" aria-current="page">Tool pipelines</a>
+   <a href="/articles/rag-production-architecture/">RAG</a>
+   <a href="/articles/replacing-spreadsheets-ai-infrastructure/">Training Hub</a>
+   <a href="/articles/real-time-audio-machine-learning/">Real-time audio</a>
+   <a href="/articles/statistics-to-llm-ai-engineering/">Stats to LLMs</a>
+   <a href="/articles/python-ai-agent-pipelines/" aria-current="page">Tool pipelines</a>
   </nav>
   <div class="act">
    <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
@@ -127,13 +127,13 @@
  <figcaption>Fig. 1 · The toolbelt. Top row, models: Claude, ChatGPT, Gemini, Perplexity, Higgsfield, Cursor. Bottom row, engineering: Python, JavaScript, Git, Railway, Cloudflare, Resend. Python calls each one and checks what comes back.</figcaption>
 </figure>
 
-<h2>The model is one step, not the system</h2>
+<h2>LLM orchestration: the model is one step, not the system</h2>
 <p>Most AI projects start from the chat window and work outward. Someone gets a great answer from a model, then tries to build a product around that moment. We go the other way. I write the pipeline first: read the input, clean it, decide, act, record. A model only gets a slot in that line where judgment is actually needed, the way you would call any other function.</p>
-<p>In practice a model call is a subprocess. Python builds the prompt from real data, runs <code>claude -p</code> (or another model's API), asks for JSON back, and parses it. If the JSON doesn't parse, the step fails loudly instead of passing a paragraph of prose down the line. There's no magic prompt that says "send the email." A user clicks a button, the click fires a trigger, and the trigger runs a fixed, predictable process. Somewhere in the middle of that process, a model may write the draft.</p>
+<p>In practice a model call is a subprocess. Python builds the prompt from real data, runs <code>claude -p</code> (or another model's API), asks for JSON back, and parses it. <strong>If the JSON doesn't validate, the step fails loudly</strong> instead of passing a paragraph of prose down the line. There's no magic prompt that says "send the email." A user clicks a button, the click fires a trigger, and the trigger runs a fixed, predictable process. Somewhere in the middle of that process, a model may write the draft.</p>
 
-<h2>Every call returns a claim, not a result</h2>
-<p>This is the lesson that cost us the most, so it goes first in every build. A tool that exits with code 0 has only told you it didn't crash. It hasn't told you it worked.</p>
-<p>We learned it on our own skill installer. It marked a research skill as ready the moment the skill's health check exited cleanly. Then the skills kept failing in use. When we finally read what the health check actually reported, only 4 of its 16 channels were live. The installer had trusted the exit code and never read the report. The fix took one change: parse the tool's own JSON output, channel by channel, and mark each one live or dead on its own. The planner that recommends routes now only sees the channels that work today.</p>
+<h2>Exit code and JSON validation: every call returns a claim, not a result</h2>
+<p>This is the lesson that cost us the most, so it goes first in every build. <strong>A tool that exits with code 0 has only told you it didn't crash.</strong> It hasn't told you it worked.</p>
+<p>We learned it on our own skill installer. It marked a research skill as ready the moment the skill's health check exited cleanly. Then the skills kept failing in use. When we finally read what the health check actually reported, only 4 of its 16 channels were live. The installer had trusted the exit code and never read the report. The fix took one change: <strong>parse the tool's own JSON output, channel by channel</strong>, and mark each one live or dead on its own. The planner that recommends routes now only sees the channels that work today.</p>
 
 <blockquote>An exit code of 0 tells you the tool didn't crash. It doesn't tell you the tool did its job.</blockquote>
 
@@ -150,7 +150,7 @@
 <p>Anything deterministic never goes to a model at all. Checking a folder for new questions every 10 seconds, renaming files, moving data from raw to processed to exports, building a sitemap: all plain Python, zero tokens. That rule keeps the bill flat as the system grows, and it keeps the behavior the same on Monday as it was on Friday.</p>
 
 <h2>Clean up after yourself</h2>
-<p>A pipeline that calls outside tools has to own their lifecycle. I found a headless Chrome still running 2 hours after a screenshot test had finished. Nothing was broken, but nothing should have been running either. That probe now closes its browser when it exits, when it's interrupted, and after 45 seconds no matter what. The figure at the top of this page was rendered the same way: a Python script launched Chrome once, took the picture, and Chrome closed itself.</p>
+<p>A pipeline that calls outside tools has to own their lifecycle. I found <strong>a headless Chrome still running 2 hours</strong> after a screenshot test had finished: a resource leak. Nothing was broken, but nothing should have been running either. That probe now closes its browser when it exits, when it's interrupted, and after 45 seconds no matter what. The figure at the top of this page was rendered the same way: a Python script launched Chrome once, took the picture, and Chrome closed itself.</p>
 <p>The same goes for data. Every project keeps three tiers, raw, processed and exports, and a cleanup function moves data forward and parks what is unused. Nothing gets deleted outright. A parked file comes back with its receipt if someone needs it.</p>
 
 <h2>What this buys a business</h2>
@@ -171,17 +171,17 @@
 
 <div class="art-related">
  <span class="label">More from Custom AI Models</span>
-  <a href="/articles/_01_ar_rag-production_rag-agents_architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
-  <a href="/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/">What replacing four spreadsheets actually took<span>The hard part was never the model.</span></a>
-  <a href="/articles/_04_ar_stats-to-llms_career_ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
+  <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.<span>Why telemetry and evaluation matter more than the prompt.</span></a>
+  <a href="/articles/replacing-spreadsheets-ai-infrastructure/">What replacing four spreadsheets actually took<span>The hard part was never the model.</span></a>
+  <a href="/articles/statistics-to-llm-ai-engineering/">From statistics to LLMs: the same job, different tools<span>Why 8.5 years across 4 tool generations is one career, not four.</span></a>
 </div>
 
 </main>
 
 <div class="art-cta">
  <div class="inner">
-  <h2>Want a pipeline you own?</h2>
-  <p>I design the whole line: the data in, the checks, the models where they earn their place, and the deploy. Python you can read and keep, not a prompt that changes under you.</p>
+  <h2>Build a predictable, cost-capped Python pipeline you own</h2>
+  <p>I design the whole line: the data in, the deterministic checks, the models where they earn their place, and the deploy. Python you can read and keep, not a prompt that changes under you.</p>
   <div class="row">
    <a class="btn fill" href="/#ask">Start a project</a>
    <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
@@ -197,7 +197,7 @@
  <div class="wrap">
   <div class="row1">
    <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
-   <span>© 2026</span>
+   <span>Est. 2022 · © 2026 Custom AI Models</span>
    <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
   </div>
   <p class="credits">Figure 1 uses each tool's official mark (Simple Icons CC0, devicon, Higgsfield's own icon). Marks belong to their owners; their use here names the tools, it implies no endorsement.</p>

@@ -1,0 +1,10 @@
+{
+ "_note": "301 old article URL -> new. Old URLs were live 2026-10-14..17; never drop a row.",
+ "301": {
+  "/articles/_01_ar_rag-production_rag-agents_architecture/": "/articles/rag-production-architecture/",
+  "/articles/_02_ar_training-hub-ai_ai-systems_infrastructure/": "/articles/replacing-spreadsheets-ai-infrastructure/",
+  "/articles/_03_ar_real-time-audio_machine-learning_signal-processing/": "/articles/real-time-audio-machine-learning/",
+  "/articles/_04_ar_stats-to-llms_career_ai-engineering/": "/articles/statistics-to-llm-ai-engineering/",
+  "/articles/_05_ar_tool-pipelines_ai-systems_automation/": "/articles/python-ai-agent-pipelines/"
+ }
+}
