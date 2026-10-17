@@ -9,7 +9,7 @@ articles:
 pages:
   - url: /articles/
     file: src_articles/index.html
-    title: "AI Architecture Articles | RAG, Agents & Production ML · Custom AI Models"
+    title: "AI Articles: RAG, Agents & Production ML | Custom AI Models"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal, current: true}
@@ -33,7 +33,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/ai-in-detroit/
     file: src_articles/ai-in-detroit/index.html
-    title: "AI in Detroit | Custom AI systems from your data · Custom AI Models"
+    title: "AI in Detroit | Custom AI Models"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -56,7 +56,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/ai-in-michigan/
     file: src_articles/ai-in-michigan/index.html
-    title: "AI in Michigan | Custom AI systems from your data · Custom AI Models"
+    title: "AI in Michigan | Custom AI Models"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -79,7 +79,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/ai-in-oakland-county/
     file: src_articles/ai-in-oakland-county/index.html
-    title: "AI in Oakland County | Custom AI systems from your data · Custom AI Models"
+    title: "AI in Oakland County | Custom AI Models"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -102,7 +102,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/python-ai-agent-pipelines/
     file: src_articles/python-ai-agent-pipelines/index.html
-    title: "Twelve tools, one Python pipeline · Custom AI Models"
+    title: "Python AI Agent Pipelines: Orchestration Over Prompts"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -123,7 +123,7 @@ pages:
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
   - url: /articles/rag-production-architecture/
     file: src_articles/rag-production-architecture/index.html
-    title: "RAG isn't a feature. It's an architecture. · Custom AI Models"
+    title: "RAG Production Architecture: Telemetry Over Prompts"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -145,7 +145,7 @@ pages:
       - {zone: footer, a: "NYSE trading floor", href: "https://commons.wikimedia.org/wiki/File:New_York_Stock_Exchange_trading_floor_on_Wall_Street,_New_York,_New_York_LCCN2011634218.tif", to: external}
   - url: /articles/real-time-audio-machine-learning/
     file: src_articles/real-time-audio-machine-learning/index.html
-    title: "Listening to a room in real time · Custom AI Models"
+    title: "Real-Time Audio ML: DSP Features & Unsupervised Clustering"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -167,7 +167,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/replacing-spreadsheets-ai-infrastructure/
     file: src_articles/replacing-spreadsheets-ai-infrastructure/index.html
-    title: "What replacing four spreadsheets actually took · Custom AI Models"
+    title: "Enterprise AI Data Infrastructure: Rebuilding Spreadsheets"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -189,7 +189,7 @@ pages:
       - {zone: footer, a: "Pallets of USDA Emergency Food", href: "https://www.rawpixel.com/image/3306942/free-photo-image-worker-factory-warehouse-agriculture-us", to: external}
   - url: /articles/statistics-to-llm-ai-engineering/
     file: src_articles/statistics-to-llm-ai-engineering/index.html
-    title: "From statistics to LLMs: the same job, different tools · Custom AI Models"
+    title: "From Applied Statistics to LLM Agent Systems Architect"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
