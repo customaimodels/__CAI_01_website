@@ -454,7 +454,7 @@ footer .key.no input{border-color:var(--bad)}
 footer .key .y{height:32px;padding:0 14px;border:1px solid rgba(255,255,255,.14);border-radius:980px;background:var(--indigo);color:#fff;font:600 12px/1 var(--sans);letter-spacing:.04em;cursor:pointer;transition:background .15s ease}
 footer .key .y b{color:var(--gold);font-weight:700}
 footer .key .y:hover{background:var(--violet)}
-footer .rq{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-left:-20px;border:1px solid var(--line-2);border-radius:980px}
+footer .keys{display:inline-flex;align-items:center;gap:12px;margin-left:auto}
 /* company accounts (2026-10-16): one quiet row under the line, mute marks, a rim on hover/focus */
 footer .soc{list-style:none;margin:0 auto;padding-top:0;padding-bottom:28px;height:auto;gap:6px;margin-top:-20px}
 footer .soc a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid transparent;border-radius:980px;color:var(--mute);transition:color .15s ease,border-color .15s ease}
@@ -575,7 +575,6 @@ footer .soc a:hover,footer .soc a:focus-visible{color:var(--ink);border-color:va
   footer .wrap{flex-wrap:wrap;height:auto;padding:32px 16px;gap:14px 22px}
   footer .brand{flex-basis:100%;margin:0 0 4px}
   footer .wrap.soc{padding:0 10px 28px;gap:6px;margin-top:-16px}
-  footer .rq{margin-left:0}
 }
 /* phone footer (2026-10-15): one left column, one rhythm. brand · links · key · the year line last, small. */
 @media (max-width:600px){
@@ -583,10 +582,11 @@ footer .soc a:hover,footer .soc a:focus-visible{color:var(--ink);border-color:va
   footer .wrap{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:0;padding:36px 20px 32px}
   footer .brand{margin:0 0 14px;font-size:16px}
   footer .wrap>a:not(.brand){order:1;display:flex;align-items:center;min-height:44px;font-size:14px;color:var(--ink);opacity:.72}
-  footer .key{order:2;margin:18px 0 0;gap:8px}
+  footer .keys{order:-1;flex-basis:100%;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 20px 6px}
+  footer .key{gap:8px}
   footer .key input,footer .key .y{height:44px}
   footer .key input{width:96px}
-  footer .yr{order:3;margin-top:28px;font-size:12px;letter-spacing:.01em;opacity:.8}
+  footer .yr{order:3;margin:28px 0 0;font-size:12px;letter-spacing:.01em;opacity:.8}
   footer .wrap.soc{display:flex;flex-wrap:wrap;gap:4px;padding:0 14px 32px;margin-top:-12px}
   footer .soc a{width:44px;height:44px}
   footer .soc svg{width:17px;height:17px}

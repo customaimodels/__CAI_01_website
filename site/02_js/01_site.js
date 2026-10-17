@@ -27,12 +27,13 @@
  const sol=bar.querySelector('.nv a[href="#build"]'),blk=document.getElementById("build");
  if(sol&&blk&&"IntersectionObserver" in window)new IntersectionObserver(([e])=>sol.classList.toggle("on",e.isIntersecting),{rootMargin:"-40% 0px -50% 0px"}).observe(blk)})();
 
-/* footer key + Y_VAULT button: 0000 = straight into the vault; empty = the vault's own PIN gate */
-(()=>{const f=document.getElementById("vkey");if(!f)return;const i=f.querySelector("input");
- f.addEventListener("submit",async e=>{e.preventDefault();const pin=i.value.trim();if(!pin){location.href="/y-vault/";return}f.classList.remove("no");
-  try{const r=await fetch("/y-vault/api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
-   if(r.ok){location.href="/y-vault/";return}}catch(_){}
-  i.value="";f.classList.add("no")})})();
+/* footer: RECRUITER ACCESS + ADMIN ACCESS side by side. The server checks each code for its own door only; empty = that door's own gate */
+[["rkey","/recruiter/login","code","/recruiter/"],["vkey","/y-vault/api/login","pin","/y-vault/"]].forEach(([id,api,field,home])=>{
+ const f=document.getElementById(id);if(!f)return;const i=f.querySelector("input");
+ f.addEventListener("submit",async e=>{e.preventDefault();const v=i.value.trim();if(!v){location.href=home;return}f.classList.remove("no");
+  try{const r=await fetch(api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({[field]:v})});
+   if(r.ok){location.href=home;return}}catch(_){}
+  i.value="";f.classList.add("no")})});
 
 /* build: hovering a supporting card lights its station in the big card's map (pointer only; the map reads fine without it) */
 (()=>{const b=document.getElementById("build");if(!b||!matchMedia("(hover:hover)").matches)return;
