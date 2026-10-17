@@ -1,0 +1,16 @@
+{
+  "title": "Twelve tools, one Python pipeline",
+  "deck": "How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.",
+  "date": "2026-10-17",
+  "tags": [
+    "Automation",
+    "Agents",
+    "Python"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 5,
+  "slug": "_05_ar_tool-pipelines_ai-systems_automation",
+  "category": "AI Systems",
+  "subcategory": "Automation",
+  "url": "https://customaimodels.com/articles/_05_ar_tool-pipelines_ai-systems_automation/"
+}

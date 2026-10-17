@@ -128,3 +128,10 @@ header.light .btn.fill:hover{background:var(--carbon)}
 .art-back:hover::before{transform:translateX(-3px)}
 .art-tags span{border-radius:999px;padding:6px 12px}
 @media (max-width:620px){body.report header{height:58px}}
+
+/* ── figures (2026-10-17): diagrams keep their colour; photos stay grey. New classes only. ── */
+.art-body .art-fig{margin:44px 0;padding:0}
+.art-body .art-fig img{width:100%;height:auto;display:block;border-radius:16px}
+.art-body .art-fig figcaption{margin-top:12px;font:500 13px/1.55 var(--mono);letter-spacing:.02em;color:var(--quiet)}
+.a-card .thumb.color img{filter:none}
+.art-head .cap:first-child{padding-top:112px}
