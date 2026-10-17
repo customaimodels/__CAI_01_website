@@ -33,13 +33,10 @@ ai_review: mock
 state_epoch: 7
 
 # ── _Y_VAULT ─────────────────────────────────────────────────────────────────────────
-# the vault code, as the sha256 of its UPPERCASE form. Ships in the bundle -- a short code hides little.
-# hosted, the YVAULT_SHA256 variable wins if set. The vault shows every *.html at src_y_vault/'s root.
-vault_sha256: 3733cd977ff8eb18b987357e22ced99f46097f31ecb239e878ae63760e83e4d5
-
-# /recruiter/ shared code word, sha256 of its UPPERCASE form. Hosted, RECRUITER_SHA256 wins.
-# Opens the recruiter pages only -- never the vault (separate role key). Personal links (--recruiter-link) still work.
-recruiter_sha256: 01f1d7c986d7f2face251a6bc3e0f41eec84301cf5c51c11323ae664e1b6ebc0
+# The vault + /recruiter/ codes are NOT kept here (2026-10-16: their sha256 hashes sat in the public repo).
+# They live as PBKDF2 hashes in Railway variables YVAULT_CODE_HASH · RECRUITER_CODE_HASH, locally in
+# dta/_1_processed/auth/hashes.json. New codes: python3 run.py --rotate-codes (prints nothing secret).
+# Never put a code or a hash back in this file. The vault shows every *.html at src_y_vault/'s root (sealed on --bundle).
 
 # R-CAI → admin email (09_notify): every client SEND mails US through Brevo. Clients get nothing yet (testing).
 admin_email: yeriko@customaimodels.com

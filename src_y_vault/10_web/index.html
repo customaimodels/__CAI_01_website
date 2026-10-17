@@ -28,8 +28,8 @@ h1 em{color:var(--gold);font-style:normal}
 #gate{min-height:calc(100vh - 90px);display:grid;place-items:center;text-align:center}
 #gate form{display:flex;flex-direction:column;align-items:center;gap:24px}
 #gate img.mark{width:64px;height:64px}
-.pins{display:flex;gap:12px}
-.pins input{width:58px;height:70px;text-align:center;font:500 30px var(--sans);color:var(--paper);background:var(--carbon);
+.pins{display:flex;gap:12px;width:100%;max-width:420px}
+.pins input{flex:1;min-width:0;height:64px;padding:0 18px;text-align:center;font:500 20px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:var(--carbon);
   border:1px solid rgb(107 94 224/.3);border-radius:10px;outline:none;transition:border-color .15s}
 .pins input:focus{border-color:var(--gold)}
 #err{min-height:20px;font:500 12px var(--sans);letter-spacing:.02em;color:var(--err)}
@@ -45,7 +45,7 @@ h1 em{color:var(--gold);font-style:normal}
 .card.linkedin .ic{background:rgb(10 102 194/.18);color:#5aa6ef}
 .card .t{font:500 24px/1.15 var(--serif)}
 .card .f{font:500 12px var(--sans);letter-spacing:.02em;color:var(--quiet);margin-top:4px}
-@media(max-width:560px){.wrap{padding:0 20px}.pins input{width:50px;height:62px}.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:0 20px}.pins input{height:58px;font-size:17px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -60,8 +60,7 @@ h1 em{color:var(--gold);font-style:normal}
     <p class="lede">Private shelf. Enter the code.</p>
    </div>
    <div class="pins">
-    <input autocapitalize="characters" spellcheck="false" maxlength="1" aria-label="Code letter 1"><input autocapitalize="characters" spellcheck="false" maxlength="1" aria-label="Code letter 2"><input autocapitalize="characters" spellcheck="false" maxlength="1" aria-label="Code letter 3">
-    <input autocapitalize="characters" spellcheck="false" maxlength="1" aria-label="Code letter 4"><input autocapitalize="characters" spellcheck="false" maxlength="1" aria-label="Code letter 5">
+    <input id="code" type="password" name="password" autocomplete="current-password" autocapitalize="characters" spellcheck="false" maxlength="40" placeholder="XXXX-XXXX-XXXX-XXXX" aria-label="Vault code">
    </div>
    <div id="err"></div>
   </form>
@@ -84,7 +83,7 @@ h1 em{color:var(--gold);font-style:normal}
 </svg>
 
 <script>
-const $=s=>document.querySelector(s), boxes=[...document.querySelectorAll(".pins input")];
+const $=s=>document.querySelector(s), code=document.querySelector("#code");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ICONS={linkedin:"ic-link",resume:"ic-resume",page:"ic-page"};
 function kindOf(file){
@@ -95,7 +94,7 @@ function kindOf(file){
 }
 async function load(){
   const r=await fetch("api/list",{credentials:"same-origin"});
-  if(r.status!==200){$("#gate").hidden=false;$("#shelf").hidden=true;$("#out").hidden=true;boxes[0].focus();return}
+  if(r.status!==200){$("#gate").hidden=false;$("#shelf").hidden=true;$("#out").hidden=true;code.focus();return}
   const d=await r.json();
   $("#grid").innerHTML=d.pages.map(p=>{
     const kind=kindOf(p.file), icon=ICONS[kind]||ICONS.page;
@@ -106,19 +105,13 @@ async function load(){
   $("#gate").hidden=true;$("#shelf").hidden=false;$("#out").hidden=false;
 }
 async function send(){
-  const pin=boxes.map(b=>b.value).join("");
+  const pin=code.value;
   const r=await fetch("api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
   if(r.ok)return load();
   const d=await r.json().catch(()=>({}));$("#err").textContent=d.error||"Wrong code.";
-  boxes.forEach(b=>b.value="");boxes[0].focus();
+  code.value="";code.focus();
 }
-boxes.forEach((b,i)=>{
-  b.addEventListener("input",()=>{b.value=b.value.replace(/[^a-z0-9]/gi,"").slice(-1).toUpperCase();$("#err").textContent="";
-    if(b.value&&i<boxes.length-1)boxes[i+1].focus();if(boxes.every(x=>x.value))send()});
-  b.addEventListener("keydown",e=>{if(e.key==="Backspace"&&!b.value&&i)boxes[i-1].focus()});
-  b.addEventListener("paste",e=>{const v=(e.clipboardData.getData("text")||"").replace(/[^a-z0-9]/gi,"").toUpperCase().slice(0,boxes.length);
-    if(v.length===boxes.length){e.preventDefault();v.split("").forEach((c,j)=>boxes[j].value=c);send()}});
-});
+code.addEventListener("input",()=>{$("#err").textContent=""});
 $("#f").addEventListener("submit",e=>{e.preventDefault();send()});
 $("#out").addEventListener("click",async()=>{await fetch("api/logout",{method:"POST",credentials:"same-origin"});load()});
 load();

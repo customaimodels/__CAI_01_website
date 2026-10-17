@@ -3,12 +3,14 @@
     /recruiter/           a recruiter's own link     (this file)
     /y-vault/             the owner's PIN            (src_y_vault/vault.py)
 
-POST /recruiter/login       {code} the shared code word (2026-10-16; case-blind) → the yrec cookie, 14 days
+POST /recruiter/login       {code} the shared code word → the yrec cookie, 14 days. Its PBKDF2 hash lives ONLY in the
+                            Railway variable RECRUITER_CODE_HASH (src_util_auth/codes.py); none set = every login refused
 GET /recruiter/in/<token>   a link he minted (run.py --recruiter-link): sets the yrec cookie (Path=/recruiter) → /recruiter/
 GET /recruiter/...          the APPROVED pages only (signed in); everything else 401
 GET /recruiter/out          clears the cookie
 
-Tokens: rec|<id>|<expiry>|sig, signed with a key derived from RCAI_SECRET for this role alone -- it never verifies
+Tokens: rec|<id>|<expiry>|sig, signed with a key derived from RCAI_SECRET + the code hash for this role alone (rotating
+the code ends every recruiter session and link) -- it never verifies
 as R-CAI or the vault, and theirs never verify here. One link per recruiter, 30 days at most, revocable by id
 (RECRUITER_REVOKED on Railway, dta/_1_processed/recruiter/revoked.txt locally).
 
@@ -31,6 +33,7 @@ from urllib.parse import parse_qs
 A = importlib.import_module("src_rcai.03_auth")
 C = importlib.import_module("src_rcai.01_config")
 R = importlib.import_module("src_rcai.02_records")      # seal / unseal (the handbook's)
+K = importlib.import_module("src_util_auth.codes")
 HERE = Path(__file__).resolve().parent
 APPROVED = HERE / "20_approved"
 SEALED = HERE / "30_sealed" / "approved.bin"
@@ -54,7 +57,7 @@ aria-label="Code" placeholder="code" maxlength="40" autofocus><button type="subm
 
 
 def _key():
-    return hmac.new(A._secret(), b"role:recruiter:v1", hashlib.sha256).digest()
+    return hmac.new(A._secret(), b"role:recruiter:v2|" + K.fingerprint("recruiter"), hashlib.sha256).digest()
 
 
 def _sign(body):
@@ -67,13 +70,6 @@ def _revoked():
     if f.is_file():
         ids |= {l.strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip()}
     return ids
-
-
-def _code_hash():
-    if os.environ.get("RECRUITER_SHA256"):
-        return os.environ["RECRUITER_SHA256"]
-    m = re.search(r"^recruiter_sha256:\s*(\S+)", C.CONFIG.read_text(encoding="utf-8"), re.M)
-    return m.group(1) if m else ""
 
 
 def _code_token():
@@ -96,6 +92,8 @@ def mint(label, days=14):
 
 def valid(token):
     """The recruiter id, or None. Exactly rec|id|exp|sig, this role's key, not expired, not revoked."""
+    if not K.ready("recruiter"):
+        return None
     try:
         role, rid, exp, sig = (token or "").split("|")
         ok = role == "rec" and hmac.compare_digest(sig, _sign(f"{role}|{rid}|{exp}")) and int(exp) > time.time()
@@ -175,8 +173,7 @@ def _login(h):
             code = str(json.loads(raw).get("code", ""))
         except (ValueError, AttributeError):
             code = ""
-    want = _code_hash()
-    if not want or not hmac.compare_digest(hashlib.sha256(code.strip().upper().encode()).hexdigest(), want):
+    if not K.check("recruiter", code):
         _FAILS[ip].append(now)
         return _gate(h, 401, "Wrong code", "Check the code you were sent.", form=True)
     if "code" in _revoked():

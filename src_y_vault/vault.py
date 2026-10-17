@@ -10,8 +10,9 @@ GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed 
 POST /y-vault/api/logout
 GET  /behind-the-models/... the same resume site, PUBLIC (the landing's "About the owner's work and portfolio")
 
-The code is config.yml vault_sha256 (or the YVAULT_SHA256 variable), case-blind (2026-10-16). A short code is a curtain, not a lock:
-the repo is public, so anything put here can be read on GitHub.
+The code (rotated 2026-10-16): a PBKDF2 hash in the Railway variable YVAULT_CODE_HASH, never in git (src_util_auth/codes.py).
+No hash = no login. The shelf pages (*.html here) never ship readable: --bundle seals them into 30_sealed/shelf.bin
+(key = RCAI_DOC_KEY); hosted without the key, the shelf is empty.
 """
 import hashlib
 import hmac
@@ -19,14 +20,18 @@ import importlib
 import json
 import os
 import re
+import base64
 import time
 from http.cookies import SimpleCookie
 from pathlib import Path
 
 C = importlib.import_module("src_rcai.01_config")
-A = importlib.import_module("src_rcai.03_auth")      # same cookie secret as R-CAI
+A = importlib.import_module("src_rcai.03_auth")      # same cookie secret as R-CAI, its own derived key
+K = importlib.import_module("src_util_auth.codes")
+R = importlib.import_module("src_rcai.02_records")   # seal / unseal (the handbook's)
 HERE = Path(__file__).resolve().parent
 WEB = HERE / "10_web"
+SEALED = HERE / "30_sealed" / "shelf.bin"
 RESUME = HERE.parent / "src_resume"                 # his resume site, never edited here
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
@@ -37,11 +42,32 @@ _FAILS = {}
 TITLE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
 
 
-def _pin_hash():
-    if os.environ.get("YVAULT_SHA256"):
-        return os.environ["YVAULT_SHA256"]
-    m = re.search(r"^vault_sha256:\s*(\S+)", C.CONFIG.read_text(encoding="utf-8"), re.M)
-    return m.group(1) if m else ""
+def _local_shelf():
+    return {f.name: f.read_bytes() for f in sorted(HERE.glob("*.html"))}
+
+
+def seal_shelf(key):
+    """--bundle: the shelf pages → 30_sealed/shelf.bin. Re-sealed only when they changed (no git churn)."""
+    files = _local_shelf()
+    blob = json.dumps({k: base64.b64encode(v).decode() for k, v in files.items()}, sort_keys=True).encode()
+    if SEALED.is_file() and R.unseal(SEALED.read_bytes(), key) == blob:
+        return len(files), False
+    SEALED.parent.mkdir(exist_ok=True)
+    SEALED.write_bytes(R.seal(blob, key))
+    return len(files), True
+
+
+def _shelf():
+    """{name: bytes}. Local = the files; hosted = the sealed blob, or nothing (never raw)."""
+    if not os.environ.get("PORT"):
+        return _local_shelf()
+    key = os.environ.get("RCAI_DOC_KEY", "")
+    if not (key and SEALED.is_file()):
+        return {}
+    try:
+        return {k: base64.b64decode(v) for k, v in json.loads(R.unseal(SEALED.read_bytes(), key)).items()}
+    except ValueError:
+        return {}
 
 
 def pages():
@@ -50,10 +76,10 @@ def pages():
     if (RESUME / "index.html").exists():
         t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
         out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
-    for f in sorted(HERE.glob("*.html")):
-        t = TITLE.search(f.read_text(encoding="utf-8", errors="ignore")[:4000])
-        out.append({"file": f.name, "title": (t.group(1).strip() if t else f.stem.strip("_")),
-                    "kind": "linkedin" if "linked" in f.name.lower() else "page"})
+    for name, raw in _shelf().items():
+        t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
+        out.append({"file": name, "title": (t.group(1).strip() if t else Path(name).stem.strip("_")),
+                    "kind": "linkedin" if "linked" in name.lower() else "page"})
     return out
 
 
@@ -99,9 +125,10 @@ def _cookie(value, age):
 
 
 def _key():
-    """The owner's own signing key, derived from RCAI_SECRET. A token signed for R-CAI or /recruiter never verifies
-    here (2026-10-16: an R-CAI client cookie replayed as yvault opened the vault -- same secret, same body shape)."""
-    return hmac.new(A._secret(), b"role:owner-vault:v1", hashlib.sha256).digest()
+    """The owner's own signing key, derived from RCAI_SECRET + the current code hash. A token signed for R-CAI or
+    /recruiter never verifies here (2026-10-16: an R-CAI cookie replayed as yvault opened the vault), and rotating
+    the code ends every vault session (v2, 2026-10-16)."""
+    return hmac.new(A._secret(), b"role:owner-vault:v2|" + K.fingerprint("owner"), hashlib.sha256).digest()
 
 
 def _issue():
@@ -111,6 +138,8 @@ def _issue():
 
 def _in(h):
     jar = SimpleCookie(h.headers.get("Cookie", ""))
+    if not K.ready("owner"):
+        return False
     try:
         who, exp, sig = jar["yvault"].value.split("|")
         good = hmac.new(_key(), f"{who}|{exp}".encode(), hashlib.sha256).hexdigest()
@@ -159,8 +188,9 @@ def handle(h, method):
             return True
         if rel.startswith("resume/"):
             return _resume(h, rel)
-        if rel in {p["file"] for p in pages() if p["file"].endswith(".html")}:
-            return _send(h, 200, (HERE / rel).read_bytes(), "text/html; charset=utf-8")
+        shelf = _shelf()
+        if rel in shelf:
+            return _send(h, 200, shelf[rel], "text/html; charset=utf-8")
         return _json(h, 404, {"error": "not found"})
     if rel == "api/logout":
         return _json(h, 200, {"in": False}, _cookie("", 0))
@@ -170,11 +200,10 @@ def handle(h, method):
     if _locked(ip):
         return _json(h, 429, {"error": "Too many tries. Wait a few minutes."})
     try:
-        pin = str(json.loads(h.rfile.read(min(int(h.headers.get("Content-Length", 0)), 512)) or b"{}").get("pin", ""))
+        pin = str(json.loads(h.rfile.read(min(int(h.headers.get("Content-Length", 0) or 0), 512)) or b"{}").get("pin", ""))
     except (ValueError, AttributeError):
         return _json(h, 400, {"error": "bad request"})
-    want = _pin_hash()
-    if not want or not hmac.compare_digest(hashlib.sha256(pin.strip().upper().encode()).hexdigest(), want):
+    if not K.check("owner", pin):
         _FAILS.setdefault(ip, []).append(time.time())
         return _json(h, 401, {"error": "Wrong code."})
     return _json(h, 200, {"in": True}, _cookie(_issue(), HOURS * 3600))
