@@ -443,6 +443,12 @@ footer{border-top:1px solid var(--line);margin-top:120px}
 footer .wrap{display:flex;align-items:center;gap:32px;height:104px;color:var(--mute);font-size:13px;letter-spacing:-.005em}
 footer .brand{color:var(--ink);font-size:17px;margin-right:12px}
 footer .brand img{width:28px;height:28px}
+/* region column under the mark (2026-10-17): AI in Detroit · Michigan · Oakland County */
+footer .wrap:has(>.bcol){height:auto;min-height:104px;padding-top:28px;padding-bottom:28px;align-items:flex-start}
+footer .bcol{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+footer .loc{display:flex;flex-direction:column;gap:6px;padding-left:40px}
+footer .loc a{font-size:13px;color:var(--mute)}
+footer .wrap:has(>.bcol)>*:not(.bcol){margin-top:6px}
 footer .sp{margin-left:auto}
 footer a{transition:color .15s ease}
 footer a:hover{color:var(--ink)}
@@ -574,6 +580,7 @@ footer .soc a:hover,footer .soc a:focus-visible{color:var(--ink);border-color:va
   .hub>.hub-win{margin:0 16px 16px;padding:0}
   footer .wrap{flex-wrap:wrap;height:auto;padding:32px 16px;gap:14px 22px}
   footer .brand{flex-basis:100%;margin:0 0 4px}
+  footer .bcol{flex-basis:100%;margin:0 0 4px}
   footer .wrap.soc{padding:0 10px 28px;gap:6px;margin-top:-16px}
 }
 /* phone footer (2026-10-15): one left column, one rhythm. brand · links · key · the year line last, small. */
@@ -581,6 +588,10 @@ footer .soc a:hover,footer .soc a:focus-visible{color:var(--ink);border-color:va
   footer{margin-top:88px}
   footer .wrap{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:0;padding:36px 20px 32px}
   footer .brand{margin:0 0 14px;font-size:16px}
+  footer .bcol{margin:0 0 14px}
+  footer .bcol .brand{margin:0 0 8px}
+  footer .loc{padding-left:0}
+  footer .loc a{display:flex;align-items:center;min-height:40px;font-size:14px;color:var(--ink);opacity:.72}
   footer .wrap>a:not(.brand){order:1;display:flex;align-items:center;min-height:44px;font-size:14px;color:var(--ink);opacity:.72}
   footer .keys{order:-1;flex-basis:100%;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 20px 6px}
   footer .key{gap:8px}
