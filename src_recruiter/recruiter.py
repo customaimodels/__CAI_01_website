@@ -44,10 +44,10 @@ CODE_DAYS, MAX_FAILS, LOCK_MIN = 14, 5, 10
 _FAILS = {}
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".pdf": "application/pdf",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
-GATE = b"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+GATE = b"""<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="/favicon.ico?v=k1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/03_img/favicon-32.png?v=k1"><link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Private</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f0a17;color:#ece8f2;font:16px/1.5 Inter,system-ui,sans-serif}
-main{max-width:30rem;width:100%%;padding:2rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}</style>
+main{max-width:30rem;width:100%%;padding:2rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}
 input{margin-top:1.2rem;width:100%%;box-sizing:border-box;padding:.8rem 1rem;background:#1a1226;color:#ece8f2;border:1px solid #3a2d4d;
 font:500 1rem/1 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}input:focus{outline:none;border-color:#f2cd57}
 button{margin-top:.8rem;padding:.7rem 1.2rem;background:#f2cd57;color:#0f0a17;border:0;font:600 .9rem Inter,system-ui,sans-serif;cursor:pointer}</style>
