@@ -13,9 +13,10 @@ portal = import_module("src_rcai.04_server")
 vault = import_module("src_y_vault.vault")
 rec = import_module("src_recruiter.recruiter")
 read = import_module("src_articles.articles")
+hits = import_module("src_util_stats.stats")
 GET, POST = door.Door.do_GET, door.Door.do_POST
-door.Door.do_GET = lambda h: portal.handle(h, "GET") or vault.handle(h, "GET") or rec.handle(h, "GET") or read.handle(h, "GET") or GET(h)
-door.Door.do_POST = lambda h: portal.handle(h, "POST") or vault.handle(h, "POST") or rec.handle(h, "POST") or POST(h)
+door.Door.do_GET = lambda h: hits.handle(h, "GET") or portal.handle(h, "GET") or vault.handle(h, "GET") or rec.handle(h, "GET") or read.handle(h, "GET") or GET(h)
+door.Door.do_POST = lambda h: hits.handle(h, "POST") or portal.handle(h, "POST") or vault.handle(h, "POST") or rec.handle(h, "POST") or POST(h)
 def _head(h):  # HEAD = GET's status + headers, body dropped (crawlers probe with HEAD; it was a 501)
     import io
     end = h.end_headers
