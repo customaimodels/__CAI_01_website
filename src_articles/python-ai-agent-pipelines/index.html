@@ -39,10 +39,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../01_css/00_tokens.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/01_site.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/04_land.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/06_articles.css?v=989fa82dfc">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/01_site.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/04_land.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=5de291587b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -130,11 +130,11 @@
  <figcaption>Fig. 1 · The toolbelt. Top row, models: Claude, ChatGPT, Gemini, Perplexity, Higgsfield, Cursor. Bottom row, engineering: Python, JavaScript, Git, Railway, Cloudflare, Resend. Python calls each one and checks what comes back.</figcaption>
 </figure>
 
-<h2>LLM orchestration: the model is one step, not the system</h2>
+<h2>Decoupling deterministic logic from LLM orchestration architectures</h2>
 <p>Most AI projects start from the chat window and work outward. Someone gets a great answer from a model, then tries to build a product around that moment. We go the other way. I write the pipeline first: read the input, clean it, decide, act, record. A model only gets a slot in that line where judgment is actually needed, the way you would call any other function.</p>
 <p>In practice a model call is a subprocess. Python builds the prompt from real data, runs <code>claude -p</code> (or another model's API), asks for JSON back, and parses it. <strong>If the JSON doesn't validate, the step fails loudly</strong> instead of passing a paragraph of prose down the line. There's no magic prompt that says "send the email." A user clicks a button, the click fires a trigger, and the trigger runs a fixed, predictable process. Somewhere in the middle of that process, a model may write the draft.</p>
 
-<h2>Exit code and JSON validation: every call returns a claim, not a result</h2>
+<h2>Programmatic exit code and JSON schema validation hooks</h2>
 <p>This is the lesson that cost us the most, so it goes first in every build. <strong>A tool that exits with code 0 has only told you it didn't crash.</strong> It hasn't told you it worked.</p>
 <p>We learned it on our own skill installer. It marked a research skill as ready the moment the skill's health check exited cleanly. Then the skills kept failing in use. When we finally read what the health check actually reported, only 4 of its 16 channels were live. The installer had trusted the exit code and never read the report. The fix took one change: <strong>parse the tool's own JSON output, channel by channel</strong>, and mark each one live or dead on its own. The planner that recommends routes now only sees the channels that work today.</p>
 
@@ -206,7 +206,7 @@
   <p class="credits">Figure 1 uses each tool's official mark (Simple Icons CC0, devicon, Higgsfield's own icon). Marks belong to their owners; their use here names the tools, it implies no endorsement.</p>
  </div>
 </footer>
-<script src="../02_js/01_site.js?v=989fa82dfc"></script>
-<script src="../02_js/03_reveal.js?v=989fa82dfc"></script>
+<script src="../02_js/01_site.js?v=5de291587b"></script>
+<script src="../02_js/03_reveal.js?v=5de291587b"></script>
 </body>
 </html>

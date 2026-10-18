@@ -35,10 +35,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../01_css/00_tokens.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/01_site.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/04_land.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/06_articles.css?v=989fa82dfc">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/01_site.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/04_land.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=5de291587b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -93,7 +93,7 @@
 
 <p>Most RAG systems I see described in a sentence sound the same: embed the documents, retrieve the relevant ones, hand them to a model, get an answer. That sentence is true and it is also the least important part of the system. I've built one of these for real money, in production, since 2022, for financial decision support, paired with LSTM forecasting feeding the same decisions, and the part that took the work wasn't retrieval. It was everything wrapped around retrieval that makes it safe to trust.</p>
 
-<h2>Why basic RAG chunking and vector search became a commodity</h2>
+<h2>Why basic RAG chunking and vector search have become commodities</h2>
 <p>Chunking strategy, embedding model choice, vector store, reranking: this is the part with the most blog posts written about it, and it's also the part that's genuinely become a commodity. Pick a reasonable chunk size, pick a reasonable embedding model, and you'll retrieve something relevant most of the time. A retrieval-quality benchmark usually reports precision at 5 or recall at 10, numbers that look clean in a slide and tell you nothing about what happens in week 12. That's not nothing, but it's also not an architecture. It's a library call.</p>
 
 <h2>Where production RAG breaks: semantic drift and stale documents</h2>
@@ -102,7 +102,7 @@
 
 <blockquote>A system that can't tell you when it's wrong isn't an AI system. It's a guess with good production values.</blockquote>
 
-<h2>Production RAG telemetry and continuous evaluation</h2>
+<h2>Production RAG telemetry and continuous evaluation metrics</h2>
 <p>Every step of the system I built, whether the call behind it goes to Claude, OpenAI, or a smaller fine-tuned model, logs what it retrieved, what it was given, what it generated, and, separately, whether that generation was later confirmed, corrected, or ignored by the person using it. That last signal is the one most teams skip, and it's the one that actually tells you if the system is getting better or quietly degrading. Evaluation isn't a notebook you run before a demo. It's a loop that runs the same way in week one and week fifty.</p>
 <p>Concretely, that means three things live alongside the model call, not after it:</p>
 <ul>
@@ -170,7 +170,7 @@
   <p class="credits">Article photograph: <a href="https://commons.wikimedia.org/wiki/File:New_York_Stock_Exchange_trading_floor_on_Wall_Street,_New_York,_New_York_LCCN2011634218.tif">NYSE trading floor</a> by Carol M. Highsmith, public domain, via Wikimedia Commons. Used as atmosphere, not as any employer's own photograph.</p>
  </div>
 </footer>
-<script src="../02_js/01_site.js?v=989fa82dfc"></script>
-<script src="../02_js/03_reveal.js?v=989fa82dfc"></script>
+<script src="../02_js/01_site.js?v=5de291587b"></script>
+<script src="../02_js/03_reveal.js?v=5de291587b"></script>
 </body>
 </html>

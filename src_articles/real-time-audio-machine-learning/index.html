@@ -35,10 +35,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../01_css/00_tokens.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/01_site.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/04_land.css?v=989fa82dfc">
-<link rel="stylesheet" href="../01_css/06_articles.css?v=989fa82dfc">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/01_site.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/04_land.css?v=5de291587b">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=5de291587b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -93,7 +93,7 @@
 
 <p>Not every production AI system is an LLM with a nice wrapper around it. I built one that listens to a live music venue and adapts in real time: over 100 DSP features run through PCA and KMeans into a similarity score, with a continuous evaluation loop checking its own output. No prompt anywhere in that sentence. It's still running in production, and it taught me more about what "production AI" actually means than most of the LLM work I've shipped since.</p>
 
-<h2>DSP feature engineering and dimensionality reduction with PCA</h2>
+<h2>DSP feature engineering and dimensionality reduction via PCA</h2>
 <p>A lot of current AI conversation assumes the hard problem is always "which foundation model." For a real-time audio system, the hard problem was deciding which of the 100-plus features, pulled out with Librosa, Essentia, and Aubio, actually carried signal about what was happening in the room, versus which were just correlated noise that would fall apart the moment the venue changed its sound system. Feature engineering didn't go away. It just got less fashionable. Dimensionality reduction through PCA wasn't a step before the "real" model: choosing what to keep and what to discard was most of the actual engineering judgment in the system.</p>
 <p class="art-label">The audio stack</p>
 <ul>
@@ -104,7 +104,7 @@
  <li><strong>Feature scaling, then PCA.</strong> 100-plus features put on one scale, then reduced to the few that carry signal.</li>
 </ul>
 
-<h2>Unsupervised KMeans clustering for real-time audio, on purpose</h2>
+<h2>Scaling unsupervised KMeans clustering for real-time audio signals</h2>
 <p>There's no labeled dataset of "this is what a good night sounds like" for a specific venue, and building one would have meant months of human annotation, likely 300 to 500 labeled examples at minimum, before a single useful output. KMeans-based similarity scoring sidesteps that: the system learns the structure of what's actually happening acoustically, usually settling into somewhere between 5 and 10 real clusters, and flags what's similar to, or diverging from, established patterns, without needing someone to have hand-labeled the answer first. The tradeoff is real: unsupervised systems are harder to explain in a sentence, and they demand a different kind of evaluation than a model with ground-truth labels and a clean accuracy number.</p>
 
 <blockquote>When there's no ground truth to score against, the evaluation loop has to become the ground truth.</blockquote>
@@ -159,7 +159,7 @@
   <p class="credits">Article photograph: <a href="https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg">Musician on stage</a> by Shixart1985, CC BY 2.0, via Wikimedia Commons. Used as atmosphere, not as any employer's own photograph.</p>
  </div>
 </footer>
-<script src="../02_js/01_site.js?v=989fa82dfc"></script>
-<script src="../02_js/03_reveal.js?v=989fa82dfc"></script>
+<script src="../02_js/01_site.js?v=5de291587b"></script>
+<script src="../02_js/03_reveal.js?v=5de291587b"></script>
 </body>
 </html>

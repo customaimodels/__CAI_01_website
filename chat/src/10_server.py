@@ -53,8 +53,27 @@ class Door(BaseHTTPRequestHandler):
         if SITE not in f.parents or not f.is_file():
             return self._send(404, {"error": "not_found"})
         body = f.read_bytes()
-        self.send_response(200)
+        size, code, extra = len(body), 200, {}
+        rng = self.headers.get("Range", "")
+        if rng.startswith("bytes=") and size:  # Safari only plays <video> over 206 byte ranges
+            a, _, b = rng[6:].split(",", 1)[0].strip().partition("-")
+            try:
+                start, end = (size - int(b), size - 1) if not a else (int(a), min(int(b), size - 1) if b else size - 1)
+            except ValueError:
+                start, end = 0, size - 1
+            if start < 0 or start > end:
+                self.send_response(416)
+                self.send_header("Content-Range", f"bytes */{size}")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            body, code = body[start:end + 1], 206
+            extra["Content-Range"] = f"bytes {start}-{end}/{size}"
+        self.send_response(code)
         self.send_header("Content-Type", mimetypes.guess_type(f.name)[0] or "application/octet-stream")
+        self.send_header("Accept-Ranges", "bytes")
+        for k, val in extra.items():
+            self.send_header(k, val)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-cache" if f.suffix == ".html" else "public, max-age=3600")
         self.end_headers()

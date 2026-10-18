@@ -1,0 +1,29 @@
+/* INTRO (2026-10-18): the ghost9 opening, once per visit (sessionStorage cai_intro).
+   html.intro is set by the tiny head script; 02_js/03_intro.js mounts the clip and opens the page.
+   Only opacity + transform move (GPU), no blur. Without JS nothing here applies: crawlers see the page. */
+:root{--lux:cubic-bezier(.16,1,.3,1);--soft:cubic-bezier(.4,0,.2,1)}
+html.intro{background:#000}
+html.intro body{overflow:hidden}
+html.intro body>:not(.intro-layer){opacity:0;transition:opacity 1.6s var(--soft) .15s}
+html.intro body>main{transform:scale(1.06);transform-origin:50% 42vh;will-change:opacity,transform;
+  transition:opacity 1.6s var(--soft) .15s,transform 2.8s var(--lux) .1s}
+html.intro-open body>:not(.intro-layer){opacity:1}
+html.intro-open body>main{transform:none}
+
+#intro{position:fixed;inset:0;z-index:1000;background:#000;will-change:opacity;transition:opacity 1.1s var(--soft)}
+#intro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform;transform:scale(1);
+  transition:transform 1.4s var(--lux)}
+html.intro-play #intro video{transform:scale(1.04)}
+html.intro-open #intro{opacity:0;pointer-events:none;transition:opacity 1.4s var(--soft) .1s}
+html.intro-open #intro video{transform:scale(1.12)}
+#intro::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(214,232,255,.30) 100%);
+  mix-blend-mode:screen;transition:opacity 1.8s cubic-bezier(.5,0,.3,1)}
+html.intro-play #intro::before{opacity:0}
+
+/* the aperture: a black field with a soft hole that widens past the edges */
+#intro-iris{position:fixed;inset:-60vmax;z-index:999;pointer-events:none;
+  background:radial-gradient(circle at center,transparent 0 14%,rgba(0,0,0,.92) 30%,#000 42%);
+  transform:scale(.35);will-change:transform,opacity;
+  transition:transform 2.6s var(--lux) .05s,opacity 1.2s var(--soft) 1.5s}
+html.intro-open #intro-iris{transform:scale(3.2);opacity:0}
