@@ -4,6 +4,7 @@ articles:
   - /articles/ai-data-readiness-before-rag/
   - /articles/python-ai-agent-pipelines/
   - /articles/rag-production-architecture/
+  - /articles/rag-system-audit-checklist/
   - /articles/real-time-audio-machine-learning/
   - /articles/replacing-spreadsheets-ai-infrastructure/
   - /articles/statistics-to-llm-ai-engineering/
@@ -21,6 +22,7 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / RAG Audit6 min What I'd check before I trust a RAG system You watched a demo answer confidently and wrongly. Here is the inspection I run, in order, before I believe any retrieval system. Read", href: "/articles/rag-system-audit-checklist/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Data Readiness5 min Your AI didn't fail. Your data did. You tried a demo and watched it break. The model was fine. Here is what was underneath it, and the order that fixes it. Read", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Automation5 min Twelve tools, one Python pipeline How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it. Read", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: main, a: "Oct 2026RAG & Agents / Architecture7 min RAG isn't a feature. It's an architecture. Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center. Read", href: "/articles/rag-production-architecture/", to: internal}
@@ -169,6 +171,31 @@ pages:
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "NYSE trading floor", href: "https://commons.wikimedia.org/wiki/File:New_York_Stock_Exchange_trading_floor_on_Wall_Street,_New_York,_New_York_LCCN2011634218.tif", to: external}
+  - url: /articles/rag-system-audit-checklist/
+    file: src_articles/rag-system-audit-checklist/index.html
+    title: "RAG System Audit: What to Check Before You Trust It"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "RAG isn't a feature. It's an architecture.", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: article, a: "Your AI didn't fail. Your data did.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "Twelve tools, one Python pipeline", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "What replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
   - url: /articles/real-time-audio-machine-learning/
     file: src_articles/real-time-audio-machine-learning/index.html
     title: "Real-Time Audio ML: DSP Features & Unsupervised Clustering"

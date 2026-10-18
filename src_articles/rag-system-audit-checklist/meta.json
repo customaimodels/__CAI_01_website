@@ -1,0 +1,16 @@
+{
+  "title": "What I'd check before I trust a RAG system",
+  "deck": "You watched a demo answer confidently and wrongly. Here is the inspection I run, in order, before I believe any retrieval system.",
+  "date": "2026-10-18",
+  "tags": [
+    "RAG",
+    "LLM evaluation",
+    "Data quality"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 6,
+  "slug": "rag-system-audit-checklist",
+  "category": "AI Systems",
+  "subcategory": "RAG Audit",
+  "url": "https://customaimodels.com/articles/rag-system-audit-checklist/"
+}
