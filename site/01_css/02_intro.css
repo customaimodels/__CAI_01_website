@@ -5,15 +5,15 @@
 html.intro{background:#000}
 html.intro body{overflow:hidden}
 html.intro body>:not(.intro-layer){opacity:0;transition:opacity 1.6s var(--soft) .15s}
-html.intro body>main{transform:scale(1.06);transform-origin:50% 42vh;will-change:opacity,transform;
+html.intro body>main{transform:scale(1.03);transform-origin:50% 42vh;will-change:opacity,transform;
   transition:opacity 1.6s var(--soft) .15s,transform 2.8s var(--lux) .1s}
 html.intro-open body>:not(.intro-layer){opacity:1}
 html.intro-open body>main{transform:none}
 
 #intro{position:fixed;inset:0;z-index:1000;background:#000;will-change:opacity;transition:opacity 1.1s var(--soft)}
-#intro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform;transform:scale(1);
-  transition:transform 1.4s var(--lux)}
-html.intro-play #intro video{transform:scale(1.04)}
+#intro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform,opacity;
+  opacity:0;transform:scale(1.015);transition:opacity .5s var(--lux),transform 1.6s var(--lux)}
+html.intro-play #intro video{opacity:1;transform:scale(1.04)}
 html.intro-open #intro{opacity:0;pointer-events:none;transition:opacity 1.4s var(--soft) .1s}
 html.intro-open #intro video{transform:scale(1.12)}
 #intro::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
