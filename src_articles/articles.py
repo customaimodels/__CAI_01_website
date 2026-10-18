@@ -6,8 +6,8 @@ HERE = Path(__file__).resolve().parent
 MOUNT = "/articles"
 TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".xml": "application/xml",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp",
-         ".json": "application/json", ".ico": "image/x-icon"}
-HIDDEN = ("04_inspiration", "redirects.json")
+         ".json": "application/json", ".ico": "image/x-icon", ".mp4": "video/mp4"}
+HIDDEN = ("04_inspiration", "redirects.json", "brand.json")   # brand.json = an article's pool receipt, never served
 import json as _json
 REDIRECTS = _json.loads((HERE / "redirects.json").read_text(encoding="utf-8"))["301"]  # old slug → clean slug (2026-10-17)
 
@@ -45,5 +45,27 @@ def handle(h, method):
     if (not parts or not f.is_file() or f.suffix.lower() not in TYPES or any(p.startswith(".") or p in HIDDEN for p in parts)):
         _send(h, 404, b"not found", "text/plain")
         return True
-    _send(h, 200, f.read_bytes(), TYPES[f.suffix.lower()])
+    body = f.read_bytes()
+    rng = h.headers.get("Range", "") if f.suffix.lower() == ".mp4" else ""
+    if rng.startswith("bytes="):              # Safari plays <video> only from byte ranges (206)
+        a, _, b = rng[6:].split(",")[0].partition("-")
+        start = int(a) if a else max(0, len(body) - int(b or 0))
+        end = min(int(b), len(body) - 1) if a and b else len(body) - 1
+        if start >= len(body) or start > end:
+            h.send_response(416)
+            h.send_header("Content-Range", f"bytes */{len(body)}")
+            h.send_header("Content-Length", "0")
+            h.end_headers()
+            return True
+        part = body[start:end + 1]
+        h.send_response(206)
+        h.send_header("Content-Type", "video/mp4")
+        h.send_header("Accept-Ranges", "bytes")
+        h.send_header("Content-Range", f"bytes {start}-{end}/{len(body)}")
+        h.send_header("Cache-Control", "public, max-age=300")
+        h.send_header("Content-Length", str(len(part)))
+        h.end_headers()
+        h.wfile.write(part)
+        return True
+    _send(h, 200, body, TYPES[f.suffix.lower()])
     return True

@@ -39,10 +39,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../01_css/00_tokens.css?v=855c0f0542">
-<link rel="stylesheet" href="../01_css/01_site.css?v=855c0f0542">
-<link rel="stylesheet" href="../01_css/04_land.css?v=855c0f0542">
-<link rel="stylesheet" href="../01_css/06_articles.css?v=855c0f0542">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=ee95dfbaae">
+<link rel="stylesheet" href="../01_css/01_site.css?v=ee95dfbaae">
+<link rel="stylesheet" href="../01_css/04_land.css?v=ee95dfbaae">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=ee95dfbaae">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -81,7 +81,61 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://customaimodels.com/articles/rag-system-audit-checklist/"
-  }
+  },
+  "associatedMedia": [
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-0904i01_rag-system-audit-checklist.webp",
+      "url": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-0904i01_rag-system-audit-checklist.webp",
+      "width": 640,
+      "height": 640,
+      "caption": "The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on RAG architecture.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved."
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1206i02_rag-system-audit-checklist.webp",
+      "url": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1206i02_rag-system-audit-checklist.webp",
+      "width": 1600,
+      "height": 400,
+      "caption": "Custom AI Models banner (light (paper) theme): \"Deterministic validation. Gate every step. Schemas, exit codes and checks between every model call.\". From the Custom AI Models article on RAG architecture.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved."
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1204i02_rag-system-audit-checklist.webp",
+      "url": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1204i02_rag-system-audit-checklist.webp",
+      "width": 1600,
+      "height": 400,
+      "caption": "Custom AI Models banner (light (paper) theme): \"Data remastering first. Dirty data makes an assistant a liability. A legal one and a financial one. Remaster the data first.\". From the Custom AI Models article on RAG architecture.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved."
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1301i01_rag-system-audit-checklist.webp",
+      "url": "https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1301i01_rag-system-audit-checklist.webp",
+      "width": 1600,
+      "height": 500,
+      "caption": "Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: \"Data / AI readiness. Stop pointing RAG at broken spreadsheets. Unify the data. Model it. Gate every step. customaimodels.com\". From the Custom AI Models article on RAG architecture.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved."
+    }
+  ]
 }
 </script>
 </head>
@@ -108,7 +162,10 @@
 <main id="top">
 
 <div class="art-head">
- <div class="frame"><img src="../03_img/work-distribution.jpg" alt="Warehouse and distribution floor where inventory records and operations data have to agree before anything downstream can be trusted" loading="eager"></div>
+ <div class="frame bp-hero"><!--bp:hero-->
+  <video class="bp-loop" src="brand/cai-0601v01_rag-system-audit-checklist-hero-loop.mp4" poster="brand/cai-0601v01_rag-system-audit-checklist-hero-poster.webp" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <img class="bp-mark" src="brand/cai-0904i01_rag-system-audit-checklist.webp" alt="The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on RAG architecture." width="640" height="640" loading="eager" decoding="async">
+  <!--/bp--></div>
  <div class="wrap cap">
   <span class="eyebrow">Data Systems</span>
   <h1>What I&#x27;d check before I trust a RAG system</h1>
@@ -122,11 +179,25 @@
 <h2>Retrieval augmented generation fails in sentences, not stack traces</h2>
 <p>You watched the demo. It answered well. Then someone asked a real question and it answered with total confidence and was wrong. Nothing threw an error. That is the core problem with <strong>retrieval augmented generation</strong>. It fails quietly, in fluent prose.</p><p>I have spent 8.5 years in data, and Custom AI Models has been building since 2022. When a founder or an engineering lead hands me a RAG system and asks if it is ready, I do not open the prompt. I open a short list. This article is that list, in the order I run it.</p><p>The order matters. Data first. Retrieval second. Gates third. Visibility fourth. The model comes last, and it is usually the part that checks out fine. If you want the architecture behind the list, I wrote it up in <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.</a> This piece is the inspection, not the blueprint.</p>
 
+<!--bp:cai-1206i02-->
+<figure class="bp-ad">
+ <img src="brand/cai-1206i02_rag-system-audit-checklist.webp" alt="Custom AI Models banner (light (paper) theme): &quot;Deterministic validation. Gate every step. Schemas, exit codes and checks between every model call.&quot;. From the Custom AI Models article on RAG architecture." width="1600" height="400" loading="lazy" decoding="async">
+ <figcaption><span class="bp-cap">RAG architecture: the step most teams skip.</span><span class="bp-keys"><a class="bp-key go" href="/articles/python-ai-agent-pipelines/">How every call gets gated</a><a class="bp-key line" href="/#ask">Start a project</a></span></figcaption>
+</figure>
+<!--/bp-->
+
 <h2>Check the corpus first: RAG for business data</h2>
 <p>Pull a handful of documents from the index at random. Read them the way a stranger would. Most failed systems fail right here.</p><ul><li>Are there two versions of the same policy, and does the index know which one is current?</li><li>Do the documents contradict each other?</li><li>Did the scanned PDFs turn into clean text, or into noise?</li><li>Did tables survive ingestion, or were they flattened into a run of numbers with no headers?</li><li>Can you name an owner for every source?</li></ul><p>If you cannot answer those, the model is not the risk. The corpus is. A confident answer built on a stale price list or a superseded contract clause is a legal and financial liability, and no prompt fixes that.</p><p>Then ask a harder question. What happens when a source changes next month? A system without a refresh path is accurate on launch day and wrong afterward. That slow slide is <strong>data drift</strong>, and it is the reason a system that passed review in spring misleads people by autumn.</p><p>I covered the longer version of this in <a href="/articles/ai-data-readiness-before-rag/">Your AI didn't fail. Your data did.</a> The short rule: unify the data, clean it, give every source an owner, then index it. Not the other way around.</p>
 
 <h2>Test retrieval alone: LLM evaluation without the model</h2>
 <p>Most teams test the final answer. That hides the fault. A wrong answer can come from a bad retrieval or from a bad generation, and you cannot tell which by reading the output.</p><p>So I test retrieval alone. Write a set of real questions from real users. For each one, record the source that holds the right answer. Run the questions through the retriever only. Did the right chunk come back? Did it rank near the top? Did a wrong chunk outrank it?</p><p>Then add the questions that have no answer in the corpus. A trustworthy system has to say so. A weak one grabs the nearest chunk and builds a story around it.</p><p>This is the core of <strong>LLM evaluation</strong> for a RAG system, and the question set is the asset. Three things to check:</p><ul><li>The question set is versioned and lives in the repo, not in someone's head.</li><li>It runs on every change to chunking, embeddings, filters or sources.</li><li>A drop in retrieval quality fails the build.</li></ul><p>If none of that exists, every tweak is a guess. You are tuning by feel and calling it progress.</p>
+
+<!--bp:cai-1204i02-->
+<figure class="bp-ad">
+ <img src="brand/cai-1204i02_rag-system-audit-checklist.webp" alt="Custom AI Models banner (light (paper) theme): &quot;Data remastering first. Dirty data makes an assistant a liability. A legal one and a financial one. Remaster the data first.&quot;. From the Custom AI Models article on RAG architecture." width="1600" height="400" loading="lazy" decoding="async">
+ <figcaption><span class="bp-cap">Built in Detroit, gated in Python: RAG architecture done the boring way.</span><span class="bp-keys"><a class="bp-key go" href="/#ask">Audit my data first</a><a class="bp-key line" href="/articles/replacing-spreadsheets-ai-infrastructure/">Four spreadsheets, replaced</a></span></figcaption>
+</figure>
+<!--/bp-->
 
 <h2>Look for deterministic validation gates between every step</h2>
 <p>A model output is a claim. It is not a result. The question is what checks the claim before a person acts on it.</p><p>I look for <strong>deterministic validation gates</strong> written in plain code. Not another model grading the first one. Code that returns a yes or a no. Here is what that looks like in practice:</p><ul><li>The answer must cite source ids, and plain code confirms every id exists in the set that was actually retrieved.</li><li>The output must match a <code>JSON schema</code>. If it does not, the step fails with a non-zero exit code and nothing downstream runs.</li><li>Quoted figures must appear in the cited source text. Not a paraphrase. The figure.</li><li>Below a retrieval confidence floor, the system refuses and routes to a person.</li></ul><p>None of this is clever. That is the point. Gates are boring, testable and cheap, and they catch the failures that charm people in a demo and hurt them in production.</p><p>The same discipline applies to every tool call in a pipeline. I described how we treat each call as a claim until a check proves it in <a href="/articles/python-ai-agent-pipelines/">Twelve tools, one Python pipeline</a>. A RAG system is one more pipeline. It deserves the same treatment.</p>
@@ -136,6 +207,13 @@
 
 <h2>What I&#x27;d sign off, and what I&#x27;d send back</h2>
 <p>I sign off on a RAG system when I can say yes to all of these:</p><ul><li>Every source has an owner and a refresh path.</li><li>Retrieval is tested alone against a versioned question set.</li><li>Unanswerable questions get a refusal, not an invention.</li><li>Gates in code check citations, schema and figures.</li><li>Every answer leaves a trace I can replay.</li><li>Permissions are enforced before retrieval.</li></ul><p>I send it back when the proof is a demo, a screenshot, or a sentence that starts with <em>it usually works</em>. Usually is not an engineering term.</p><p>Notice what is missing from the list. Nothing in it asks which model is underneath. That is deliberate. The model is a commodity and you can swap it. The data, the evaluation, the gates and the logs are what you own, and they decide whether the system is a tool or a liability.</p><p>If you tried a demo and watched it break, you probably do not need a new model. You need this list run against what you have. Start at the top. The first failure you find is usually the real one.</p>
+
+<!--bp:cai-1301i01-->
+<figure class="bp-ad bp-cta">
+ <a class="bp-hit" href="/#ask" aria-label="Start a project with Custom AI Models"><img src="brand/cai-1301i01_rag-system-audit-checklist.webp" alt="Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: &quot;Data / AI readiness. Stop pointing RAG at broken spreadsheets. Unify the data. Model it. Gate every step. customaimodels.com&quot;. From the Custom AI Models article on RAG architecture." width="1600" height="500" loading="lazy" decoding="async"></a>
+ <figcaption><span class="bp-cap">Your data first, the model last. One build, one owner, Python you keep.</span><span class="bp-keys"><a class="bp-key go" href="/#ask">Start with your data</a><a class="bp-key line" href="https://linkedin.com/in/yeriko-vargas" target="_blank" rel="noopener noreferrer">Talk on LinkedIn</a></span></figcaption>
+</figure>
+<!--/bp-->
 
 </article>
 
@@ -177,7 +255,7 @@
   </div>
  </div>
 </footer>
-<script src="../02_js/01_site.js?v=855c0f0542"></script>
-<script src="../02_js/03_reveal.js?v=855c0f0542"></script>
+<script src="../02_js/01_site.js?v=ee95dfbaae"></script>
+<script src="../02_js/03_reveal.js?v=ee95dfbaae"></script>
 </body>
 </html>

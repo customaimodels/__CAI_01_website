@@ -48,9 +48,16 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "How every call gets gated", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
       - {zone: article, a: "what replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "Audit my data first", href: "/#ask", to: internal}
+      - {zone: article, a: "Four spreadsheets, replaced", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: article, a: "twelve tools, one Python pipeline", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: article, a: "RAG isn't a feature. It's an architecture.", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
       - {zone: main, a: "What replacing four spreadsheets actually tookBuilding a company's AI infrastructure from zero means the hard part was never the model.", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
@@ -185,9 +192,16 @@ pages:
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
       - {zone: article, a: "RAG isn't a feature. It's an architecture.", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: article, a: "How every call gets gated", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
       - {zone: article, a: "Your AI didn't fail. Your data did.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "Audit my data first", href: "/#ask", to: internal}
+      - {zone: article, a: "Four spreadsheets, replaced", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: article, a: "Twelve tools, one Python pipeline", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: article, a: "What replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}

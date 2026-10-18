@@ -17,6 +17,10 @@ I have spent 8.5 years in data, and Custom AI Models has been building since 202
 
 The order matters. Data first. Retrieval second. Gates third. Visibility fourth. The model comes last, and it is usually the part that checks out fine. If you want the architecture behind the list, I wrote it up in [RAG isn't a feature. It's an architecture.](https://customaimodels.comarticles/rag-production-architecture/) This piece is the inspection, not the blueprint.
 
+![Custom AI Models banner (light (paper) theme): "Deterministic validation. Gate every step. Schemas, exit codes and checks between every model call.". From the Custom AI Models article on RAG architecture.](https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1206i02_rag-system-audit-checklist.webp)
+
+*RAG architecture: the step most teams skip.[How every call gets gated](https://customaimodels.comarticles/python-ai-agent-pipelines/)[Start a project](https://customaimodels.com#ask)*
+
 ## Check the corpus first: RAG for business data
 
 Pull a handful of documents from the index at random. Read them the way a stranger would. Most failed systems fail right here.
@@ -54,6 +58,10 @@ This is the core of **LLM evaluation** for a RAG system, and the question set is
 - A drop in retrieval quality fails the build.
 
 If none of that exists, every tweak is a guess. You are tuning by feel and calling it progress.
+
+![Custom AI Models banner (light (paper) theme): "Data remastering first. Dirty data makes an assistant a liability. A legal one and a financial one. Remaster the data first.". From the Custom AI Models article on RAG architecture.](https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1204i02_rag-system-audit-checklist.webp)
+
+*Built in Detroit, gated in Python: RAG architecture done the boring way.[Audit my data first](https://customaimodels.com#ask)[Four spreadsheets, replaced](https://customaimodels.comarticles/replacing-spreadsheets-ai-infrastructure/)*
 
 ## Look for deterministic validation gates between every step
 
@@ -106,6 +114,10 @@ I send it back when the proof is a demo, a screenshot, or a sentence that starts
 Notice what is missing from the list. Nothing in it asks which model is underneath. That is deliberate. The model is a commodity and you can swap it. The data, the evaluation, the gates and the logs are what you own, and they decide whether the system is a tool or a liability.
 
 If you tried a demo and watched it break, you probably do not need a new model. You need this list run against what you have. Start at the top. The first failure you find is usually the real one.
+
+![Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: "Data / AI readiness. Stop pointing RAG at broken spreadsheets. Unify the data. Model it. Gate every step. customaimodels.com". From the Custom AI Models article on RAG architecture.](https://customaimodels.com/articles/rag-system-audit-checklist/brand/cai-1301i01_rag-system-audit-checklist.webp)
+
+*[](https://customaimodels.com#ask) Your data first, the model last. One build, one owner, Python you keep.[Start with your data](https://customaimodels.com#ask)[Talk on LinkedIn](https://linkedin.com/in/yeriko-vargas)*
 
 ---
 

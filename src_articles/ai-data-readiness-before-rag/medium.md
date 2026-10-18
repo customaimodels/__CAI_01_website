@@ -21,6 +21,10 @@ I have spent 8.5 years in data, and Custom AI Models has been building since 202
 
 Most demos that break did it backwards. They started with the model, bolted on a prompt, and hoped. This article is about the part they skipped.
 
+![Custom AI Models banner (light (paper) theme): "Deterministic validation. Gate every step. Schemas, exit codes and checks between every model call.". From the Custom AI Models article on AI data readiness.](https://customaimodels.com/articles/ai-data-readiness-before-rag/brand/cai-1206i02_ai-data-readiness-before-rag.webp)
+
+*AI data readiness: the step most teams skip.[How every call gets gated](https://customaimodels.comarticles/python-ai-agent-pipelines/)[Start a project](https://customaimodels.com#ask)*
+
 ## AI data readiness starts with unifying the data
 
 Look at where your business actually keeps its facts. Spreadsheets someone owns. Inboxes. A CRM export from last quarter. A shared drive with three versions of the same price list.
@@ -44,6 +48,10 @@ Once the shape is explicit, the assistant stops guessing. It queries a structure
 Modeling also settles access. Not everyone should see every record. Payroll is not sales. A contractor is not a partner. Build **RBAC** into the data layer, so the rules hold no matter which tool asks. If permissions live only in the prompt, they are suggestions.
 
 Then decide retention. What gets kept, for how long, and who can delete it. These questions feel like paperwork until the day they are not.
+
+![Custom AI Models banner (light (paper) theme): "Data remastering first. Dirty data makes an assistant a liability. A legal one and a financial one. Remaster the data first.". From the Custom AI Models article on AI data readiness.](https://customaimodels.com/articles/ai-data-readiness-before-rag/brand/cai-1204i02_ai-data-readiness-before-rag.webp)
+
+*Built in Detroit, gated in Python: AI data readiness done the boring way.[Audit my data first](https://customaimodels.com#ask)[Four spreadsheets, replaced](https://customaimodels.comarticles/replacing-spreadsheets-ai-infrastructure/)*
 
 ## Deterministic validation gates on every step
 
@@ -82,6 +90,10 @@ Before you build anything, ask five questions:
 If you answered no to any of them, the model is not your next move. The data is.
 
 That order feels slow at the start. It is faster than rebuilding a pilot that lied to a customer. The model you pick matters least, and you can swap it later. The data, the schemas and the gates are what you keep.
+
+![Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: "Data / AI readiness. Stop pointing RAG at broken spreadsheets. Unify the data. Model it. Gate every step. customaimodels.com". From the Custom AI Models article on AI data readiness.](https://customaimodels.com/articles/ai-data-readiness-before-rag/brand/cai-1301i01_ai-data-readiness-before-rag.webp)
+
+*[](https://customaimodels.com#ask) Your data first, the model last. One build, one owner, Python you keep.[Start with your data](https://customaimodels.com#ask)[Talk on LinkedIn](https://linkedin.com/in/yeriko-vargas)*
 
 ---
 
