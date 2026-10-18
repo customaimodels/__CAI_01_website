@@ -716,22 +716,37 @@
 
   // the gate has three faces: login · signup · sent. #signup in the URL (the landing's Get started) opens sign up.
   function face(which) {
-    if (which === "signup") which = "login";  // sign up closed until its data pipeline exists (2026-10-14)
     ["login", "signup", "sent"].forEach((id) => ($("#" + id).hidden = id !== which));
     document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.face === (which === "sent" ? "signup" : which))));
     const first = $(`#${which} input`);
     if (first) first.focus({ preventScroll: true });
-    history.replaceState(null, "", which === "signup" ? "#signup" : location.pathname);
+    history.replaceState(null, "", which === "signup" ? location.search + "#signup" : location.pathname);
+    if (which === "signup") signupFace();
   }
   document.querySelectorAll("[data-face]").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); face(el.dataset.face); }));
+
+  // sign up = Google or Microsoft first (11_oauth); the identity cookie fills the face, the email is never typed.
+  async function signupFace() {
+    const f = $("#signup"), q = new URLSearchParams(location.search).get("oa");
+    let o = { on: {}, id: null };
+    try { o = await (await fetch("api/oauth/me", { credentials: "same-origin" })).json(); } catch {}
+    f.querySelectorAll(".sso").forEach((a) => a.classList.toggle("off", !(o.on || {})[a.dataset.p]));
+    $(".who-off", f).hidden = !!o.id; $(".who-on", f).hidden = !o.id;
+    if (o.id) { $(".who-name", f).textContent = o.id.name; $(".who-mail", f).textContent = o.id.email; }
+    if (q) { $(".oa", f).textContent = q; history.replaceState(null, "", location.pathname + "#signup"); }
+  }
+  $("#signup").querySelectorAll(".sso").forEach((a) => a.addEventListener("click", (e) => {
+    if (a.classList.contains("off")) { e.preventDefault(); $("#signup .oa").textContent = "That sign-in switches on soon."; }
+  }));
 
   $("#signup").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.currentTarget, btn = $("button[type=submit]", f);
+    if (!f.need.value.trim()) { f.need.focus(); return; }
     btn.disabled = true;
     try {
-      const r = await fetch("api/signup", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: f.name.value, company: f.company.value, email: f.email.value, need: f.need.value }) });
+      const r = await fetch("api/signup", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company: f.company.value, need: f.need.value }) });
       const j = await r.json().catch(() => ({}));
       if (r.ok || r.status === 429) { f.reset(); face("sent"); }
       else alert(j.error || "That didn't reach us. Try again.");

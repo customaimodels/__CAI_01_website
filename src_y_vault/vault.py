@@ -76,6 +76,8 @@ def pages():
     if (RESUME / "index.html").exists():
         t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
         out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
+    if not os.environ.get("PORT") and (HERE.parent / "src_y_studio").is_dir():   # local only, never hosted
+        out.append({"file": "studio", "title": "Studio · content for every platform", "kind": "studio"})
     for name, raw in _shelf().items():
         t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
         out.append({"file": name, "title": (t.group(1).strip() if t else Path(name).stem.strip("_")),

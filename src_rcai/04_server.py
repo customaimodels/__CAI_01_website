@@ -13,7 +13,9 @@ GET  /r-cai/api/handbook/<id>  the project's HANDBOOK PDF, only for someone who 
 GET  /r-cai/api/visual/<id>    the phase 2 picture (delivery.yml visual:), same rule
 GET  /r-cai/api/logo/<id>      hosted: the client logo, sealed in 20_docs (local pages carry it as a data URI)
 POST /r-cai/api/request  {kind, text, project?} → 08_inbox: saved, then that person waits 24 h (429 + until inside it)
-POST /r-cai/api/signup   {name, company, email, need} → 08_inbox kind=signup (no login; 24 h per email, 3 a day per address)
+GET  /r-cai/api/oauth/me · /api/oauth/<google|microsoft>/start · …/callback → 11_oauth (proves who, never opens a hub)
+POST /r-cai/api/signup   {company, need} → 08_inbox kind=signup, ONLY behind a Google/Microsoft identity (rcai_id);
+                         the email comes from that identity, never from the body (24 h per email, 3 a day per address)
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
 POST /r-cai/api/logout
 """
@@ -22,6 +24,7 @@ import json
 import mimetypes
 import os
 import time
+import urllib.parse
 from http.cookies import SimpleCookie
 
 C = importlib.import_module("src_rcai.01_config")
@@ -31,6 +34,8 @@ U = importlib.import_module("src_rcai.05_users")
 V = importlib.import_module("src_rcai.06_review")
 T = importlib.import_module("src_rcai.07_activity")
 I = importlib.import_module("src_rcai.08_inbox")
+N = importlib.import_module("src_rcai.09_notify")
+O = importlib.import_module("src_rcai.11_oauth")
 CFG = None
 
 
@@ -74,6 +79,49 @@ def _cookie(value, age):
     return f"rcai={value}; Path={C.MOUNT}; Max-Age={age}; HttpOnly; SameSite=Strict{secure}"
 
 
+def _jar(h, name):
+    jar = SimpleCookie(h.headers.get("Cookie", ""))
+    return jar[name].value if name in jar else ""
+
+
+def _oa_cookie(name, value, age, path):
+    secure = "; Secure" if os.environ.get("PORT") else ""
+    return f"{name}={value}; Path={path}; Max-Age={age}; HttpOnly; SameSite=Lax{secure}"
+
+
+def _go(h, where, *cookies):
+    h.send_response(302)
+    h.send_header("Location", where)
+    h.send_header("Cache-Control", "no-store")
+    h.send_header("Referrer-Policy", "no-referrer")
+    for c in cookies:
+        h.send_header("Set-Cookie", c)
+    h.send_header("Content-Length", "0")
+    h.end_headers()
+    return True
+
+
+def _oauth(h, cfg, rel):
+    """api/oauth/me · api/oauth/<provider>/start · api/oauth/<provider>/callback (11_oauth)."""
+    if rel == "api/oauth/me":
+        return _json(h, 200, {"on": O.on(), "id": O.identity(_jar(h, "rcai_id"))})
+    m = rel[len("api/oauth/"):].split("/")
+    if len(m) != 2 or m[0] not in O.PROVIDERS or m[1] not in ("start", "callback"):
+        return _json(h, 404, {"error": "not found"})
+    name, path = m[0], f"{C.MOUNT}/api/oauth"
+    if m[1] == "start":
+        got = O.start(h, name)
+        if not got:
+            return _json(h, 503, {"error": "That sign-in is not switched on yet."})
+        return _go(h, got[0], _oa_cookie("rcai_oa", got[1], 600, path))
+    tok, why = O.callback(h, name, h.path.partition("?")[2], _jar(h, "rcai_oa"), cfg)
+    A.log(f"{name}:{'ok' if tok else 'no'}", bool(tok), _ip(h), "oauth")
+    gone = _oa_cookie("rcai_oa", "", 0, path)
+    if not tok:
+        return _go(h, f"{C.MOUNT}/?oa={urllib.parse.quote(why)}#signup", gone)
+    return _go(h, f"{C.MOUNT}/#signup", gone, _oa_cookie("rcai_id", tok, O.ID_MIN * 60, C.MOUNT))
+
+
 def _file(h, rel):
     f = (C.WEB / (rel or "index.html")).resolve()
     if C.WEB.resolve() not in f.parents or not f.is_file():
@@ -99,6 +147,8 @@ def handle(h, method):
     if method == "GET":
         if rel == "api/health":
             return _json(h, 200, {"ok": True})
+        if rel.startswith("api/oauth/"):
+            return _oauth(h, cfg, rel)
         if rel == "api/me":
             email = _email(h)
             v = R.view(R.load(cfg), cfg, email) if email else None
@@ -170,8 +220,8 @@ def handle(h, method):
         return _event(h, cfg, data)
     if rel == "api/request":
         return _request(h, cfg, data)
-    if rel == "api/signup":  # closed 2026-10-14 until the sign-up data pipeline exists; _signup kept for then
-        return _json(h, 503, {"error": "Sign up opens soon."})
+    if rel == "api/signup":  # reopened 2026-10-18 behind Google/Microsoft only (11_oauth); the bare form stays shut
+        return _signup(h, cfg, data)
     ip = _ip(h)
     if A.locked(cfg, ip):
         return _json(h, 429, {"error": "Too many tries. Wait a few minutes."})
@@ -265,16 +315,22 @@ _SIGNUPS = {}
 
 
 def _signup(h, cfg, data):
+    who = O.identity(_jar(h, "rcai_id"))
+    if not who:
+        return _json(h, 403, {"error": "Continue with Google or Microsoft first."})
     ip, day = _ip(h), time.strftime("%Y-%m-%d")
     n = _SIGNUPS.get((ip, day), 0)
-    f = {k: str(data.get(k, "")).strip()[:2000 if k == "need" else 120] for k in ("name", "company", "email", "need")}
-    if not f["name"] or "@" not in f["email"] or not f["need"]:
-        return _json(h, 400, {"error": "Name, email and what you need, please."})
+    f = {k: str(data.get(k, "")).strip()[:2000 if k == "need" else 120] for k in ("company", "need")}
+    f.update(name=who["name"], email=who["email"])
+    if not f["need"]:
+        return _json(h, 400, {"error": "Tell us what you need, please."})
     if n >= 3:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours."})
-    text = f"Name: {f['name']}\nCompany: {f['company']}\nEmail: {f['email']}\n\nWhat we need:\n{f['need']}"
-    ok, until = I.put(cfg, f["email"], "signup", text, "", f["name"], {"client_id": "new", "company": f["company"]})
+    text = (f"Name: {f['name']}\nCompany: {f['company']}\nEmail: {f['email']}\n"
+            f"Verified by: {who['provider']}\n\nWhat we need:\n{f['need']}")
+    ok, until = I.put(cfg, f["email"], "signup", text, "", f["name"], {"client_id": "new", "company": f["company"], "provider": who["provider"]})
     if not ok:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours.", "until": until})
     _SIGNUPS[(ip, day)] = n + 1
+    N.received({"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "email": f["email"], "person": f["name"], "need": f["need"]}, cfg)  # their "we have it" (09_notify)
     return _json(h, 200, {"ok": True, "until": until})

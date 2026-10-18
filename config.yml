@@ -42,4 +42,4 @@ state_epoch: 7
 admin_email: yeriko@customaimodels.com
 admin_from: yeriko@customaimodels.com      # verified sender in Brevo
 admin_from_name: R-CAI
-public_url: https://cai01website-production.up.railway.app   # where the banner PNG is served (live)
+public_url: https://customaimodels.com   # where mail images are served (live; the old railway URL 404s)

@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=ef3cd48ccd">
-<link rel="stylesheet" href="rcai.css?v=ef3cd48ccd">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=855c0f0542">
+<link rel="stylesheet" href="rcai.css?v=855c0f0542">
 </head>
 <body>
 
@@ -59,7 +59,6 @@
  </section>
 
  <section class="desk">
-  <!-- sign up tab hidden until its data pipeline exists; #signup form + /api/signup kept (2026-10-14) -->
   <form id="login" class="face" autocomplete="on">
    <h2>Welcome back.</h2>
    <p class="lede">Sign in with your email and access code.</p>
@@ -67,20 +66,27 @@
    <label><span>Access code</span><input name="code" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
    <button class="key" type="submit">Open my hub<svg class="ico"><use href="#i-arrow"/></svg></button>
    <p class="err" role="alert"></p>
+   <p class="fine">New here? <a href="#signup" data-face="signup">Sign up with Google or Microsoft</a></p>
   </form>
 
+  <!-- SIGN UP (2026-10-18): Google or Microsoft proves who you are (11_oauth), then one line on what you need.
+       It never opens a hub; hub holders (John, Cory, Schuggies) and the owner keep email + access code. -->
   <form id="signup" class="face" autocomplete="on" hidden>
    <h2>Start a project.</h2>
-   <p class="lede">Tell us who you are. We reply with your code word.</p>
-   <div class="two">
-    <label><span>Name</span><input name="name" required autocomplete="name"></label>
-    <label><span>Company</span><input name="company" autocomplete="organization"></label>
+   <div class="who-off">
+    <p class="lede">Continue with your work account. We write back within 24 hours.</p>
+    <a class="sso" data-p="google" href="api/oauth/google/start"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" stroke="none" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" stroke="none" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" stroke="none" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2L6.4 14z"/><path fill="#EA4335" stroke="none" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>Continue with Google</a>
+    <a class="sso" data-p="microsoft" href="api/oauth/microsoft/start"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#F25022" stroke="none" d="M3 3h8.5v8.5H3z"/><path fill="#7FBA00" stroke="none" d="M12.5 3H21v8.5h-8.5z"/><path fill="#00A4EF" stroke="none" d="M3 12.5h8.5V21H3z"/><path fill="#FFB900" stroke="none" d="M12.5 12.5H21V21h-8.5z"/></svg>Continue with Microsoft</a>
+    <p class="err oa" role="alert"></p>
    </div>
-   <label><span>Work email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
-   <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" required placeholder="A dashboard from our sales data, an email that sends itself…"></textarea></label>
-   <button class="key" type="submit">Request access<svg class="ico"><use href="#i-arrow"/></svg></button>
-   <p class="fine">Goes straight to us. A person writes back within 24 hours.</p>
-   <p class="fine">Have a code word? <a href="#login" data-face="login">Log in</a></p>
+   <div class="who-on" hidden>
+    <p class="lede">Signed up as <b class="who-name"></b><br><span class="who-mail"></span></p>
+    <label><span>Company</span><input name="company" autocomplete="organization"></label>
+    <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" placeholder="A dashboard from our sales data, an email that sends itself…"></textarea></label>
+    <button class="key" type="submit">Send to us<svg class="ico"><use href="#i-arrow"/></svg></button>
+    <p class="fine">Goes straight to us. A person writes back within 24 hours.</p>
+   </div>
+   <p class="fine">Have an access code? <a href="#login" data-face="login">Log in</a></p>
   </form>
 
   <div id="sent" class="face" hidden>
@@ -189,6 +195,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><span>customaimodels.com</span></footer>
 </div>
 
-<script src="rcai.js?v=ef3cd48ccd"></script>
+<script src="rcai.js?v=855c0f0542"></script>
 </body>
 </html>

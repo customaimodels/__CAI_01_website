@@ -4,7 +4,9 @@
 
 Subject  CLIENT req _from <person> _for <project> [<client_id>, <project_id>]
 Body     one dark banner (the live gold knot PNG, gold rule) · one line of what happened · who · project · reply-by · their words.
-Clients get nothing yet (testing). Nothing opens a mail app anywhere in R-CAI.
+Clients get nothing yet (testing), with ONE exception (2026-10-18, his word): a Google/Microsoft sign-up gets
+"we have your request" at its VERIFIED email -- received(row, cfg). Its layout is MARKETING's (12_mail/, frozen from __ss3_mketing/_src_util_emails). Fake domains (.test .example .invalid .local) and
+RCAI_MAIL_DRY=1 are logged, never sent. Nothing opens a mail app anywhere in R-CAI.
 
 Config (config.yml, flat):  admin_email · admin_from · admin_from_name · public_url
 Secret: BREVO_API_KEY -- Railway variable hosted; locally from the environment or src_util_emails/.env (gitignored).
@@ -13,10 +15,12 @@ Each try prints `RCAI_NOTIFY {...}` (Railway log) and, locally, appends to <inbo
 import html
 import json
 import os
+import re
 import threading
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 C = __import__("importlib").import_module("src_rcai.01_config")
 
@@ -164,4 +168,79 @@ def admin(row, cfg, wait=False):
     if wait:
         return _send(row, cfg)
     threading.Thread(target=_send, args=(row, cfg), daemon=True).start()
+    return None
+
+
+# ---- the one mail a person outside gets: their sign-up landed (2026-10-18) -------------------------------------------
+FAKE = (".test", ".example", ".invalid", ".local", ".localhost")
+
+
+MAIL = Path(__file__).resolve().parent / "12_mail"      # marketing's shell, frozen by 12_mail/sync_from_mketing.py
+
+
+def received_body(row, cfg):
+    """The marketing template (scoping_ack, light) with the slots filled. Layout is marketing's; only words live here."""
+    e = html.escape
+    first = (row.get("person") or "there").split()[0]
+    shell = (MAIL / "scoping_ack.html").read_text(encoding="utf-8")
+    need = (row.get("need") or "").strip()
+    if not need:                                               # no "what you sent" row: drop the item block whole
+        shell = re.sub(r'\n\s*<tr><td class="px" style="padding:0 40px 20px 40px;">.*?\{\{ITEM_TEXT\}\}.*?</td></tr>', "", shell, count=1, flags=re.S)
+    fill = {"SUBJECT": "We have your request · Custom AI Models",
+            "PREHEADER": "We have it. We write back within 24 hours.",
+            "HEADLINE": f"Hi {e(first)}, we have your request.",
+            "BODY": "We read every one ourselves. You hear back from us within 24 hours, from a person, with the next step.",
+            "ITEM_TITLE": "What you sent", "ITEM_TEXT": e(need).replace("\n", "<br>"),
+            "SENDER": "Yeriko · Custom AI Models",
+            "FOOTER": "Custom AI Models · Est. 2022 · customaimodels.com. You get this because you signed up at R-CAI with this address. Nothing else follows unless you reply.",
+            "PUBLIC_URL": e(cfg.get("public_url", "https://customaimodels.com").rstrip("/"))}
+    for k, v in fill.items():
+        shell = shell.replace("{{" + k + "}}", v)
+    return shell
+
+
+def received_text(row):
+    first = (row.get("person") or "there").split()[0]
+    return (f"Hi {first}, we have your request.\n\nWe read every one ourselves. You hear back from us within 24 hours, "
+            f"from a person, with the next step.\n\nWhat you sent:\n{row.get('need') or '-'}\n\nCustom AI Models · customaimodels.com\n")
+
+
+def _send_received(row, cfg):
+    to = (row.get("email") or "").strip().lower()
+    out = {"at": row.get("at"), "kind": "signup_received", "to": to}
+    key = _key()
+    if not to or "@" not in to:
+        out["ok"], out["why"] = False, "no email"
+    elif to.endswith(FAKE) or os.environ.get("RCAI_MAIL_DRY") == "1":
+        out["ok"], out["why"] = True, "dry (fake domain or RCAI_MAIL_DRY), not sent"
+    elif not key:
+        out["ok"], out["why"] = False, "no BREVO_API_KEY"
+    else:
+        msg = {"sender": {"name": "YERIKO | CUSTOM AI", "email": cfg.get("admin_from") or cfg["admin_email"]},
+               "to": [{"email": to, "name": row.get("person") or to}], "replyTo": {"email": cfg["admin_email"]},
+               "subject": "We have your request · Custom AI Models", "htmlContent": received_body(row, cfg),
+               "textContent": received_text(row), "tags": ["rcai-signup-received"]}
+        req = urllib.request.Request(API, data=json.dumps(msg).encode(), method="POST",
+                                     headers={"api-key": key, "content-type": "application/json", "accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=15) as r:
+                out["ok"], out["id"] = True, json.loads(r.read() or b"{}").get("messageId")
+        except urllib.error.HTTPError as err:
+            out["ok"], out["why"] = False, f"brevo {err.code}: {err.read().decode(errors='replace')[:200]}"
+        except OSError as err:
+            out["ok"], out["why"] = False, str(err)[:200]
+    line = json.dumps(out, ensure_ascii=False)
+    print("RCAI_NOTIFY " + line, flush=True)
+    try:
+        with (__import__("importlib").import_module("src_rcai.08_inbox").folder() / "notify.log").open("a", encoding="utf-8") as fh:
+            fh.write(line + "\n")
+    except OSError:
+        pass
+    return out
+
+
+def received(row, cfg, wait=False):
+    if wait:
+        return _send_received(row, cfg)
+    threading.Thread(target=_send_received, args=(row, cfg), daemon=True).start()
     return None
