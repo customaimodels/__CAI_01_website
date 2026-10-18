@@ -72,26 +72,29 @@ def _shelf():
 
 
 def pages():
-    """GOAL INDICATORS (was "the shelf", renamed 2026-10-18). Groups:
-    top      the guides (source __ss3_mketing/guides, pulled in here), then Yeriko Vargas · AI Architect (the resume)
-    manager  the three local web apps: MARKETING · BUSINESS · USERS (soon). Local only, never on the hosted vault.
-    inner    reached from a manager card (Studio, inside Marketing)."""
-    out = []
+    """GOAL INDICATORS (was "the shelf"; FOUR SQUARES since 2026-10-18, his word), every entry group "square":
+    marketing  MARKETING STUDIO (local app). The LinkedIn + CAI Content guides live INSIDE it ("inside"), so they
+               still open from the square on the hosted vault, where the app itself does not exist.
+    business   BUSINESS STUDIO (local app)
+    users      USERS STUDIO (PROPOSAL, later)
+    resume     Yeriko Vargas · AI Architect
+    local=False on the hosted vault: the square shows dimmed, and only its "inside" links work."""
+    local = not os.environ.get("PORT")
+    inside = []
     for name, raw in _shelf().items():
         t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
-        out.append({"file": name, "title": (t.group(1).strip() if t else Path(name).stem.strip("_")),
-                    "kind": "linkedin" if "linked" in name.lower() else "page", "group": "top"})
+        title = t.group(1).strip() if t else Path(name).stem.strip("_")
+        inside.append({"file": name, "title": "LinkedIn" if "linked" in name.lower() else title.split(" · ")[0]})
+    out = [{"file": "marketing", "title": "Marketing Studio", "kind": "marketing", "group": "square",
+            "line": "Say it once, post it everywhere.", "inside": inside,
+            "local": local and (HERE.parent / "src_y_studio").is_dir()},
+           {"file": "business", "title": "Business Studio", "kind": "business", "group": "square",
+            "line": "Legal, money, offers, partners.", "local": local and (HERE.parent / "src_y_business").is_dir()},
+           {"file": "", "title": "Users Studio", "kind": "users", "group": "square", "line": "Later.", "soon": True,
+            "local": local}]
     if (RESUME / "index.html").exists():
-        out.append({"file": "resume", "title": "Yeriko Vargas · AI Architect", "kind": "resume", "group": "top"})
-    if not os.environ.get("PORT"):                   # the managers are local only
-        if (HERE.parent / "src_y_studio").is_dir():
-            out.append({"file": "marketing", "title": "Marketing", "kind": "marketing", "group": "manager",
-                        "line": "Say it once, post it everywhere.", "also": {"file": "studio", "title": "STUDIO"}})
-            out.append({"file": "studio", "title": "Studio", "kind": "studio", "group": "inner"})
-        if (HERE.parent / "src_y_business").is_dir():
-            out.append({"file": "business", "title": "Business", "kind": "business", "group": "manager",
-                        "line": "Legal, money, offers, partners."})
-        out.append({"file": "", "title": "Users", "kind": "users", "group": "manager", "line": "Later.", "soon": True})
+        out.append({"file": "resume", "title": "Yeriko Vargas · AI Architect", "kind": "resume", "group": "square",
+                    "line": "Who builds it.", "local": True})
     return out
 
 
