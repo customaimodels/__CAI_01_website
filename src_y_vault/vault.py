@@ -164,6 +164,8 @@ def _in(h):
 
 
 def _locked(ip):
+    if ip in ("127.0.0.1", "::1") and not os.environ.get("PORT"):   # his own Mac, local preview: never locks him out
+        return False
     now = time.time()
     _FAILS[ip] = [t for t in _FAILS.get(ip, []) if now - t < LOCK_MIN * 60]
     return len(_FAILS[ip]) >= MAX_FAILS
