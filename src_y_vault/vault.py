@@ -2,9 +2,10 @@
 
     handle(h, "GET"|"POST") -> True if the request was /y-vault/..., answered here; False = not ours.
 
-GET  /y-vault/              the gate + the shelf (10_web/index.html)
+GET  /y-vault/              the gate + GOAL INDICATORS (10_web/index.html; "the shelf" until 2026-10-18)
 POST /y-vault/api/login     {pin}  → sets the yvault cookie (Path=/y-vault)
-GET  /y-vault/api/list      the pages on the shelf: every *.html at this folder's root (signed in only)
+GET  /y-vault/api/list      GOAL INDICATORS: guides + resume on top, the managers below (signed in only)
+                            The guides' source is __ss3_mketing/guides; sync_from_mketing.py pulls them in here.
 GET  /y-vault/<page>.html   one page (signed in only)
 GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed in only)
 POST /y-vault/api/logout
@@ -71,18 +72,26 @@ def _shelf():
 
 
 def pages():
-    """The shelf: the resume site first, then every *.html at the vault root, in file order. Label = its <title>."""
+    """GOAL INDICATORS (was "the shelf", renamed 2026-10-18). Groups:
+    top      the guides (source __ss3_mketing/guides, pulled in here), then Yeriko Vargas · AI Architect (the resume)
+    manager  the three local web apps: MARKETING · BUSINESS · USERS (soon). Local only, never on the hosted vault.
+    inner    reached from a manager card (Studio, inside Marketing)."""
     out = []
-    if (RESUME / "index.html").exists():
-        t = TITLE.search((RESUME / "index.html").read_text(encoding="utf-8", errors="ignore")[:4000])
-        out.append({"file": "resume", "title": t.group(1).strip() if t else "Resume", "kind": "resume"})
-    if not os.environ.get("PORT") and (HERE.parent / "src_y_studio").is_dir():   # local only, never hosted
-        out.append({"file": "marketing", "title": "Marketing Hub · one line, every platform", "kind": "studio"})
-        out.append({"file": "studio", "title": "Studio · content for every platform", "kind": "studio"})
     for name, raw in _shelf().items():
         t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
         out.append({"file": name, "title": (t.group(1).strip() if t else Path(name).stem.strip("_")),
-                    "kind": "linkedin" if "linked" in name.lower() else "page"})
+                    "kind": "linkedin" if "linked" in name.lower() else "page", "group": "top"})
+    if (RESUME / "index.html").exists():
+        out.append({"file": "resume", "title": "Yeriko Vargas · AI Architect", "kind": "resume", "group": "top"})
+    if not os.environ.get("PORT"):                   # the managers are local only
+        if (HERE.parent / "src_y_studio").is_dir():
+            out.append({"file": "marketing", "title": "Marketing", "kind": "marketing", "group": "manager",
+                        "line": "Say it once, post it everywhere.", "also": {"file": "studio", "title": "STUDIO"}})
+            out.append({"file": "studio", "title": "Studio", "kind": "studio", "group": "inner"})
+        if (HERE.parent / "src_y_business").is_dir():
+            out.append({"file": "business", "title": "Business", "kind": "business", "group": "manager",
+                        "line": "Legal, money, offers, partners."})
+        out.append({"file": "", "title": "Users", "kind": "users", "group": "manager", "line": "Later.", "soon": True})
     return out
 
 
