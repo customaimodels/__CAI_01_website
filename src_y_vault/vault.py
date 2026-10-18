@@ -5,7 +5,7 @@
 GET  /y-vault/              the gate + GOAL INDICATORS (10_web/index.html; "the shelf" until 2026-10-18)
 POST /y-vault/api/login     {pin}  → sets the yvault cookie (Path=/y-vault)
 GET  /y-vault/api/list      GOAL INDICATORS: guides + resume on top, the managers below (signed in only)
-                            The guides' source is __ss3_mketing/guides; sync_from_mketing.py pulls them in here.
+                            The guides' source is __ss3_mketing/src_blt/guides; sync_from_mketing.py pulls them in here.
 GET  /y-vault/<page>.html   one page (signed in only)
 GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed in only)
 POST /y-vault/api/logout
