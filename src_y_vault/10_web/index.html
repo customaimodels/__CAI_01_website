@@ -61,6 +61,34 @@ h1 em{color:var(--gold);font-style:normal}
 .sq .tag{position:absolute;top:14px;right:14px;font:500 9px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--quiet)}
 .sq.off{cursor:default}.sq.off:hover{border-color:rgb(107 94 224/.25);transform:none}
 .sq.off .ic,.sq.off .t,.sq.off .f{opacity:.45}
+
+/* LOCAL ENGINE (2026-10-18, his word): one bright switch runs the studios' local server in the background,
+   through SCRN's engine on 127.0.0.1:8179. The corner number = sessions running; + = one more in parallel. */
+#eng{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:12px 14px;border-radius:16px;
+  background:var(--carbon);border:1px solid rgb(107 94 224/.25)}
+#eng .lbl{flex:1;min-width:0}
+#eng .lbl b{display:block;font:500 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+#eng .lbl span{display:block;margin-top:5px;font:400 11.5px/1.3 var(--sans);color:var(--quiet);overflow-wrap:anywhere}
+.sw{position:relative;width:54px;height:32px;flex:none;border-radius:999px;border:0;cursor:pointer;
+  background:rgb(155 143 214/.25);transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 6px rgb(0 0 0/.35);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.sw[aria-checked="true"]{background:#34c759}
+.sw[aria-checked="true"]::after{transform:translateX(22px)}
+.sw:disabled{cursor:default;opacity:.4}
+.sw .n{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;
+  display:grid;place-items:center;font:600 11px/1 var(--sans);color:var(--ink);background:var(--gold);
+  box-shadow:0 0 0 2px var(--ink)}
+.plus{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid rgb(107 94 224/.4);background:none;
+  color:var(--paper);font:400 18px/1 var(--sans);cursor:pointer}
+.plus:hover,.sw:hover{box-shadow:0 0 0 1px rgb(222 224 232/.55)}
+.plus:disabled{opacity:.3;cursor:default;box-shadow:none}
+#ses{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 14px}
+#ses:empty{display:none}
+#ses span{display:inline-flex;align-items:center;gap:6px;padding:5px 6px 5px 10px;border-radius:999px;
+  font:500 10px/1 var(--sans);letter-spacing:.08em;color:var(--paper);border:1px solid rgb(52 199 89/.45)}
+#ses button{width:16px;height:16px;border:0;border-radius:50%;background:rgb(255 255 255/.1);color:var(--quiet);font:500 10px/1 var(--sans);cursor:pointer}
+#ses button:hover{color:var(--paper)}
 </style>
 </head>
 <body>
@@ -86,6 +114,12 @@ h1 em{color:var(--gold);font-style:normal}
    <h1>Goal <em>indicators</em>.</h1>
    <p class="lede">Who we are, then where it moves.</p>
   </div>
+  <div id="eng">
+   <div class="lbl"><b>Local engine</b><span id="engline">Checking SCRN…</span></div>
+   <button class="plus" id="engadd" type="button" aria-label="Start one more session" title="One more session" disabled>+</button>
+   <button class="sw" id="engsw" type="button" role="switch" aria-checked="false" aria-label="Local engine" disabled><span class="n" id="engn" hidden></span></button>
+  </div>
+  <div id="ses"></div>
   <div class="grid" id="grid"></div>
  </section>
 </div>
@@ -108,17 +142,59 @@ const ic=k=>`<span class="ic"><svg class="icon"><use href="#${ICONS[k]||"ic-page
 async function load(){
   const r=await fetch("api/list",{credentials:"same-origin"});
   if(r.status!==200){$("#gate").hidden=false;$("#shelf").hidden=true;$("#out").hidden=true;code.focus();return}
-  const d=await r.json();
-  // four squares: tap a square = open its studio (local) · the resume opens in its own tab ·
-  // the guides ride inside Marketing as small keys, so they open even where the studio is absent (hosted)
-  $("#grid").innerHTML=d.pages.filter(p=>p.group==="square").map(p=>{
-    const live=p.local&&!p.soon, href=p.kind==="resume"?"resume/":encodeURIComponent(p.file)+"/";
-    const tag=p.soon?"later":!p.local?"local only":"";
-    const inside=(p.inside||[]).map(x=>`<a href="${encodeURIComponent(x.file)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join("");
-    return `<div class="sq ${p.kind}${live?"":" off"}"${live?` data-href="${href}"${p.kind==="resume"?' data-new="1"':""} role="link" tabindex="0"`:""}>${ic(p.kind)}${tag?`<span class="tag">${tag}</span>`:""}<span class="t">${esc(p.title)}</span><span class="f">${esc(p.line||"")}</span>${inside?`<span class="in">${inside}</span>`:""}</div>`;
-  }).join("")||`<p class="lede">The server is older than this page. Stop run.py (ctrl-c) and start it again.</p>`;
+  PAGES=(await r.json()).pages;
+  render();
   $("#gate").hidden=true;$("#shelf").hidden=false;$("#out").hidden=false;
+  await engine();
+  const go=(location.hash.match(/^#go=([\w-]+)/)||[])[1];   // sent here by the engine from the hosted vault
+  if(go){history.replaceState(null,"",location.pathname);const c=document.querySelector(`.sq.${go}[data-href]`);if(c)location.href=c.dataset.href}
 }
+// four squares: tap a square = open its studio (local) · the resume opens in its own tab ·
+// the guides ride inside Marketing as small keys, so they open even where the studio is absent (hosted).
+// Hosted + the engine ON: the studio squares light up and open the local session (its own login, once).
+let PAGES=[], ENG=null;
+const STUDIOS=["marketing","business"];
+function render(){
+  const at=ENG&&ENG.sessions[0];
+  $("#grid").innerHTML=PAGES.filter(p=>p.group==="square").map(p=>{
+    const remote=!p.local&&!p.soon&&at&&STUDIOS.includes(p.kind);
+    const live=(p.local||remote)&&!p.soon;
+    const href=remote?`http://127.0.0.1:${at.port}/y-vault/#go=${p.kind}`:p.kind==="resume"?"resume/":encodeURIComponent(p.file)+"/";
+    const tag=p.soon?"later":remote?`:${at.port}`:!p.local?"local only":"";
+    const inside=(p.inside||[]).map(x=>`<a href="${encodeURIComponent(x.file)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join("");
+    return `<div class="sq ${p.kind}${live?"":" off"}"${live?` data-href="${href}"${p.kind==="resume"||remote?' data-new="1"':""} role="link" tabindex="0"`:""}>${ic(p.kind)}${tag?`<span class="tag">${tag}</span>`:""}<span class="t">${esc(p.title)}</span><span class="f">${esc(p.line||"")}</span>${inside?`<span class="in">${inside}</span>`:""}</div>`;
+  }).join("")||`<p class="lede">The server is older than this page. Stop run.py (ctrl-c) and start it again.</p>`;
+}
+// LOCAL ENGINE: SCRN's listener on :8179. Read on load, on focus, after a press -- never polled in the background.
+const EURL="http://127.0.0.1:8179/engine/";
+async function engine(path,port){
+  try{
+    const r=await fetch(EURL+(path||"state"),path?{method:"POST",headers:{"Content-Type":"application/json","X-Engine":"1"},
+      body:JSON.stringify(port?{port}:{})}:{});
+    ENG=await r.json();
+  }catch(e){ENG=null}
+  paint();render();
+}
+function paint(){
+  const sw=$("#engsw"),add=$("#engadd"),n=$("#engn"),line=$("#engline");
+  sw.disabled=add.disabled=!ENG;
+  if(!ENG){sw.setAttribute("aria-checked","false");n.hidden=true;$("#ses").innerHTML="";
+    line.textContent="Off. Open SCRN on this Mac to use the switch.";return}
+  sw.setAttribute("aria-checked",String(ENG.on));
+  n.hidden=!ENG.count;n.textContent=ENG.count;
+  add.disabled=!ENG.on||ENG.count>=ENG.max;
+  line.textContent=ENG.msg||(ENG.on?`${ENG.count} running in the background. Studios open locally.`:"Off. Switch on to use the studios.");
+  $("#ses").innerHTML=ENG.sessions.map(s=>`<span>:${s.port}<button type="button" data-port="${s.port}" aria-label="Stop :${s.port}">✕</button></span>`).join("");
+}
+let busy=false;
+async function press(path,port){
+  if(busy)return;busy=true;$("#engline").textContent=path==="off"?"Stopping…":"Starting…";
+  await engine(path,port);busy=false;
+}
+$("#engsw").addEventListener("click",()=>press(ENG&&ENG.on?"off":"on"));
+$("#engadd").addEventListener("click",()=>press("add"));
+$("#ses").addEventListener("click",e=>{const b=e.target.closest("button[data-port]");if(b)press("off",+b.dataset.port)});
+addEventListener("focus",()=>{if(!$("#shelf").hidden&&!busy)engine()});
 async function send(){
   const pin=code.value;
   const r=await fetch("api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
