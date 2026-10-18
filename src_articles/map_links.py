@@ -4,8 +4,8 @@
     python3 src_articles/map_links.py --check  same, exits 1 on drift
 
 MAP.yml is generated -- read it, never hand-edit it. The pages stay the source for now
-(PROPOSAL: the nav + footer move INTO a yml that the pages are built from).
-Drift = a page whose nav misses an article, an internal link to nothing, a footer without the Est. 2022 line.
+The top bar is built from nav.yml (nav.py, the spotlight); its drift is checked here too.
+Drift = a nav that differs from nav.yml, an article with no card on /articles/, an internal link to nothing, a footer without the Est. 2022 line.
 Stdlib only.
 """
 import sys
@@ -61,7 +61,9 @@ def q(s):
 
 
 def main(check):
-    rows, drift = [], []
+    sys.path.insert(0, str(HERE))
+    import nav as navbar
+    rows, drift = [], navbar.apply(check=True)
     found = pages()
     urls = {u for u, _ in found}
     articles = [u for u, f in found if (f.parent / "meta.json").is_file()]   # an article carries meta.json; region hubs do not
@@ -70,11 +72,9 @@ def main(check):
         html = f.read_text(encoding="utf-8")
         p = Clicks()
         p.feed(html)
-        nav = [i for i in p.items if i["zone"] in ("header", "nav")]
-        navhrefs = {i["href"].rstrip("/") + "/" for i in nav if i["href"].startswith("/articles/")}
-        for a in articles:
-            if a not in navhrefs:
-                drift.append(f"{url}: nav misses {a}")
+        if url == "/articles/":                    # every article is reachable: its card on the index
+            hrefs = {i["href"] for i in p.items if i["zone"] == "main"}
+            drift += [f"/articles/: no card for {a}" for a in articles if a not in hrefs]
         for i in p.items:
             h = i["href"].split("#")[0].split("?")[0]
             if h.startswith("/") and not h.startswith(("/articles/03_img", "/favicon")) and h not in known \

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Data Readiness: Fix the Data Before the Model</title>
+<meta name="description" content="Why AI demos break on real business data, and the order that fixes it: unify, model, gate every step, then add the model. A readiness checklist inside.">
+<link rel="canonical" href="https://customaimodels.com/articles/ai-data-readiness-before-rag/">
+<meta property="og:locale" content="en_US">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="keywords" content="AI data readiness, RAG for business data, data infrastructure, production AI systems, deterministic AI workflows, enterprise AI assistant, retrieval augmented generation, LLM evaluation, AI infrastructure, Custom AI Models">
+<meta name="author" content="Yeriko Vargas">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="Your AI didn&#x27;t fail. Your data did.">
+<meta property="og:description" content="Why AI demos break on real business data, and the order that fixes it: unify, model, gate every step, then add the model. A readiness checklist inside.">
+<meta property="og:url" content="https://customaimodels.com/articles/ai-data-readiness-before-rag/">
+<meta property="og:image" content="https://customaimodels.com/articles/03_img/og_ai-data-readiness-before-rag.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Warehouse and distribution floor where inventory, orders and shipments all have to agree before any assistant can be trusted with them">
+<meta property="article:published_time" content="2026-10-18">
+<meta property="article:author" content="https://www.linkedin.com/in/yeriko-vargas/">
+<meta property="article:section" content="AI Systems">
+<meta property="article:tag" content="Data Readiness">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="Validation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your AI didn&#x27;t fail. Your data did.">
+<meta name="twitter:description" content="Why AI demos break on real business data, and the order that fixes it: unify, model, gate every step, then add the model. A readiness checklist inside.">
+<meta name="twitter:image" content="https://customaimodels.com/articles/03_img/og_ai-data-readiness-before-rag.jpg">
+<meta name="twitter:image:alt" content="Warehouse and distribution floor where inventory, orders and shipments all have to agree before any assistant can be trusted with them">
+<link rel="icon" href="../03_img/favicon.ico?v=k1" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="../03_img/favicon-48.png?v=k1">
+<link rel="icon" type="image/png" sizes="32x32" href="../03_img/favicon-32.png?v=k1">
+<link rel="icon" type="image/png" sizes="16x16" href="../03_img/favicon-16.png?v=k1">
+<link rel="apple-touch-icon" sizes="180x180" href="../03_img/apple-touch-icon.png?v=k1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=855c0f0542">
+<link rel="stylesheet" href="../01_css/01_site.css?v=855c0f0542">
+<link rel="stylesheet" href="../01_css/04_land.css?v=855c0f0542">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=855c0f0542">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Your AI didn't fail. Your data did.",
+  "description": "Why AI demos break on real business data, and the order that fixes it: unify, model, gate every step, then add the model. A readiness checklist inside.",
+  "url": "https://customaimodels.com/articles/ai-data-readiness-before-rag/",
+  "datePublished": "2026-10-18",
+  "dateModified": "2026-10-18",
+  "inLanguage": "en",
+  "articleSection": "AI Systems",
+  "keywords": "AI data readiness, RAG for business data, data infrastructure, production AI systems, deterministic AI workflows, enterprise AI assistant, retrieval augmented generation, LLM evaluation, AI infrastructure",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://customaimodels.com/articles/03_img/og_ai-data-readiness-before-rag.jpg",
+    "contentUrl": "https://customaimodels.com/articles/03_img/og_ai-data-readiness-before-rag.jpg",
+    "width": 1200,
+    "height": 630,
+    "caption": "Warehouse and distribution floor where inventory, orders and shipments all have to agree before any assistant can be trusted with them",
+    "copyrightHolder": {
+      "@id": "https://customaimodels.com/#org"
+    },
+    "creditText": "Custom AI Models"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Yeriko Vargas",
+    "url": "https://www.linkedin.com/in/yeriko-vargas"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://customaimodels.com/#org",
+    "name": "Custom AI Models",
+    "url": "https://customaimodels.com/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://customaimodels.com/articles/ai-data-readiness-before-rag/"
+  }
+}
+</script>
+</head>
+<body class="report">
+
+<header id="bar">
+ <div class="wrap">
+  <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+  <nav aria-label="Articles">
+   <a href="/articles/">Articles</a>
+   <a href="/articles/rag-production-architecture/">RAG</a>
+   <a href="/articles/replacing-spreadsheets-ai-infrastructure/">Training Hub</a>
+   <a href="/articles/real-time-audio-machine-learning/">Real-time audio</a>
+   <a href="/articles/statistics-to-llm-ai-engineering/">Stats to LLMs</a>
+   <a href="/articles/python-ai-agent-pipelines/">Tool pipelines</a>
+  </nav>
+  <div class="act">
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+   <a class="btn fill" href="/#ask">Start a project</a>
+  </div>
+ </div>
+</header>
+
+<main id="top">
+
+<div class="art-head">
+ <div class="frame"><img src="../03_img/work-distribution.jpg" alt="Warehouse and distribution floor where inventory, orders and shipments all have to agree before any assistant can be trusted with them" loading="eager"></div>
+ <div class="wrap cap">
+  <span class="eyebrow">Data Systems</span>
+  <h1>Your AI didn&#x27;t fail. Your data did.</h1>
+  <p class="deck">You tried a demo and watched it break. The model was fine. Here is what was underneath it, and the order that fixes it.</p>
+  <div class="byline"><img src="../03_img/01_mark.png" alt=""><b>Yeriko Vargas</b> · Founder, Custom AI Models · Oct 2026</div>
+ </div>
+</div>
+
+<article class="art-body reveal">
+
+<h2>Why your AI demo breaks on real business data</h2>
+<p>You ran the demo. It answered well. Then you pointed it at your real files and it started inventing things.</p><p>Founders and operators tell me this story all the time. The model is rarely the cause. It did what models do. It read what it was given and wrote fluent text. What it was given was the problem.</p><p>The model is a commodity. Everyone rents the same ones. What you cannot rent is clean, unified, governed data, plus a way to prove that each step worked. That is where production AI lives or dies.</p><p>I have spent 8.5 years in data, and Custom AI Models has been building since 2022. The order has never changed. Unify the data. Model it. Gate every step. Put the model last.</p><p>Most demos that break did it backwards. They started with the model, bolted on a prompt, and hoped. This article is about the part they skipped.</p>
+
+<h2>AI data readiness starts with unifying the data</h2>
+<p>Look at where your business actually keeps its facts. Spreadsheets someone owns. Inboxes. A CRM export from last quarter. A shared drive with three versions of the same price list.</p><p>Each source tells a slightly different story. One calls a customer "Acme Co". Another calls them "ACME Company". A third has no name, only an email address. A human reconciles that in their head. An assistant does not. It picks one, or it blends them, and it sounds sure either way.</p><p>That is why <strong>AI data readiness</strong> comes before any model choice. It is the unglamorous job of <strong>data remastering</strong>: take the scattered sources, agree on one record per real thing, and write down which source wins when they disagree.</p><p>Dirty data makes an assistant a legal and financial liability. A wrong quote, a wrong balance, a wrong promise to a customer. The assistant does not know it is wrong. You find out later, from the customer.</p><p>I wrote about what this looks like in practice in <a href="/articles/replacing-spreadsheets-ai-infrastructure/">what replacing four spreadsheets actually took</a>. The model was never the hard part. Registration, retention, and who is allowed to see what took the time.</p>
+
+<h2>Model the data so the assistant cannot guess</h2>
+<p>Unified is not the same as modeled. A pile of clean rows is still a pile.</p><p>Modeling means deciding what things are and how they relate. A customer has orders. An order has line items. A line item points to a part. Each field has a type, a meaning, and a rule for what counts as valid. Put that in SQL tables and <strong>JSON schemas</strong>, not in somebody's memory.</p><p>Once the shape is explicit, the assistant stops guessing. It queries a structure instead of interpreting a blob of text. Where a field is missing, the system says so. It does not fill the gap with a plausible sentence.</p><p>Modeling also settles access. Not everyone should see every record. Payroll is not sales. A contractor is not a partner. Build <strong>RBAC</strong> into the data layer, so the rules hold no matter which tool asks. If permissions live only in the prompt, they are suggestions.</p><p>Then decide retention. What gets kept, for how long, and who can delete it. These questions feel like paperwork until the day they are not.</p>
+
+<h2>Deterministic validation gates on every step</h2>
+<p>Now the part that makes AI safe to run unattended. Treat every model output as a claim. A claim is not a fact until a check proves it.</p><p>The check must be code, not another opinion. That is what I mean by <strong>deterministic validation gates</strong>. The output either matches the schema or it does not. The total either equals the sum of its lines or it does not. The script exits zero or it exits non-zero. No judgment, no mood.</p><p>The plumbing is plain on purpose. Python runs the steps. Webhooks move events between systems. Resend sends the email. Cloudflare sits at the edge. Each step ends in an exit code, and the next step only starts if the last one passed.</p><p>I go deeper on this pattern in <a href="/articles/python-ai-agent-pipelines/">twelve tools, one Python pipeline</a>, where every call to Claude, ChatGPT or Gemini is treated as a claim until a check proves it.</p><p>Gates also give you <strong>telemetry</strong>. Every pass and every failure is logged. You see which step fails most, on which input, and since when. That is how you catch <strong>data drift</strong> early. The source changes shape, a vendor renames a column, and the gate trips before a customer notices.</p><p>A failed gate is not a bug in the process. It is the process working.</p>
+
+<h2>RAG for business data comes last, not first</h2>
+<p>Here is where retrieval finally belongs. <strong>RAG for business data</strong> is a good idea when the data underneath is unified, modeled and permissioned. Retrieval over broken spreadsheets only finds the breakage faster.</p><p>Stop pointing RAG at broken spreadsheets. Fix the layer below it, then let the model read from something it can trust.</p><p>Even then, retrieval is an architecture, not a feature. It needs evaluation and telemetry around it, or you will not know when quality slips. I covered that in <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.</a></p><p>Before you build anything, ask five questions:</p><ul><li>Can you name the one source of truth for each kind of record?</li><li>Does every field have a type and a rule for what is valid?</li><li>Do access rules live in the data layer, not in a prompt?</li><li>Does every step end in a check that can fail?</li><li>Would you know within a day if a source changed shape?</li></ul><p>If you answered no to any of them, the model is not your next move. The data is.</p><p>That order feels slow at the start. It is faster than rebuilding a pilot that lied to a customer. The model you pick matters least, and you can swap it later. The data, the schemas and the gates are what you keep.</p>
+
+</article>
+
+<div class="art-foot">
+ <a class="art-back" href="/articles/">All articles</a>
+ <div class="art-tags"><span>Data Readiness</span><span>RAG</span><span>Validation</span></div>
+</div>
+
+<div class="art-related">
+ <span class="label">More from Custom AI Models</span>
+  <a href="/articles/replacing-spreadsheets-ai-infrastructure/">What replacing four spreadsheets actually took<span>Building a company&#x27;s AI infrastructure from zero means the hard part was never the model.</span></a>
+  <a href="/articles/rag-production-architecture/">RAG isn&#x27;t a feature. It&#x27;s an architecture.<span>Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.</span></a>
+  <a href="/articles/python-ai-agent-pipelines/">Twelve tools, one Python pipeline<span>How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.</span></a>
+</div>
+
+</main>
+
+<div class="art-cta">
+ <div class="inner">
+  <h2>Stop pointing RAG at broken spreadsheets.</h2>
+  <p>Bring the data you already have and the demo that broke. We will map what needs unifying, modeling and gating before any model goes near it.</p>
+  <div class="row">
+   <a class="btn fill" href="/#ask">Start a project</a>
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+  <div class="who">
+   <img src="../03_img/01_mark.png" alt="">
+   <div><b>Yeriko Vargas</b><span>AI Systems Architect · Detroit, MI · remote-first</span></div>
+  </div>
+ </div>
+</div>
+
+<footer>
+ <div class="wrap">
+  <div class="row1">
+   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+   <span>Est. 2022 · © 2026 Custom AI Models</span>
+   <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+ </div>
+</footer>
+<script src="../02_js/01_site.js?v=855c0f0542"></script>
+<script src="../02_js/03_reveal.js?v=855c0f0542"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# THE ARTICLE BAR -- the one place the top menu of every article page comes from.
+# The bar is a SPOTLIGHT, not a list of everything: it stays steady while articles pile up.
+# Every article still lives on /articles/ (its card); "Articles" leads there, always first.
+#
+# To change the bar: edit the rows below, then
+#   python3 src_articles/nav.py          rewrites the <nav> on every page
+#   python3 src_articles/nav.py --check  exits 1 if any page differs (map_links.py --check runs it too)
+#
+# Rules: at most `max` rows · each slug is a real folder in src_articles/ · labels short (1-3 words).
+# A new article does NOT join the bar by itself; he picks what is spotlighted.
+
+max: 6
+
+spotlight:
+  - slug: rag-production-architecture
+    label: RAG
+  - slug: replacing-spreadsheets-ai-infrastructure
+    label: Training Hub
+  - slug: real-time-audio-machine-learning
+    label: Real-time audio
+  - slug: statistics-to-llm-ai-engineering
+    label: Stats to LLMs
+  - slug: python-ai-agent-pipelines
+    label: Tool pipelines

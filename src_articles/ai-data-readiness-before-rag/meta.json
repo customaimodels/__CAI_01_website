@@ -1,0 +1,16 @@
+{
+  "title": "Your AI didn't fail. Your data did.",
+  "deck": "You tried a demo and watched it break. The model was fine. Here is what was underneath it, and the order that fixes it.",
+  "date": "2026-10-18",
+  "tags": [
+    "Data Readiness",
+    "RAG",
+    "Validation"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 5,
+  "slug": "ai-data-readiness-before-rag",
+  "category": "AI Systems",
+  "subcategory": "Data Readiness",
+  "url": "https://customaimodels.com/articles/ai-data-readiness-before-rag/"
+}

@@ -116,7 +116,7 @@ async function load(){
     const tag=p.soon?"later":!p.local?"local only":"";
     const inside=(p.inside||[]).map(x=>`<a href="${encodeURIComponent(x.file)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join("");
     return `<div class="sq ${p.kind}${live?"":" off"}"${live?` data-href="${href}"${p.kind==="resume"?' data-new="1"':""} role="link" tabindex="0"`:""}>${ic(p.kind)}${tag?`<span class="tag">${tag}</span>`:""}<span class="t">${esc(p.title)}</span><span class="f">${esc(p.line||"")}</span>${inside?`<span class="in">${inside}</span>`:""}</div>`;
-  }).join("");
+  }).join("")||`<p class="lede">The server is older than this page. Stop run.py (ctrl-c) and start it again.</p>`;
   $("#gate").hidden=true;$("#shelf").hidden=false;$("#out").hidden=false;
 }
 async function send(){
