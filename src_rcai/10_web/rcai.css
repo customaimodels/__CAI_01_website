@@ -45,10 +45,11 @@ button{font:inherit;color:inherit}
 .face .lede{color:var(--ink-2);margin:0 0 30px;font-size:16px}
 .face label{display:block;margin-bottom:14px;min-width:0}
 .face label span{display:block;font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-.face input,.face textarea{width:100%;height:48px;padding:0 15px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font:15px/1.4 var(--sans);outline:none;transition:border-color .2s,box-shadow .2s}
+.face input,.face textarea,.face select{width:100%;height:48px;padding:0 15px;background:var(--card);border:1px solid var(--line-2);border-radius:12px;color:var(--ink);font:15px/1.4 var(--sans);outline:none;transition:border-color .2s,box-shadow .2s}
+.face select{appearance:none;cursor:pointer}
 .face textarea{height:auto;padding:13px 15px;resize:vertical;min-height:96px}
 .face input::placeholder,.face textarea::placeholder{color:var(--mute)}
-.face input:focus,.face textarea:focus{border-color:var(--violet-soft);box-shadow:0 0 0 4px rgba(90,74,120,.35)}
+.face input:focus,.face textarea:focus,.face select:focus{border-color:var(--violet-soft);box-shadow:0 0 0 4px rgba(90,74,120,.35)}
 .face .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .key{all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:50px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;border-radius:12px;
   background:#fff;color:#0e0c12;font:600 15px/1 var(--sans);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 10px 30px -14px rgba(195,187,209,.5);transition:background .2s,transform .12s}

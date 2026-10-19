@@ -748,11 +748,12 @@
   $("#signup").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.currentTarget, btn = $("button[type=submit]", f);
+    if (!f.scale.value) { f.scale.focus(); return; }
     if (!f.need.value.trim()) { f.need.focus(); return; }
     btn.disabled = true;
     try {
       const r = await fetch("api/signup", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: f.company.value, need: f.need.value }) });
+        body: JSON.stringify({ company: f.company.value, scale: f.scale.value, need: f.need.value }) });
       const j = await r.json().catch(() => ({}));
       if (r.ok || r.status === 429) { f.reset(); face("sent"); }
       else alert(j.error || "That didn't reach us. Try again.");

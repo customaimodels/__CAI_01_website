@@ -335,15 +335,15 @@ def _signup(h, cfg, data):
         return _json(h, 403, {"error": "Continue with Google or Microsoft first."})
     ip, day = _ip(h), time.strftime("%Y-%m-%d")
     n = _SIGNUPS.get((ip, day), 0)
-    f = {k: str(data.get(k, "")).strip()[:2000 if k == "need" else 120] for k in ("company", "need")}
+    f = {k: str(data.get(k, "")).strip()[:2000 if k == "need" else 120] for k in ("company", "scale", "need")}
     f.update(name=who["name"], email=who["email"])
     if not f["need"]:
         return _json(h, 400, {"error": "Tell us what you need, please."})
     if n >= 3:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours."})
-    text = (f"Name: {f['name']}\nCompany: {f['company']}\nEmail: {f['email']}\n"
+    text = (f"Name: {f['name']}\nCompany: {f['company']}\nTeam size: {f['scale']}\nEmail: {f['email']}\n"
             f"Verified by: {who['provider']}\n\nWhat we need:\n{f['need']}")
-    ok, until = I.put(cfg, f["email"], "signup", text, "", f["name"], {"client_id": "new", "company": f["company"], "provider": who["provider"]})
+    ok, until = I.put(cfg, f["email"], "signup", text, "", f["name"], {"client_id": "new", "company": f["company"], "scale": f["scale"], "provider": who["provider"]})
     if not ok:
         return _json(h, 429, {"error": "We have your request. We write back within 24 hours.", "until": until})
     _SIGNUPS[(ip, day)] = n + 1

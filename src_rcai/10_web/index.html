@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/01_css/00_tokens.css?v=4444ce0fd7">
-<link rel="stylesheet" href="rcai.css?v=4444ce0fd7">
+<link rel="stylesheet" href="/01_css/00_tokens.css?v=afc9ec334f">
+<link rel="stylesheet" href="rcai.css?v=afc9ec334f">
 </head>
 <body>
 
@@ -82,8 +82,16 @@
    <div class="who-on" hidden>
     <p class="lede">Signed up as <b class="who-name"></b><br><span class="who-mail"></span></p>
     <label><span>Company</span><input name="company" autocomplete="organization"></label>
-    <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" placeholder="A dashboard from our sales data, an email that sends itself…"></textarea></label>
-    <button class="key" type="submit">Send to us<svg class="ico"><use href="#i-arrow"/></svg></button>
+    <label><span>Team size / operations scale</span><select name="scale" required>
+     <option value="" disabled selected>Pick one</option>
+     <option>1 – 10 employees</option>
+     <option>11 – 50 employees</option>
+     <option>51 – 200 employees</option>
+     <option>201+ enterprise scale</option>
+    </select></label>
+    <label><span>What do you need?</span><textarea name="need" rows="3" maxlength="1500" placeholder="e.g., Our logistics team spends 20 hours a week manually parsing data spreadsheets into PDFs. We need an automated pipeline to handle this…"></textarea></label>
+    <button class="key" type="submit">Submit Project Specs<svg class="ico"><use href="#i-arrow"/></svg></button>
+    <p class="fine">🔒 All submissions are processed through strict data security protocols and kept entirely confidential.</p>
     <p class="fine">Goes straight to us. A person writes back within 24 hours.</p>
    </div>
    <p class="fine">Have an access code? <a href="#login" data-face="login">Log in</a></p>
@@ -195,6 +203,6 @@
  <footer class="wrap"><span>R-CAI · Custom AI Models</span><span>customaimodels.com</span></footer>
 </div>
 
-<script src="rcai.js?v=4444ce0fd7"></script>
+<script src="rcai.js?v=afc9ec334f"></script>
 </body>
 </html>
