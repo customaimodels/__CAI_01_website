@@ -88,7 +88,7 @@ def pages():
                  so they still open on the hosted vault, where the app itself does not exist.
       business   BUSINESS STUDIO (ss4, local app)
       users      USERS STUDIO (ss5, PROPOSAL, later)
-      aut        AUTOMATIONS (ss6, src_y_vault_aut0run: watches __ss6_aut, never runs)
+      aut        AUTOMATIONS (ss6, src_aut0run: watches __ss6_aut, never runs)
     row "brain" = the yellow layer across every section:
       scrn       SCRN · utility (the Y in the browser; PROPOSAL -- shows SCRN alive/off, opens nothing yet)
       cli        CLI · utility (__vCLI; empty for now)
@@ -111,7 +111,7 @@ def pages():
                line="Legal, money, offers, partners.", local=local and (HERE.parent / "src_y_business").is_dir()),
             sq("company", file="", title="Users Studio", kind="users", ss="ss5", line="Later.", soon=True, local=local),
             sq("company", file="aut0run", title="Automations", kind="aut", ss="ss6",
-               line="The loops that keep CAI alive.", local=local and (HERE.parent / "src_y_vault_aut0run").is_dir()),
+               line="The loops that keep CAI alive.", local=local and (HERE.parent / "src_aut0run").is_dir()),
             sq("brain", file="", title="SCRN · utility", kind="scrn", line="The Y, in the browser. Next.", soon=True,
                local=local),
             sq("brain", file="", title="CLI · utility", kind="cli", line="Empty for now.", soon=True, local=local),
