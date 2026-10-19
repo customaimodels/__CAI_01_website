@@ -1,0 +1,17 @@
+# Custom AI Models
+
+> Custom AI Models builds custom AI solutions from your data: Python data systems, ML and LLM agents, and automations you own. Founded 2022 by Yeriko Vargas.
+
+## Company
+- [Home](https://customaimodels.com/): what we build and how to start a project
+- [Behind the Models](https://customaimodels.com/behind-the-models/): Yeriko Vargas, founder, engineering work and experience
+
+## Articles
+- [All articles](https://customaimodels.com/articles/)
+- [AI Data Readiness: Fix the Data Before the Model](https://customaimodels.com/articles/ai-data-readiness-before-rag/)
+- [Python AI Agent Pipelines: Orchestration Over Prompts](https://customaimodels.com/articles/python-ai-agent-pipelines/)
+- [RAG Production Architecture: Telemetry Over Prompts](https://customaimodels.com/articles/rag-production-architecture/)
+- [Real-Time Audio ML: DSP Features & Unsupervised Clustering](https://customaimodels.com/articles/real-time-audio-machine-learning/)
+- [Enterprise AI Data Infrastructure: Rebuilding Spreadsheets](https://customaimodels.com/articles/replacing-spreadsheets-ai-infrastructure/)
+- [SaaS AI Automation: The Challenges Ahead](https://customaimodels.com/articles/saas-ai-automation-future-challenges/)
+- [From Applied Statistics to LLM Agent Systems Architect](https://customaimodels.com/articles/statistics-to-llm-ai-engineering/)
