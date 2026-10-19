@@ -17,6 +17,7 @@ GET  /r-cai/api/oauth/me · /api/oauth/<google|microsoft>/start · …/callback 
 POST /r-cai/api/signup   {company, need} → 08_inbox kind=signup, ONLY behind a Google/Microsoft identity (rcai_id);
                          the email comes from that identity, never from the body (24 h per email, 3 a day per address)
 GET  /r-cai/api/activity owners only: the Phase 2 activity report, as text
+GET  /r-cai/api/admin/people · POST /r-cai/api/admin/credit  SCRN's machine key only (13_admin): people + credit ledger
 POST /r-cai/api/logout
 """
 import importlib
@@ -36,6 +37,7 @@ T = importlib.import_module("src_rcai.07_activity")
 I = importlib.import_module("src_rcai.08_inbox")
 N = importlib.import_module("src_rcai.09_notify")
 O = importlib.import_module("src_rcai.11_oauth")
+ADM = importlib.import_module("src_rcai.13_admin")
 CFG = None
 
 
@@ -199,6 +201,10 @@ def handle(h, method):
             h.end_headers()
             h.wfile.write(img)
             return True
+        if rel == "api/admin/people":
+            if not ADM.authed(h):
+                return _json(h, 404, {"error": "not found"})
+            return _json(h, 200, ADM.people(cfg))
         if rel == "api/activity":
             email = _email(h)
             if not email or email not in cfg["owners"]:
@@ -207,6 +213,15 @@ def handle(h, method):
         return _file(h, rel)
     if rel == "api/logout":
         return _json(h, 200, {"in": False}, _cookie("", 0))
+    if rel == "api/admin/credit":
+        if not ADM.authed(h):
+            return _json(h, 404, {"error": "not found"})
+        try:
+            data = json.loads(h.rfile.read(min(int(h.headers.get("Content-Length", 0)), 2048)) or b"{}")
+        except (ValueError, json.JSONDecodeError):
+            return _json(h, 400, {"error": "bad request"})
+        bal, why = ADM.add_credit(data.get("email"), data.get("amount"), data.get("note"))
+        return _json(h, 400, {"error": why}) if bal is None else _json(h, 200, {"ok": True, "balance": bal})
     if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup"):
         return _json(h, 404, {"error": "not found"})
     try:
