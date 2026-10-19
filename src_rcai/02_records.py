@@ -25,10 +25,11 @@ STATUS = {
     "phase1_delivered": (3, "Phase 1 delivered"),
     "delivered":        (3, "Delivered"),
     "live":             (4, "Live"),
+    "on_hold":          (1, "On hold"),     # started, paused (unpaid): shown under Your demos, its links locked
 }
 # signed or paid: only then may a client ask for changes on that project (the key on its R-CAI square)
 CAN_CHANGE = {"signed", "paid_in_build", "in_build", "phase1_delivered", "delivered", "live"}
-DEMO = {"demo_sent", "pending_signature"}   # demos + proposals not yet signed: shown under Your demos (eggs in _1_ppl_demos)
+DEMO = {"demo_sent", "pending_signature", "on_hold"}   # demos + proposals not yet signed: shown under Your demos (eggs in _1_ppl_demos)
 DATE_LABELS = [("added", "Opened"), ("demo_sent", "Demo sent"), ("signed", "Signed"),
                ("delivery", "Delivery")]
 
@@ -135,6 +136,8 @@ def _delivery(path):
                 n, bar, url = v.partition("|")
                 n, url = (n.strip(), url.strip()) if bar and n.strip().isdigit() else ("0", v)
                 cur.setdefault("invoices", {})[n] = url
+            elif k == "locked":                   # `locked: git, railway` -- keys shown on the square as locked; their links never leave the server
+                cur["locked"] = [x.strip() for x in v.split(",") if x.strip() in ("live", "git", "railway", "email")]
             elif k == "owner":                    # `owner: Cory Anderson | President` -- who owns the project, on its square
                 name, _, role = v.partition("|")
                 cur["owner"] = {"name": name.strip(), "role": role.strip()}
@@ -252,7 +255,8 @@ def _card(db, cfg, pid):
     if scope and scope["items"]:
         notices.append({"lane": "scope", "text": f"{scope['name']} scope is waiting for your answer."})
     return {
-        "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k)],
+        "where": [{"k": k, "v": d[k]} for k in WHERE if d.get(k) and k not in d.get("locked", [])],
+        "locked": d.get("locked", []),          # shown as locked keys, no link
         "notices": notices,
         "scope": ({**scope, "timeline": d.get("timeline", []), "terms": d.get("terms", []), "pay": d.get("pay"), "price": d.get("price"),
                    "tax": d.get("tax", 0), "payplan": d.get("payplan", []),

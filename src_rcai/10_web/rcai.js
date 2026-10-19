@@ -204,7 +204,10 @@
     p.where = p.where || []; p.notices = p.notices || [];
     const track = stages.map((_, j) => `<i class="${j < p.stage ? "on" : j === p.stage ? "now" : ""}"></i>`).join("");
     const keys = p.where.filter((w) => w.k === "git" || w.k === "railway")
-      .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" aria-label="${KEYNAME[w.k]}" data-tip="${KEYNAME[w.k]}">${icon(WHERE[w.k][0])}</a>`).join("");
+      .map((w) => `<a class="sq" href="${esc(href(w.k, w.v))}" target="_blank" rel="noopener" aria-label="${KEYNAME[w.k]}" data-tip="${KEYNAME[w.k]}">${icon(WHERE[w.k][0])}</a>`).join("")
+      // locked keys (delivery.yml locked:): the same square, dimmed, a small lock, no link (the server never sends one)
+      + (p.locked || []).filter((k) => k === "git" || k === "railway")
+        .map((k) => `<span class="sq lk" role="img" aria-label="${KEYNAME[k]} · locked" data-tip="Locked · on hold">${icon(WHERE[k][0])}<svg class="lki" viewBox="0 0 24 24"><rect x="6" y="11" width="12" height="9" rx="2"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg></span>`).join("");
     const sq = `<article class="proj">
       <div class="top"><span class="tag ${p.stage >= 3 ? "ok" : ""}">${esc(p.stage_label)}</span>${p.logo ? `<img class="plogo" src="${esc(p.logo)}" alt="">` : ""}</div>
       <h3>${esc(p.name)}</h3><span class="co">${esc(p.company)}</span>${owned(p.owner)}
