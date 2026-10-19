@@ -297,7 +297,9 @@
     form.hidden = false;
     form.project.hidden = !!LANES[which].free;
     form.msg.placeholder = LANES[which].ph;
-    $("small", form).textContent = LANES[which].note || "Opens your email, filled in. A person replies.";
+    // a credits notice (delivery.yml) reads inside Request build, right above the box.
+    const credit = which === "build" && view ? view.projects.flatMap((p) => p.notices || []).find((n) => n.lane === "credits") : null;
+    $("small", form).textContent = credit ? credit.text : LANES[which].note || "We review it and write back within 24 hours.";
     if (proj) form.project.value = proj;
     form.msg.focus({ preventScroll: true });
   }
@@ -708,6 +710,7 @@
 
   $(".bell").addEventListener("click", (e) => {
     const pop = $(".pop"), on = pop.hidden;
+    if (on) { $(".gpop").hidden = true; $(".gear").setAttribute("aria-expanded", "false"); }  // one layer at a time
     pop.hidden = !on; e.currentTarget.setAttribute("aria-expanded", String(on));
   });
   document.addEventListener("click", (e) => {

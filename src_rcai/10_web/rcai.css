@@ -108,7 +108,7 @@ button{font:inherit;color:inherit}
 #hub .badge{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;padding:0 5px;border-radius:9px;display:grid;place-items:center;
   background:var(--gold);color:#0e0c12;font:700 10px/1 var(--sans);box-shadow:0 0 0 2px var(--bg)}
 #hub .badge:empty,#hub .badge[data-n="0"]{display:none}
-#hub .pop{position:absolute;right:max(32px,calc(50% - 448px));top:56px;width:340px;background:var(--card-2);border:1px solid var(--line-2);border-radius:14px;padding:6px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+#hub .pop{position:absolute;z-index:6;right:max(32px,calc(50% - 448px));top:56px;width:340px;background:var(--card-2);border:1px solid var(--line-2);border-radius:14px;padding:6px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
 .pop .row{display:flex;gap:12px;padding:11px 12px;font-size:13px}
 .pop .row+.row{border-top:1px solid var(--line)}
 .pop .row .ico{color:var(--gold);margin-top:2px}
