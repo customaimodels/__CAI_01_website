@@ -79,6 +79,31 @@ h1 em{color:var(--gold);font-style:normal}
 .sq.scrn,.sq.cli,.sq.ydta,.sq.ysrc{border-color:rgb(217 166 44/.22)}
 .sq.ydta .f{display:none}
 .sq.ysrc .f{font-family:ui-monospace,"SF Mono",monospace;font-size:10.5px}
+
+/* THREE SECTIONS (2026-10-19, his word): GOAL AGENTS ss3–ss6 in a soldier-green frame (toned down) ·
+   utility + CLI small, yellow · Ydta + Ysrc small, orange. Compact: the small ones are short cards. */
+.sec{border-radius:20px;padding:12px;margin-top:14px}
+.sec .row{margin:2px 2px 10px}
+.sec.agents{border:1px solid rgb(122 140 88/.55);background:rgb(122 140 88/.06)}
+.sec.agents .row{color:#9aab78}
+.sec.agents .sq{border-color:rgb(122 140 88/.32)}
+.sec.util{border:1px solid rgb(217 166 44/.40);background:rgb(217 166 44/.04)}
+.sec.util .row{color:var(--gold)}
+.sec.y{border:1px solid rgb(232 128 52/.42);background:rgb(232 128 52/.04)}
+.sec.y .row{color:#e88a46}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.duo .sec{margin-top:10px}
+.sec.small .grid{gap:8px;grid-template-columns:1fr}
+.sec.small .sq{aspect-ratio:auto;min-height:88px;padding:11px;border-radius:12px}
+.sec.small .sq .ic{width:24px;height:24px;border-radius:7px}
+.sec.small .sq .ic svg{width:14px;height:14px}
+.sec.small .sq .t{font-size:15px;margin-top:10px}
+.sec.small .sq .f{font-size:10.5px}
+.sec.small .sq .tag,.sec.small .sq .ss{top:11px;right:11px}
+.sec.util .sq{border-color:rgb(217 166 44/.28)}
+.sec.y .sq{border-color:rgb(232 128 52/.30)}
+.sec.y .sq .ic{background:rgb(232 128 52/.14);color:#e88a46}
+.sec.y .sq .in a{color:#e88a46;border-color:rgb(232 128 52/.38)}
 </style>
 </head>
 <body>
@@ -104,10 +129,11 @@ h1 em{color:var(--gold);font-style:normal}
    <h1>Goal <em>indicators</em>.</h1>
    <p class="lede">Who we are, then where it moves.</p>
   </div>
-  <div class="row">The company · ss3 → ss6</div>
-  <div class="grid" id="grid"></div>
-  <div class="row brain">The brain · across every section</div>
-  <div class="grid" id="grid2"></div>
+  <div class="sec agents"><div class="row">Goal agents · ss3 → ss6</div><div class="grid" id="grid"></div></div>
+  <div class="duo">
+   <div class="sec util small"><div class="row">Utility</div><div class="grid" id="grid2"></div></div>
+   <div class="sec y small"><div class="row">Y</div><div class="grid" id="grid3"></div></div>
+  </div>
  </section>
 </div>
 
@@ -167,7 +193,9 @@ function sqHtml(p){
 function render(){
   const sq=PAGES.filter(p=>p.group==="square"), old=`<p class="lede">The server is older than this page. Stop run.py (ctrl-c) and start it again.</p>`;
   $("#grid").innerHTML=sq.filter(p=>(p.row||"company")==="company").map(sqHtml).join("")||old;
-  $("#grid2").innerHTML=sq.filter(p=>p.row==="brain").map(sqHtml).join("");
+  const brain=sq.filter(p=>p.row==="brain"), Y=["ydta","ysrc"];
+  $("#grid2").innerHTML=brain.filter(p=>!Y.includes(p.kind)).map(sqHtml).join("");
+  $("#grid3").innerHTML=brain.filter(p=>Y.includes(p.kind)).map(sqHtml).join("");
 }
 // LOCAL ENGINE: SCRN's listener on :8179. Read on load and on focus -- never polled in the background.
 const EURL="http://127.0.0.1:8179/engine/";
