@@ -8,6 +8,7 @@ GET  /y-vault/api/list      GOAL INDICATORS: guides + resume on top, the manager
                             The guides' source is __ss3_mketing/src_blt/guides; sync_from_mketing.py pulls them in here.
 GET  /y-vault/<page>.html   one page (signed in only)
 GET  /y-vault/resume/...    the resume site, ../src_resume served as is (signed in only)
+GET  /y-vault/ydta/<file>   one file of _0ds_CAI/__Ydta, read only (signed in + LOCAL only; hosted = 404)
 POST /y-vault/api/logout
 GET  /behind-the-models/... the same resume site, PUBLIC (the landing's "About the owner's work and portfolio")
 
@@ -34,7 +35,8 @@ HERE = Path(__file__).resolve().parent
 WEB = HERE / "10_web"
 SEALED = HERE / "30_sealed" / "shelf.bin"
 RESUME = HERE.parent / "src_resume"                 # his resume site, never edited here
-TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
+YDTA = HERE.parents[1] / "__Ydta"                   # his command data: READ here (local only), written only by _0ds_CAI/run.py ydta
+TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".pdf": "application/pdf",
          ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp"}
 MOUNT = "/y-vault"
 OWNER = "/behind-the-models"                        # public face of src_resume, linked from the landing footer (2026-10-14)
@@ -71,13 +73,27 @@ def _shelf():
         return {}
 
 
+def ydta_files():
+    """__Ydta, his command data (written ONLY by `_0ds_CAI/run.py ydta add`). Read here, never written. Local only."""
+    if os.environ.get("PORT") or not YDTA.is_dir():
+        return []
+    return [p.name for p in sorted(YDTA.iterdir())
+            if p.is_file() and not p.name.startswith((".", "_LOG")) and p.suffix.lower() in TYPES]
+
+
 def pages():
-    """GOAL INDICATORS (was "the shelf"; FOUR SQUARES since 2026-10-18, his word), every entry group "square":
-    marketing  MARKETING STUDIO (local app). The LinkedIn + CAI Content guides live INSIDE it ("inside"), so they
-               still open from the square on the hosted vault, where the app itself does not exist.
-    business   BUSINESS STUDIO (local app)
-    users      USERS STUDIO (PROPOSAL, later)
-    resume     Yeriko Vargas · AI Architect
+    """GOAL INDICATORS: EIGHT SQUARES since 2026-10-19 (his word), two rows of four, every entry group "square":
+    row "company" = the sections that keep CAI alive, ss3 → ss6:
+      marketing  MARKETING STUDIO (ss3, local app). The LinkedIn + CAI Content guides ride INSIDE it ("inside"),
+                 so they still open on the hosted vault, where the app itself does not exist.
+      business   BUSINESS STUDIO (ss4, local app)
+      users      USERS STUDIO (ss5, PROPOSAL, later)
+      aut        AUTOMATIONS (ss6, src_y_vault_aut0run: watches __ss6_aut, never runs)
+    row "brain" = the yellow layer across every section:
+      scrn       SCRN · utility (the Y in the browser; PROPOSAL -- shows SCRN alive/off, opens nothing yet)
+      cli        CLI · utility (__vCLI; empty for now)
+      ydta       Ydta (his command data; the master resume first -- it replaced the resume square)
+      ysrc       Ysrc (the back door when SCRN breaks: _0ds_CAI/run.py; tap = the run line on the clipboard)
     local=False on the hosted vault: the square shows dimmed, and only its "inside" links work."""
     local = not os.environ.get("PORT")
     inside = []
@@ -85,17 +101,24 @@ def pages():
         t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
         title = t.group(1).strip() if t else Path(name).stem.strip("_")
         inside.append({"file": name, "title": "LinkedIn" if "linked" in name.lower() else title.split(" · ")[0]})
-    out = [{"file": "marketing", "title": "Marketing Studio", "kind": "marketing", "group": "square",
-            "line": "Say it once, post it everywhere.", "inside": inside,
-            "local": local and (HERE.parent / "src_y_studio").is_dir()},
-           {"file": "business", "title": "Business Studio", "kind": "business", "group": "square",
-            "line": "Legal, money, offers, partners.", "local": local and (HERE.parent / "src_y_business").is_dir()},
-           {"file": "", "title": "Users Studio", "kind": "users", "group": "square", "line": "Later.", "soon": True,
-            "local": local}]
-    if (RESUME / "index.html").exists():
-        out.append({"file": "resume", "title": "Yeriko Vargas · AI Architect", "kind": "resume", "group": "square",
-                    "line": "Who builds it.", "local": True})
-    return out
+    ydta = [{"file": "ydta/" + n, "title": "Master resume" if "resume" in n.lower() else Path(n).stem.strip("_")[:18]}
+            for n in ydta_files()]
+    sq = lambda row, **k: {"group": "square", "row": row, **k}
+    return [sq("company", file="marketing", title="Marketing Studio", kind="marketing", ss="ss3",
+               line="Say it once, post it everywhere.", inside=inside,
+               local=local and (HERE.parent / "src_y_studio").is_dir()),
+            sq("company", file="business", title="Business Studio", kind="business", ss="ss4",
+               line="Legal, money, offers, partners.", local=local and (HERE.parent / "src_y_business").is_dir()),
+            sq("company", file="", title="Users Studio", kind="users", ss="ss5", line="Later.", soon=True, local=local),
+            sq("company", file="aut0run", title="Automations", kind="aut", ss="ss6",
+               line="The loops that keep CAI alive.", local=local and (HERE.parent / "src_y_vault_aut0run").is_dir()),
+            sq("brain", file="", title="SCRN · utility", kind="scrn", line="The Y, in the browser. Next.", soon=True,
+               local=local),
+            sq("brain", file="", title="CLI · utility", kind="cli", line="Empty for now.", soon=True, local=local),
+            sq("brain", file="", title="Ydta", kind="ydta", line="His command data.", inside=ydta, local=local,
+               open=False),
+            sq("brain", file="", title="Ysrc", kind="ysrc", line="SCRN down? cd ~/_0ds_CAI · python3 run.py",
+               copy="cd ~/_0ds_CAI && python3 run.py", local=True)]
 
 
 def _resume(h, rel, public=False):
@@ -205,6 +228,11 @@ def handle(h, method):
             return True
         if rel.startswith("resume/"):
             return _resume(h, rel)
+        if rel.startswith("ydta/"):                    # local only: ydta_files() is empty on a hosted server
+            name = rel[5:]
+            if name not in ydta_files():
+                return _json(h, 404, {"error": "not found"})
+            return _send(h, 200, (YDTA / name).read_bytes(), TYPES[Path(name).suffix.lower()])
         shelf = _shelf()
         if rel in shelf:
             return _send(h, 200, shelf[rel], "text/html; charset=utf-8")
