@@ -186,10 +186,13 @@ def received_body(row, cfg):
     need = (row.get("need") or "").strip()
     if not need:                                               # no "what you sent" row: drop the item block whole
         shell = re.sub(r'\n\s*<tr><td class="px" style="padding:0 40px 20px 40px;">.*?\{\{ITEM_TEXT\}\}.*?</td></tr>', "", shell, count=1, flags=re.S)
+    doors = _doors_html(row, cfg)                              # src_follow_up: the door into their problem
+    if doors:
+        shell = re.sub(r'(\{\{BODY\}\}</p>)', lambda m: m.group(1) + doors, shell, count=1)
     fill = {"SUBJECT": "We have your request · Custom AI Models",
-            "PREHEADER": "We have it. We write back within 24 hours.",
+            "PREHEADER": "Which of these is closest? One tap tells us where to start.",
             "HEADLINE": f"Hi {e(first)}, we have your request.",
-            "BODY": "We read every one ourselves. You hear back from us within 24 hours, from a person, with the next step.",
+            "BODY": "A person reads it and writes back within 24 hours. To start sharper: these are the ways this usually breaks. Tap the one closest to yours.",
             "ITEM_TITLE": "What you sent", "ITEM_TEXT": e(need).replace("\n", "<br>"),
             "SENDER": "Yeriko · Custom AI Models",
             "FOOTER": "Custom AI Models · Est. 2022 · customaimodels.com. You get this because you signed up at R-CAI with this address. Nothing else follows unless you reply.",
@@ -199,10 +202,42 @@ def received_body(row, cfg):
     return shell
 
 
+def _doors_html(row, cfg):
+    """The 8 doors (src_follow_up/doors.json), closest to what they wrote first. Email-safe tables, inline styles.
+    Each door is a signed /r-cai/api/door link: the click is logged for us, then lands on the page that answers it."""
+    try:
+        F = __import__("importlib").import_module("src_follow_up.follow")
+        ranked = F.rank(row.get("need") or "")
+    except Exception as err:                                   # no doors = the plain mail, never a failed send
+        print("RCAI_NOTIFY " + json.dumps({"kind": "doors_off", "why": str(err)[:120]}), flush=True)
+        return ""
+    e, base = html.escape, cfg.get("public_url", "https://customaimodels.com").rstrip("/")
+    cells = []
+    for i, d in enumerate(ranked):
+        top = i < 3 and d.get("score", 0) > 0.5
+        rim = f"border-left:3px solid {GOLD};" if top else "border-left:3px solid #e6e1d6;"
+        tag = (f'<span style="font-family:\'Courier New\',monospace;font-size:10px;letter-spacing:1px;color:{GOLD};">CLOSEST TO YOURS</span><br>'
+               if top else "")
+        cells.append(
+            f'<tr><td style="padding:0 0 8px 0;"><a href="{e(F.link(row.get("email", ""), d["id"], base))}" '
+            f'style="display:block;text-decoration:none;{rim}background:#ffffff;border-top:1px solid #e6e1d6;'
+            f'border-right:1px solid #e6e1d6;border-bottom:1px solid #e6e1d6;padding:12px 14px;">'
+            f'{tag}<span style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:{INK};">{e(d["title"])} &rarr;</span><br>'
+            f'<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:{MUTE};">{e(d["line"])}</span></a></td></tr>')
+    return ('\n          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" '
+            'style="margin:4px 0 18px 0;">' + "".join(cells) + "</table>")
+
+
 def received_text(row):
     first = (row.get("person") or "there").split()[0]
-    return (f"Hi {first}, we have your request.\n\nWe read every one ourselves. You hear back from us within 24 hours, "
-            f"from a person, with the next step.\n\nWhat you sent:\n{row.get('need') or '-'}\n\nCustom AI Models · customaimodels.com\n")
+    lines = ""
+    try:
+        F = __import__("importlib").import_module("src_follow_up.follow")
+        lines = "\n".join(f"- {d['title']}: https://customaimodels.com{d['href']}?{F.doors()['utm']}&utm_content={d['id']}" for d in F.rank(row.get("need") or ""))
+    except Exception:
+        pass
+    return (f"Hi {first}, we have your request.\n\nA person reads it and writes back within 24 hours. "
+            f"The ways this usually breaks, closest to yours first:\n{lines}\n\nWhat you sent:\n{row.get('need') or '-'}\n\nCustom AI Models · customaimodels.com\n")
 
 
 def _send_received(row, cfg):

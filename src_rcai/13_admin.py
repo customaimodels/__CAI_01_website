@@ -83,8 +83,16 @@ def people(cfg):
                      | {"projects": sorted({x["project"] for x in U.master(cfg) if x["email"] == r["email"] and x["project"]}),
                         "credit": balance(r["email"], led)})
     rows = I.load()
+    taps = {}                                                  # src_follow_up: doors tapped in the sign-up email
+    try:
+        for ln in (I.folder() / "doors.jsonl").read_text(encoding="utf-8").splitlines():
+            d = json.loads(ln)
+            taps.setdefault(d.get("email", ""), []).append(d.get("door", ""))
+    except (OSError, ValueError):
+        pass
     signups = [{k: r.get(k, "") for k in ("at", "email", "person", "company", "provider", "text")}
-               | {"credit": balance(r.get("email"), led), "owner": r.get("owner", False)}
+               | {"credit": balance(r.get("email"), led), "owner": r.get("owner", False),
+                  "doors": taps.get((r.get("email") or "").lower(), [])}
                for r in rows if r.get("kind") == "signup"]
     requests = [{k: r.get(k, "") for k in ("at", "email", "person", "what", "project", "text")}
                 for r in rows if r.get("kind") != "signup"]

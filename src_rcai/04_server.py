@@ -151,6 +151,8 @@ def handle(h, method):
             return _json(h, 200, {"ok": True})
         if rel.startswith("api/oauth/"):
             return _oauth(h, cfg, rel)
+        if rel == "api/door":                             # src_follow_up: a door tapped in the sign-up email
+            return _door(h)
         if rel == "api/me":
             email = _email(h)
             v = R.view(R.load(cfg), cfg, email) if email else None
@@ -324,6 +326,25 @@ def _request(h, cfg, data):
     if not ok:
         return _json(h, 429, {"error": "We have your last request. We write back within 24 hours.", "until": until})
     return _json(h, 200, {"ok": True, "until": until})
+
+
+def _door(h):
+    """Signed link only (src_follow_up.link). Logs {at,email,door} to <inbox>/doors.jsonl + RCAI_DOOR, then 302s
+    to the public page with utm tags (the beacon counts it on WEB). A bad signature just goes to /articles/."""
+    F = importlib.import_module("src_follow_up.follow")
+    href, row = F.open_(h.path.split("?", 1)[1] if "?" in h.path else "")
+    if not row:
+        return _go(h, "/articles/")
+    line = json.dumps(row, ensure_ascii=False)
+    print("RCAI_DOOR " + line, flush=True)
+    try:
+        f = I.folder()
+        f.mkdir(parents=True, exist_ok=True)
+        with (f / "doors.jsonl").open("a", encoding="utf-8") as fh:
+            fh.write(line + "\n")
+    except OSError:
+        pass
+    return _go(h, href)
 
 
 _SIGNUPS = {}
