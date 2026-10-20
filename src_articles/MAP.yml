@@ -109,7 +109,6 @@ pages:
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts. Here is the data work that has to come first, and where the model finally fits.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
       - {zone: main, a: "Your HVAC SEO froze. AI Overviews took the click.Page one used to be the finish line. Now an AI summary answers the homeowner before they click. Here is what still works, and the plumbing underneath it.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: main, a: "What replacing four spreadsheets actually tookBuilding a company's AI infrastructure from zero means the hard part was never the model.", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
-      - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
@@ -427,7 +426,6 @@ pages:
       - {zone: main, a: "Agents make this worse before they make it betterYou added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back.", href: "/articles/ai-agents-production-problems/", to: internal}
       - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made. Here is where the line sits, and how to enforce it.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
       - {zone: main, a: "What replacing four spreadsheets actually tookWhy the hard part of AI infrastructure is never the model.", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
-      - {zone: main, a: "Listening to a room in real timeA production ML system built on DSP features, not a prompt.", href: "/articles/real-time-audio-machine-learning/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
