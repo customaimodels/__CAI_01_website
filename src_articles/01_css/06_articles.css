@@ -45,6 +45,8 @@
 .art-body h2:first-child{margin-top:0}
 .art-body p{margin:0 0 24px}
 .art-body p:last-child{margin-bottom:0}
+.art-body h3{font:600 19px/1.4 var(--sans,inherit);margin:32px 0 10px}
+.art-body .answer{padding:0 0 0 18px;border-left:2px solid rgba(201,162,39,.55)}
 .art-body strong{font-weight:600}
 .art-body ul,.art-body ol{margin:0 0 24px;padding-left:1.3em}
 .art-body li{margin-bottom:8px}

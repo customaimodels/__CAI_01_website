@@ -187,8 +187,32 @@ def read(since: int = 0, limit: int = 20000) -> list:
     return out[-limit:]
 
 
+CRAWLERS = (("Googlebot", "googlebot"), ("Bing", "bingbot"), ("GPTBot", "gptbot"), ("ChatGPT", "chatgpt-user"),
+            ("ClaudeBot", "claudebot"), ("Perplexity", "perplexitybot"), ("LinkedIn", "linkedinbot"),
+            ("Applebot", "applebot"), ("DuckDuck", "duckduckbot"), ("Yandex", "yandexbot"))
+
+
+def _crawl(h, path: str) -> None:
+    """A crawler asking for a public page: one tiny row (name + path), never the UA or IP. Bots don't run the
+    beacon, so this is the only place they can be seen. JS/CSS/images and private paths are skipped."""
+    if "." in path.rsplit("/", 1)[-1] and not path.endswith(".html") or any(path == x or path.startswith(x + "/") for x in PRIVATE):
+        return
+    ua = h.headers.get("User-Agent", "")
+    if not ua or not BOTS.search(ua):
+        return
+    u = ua.lower()
+    name = next((n for n, k in CRAWLERS if k in u), "other")
+    if not _limited(_ip(h)):
+        keep({"ts": int(time.time()), "e": "bot", "b": name, "p": _clip(path, 200)})
+
+
 def handle(h, method) -> bool:
     path = h.path.split("?", 1)[0]
+    if method == "GET":
+        try:
+            _crawl(h, path)
+        except Exception:
+            pass
     if method == "GET" and path == "/cai-beacon.js":
         _send(h, 200, BEACON.encode(), "text/javascript; charset=utf-8", (("Cache-Control", "public, max-age=3600"),))
         return True
