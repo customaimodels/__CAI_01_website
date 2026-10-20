@@ -149,7 +149,6 @@ pages:
       - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
       - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
-      - {zone: nav, a: "HVAC Local SEO", href: "/articles/local-seo-hvac-contractors-ai/", to: internal, current: true}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
       - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
@@ -312,5 +311,4 @@ pages:
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "GM Fairfax Assembly Plant", href: "https://commons.wikimedia.org/wiki/File:GM_Fairfax_Assembly_Plant.jpg", to: external}
-drift:
-  - "local-seo-hvac-contractors-ai/index.html: nav differs from nav.yml"
+drift: []
