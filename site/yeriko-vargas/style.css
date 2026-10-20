@@ -26,6 +26,8 @@ nav.tabs a[aria-current="page"]{background:var(--ink);border-color:var(--ink);co
 .keys{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 32px}
 .keys a{display:inline-flex;align-items:center;height:42px;padding:0 18px;border:1px solid var(--ink);text-decoration:none;font-weight:600;font-size:14px}
 .keys a.main{background:var(--ink);color:var(--paper)}
+.keys a.rec{flex:1 1 100%;justify-content:center;height:56px;background:#f2cd57;border-color:#f2cd57;color:#0f0a17;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.keys a.rec:hover{background:#0f0a17;border-color:#0f0a17;color:#f2cd57}
 .keys a:hover{background:var(--ink);color:var(--paper)}
 
 section{border-top:1px solid var(--line);padding:36px 0}

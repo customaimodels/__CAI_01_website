@@ -41,6 +41,7 @@ KINDS = {
     "rebuild":  "Phase 2 · closed · request a different build",
     "signup":   "Sign up",
     "reader":   "Article reader · question card",
+    "recruiter": "Recruiter · access code request",
 }
 
 

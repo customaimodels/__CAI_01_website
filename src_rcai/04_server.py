@@ -224,7 +224,7 @@ def handle(h, method):
             return _json(h, 400, {"error": "bad request"})
         bal, why = ADM.add_credit(data.get("email"), data.get("amount"), data.get("note"))
         return _json(h, 400, {"error": why}) if bal is None else _json(h, 200, {"ok": True, "balance": bal})
-    if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup", "api/reader"):
+    if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup", "api/reader", "api/recruiter"):
         return _json(h, 404, {"error": "not found"})
     try:
         n = min(int(h.headers.get("Content-Length", 0)), 16384 if rel in ("api/scope", "api/request") else 4096)
@@ -237,6 +237,8 @@ def handle(h, method):
         return _event(h, cfg, data)
     if rel == "api/request":
         return _request(h, cfg, data)
+    if rel == "api/recruiter":  # 2026-10-20: REQUEST RECRUITER ACCESS (the /recruiter/ gate), no login
+        return _recruiter(h, cfg, data)
     if rel == "api/reader":  # 2026-10-20: the article question card (src_articles/02_js/04_reader.js), no login
         return _reader(h, cfg, data)
     if rel == "api/signup":  # reopened 2026-10-18 behind Google/Microsoft only (11_oauth); the bare form stays shut
@@ -387,6 +389,41 @@ def _reader(h, cfg, data):
     if not ok:
         return _json(h, 429, {"error": "We have it. We write back within 24 hours.", "until": until})
     _READERS[(ip, day)] = _READERS.get((ip, day), 0) + 1
+    return _json(h, 200, {"ok": True})
+
+
+_RECRUITERS = {}
+
+
+def _recruiter(h, cfg, data):
+    """The /recruiter/ gate's request (2026-10-20): {name, email, company, position, link, timeline}.
+    Lands in 08_inbox kind=recruiter + an admin mail. He (later an agent) decides who gets the code. Never mails them.
+    3 per IP a day; same email waits 24 h (08_inbox)."""
+    ip, day = _ip(h), time.strftime("%Y-%m-%d")
+    f = {k: str(data.get(k, "")).strip()[:300 if k == "link" else 160]
+         for k in ("name", "email", "company", "position", "link", "timeline")}
+    if str(data.get("hp", "")).strip():
+        return _json(h, 200, {"ok": True})
+    if len(f["name"]) < 2:
+        return _json(h, 400, {"error": "Your name, please."})
+    if not _EMAIL.match(f["email"]):
+        return _json(h, 400, {"error": "That email doesn't look right."})
+    if len(f["company"]) < 2:
+        return _json(h, 400, {"error": "Which company is hiring?"})
+    if len(f["position"]) < 2:
+        return _json(h, 400, {"error": "Which position is it for?"})
+    if f["link"] and not __import__("re").match(r"^https?://", f["link"]):
+        f["link"] = ""
+    if _RECRUITERS.get((ip, day), 0) >= 3:
+        return _json(h, 429, {"error": "We have it. The code comes by email within 24 hours."})
+    text = (f"Name: {f['name']}\nEmail: {f['email']}\nCompany: {f['company']}\nPosition: {f['position']}\n"
+            f"Job link: {f['link'] or '-'}\nHiring timeline: {f['timeline'] or '-'}")
+    ok, until = I.put(cfg, f["email"], "recruiter", text, "", f["name"],
+                      {"client_id": "recruiter", "company": f["company"], "position": f["position"],
+                       "link": f["link"], "timeline": f["timeline"]})
+    if not ok:
+        return _json(h, 429, {"error": "We have it. The code comes by email within 24 hours.", "until": until})
+    _RECRUITERS[(ip, day)] = _RECRUITERS.get((ip, day), 0) + 1
     return _json(h, 200, {"ok": True})
 
 

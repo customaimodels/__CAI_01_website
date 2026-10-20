@@ -56,6 +56,7 @@ SAY = {
     "feedback": ("FEEDBACK", "sent feedback", "Read it. Reply if it needs an answer."),
     "support":  ("SUPPORT", "opened a quick chat about the support plan", "Reply today."),
     "signup":   ("SIGN UP", "asked for R-CAI access", "Check who they are, then add them to access.json and send the code word."),
+    "recruiter": ("RECRUITER", "asked for the recruiter access code", "Check the company and the role. A fit: send the code (or a personal link, run.py --recruiter-link)."),
     "reader":   ("READER", "answered the question card on an article", "Reply within 24 h from yeriko@, one line on their problem, one question back."),
 }
 

@@ -95,7 +95,7 @@ def people(cfg):
                   "doors": taps.get((r.get("email") or "").lower(), [])}
                for r in rows if r.get("kind") == "signup"]
     requests = [{k: r.get(k, "") for k in ("at", "email", "person", "what", "project", "text")}
-                for r in rows if r.get("kind") not in ("signup", "reader")]
+                for r in rows if r.get("kind") not in ("signup", "reader", "recruiter")]
     readers = [{k: r.get(k, "") for k in ("at", "ts", "email", "person", "company", "scale", "page", "src", "vid", "frame", "text")}
                for r in rows if r.get("kind") == "reader"]          # 2026-10-20: the article card (11_inbound reads it)
     raw_taps = []

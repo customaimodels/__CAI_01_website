@@ -47,13 +47,32 @@ TYPES = {".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/j
 GATE = b"""<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="/favicon.ico?v=k1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/03_img/favicon-32.png?v=k1"><link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Private</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0f0a17;color:#ece8f2;font:16px/1.5 Inter,system-ui,sans-serif}
-main{max-width:30rem;width:100%%;padding:2rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}
+main{max-width:30rem;width:100%%;box-sizing:border-box;padding:2rem 1.4rem;border-top:1px solid #f2cd57}h1{font-weight:600;font-size:1.4rem;margin:0 0 .5rem}p{color:#a79fb5;margin:0}
 input{margin-top:1.2rem;width:100%%;box-sizing:border-box;padding:.8rem 1rem;background:#1a1226;color:#ece8f2;border:1px solid #3a2d4d;
 font:500 1rem/1 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}input:focus{outline:none;border-color:#f2cd57}
-button{margin-top:.8rem;padding:.7rem 1.2rem;background:#f2cd57;color:#0f0a17;border:0;font:600 .9rem Inter,system-ui,sans-serif;cursor:pointer}</style>
+button{margin-top:.8rem;padding:.7rem 1.2rem;background:#f2cd57;color:#0f0a17;border:0;font:600 .9rem Inter,system-ui,sans-serif;cursor:pointer}
+.req{margin-top:2.4rem;padding-top:1.6rem;border-top:1px solid #2a2038}.req h2{font-weight:600;font-size:1.05rem;margin:0 0 .3rem}
+.req input,.req select{text-transform:none;letter-spacing:0;margin-top:.7rem;width:100%%;box-sizing:border-box;padding:.75rem 1rem;background:#1a1226;color:#ece8f2;border:1px solid #3a2d4d;font:400 .95rem/1.2 Inter,system-ui,sans-serif}
+.req select:focus{outline:none;border-color:#f2cd57}.req .hp{position:absolute;left:-9999px}.req button{width:100%%;padding:.9rem;font-size:.95rem}
+.req .say{margin-top:.8rem;min-height:1.2em;color:#f2cd57}.req .say.bad{color:#ff8a8a}.req.done form{display:none}</style>
 </head><body><main><h1>%s</h1><p>%s</p>%s</main></body></html>"""
 FORM = b"""<form method="post" action="/recruiter/login" autocomplete="off"><input name="code" type="password" autocapitalize="characters"
-aria-label="Code" placeholder="code" maxlength="40" autofocus><button type="submit">Open</button></form>"""
+aria-label="Code" placeholder="access code" maxlength="40" autofocus><button type="submit">Open</button></form>
+<div class="req" id="req"><h2>No code yet?</h2><p>Tell me who you are and the role. The code comes to your email.</p>
+<form id="rq" novalidate><input name="name" placeholder="Your name" autocomplete="name" maxlength="160" required>
+<input name="email" type="email" placeholder="Work email" autocomplete="email" maxlength="160" required>
+<input name="company" placeholder="Company hiring" autocomplete="organization" maxlength="160" required>
+<input name="position" placeholder="Position you're hiring for" maxlength="160" required>
+<input name="link" type="url" placeholder="Job posting link (optional)" maxlength="300">
+<select name="timeline" aria-label="Hiring timeline"><option value="">When do you want to hire?</option><option>This month</option>
+<option>Within 3 months</option><option>Later / pipeline</option></select>
+<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">Send the code to my email</button></form><p class="say" id="say" role="status"></p></div>
+<script>(function(){var f=document.getElementById("rq"),s=document.getElementById("say");f.addEventListener("submit",function(e){e.preventDefault();
+var d={};new FormData(f).forEach(function(v,k){d[k]=v});s.className="say";s.textContent="Sending...";
+fetch("/r-cai/api/recruiter",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)}).then(function(r){return r.json().then(function(j){return[r.ok,j]})})
+.then(function(x){if(x[0]){document.getElementById("req").classList.add("done");s.textContent="Got it. Your code comes by email within 24 hours."}
+else{s.className="say bad";s.textContent=x[1].error||"That didn't go through. Try again."}}).catch(function(){s.className="say bad";s.textContent="That didn't go through. Try again."})})})()</script>"""
 
 
 def _key():
@@ -207,7 +226,7 @@ def handle(h, method):
     if rel == "out":
         return _send(h, 303, b"", headers=[("Location", MOUNT + "/"), ("Set-Cookie", _cookie("", 0))])
     if not _who(h):
-        return _gate(h, 401, "Private", "Enter the code you were sent, or open your personal link.", form=True)
+        return _gate(h, 401, "Recruiter access", "Enter your access code, or request one below.", form=True)
     files = _files()
     f = files.get(rel or "index.html")
     if f is None:
