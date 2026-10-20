@@ -40,6 +40,7 @@ KINDS = {
     "support":  "Phase 2 · support plan · quick chat",
     "rebuild":  "Phase 2 · closed · request a different build",
     "signup":   "Sign up",
+    "reader":   "Article reader · question card",
 }
 
 

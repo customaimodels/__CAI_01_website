@@ -224,7 +224,7 @@ def handle(h, method):
             return _json(h, 400, {"error": "bad request"})
         bal, why = ADM.add_credit(data.get("email"), data.get("amount"), data.get("note"))
         return _json(h, 400, {"error": why}) if bal is None else _json(h, 200, {"ok": True, "balance": bal})
-    if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup"):
+    if rel not in ("api/login", "api/password", "api/scope", "api/event", "api/request", "api/signup", "api/reader"):
         return _json(h, 404, {"error": "not found"})
     try:
         n = min(int(h.headers.get("Content-Length", 0)), 16384 if rel in ("api/scope", "api/request") else 4096)
@@ -237,6 +237,8 @@ def handle(h, method):
         return _event(h, cfg, data)
     if rel == "api/request":
         return _request(h, cfg, data)
+    if rel == "api/reader":  # 2026-10-20: the article question card (src_articles/02_js/04_reader.js), no login
+        return _reader(h, cfg, data)
     if rel == "api/signup":  # reopened 2026-10-18 behind Google/Microsoft only (11_oauth); the bare form stays shut
         return _signup(h, cfg, data)
     ip = _ip(h)
@@ -348,6 +350,35 @@ def _door(h):
 
 
 _SIGNUPS = {}
+_READERS = {}
+_EMAIL = __import__("re").compile(r"^[^@\s]{1,64}@[^@\s]{1,120}\.[a-z]{2,24}$", __import__("re").I)
+
+
+def _reader(h, cfg, data):
+    """The article question card: {email, answer, page, src, consent}. Saved to 08_inbox kind=reader + admin mail.
+    Consent tick required (we only write back to people who asked). 3 per IP a day; same email waits 24 h."""
+    ip, day = _ip(h), time.strftime("%Y-%m-%d")
+    f = {k: str(data.get(k, "")).strip()[:1200 if k == "answer" else 160] for k in ("email", "answer", "page", "src", "name")}
+    if str(data.get("hp", "")).strip():                 # honeypot: bots fill it, people never see it
+        return _json(h, 200, {"ok": True})
+    if not _EMAIL.match(f["email"]):
+        return _json(h, 400, {"error": "That email doesn't look right."})
+    if len(f["answer"]) < 3:
+        return _json(h, 400, {"error": "One line is enough. What would you fix first?"})
+    if data.get("consent") is not True:
+        return _json(h, 400, {"error": "Tick the box so we can write back."})
+    if not f["page"].startswith("/articles/"):
+        f["page"] = "/articles/"
+    if _READERS.get((ip, day), 0) >= 3:
+        return _json(h, 429, {"error": "We have it. We write back within 24 hours."})
+    text = (f"From the article: https://customaimodels.com{f['page']}\nCame from: {f['src'] or 'direct'}\n"
+            f"Name: {f['name'] or '-'}\nEmail: {f['email']}\nConsent to reply: yes\n\nTheir answer:\n{f['answer']}")
+    ok, until = I.put(cfg, f["email"], "reader", text, "", f["name"], {"client_id": "reader", "page": f["page"], "src": f["src"]})
+    if not ok:
+        return _json(h, 429, {"error": "We have it. We write back within 24 hours.", "until": until})
+    _READERS[(ip, day)] = _READERS.get((ip, day), 0) + 1
+    return _json(h, 200, {"ok": True})
+
 
 
 def _signup(h, cfg, data):
