@@ -25,6 +25,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://customaimodels.com/articles/ai-agents-production-problems/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://customaimodels.com/articles/ai-data-readiness-before-rag/</loc>
     <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>

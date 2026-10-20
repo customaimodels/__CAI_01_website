@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agents in Production: Why They Break First</title>
+<meta name="description" content="Why AI agents add failure points before they add value, and the gates, telemetry and data work that turn the dip around in production.">
+<link rel="canonical" href="https://customaimodels.com/articles/ai-agents-production-problems/">
+<meta property="og:locale" content="en_US">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="keywords" content="AI agents in production, LLM tool calling, deterministic AI workflows, AI tool orchestration, LLM evaluation, production AI systems, Python pipelines, AI automation, Custom AI Models, Custom AI Models">
+<meta name="author" content="Yeriko Vargas">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="Agents make this worse before they make it better">
+<meta property="og:description" content="Why AI agents add failure points before they add value, and the gates, telemetry and data work that turn the dip around in production.">
+<meta property="og:url" content="https://customaimodels.com/articles/ai-agents-production-problems/">
+<meta property="og:image" content="https://customaimodels.com/articles/03_img/og_ai-agents-production-problems.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Warehouse and distribution floor where each handoff between systems needs a check, like each tool call in an AI agent chain">
+<meta property="article:published_time" content="2026-10-20">
+<meta property="article:modified_time" content="2026-10-20">
+<meta property="article:author" content="https://www.linkedin.com/in/yeriko-vargas/">
+<meta property="article:section" content="AI Systems">
+<meta property="article:tag" content="AI agents">
+<meta property="article:tag" content="tool calling">
+<meta property="article:tag" content="validation gates">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agents make this worse before they make it better">
+<meta name="twitter:description" content="Why AI agents add failure points before they add value, and the gates, telemetry and data work that turn the dip around in production.">
+<meta name="twitter:image" content="https://customaimodels.com/articles/03_img/og_ai-agents-production-problems.jpg">
+<meta name="twitter:image:alt" content="Warehouse and distribution floor where each handoff between systems needs a check, like each tool call in an AI agent chain">
+<link rel="icon" href="../03_img/favicon.ico?v=k1" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="../03_img/favicon-48.png?v=k1">
+<link rel="icon" type="image/png" sizes="32x32" href="../03_img/favicon-32.png?v=k1">
+<link rel="icon" type="image/png" sizes="16x16" href="../03_img/favicon-16.png?v=k1">
+<link rel="apple-touch-icon" sizes="180x180" href="../03_img/apple-touch-icon.png?v=k1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500;600&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../01_css/00_tokens.css?v=28b406bb29">
+<link rel="stylesheet" href="../01_css/01_site.css?v=28b406bb29">
+<link rel="stylesheet" href="../01_css/04_land.css?v=28b406bb29">
+<link rel="stylesheet" href="../01_css/06_articles.css?v=28b406bb29">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Agents make this worse before they make it better",
+  "description": "Why AI agents add failure points before they add value, and the gates, telemetry and data work that turn the dip around in production.",
+  "url": "https://customaimodels.com/articles/ai-agents-production-problems/",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "inLanguage": "en",
+  "articleSection": "AI Systems",
+  "keywords": "AI agents in production, LLM tool calling, deterministic AI workflows, AI tool orchestration, LLM evaluation, production AI systems, Python pipelines, AI automation, Custom AI Models",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://customaimodels.com/articles/03_img/og_ai-agents-production-problems.jpg",
+    "contentUrl": "https://customaimodels.com/articles/03_img/og_ai-agents-production-problems.jpg",
+    "width": 1200,
+    "height": 630,
+    "caption": "Warehouse and distribution floor where each handoff between systems needs a check, like each tool call in an AI agent chain",
+    "copyrightHolder": {
+      "@id": "https://customaimodels.com/#org"
+    },
+    "creditText": "Custom AI Models",
+    "copyrightNotice": "© Custom AI Models. All rights reserved.",
+    "license": "https://customaimodels.com/image-license/",
+    "acquireLicensePage": "https://customaimodels.com/image-license/"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Yeriko Vargas",
+    "url": "https://www.linkedin.com/in/yeriko-vargas"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://customaimodels.com/#org",
+    "name": "Custom AI Models",
+    "url": "https://customaimodels.com/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://customaimodels.com/articles/ai-agents-production-problems/"
+  },
+  "abstract": "Agents make production AI worse before better because every tool call adds a step that can fail quietly and pass its mistake along. Deterministic validation gates, telemetry and clean data turn that dip around. Custom AI Models builds the checks between steps first, then lets the model act inside them.",
+  "associatedMedia": [
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-0904i01_ai-agents-production-problems.webp",
+      "url": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-0904i01_ai-agents-production-problems.webp",
+      "width": 640,
+      "height": 640,
+      "caption": "The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on AI agents in production.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved.",
+      "license": "https://customaimodels.com/image-license/",
+      "acquireLicensePage": "https://customaimodels.com/image-license/"
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1207i02_ai-agents-production-problems.webp",
+      "url": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1207i02_ai-agents-production-problems.webp",
+      "width": 1600,
+      "height": 400,
+      "caption": "Custom AI Models banner (light (paper) theme): \"What production AI runs on. Operational, not magical: RBAC, Telemetry, Data drift, Deterministic validation gates, JSON schemas.\". From the Custom AI Models article on AI agents in production.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved.",
+      "license": "https://customaimodels.com/image-license/",
+      "acquireLicensePage": "https://customaimodels.com/image-license/"
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1205i02_ai-agents-production-problems.webp",
+      "url": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1205i02_ai-agents-production-problems.webp",
+      "width": 1600,
+      "height": 400,
+      "caption": "Custom AI Models banner (light (paper) theme): \"Fewer AI calls. More Python control. Deterministic code does the work. The model gets the step that needs it.\". From the Custom AI Models article on AI agents in production.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved.",
+      "license": "https://customaimodels.com/image-license/",
+      "acquireLicensePage": "https://customaimodels.com/image-license/"
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1302i01_ai-agents-production-problems.webp",
+      "url": "https://customaimodels.com/articles/ai-agents-production-problems/brand/cai-1302i01_ai-agents-production-problems.webp",
+      "width": 1600,
+      "height": 500,
+      "caption": "Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: \"Executive automation. Secure your operational leverage. Team-gated, Detroit-engineered agent workflows. customaimodels.com\". From the Custom AI Models article on AI agents in production.",
+      "creditText": "Custom AI Models",
+      "copyrightHolder": {
+        "@id": "https://customaimodels.com/#org"
+      },
+      "copyrightNotice": "© 2026 Custom AI Models. All rights reserved.",
+      "license": "https://customaimodels.com/image-license/",
+      "acquireLicensePage": "https://customaimodels.com/image-license/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://customaimodels.com/articles/ai-agents-production-problems/#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How long does the agent dip last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It lasts until every step has a gate and a log. The dip ends when failures become visible and cheap to fix, not when the model gets smarter. Teams that wire validation and telemetry before adding the next agent shorten it. Teams that keep adding agents first stay inside it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should we drop agents and stay with a single prompt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not if the job needs several systems. A single prompt is easier to check, so keep it where one step is enough. Move to agents when the work crosses tools, and add the gates at the same time. The mistake is adding agents without the checks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What data does an agent need before it can act safely?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One agreed record per customer, order or asset, with clear owners and retention rules. Agents act on what they read, so conflicting sources become wrong actions. Unify the data first, model it, then expose it to tools through narrow, permissioned calls."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who should own the validation gates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Engineering owns the code, and the business owns the rules inside it. An ops lead defines what a valid order or report looks like. An engineer turns that into a schema and a check that exits non-zero. Nobody should delegate that decision back to the model."
+      }
+    }
+  ]
+}
+</script>
+<script defer src="/cai-beacon.js"></script>
+</head>
+<body class="report">
+
+<header id="bar">
+ <div class="wrap">
+  <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+  <nav aria-label="Articles">
+   <a href="/articles/">Articles</a>
+   <a href="/articles/rag-production-architecture/">RAG</a>
+   <a href="/articles/replacing-spreadsheets-ai-infrastructure/">Training Hub</a>
+   <a href="/articles/real-time-audio-machine-learning/">Real-time audio</a>
+   <a href="/articles/statistics-to-llm-ai-engineering/">Stats to LLMs</a>
+   <a href="/articles/python-ai-agent-pipelines/">Tool pipelines</a>
+  </nav>
+  <div class="act">
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+   <a class="btn fill" href="/#ask">Start a project</a>
+  </div>
+ </div>
+</header>
+
+<main id="top">
+
+<div class="art-head">
+ <div class="frame bp-hero"><!--bp:hero-->
+  <video class="bp-loop" src="brand/cai-0601v01_ai-agents-production-problems-hero-loop.mp4" poster="brand/cai-0601v01_ai-agents-production-problems-hero-poster.webp" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <img class="bp-mark" src="brand/cai-0904i01_ai-agents-production-problems.webp" alt="The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on AI agents in production." width="640" height="640" loading="eager" decoding="async">
+  <!--/bp--></div>
+ <div class="wrap cap">
+  <span class="eyebrow">Data Systems</span>
+  <h1>Agents make this worse before they make it better</h1>
+  <p class="deck">You added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back.</p>
+  <div class="byline"><img src="../03_img/01_mark.png" alt=""><b>Yeriko Vargas</b> · Founder, Custom AI Models · Oct 2026</div>
+ </div>
+</div>
+
+<article class="art-body reveal">
+
+<p class="answer"><strong>Short answer.</strong> Agents make production AI worse before better because every tool call adds a step that can fail quietly and pass its mistake along. Deterministic validation gates, telemetry and clean data turn that dip around. Custom AI Models builds the checks between steps first, then lets the model act inside them.</p>
+
+<h2>Why do AI agents make production worse before better?</h2>
+<p>Agents add steps, and every step is a new place to be wrong. A single prompt fails once, in front of you. An agent chain fails in the middle, says nothing, and hands its mistake to the next stage. That is the dip. The failure surface grows with every tool call, while your ability to see it stays flat. If you ran a demo and watched it break, you have already met the small version.</p><p>Custom AI Models has built this way since 2022, and the pattern repeats. Week one, the agent looks brilliant. Week three, it books the wrong thing, retries a call that should never repeat, and nobody can say which step went sideways. The model did not get worse. The system got longer, and nothing was checking the joints.</p><p>Our order never changes: unify the data, model it, gate every step, the model last. Agents jump to the end of that list. That is why they hurt first.</p>
+
+<!--bp:cai-1207i02-->
+<figure class="bp-ad">
+ <img src="brand/cai-1207i02_ai-agents-production-problems.webp" alt="Custom AI Models banner (light (paper) theme): &quot;What production AI runs on. Operational, not magical: RBAC, Telemetry, Data drift, Deterministic validation gates, JSON schemas.&quot;. From the Custom AI Models article on AI agents in production." width="1600" height="400" loading="lazy" decoding="async">
+ <figcaption><span class="bp-cap">AI agents in production: the step most teams skip.</span><span class="bp-keys"><a class="bp-key go" href="/articles/rag-production-architecture/">RAG as an architecture</a><a class="bp-key line" href="/#ask">Start a project</a></span></figcaption>
+</figure>
+<!--/bp-->
+
+<h2>What breaks when an agent starts calling tools?</h2>
+<p>LLM tool calling turns text into actions, and text can be wrong in ways code cannot. The agent picks a tool, writes the arguments, reads the result and decides what to do next. Each of those four moves is a claim, not a fact. Without a check, a wrong claim becomes a real email, a real database write or a real invoice.</p><p>These are the failures we see most:</p><ul><li>A wrong tool gets picked because two descriptions overlap.</li><li>Arguments parse cleanly but mean the wrong thing, like a date in the wrong format.</li><li>Stale data from an early step leaks into a late one.</li><li>A retry repeats a side effect, and the customer gets a second email.</li><li>The agent reports a confident summary of a step that never ran.</li></ul><p>We wrote about the habit that contains all five in <a href="/articles/python-ai-agent-pipelines/">Twelve tools, one Python pipeline</a>: every call is a claim until a check proves it. The line between what the model decides and what code decides gets its own treatment in <a href="/articles/deterministic-logic-llm-orchestration/">The model is a stage. The program is the system.</a></p>
+
+<h2>Gate every step with deterministic AI workflows</h2>
+<p>A gate is a few lines of code that answers yes or no. It never asks the model whether the model was right. Run a stage, validate the output against a <strong>JSON schema</strong>, read the exit code, and stop on a fail. Python owns the loop. The model owns one narrow job inside it. A headless call such as <code>claude -p</code> fits well here, because it hands text to a script that can judge it.</p><p>Four checks cover most of the damage:</p><ul><li>Shape: does the output parse into what the next stage expects?</li><li>Range: is every value inside what the business allows?</li><li>Identity: does the record the agent names exist in your database?</li><li>Repeat: has this action already run once?</li></ul><p>Fail loud. A gate that logs a warning and carries on is decoration. Exit non-zero, write the reason down, and let a human or a retry policy decide. Boring is the goal. These are <strong>deterministic validation gates</strong>, and they are what makes the second month better than the first.</p>
+
+<!--bp:cai-1205i02-->
+<figure class="bp-ad">
+ <img src="brand/cai-1205i02_ai-agents-production-problems.webp" alt="Custom AI Models banner (light (paper) theme): &quot;Fewer AI calls. More Python control. Deterministic code does the work. The model gets the step that needs it.&quot;. From the Custom AI Models article on AI agents in production." width="1600" height="400" loading="lazy" decoding="async">
+ <figcaption><span class="bp-cap">Built in Detroit, gated in Python: AI agents in production done the boring way.</span><span class="bp-keys"><a class="bp-key go" href="/articles/python-ai-agent-pipelines/">Fewer calls, more Python</a><a class="bp-key line" href="/#ask">Start a project</a></span></figcaption>
+</figure>
+<!--/bp-->
+
+<h2>Is the agent dip a model problem or a data problem?</h2>
+<p>Mostly data. An agent reads whatever you point it at, then acts on it. If two systems disagree about a customer, the agent picks one and sounds sure. Dirty data behind a chat box produces a bad answer. Dirty data behind an agent produces a bad action, and bad actions are where the legal and financial liability lives.</p><p>That is why <a href="/articles/ai-data-readiness-before-rag/">Your AI didn't fail. Your data did.</a> sits first in our order. It is also why <a href="/articles/replacing-spreadsheets-ai-infrastructure/">replacing four spreadsheets</a> came down to registration, retention and who is allowed to see what.</p><p>Permissions matter more once software can act. Apply <strong>RBAC</strong> to the tools, not only the data. An agent should hold the access of the person who launched it, and nothing wider.</p>
+
+<h2>How do you tell when agents are getting better?</h2>
+<p>Measure every step. You can only fix what you can see, and you can only see it with <strong>telemetry</strong>. Log each tool call, its arguments, its result, its gate verdict and its latency. Then run <strong>LLM evaluation</strong> on a fixed set of cases whenever you change a prompt or a model. If you cannot replay last Tuesday's failure, you cannot prove you fixed it.</p><p>Four numbers tell you which way the curve is bending:</p><ul><li>Gate pass rate, per stage.</li><li>Wrong-tool picks, per tool.</li><li>Retries per job.</li><li>Shifts in input shape, the early sign of <strong>data drift</strong>.</li></ul><p>The same loop holds up the retrieval systems in <a href="/articles/rag-production-architecture/">RAG isn't a feature. It's an architecture.</a> The prompt sits in the middle. The telemetry around it does the work. When the curve turns, it turns because a gate caught what the model missed and you tightened it. Then you add the next agent.</p>
+
+<section class="faq" id="faq">
+<h2>Questions people ask</h2>
+<h3>How long does the agent dip last?</h3>
+<p>It lasts until every step has a gate and a log. The dip ends when failures become visible and cheap to fix, not when the model gets smarter. Teams that wire validation and telemetry before adding the next agent shorten it. Teams that keep adding agents first stay inside it.</p>
+<h3>Should we drop agents and stay with a single prompt?</h3>
+<p>Not if the job needs several systems. A single prompt is easier to check, so keep it where one step is enough. Move to agents when the work crosses tools, and add the gates at the same time. The mistake is adding agents without the checks.</p>
+<h3>What data does an agent need before it can act safely?</h3>
+<p>One agreed record per customer, order or asset, with clear owners and retention rules. Agents act on what they read, so conflicting sources become wrong actions. Unify the data first, model it, then expose it to tools through narrow, permissioned calls.</p>
+<h3>Who should own the validation gates?</h3>
+<p>Engineering owns the code, and the business owns the rules inside it. An ops lead defines what a valid order or report looks like. An engineer turns that into a schema and a check that exits non-zero. Nobody should delegate that decision back to the model.</p>
+</section>
+
+<!--bp:cai-1302i01-->
+<figure class="bp-ad bp-cta">
+ <a class="bp-hit" href="/#ask" aria-label="Start a project with Custom AI Models"><img src="brand/cai-1302i01_ai-agents-production-problems.webp" alt="Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: &quot;Executive automation. Secure your operational leverage. Team-gated, Detroit-engineered agent workflows. customaimodels.com&quot;. From the Custom AI Models article on AI agents in production." width="1600" height="500" loading="lazy" decoding="async"></a>
+ <figcaption><span class="bp-cap">Your data first, the model last. One build, one owner, Python you keep.</span><span class="bp-keys"><a class="bp-key go" href="/#ask">Secure your leverage</a><a class="bp-key line" href="https://linkedin.com/in/yeriko-vargas" target="_blank" rel="noopener noreferrer">Talk on LinkedIn</a></span></figcaption>
+</figure>
+<!--/bp-->
+
+</article>
+
+<div class="art-foot">
+ <a class="art-back" href="/articles/">All articles</a>
+ <div class="art-tags"><span>AI agents</span><span>tool calling</span><span>validation gates</span></div>
+</div>
+
+<div class="art-related">
+ <span class="label">More from Custom AI Models</span>
+  <a href="/articles/python-ai-agent-pipelines/">Twelve tools, one Python pipeline<span>How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.</span></a>
+  <a href="/articles/deterministic-logic-llm-orchestration/">The model is a stage. The program is the system.<span>Most agent failures are decisions you gave the model that a few lines of code should have made.</span></a>
+  <a href="/articles/ai-data-readiness-before-rag/">Your AI didn&#x27;t fail. Your data did.<span>You tried a demo and watched it break.</span></a>
+</div>
+
+</main>
+
+<div class="art-cta">
+ <div class="inner">
+  <h2>Stop pointing RAG at broken spreadsheets.</h2>
+  <p>Bring the demo that broke. We will find the step with no gate, and the table underneath it with no owner.</p>
+  <div class="row">
+   <a class="btn fill" href="/#ask">Start a project</a>
+   <a class="btn line" href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+  <div class="who">
+   <img src="../03_img/01_mark.png" alt="">
+   <div><b>Yeriko Vargas</b><span>AI Systems Architect · Detroit, MI · remote-first</span></div>
+  </div>
+ </div>
+</div>
+
+<footer>
+ <div class="wrap">
+  <div class="row1">
+   <a class="brand" href="/"><img src="../03_img/05_knot_gold.png" alt="">Custom AI Models</a>
+   <span>Est. 2022 · © 2026 Custom AI Models</span>
+   <a href="https://linkedin.com/in/yeriko-vargas">LinkedIn</a>
+  </div>
+ </div>
+</footer>
+<script src="../02_js/01_site.js?v=28b406bb29"></script>
+<script src="../02_js/03_reveal.js?v=28b406bb29"></script>
+<script src="../02_js/04_reader.js?v=28b406bb29"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "title": "Agents make this worse before they make it better",
+  "deck": "You added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back.",
+  "date": "2026-10-20",
+  "tags": [
+    "AI agents",
+    "tool calling",
+    "validation gates"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 4,
+  "slug": "ai-agents-production-problems",
+  "category": "AI Systems",
+  "subcategory": "AI Agents",
+  "url": "https://customaimodels.com/articles/ai-agents-production-problems/"
+}
