@@ -1,0 +1,47 @@
+{
+ "slug": "deterministic-logic-llm-orchestration",
+ "topic": "agents",
+ "made": "2026-10-20T08:29:58-04:00",
+ "pieces": {
+  "hero_loop": {
+   "pool": "vid/06xx_background/cai-0601v01_background_brand-nebula-deep-space_16x9-1080p_05s_loop_20261018.mp4",
+   "media_id": "cai-0601v01",
+   "file": "cai-0601v01_deterministic-logic-llm-orchestration-hero-loop.mp4",
+   "src_sha": "69cc86a2cdb91cd7c1dae01cc55b6995a63f932eb7906e97a172f6719347ff9a",
+   "bytes": 324160,
+   "alt": "The gold 3D Celtic-knot emblem of Custom AI Models: brand nebula deep space. From the Custom AI Models article on deterministic AI workflows."
+  },
+  "hero_mark": {
+   "pool": "img/09xx_logo-mark/cai-0904i01_logo-mark_gold-knot-3d-transparent_1x1-1254p_still_alpha_20261018.png",
+   "media_id": "cai-0904i01",
+   "file": "cai-0904i01_deterministic-logic-llm-orchestration.webp",
+   "src_sha": "ca49adfb691b6448ccd18d9cdf1b40ab9cd42bd91bce664a4144820c7759ec31",
+   "bytes": 62918,
+   "alt": "The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on deterministic AI workflows."
+  },
+  "ad1": {
+   "pool": "img/12xx_article-breaker/cai-1205i02_article-breaker_fewer-ai-calls-more-python-control-light_4x1-400p_still_opaque_20261018.png",
+   "media_id": "cai-1205i02",
+   "file": "cai-1205i02_deterministic-logic-llm-orchestration.webp",
+   "src_sha": "56f5e9dbf3b26475a03d0c5e44379e6bec87b885ecada82f11b22abef8c05fb4",
+   "bytes": 25446,
+   "alt": "Custom AI Models banner (light (paper) theme): \"Fewer AI calls. More Python control. Deterministic code does the work. The model gets the step that needs it.\". From the Custom AI Models article on deterministic AI workflows."
+  },
+  "ad2": {
+   "pool": "img/12xx_article-breaker/cai-1206i02_article-breaker_gate-every-step-deterministic-validation-light_4x1-400p_still_opaque_20261018.png",
+   "media_id": "cai-1206i02",
+   "file": "cai-1206i02_deterministic-logic-llm-orchestration.webp",
+   "src_sha": "71928607922d44c7262ffcbf960a73110cb0619ec9648379b5648baf2e5bb313",
+   "bytes": 20848,
+   "alt": "Custom AI Models banner (light (paper) theme): \"Deterministic validation. Gate every step. Schemas, exit codes and checks between every model call.\". From the Custom AI Models article on deterministic AI workflows."
+  },
+  "cta": {
+   "pool": "img/13xx_article-cta/cai-1302i01_article-cta_secure-your-operational-leverage-dark_16x5-500p_still_opaque_20261018.png",
+   "media_id": "cai-1302i01",
+   "file": "cai-1302i01_deterministic-logic-llm-orchestration.webp",
+   "src_sha": "28cb1e1a655b5e65bfa443df19f91323cce0868f8b1205e847d734d7b7fcefed",
+   "bytes": 54282,
+   "alt": "Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: \"Executive automation. Secure your operational leverage. Team-gated, Detroit-engineered agent workflows. customaimodels.com\". From the Custom AI Models article on deterministic AI workflows."
+  }
+ }
+}

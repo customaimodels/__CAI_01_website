@@ -1,0 +1,16 @@
+{
+  "title": "The model is a stage. The program is the system.",
+  "deck": "Most agent failures are decisions you gave the model that a few lines of code should have made. Here is where the line sits, and how to enforce it.",
+  "date": "2026-10-20",
+  "tags": [
+    "deterministic workflows",
+    "LLM orchestration",
+    "Python pipelines"
+  ],
+  "author": "Yeriko Vargas",
+  "read_minutes": 4,
+  "slug": "deterministic-logic-llm-orchestration",
+  "category": "AI Systems",
+  "subcategory": "Orchestration",
+  "url": "https://customaimodels.com/articles/deterministic-logic-llm-orchestration/"
+}
