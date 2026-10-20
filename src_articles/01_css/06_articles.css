@@ -173,3 +173,11 @@ body.report nav a[aria-current="page"]{opacity:1;box-shadow:inset 0 -1px 0 var(-
 .art-body .bp-cta .bp-hit{display:block;border-radius:14px}
 .art-body .bp-cta .bp-hit:focus-visible,.art-body .bp-key:focus-visible{outline:2px solid var(--yolk);outline-offset:3px}
 @media (max-width:760px){.art-body .bp-ad figcaption{flex-direction:column;align-items:flex-start}.art-body .bp-key{height:44px}}
+/* Phase 2 (10-20): tables + definitions the SEO app may write, quiet ledger look */
+.art-body table{width:100%;border-collapse:collapse;margin:0 0 24px;font-size:15px}
+.art-body caption{text-align:left;font-size:13px;opacity:.7;padding-bottom:8px}
+.art-body th,.art-body td{text-align:left;padding:10px 12px;border-bottom:1px solid rgba(127,127,127,.25);vertical-align:top}
+.art-body th{font-weight:600}
+.art-body dl{margin:0 0 24px}
+.art-body dt{font-weight:600;margin-top:12px}
+.art-body dd{margin:2px 0 0}
