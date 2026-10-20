@@ -7,13 +7,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="description" content="Seven real AI systems by Yeriko Vargas: RAG, agent pipelines, real-time audio ML, training hubs. How each one runs, step by step.">
+<meta name="description" content="Real AI systems by Yeriko Vargas: RAG and agents, real-time audio ML, deep learning on 250K vehicles, clinical stats, 1.47M work orders.">
 <link rel="canonical" href="https://customaimodels.com/yeriko-vargas/portfolio/">
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="Custom AI Models">
 <meta property="og:title" content="Yeriko Vargas · Portfolio">
-<meta property="og:description" content="Seven real AI systems by Yeriko Vargas: RAG, agent pipelines, real-time audio ML, training hubs. How each one runs, step by step.">
+<meta property="og:description" content="Real AI systems by Yeriko Vargas: RAG and agents, real-time audio ML, deep learning on 250K vehicles, clinical stats, 1.47M work orders.">
 <meta property="og:url" content="https://customaimodels.com/yeriko-vargas/portfolio/">
 <meta property="og:image" content="https://customaimodels.com/03_img/09_og_card.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -26,7 +26,7 @@
 </script>
 <title>Yeriko Vargas · Portfolio</title>
 <!-- /yeriko-vargas/portfolio/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
-<link rel="stylesheet" href="/yeriko-vargas/style.css?v=f35d05e683">
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=259ae1573a">
 <script defer src="/cai-beacon.js"></script>
 </head>
 <body>
@@ -41,6 +41,7 @@
   <a href="/yeriko-vargas/portfolio/" aria-current="page">Portfolio</a>
   <a href="/yeriko-vargas/skills/">Skills</a>
   <a href="/yeriko-vargas/tools/">AI tools</a>
+  <a href="/yeriko-vargas/architecture/">Architecture</a>
  </nav>
 </header>
 
@@ -70,15 +71,48 @@
    <div class="meta"><span>2022 – 2026</span><span>Custom AI Models</span><span>in production</span></div>
    <div><h3>Real-time audio intelligence</h3>
     <p>A system that listens to a live venue and adapts in real time: 100+ DSP features through PCA and KMeans into
-    similarity scoring, with a continuous evaluation loop.</p>
+    similarity scoring, with a continuous evaluation loop. The same signal pipeline reads sensor feeds and raw text:
+    scrape, clean, extract features, then model.</p>
     <div class="how"><b>shape</b> live audio → 100+ features → PCA → KMeans → similarity → adapt, evaluated continuously</div></div>
   </article>
+ </div>
+</section>
+
+<!-- automotive 1020c -->
+<section>
+ <h2>Automotive</h2>
+ <p class="lead">Detroit work across one vehicle's whole life: how it is configured, how it is diagnosed, how it is
+ serviced, and who services it honestly.</p>
+ <div class="work" style="margin-top:22px">
   <article>
-   <div class="meta"><span>2018 – 2020</span><span>FCA (Stellantis)</span><span>contract</span></div>
-   <div><h3>Automotive profit drivers</h3>
-    <p>Deep learning across ~250K vehicle configurations to optimise profitability: 108 predictors reduced to 14 key
-    drivers that shaped real configuration decisions.</p>
-    <div class="how"><b>shape</b> 250K configurations → deep model → 108 → 14 drivers → decisions</div></div>
+   <div class="meta"><span>build</span><span>FCA (Stellantis)</span><span>2018 – 2020</span></div>
+   <div><h3>Which configurations earn their place on the line</h3>
+    <p>250,000+ vehicles and 108 option codes. Neural networks against logistic regression at three profit
+    thresholds found 14 drivers, and one hard fact: about 95% of sales volume came from roughly 11% of
+    configurations. The long tail was cost.</p>
+    <div class="how"><b>shape</b> build codes → profit class → 14 drivers → fewer configurations</div></div>
+  </article>
+  <article>
+   <div class="meta"><span>diagnose</span><span>Ford Motor Company</span><span>2022 · contract</span></div>
+   <div><h3>ECU and diagnostics data, end to end</h3>
+    <p>CVDOS vehicle diagnostics in Python, SQL, Spark, Hadoop and MATLAB: multi-source merges, automated daily reports in Jupyter,
+    AWS SageMaker workflows. PCA and clustering grouped ECU faults into recurring defect patterns engineers could act
+    on, and ECU issue resolution got about 20% faster.</p>
+    <div class="how"><b>shape</b> diagnostic feeds → merge → PCA → clusters → defect patterns → daily report to engineering</div></div>
+  </article>
+  <article>
+   <div class="meta"><span>service</span><span>ADAS recalibration</span><span>Python · AWS</span></div>
+   <div><h3>Why recalibration jobs cancel</h3>
+    <p>About 1.47M work orders. Scheduling delay, rescheduling and lead time came out of the timestamps; make–model
+    bins by cancellation ratio became risk tiers, so operations knew which vehicles to plan around.</p>
+    <div class="how"><b>shape</b> S3 → work orders → timing features → make–model risk tiers</div></div>
+  </article>
+  <article>
+   <div class="meta"><span>aftermarket</span><span>Soothsayer Analytics</span><span>2021</span></div>
+   <div><h3>Fraud across a service-shop network</h3>
+    <p>About 500 automotive service shop locations. Random Forest, clustering and anomaly detection flagged the
+    shops; SHAP showed the business why each one was flagged. About 20% more fraudulent locations found.</p>
+    <div class="how"><b>shape</b> shop records → features → RF + anomaly scores → SHAP reasons → flagged shops</div></div>
   </article>
  </div>
 </section>
@@ -108,6 +142,65 @@
     then decide: files landed, everything parses, docs present, folder clean, tests ran. One repair at most, then a
     ticket, and undo is one command.</p>
     <div class="how"><b>shape</b> snapshot → fenced build → 5 gates → ≤1 repair → 3 dry runs → ticket</div></div>
+  </article>
+ </div>
+</section>
+
+<!-- v2 1020 -->
+<section>
+ <h2>Agents built from my own functions</h2>
+ <div class="work">
+  <article>
+   <div class="meta"><span>2022 – 2026</span><span>Custom AI Models</span><span>not a black box</span></div>
+   <div><h3>A function library, folded into agents</h3>
+    <p>Years of single-purpose Python functions, each written and tested on its own, now run inside unified agents
+    that take on whole jobs. I know what every step does, because I wrote every step.</p>
+    <div class="how"><b>inside</b> territory reporting · dealer engagement tracking · marketing communications ·
+    reminders and follow-ups · executive dashboards · AI-assisted search and support · workflow automation</div></div>
+  </article>
+ </div>
+</section>
+
+<section>
+ <h2>Statistics on real data</h2>
+ <p class="lead">The science under every system above: noisy inputs, honest models, numbers a decision can stand on.</p>
+ <div class="work" style="margin-top:22px">
+  <article>
+   <div class="meta"><span>2018 – 2020</span><span>FCA (Stellantis)</span><span>deep learning</span></div>
+   <div><h3>Vehicle profitability prediction</h3>
+    <p>250,000+ vehicles from Fiat Chrysler. Configuration codes became 108 binary features (engine, trim, interior
+    packages); multilayer perceptrons in R, trained with SGD and binary cross-entropy, classified each configuration
+    above or below $10k, $14k and $17k profit. Benchmarked against reduced multivariate logistic regression, the work
+    narrowed 108 options to 14 drivers. The finding that moved production: about 95% of sales volume came from roughly 11% of configurations.</p>
+    <div class="how"><b>shape</b> config codes → 108 binary features → MLP vs logistic → 3 profit thresholds → 14 drivers → cut the long tail</div></div>
+  </article>
+  <article>
+   <div class="meta"><span>research study</span><span>biostatistics</span><span>SAS · R</span></div>
+   <div><h3>Cardiovascular plaque analysis (CTA imaging)</h3>
+    <p>Gender differences in coronary plaque across 145 patients' CT angiography: plaque volume, low-attenuation
+    plaque, plaque count, remodeling index, positive-remodeling probability and plaque type, controlled for diabetes,
+    hypertension and smoking.</p>
+    <div class="how"><b>models</b> linear mixed · Poisson · logistic · multinomial</div></div>
+  </article>
+  <article>
+   <div class="meta"><span>ADAS services</span><span>operations</span><span>Python · AWS</span></div>
+   <div><h3>Operational cancellation analysis</h3>
+    <p>~1.47M unique work orders pulled from AWS S3 (boto3) into pandas. Time features engineered from appointment and
+    opportunity timestamps (scheduling delay, rescheduling, lead time) showed how timing drives cancellations; vehicle
+    make–model bins grouped by cancellation ratio became risk tiers.</p>
+    <div class="how"><b>shape</b> S3 → 1.47M orders → time features → job done vs canceled → make–model risk tiers</div></div>
+  </article>
+ </div>
+</section>
+
+<section>
+ <h2>Teaching</h2>
+ <div class="work">
+  <article>
+   <div class="meta"><span>Wiingy</span><span>mentor</span></div>
+   <div><h3>Statistics and coding mentor</h3>
+    <p>One-to-one mentoring in statistics, machine learning, Python and R. Explaining a model to someone new is the
+    fastest test of whether I understand it.</p></div>
   </article>
  </div>
 </section>

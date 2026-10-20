@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="/03_img/favicon.ico?v=k1" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/03_img/favicon-32.png?v=k1">
+<link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="description" content="How Yeriko Vargas structures code: the builder pattern, a stage contract every pipeline follows, and the full source.">
+<link rel="canonical" href="https://customaimodels.com/yeriko-vargas/architecture/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="Yeriko Vargas · Code architecture">
+<meta property="og:description" content="How Yeriko Vargas structures code: the builder pattern, a stage contract every pipeline follows, and the full source.">
+<meta property="og:url" content="https://customaimodels.com/yeriko-vargas/architecture/">
+<meta property="og:image" content="https://customaimodels.com/03_img/09_og_card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Custom AI Models gold knot emblem">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfilePage","@id":"https://customaimodels.com/yeriko-vargas/architecture/","url":"https://customaimodels.com/yeriko-vargas/architecture/","name":"Yeriko Vargas · Code architecture","mainEntity":{"@type":"Person","name":"Yeriko Vargas","jobTitle":"AI Engineer · AI Systems Architect","address":{"@type":"PostalAddress","addressLocality":"Detroit","addressRegion":"MI","addressCountry":"US"},"sameAs":["https://linkedin.com/in/yeriko-vargas"],"worksFor":{"@type":"Organization","@id":"https://customaimodels.com/#org","name":"Custom AI Models","url":"https://customaimodels.com/"}}}
+</script>
+<title>Yeriko Vargas · Code architecture</title>
+<!-- /yeriko-vargas/architecture/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=259ae1573a">
+<script defer src="/cai-beacon.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+ <div class="tag">Custom AI Models</div>
+ <h1><a href="/yeriko-vargas/">Yeriko Vargas</a></h1>
+ <p class="role">AI Engineer · AI Systems Architect · Detroit, MI</p>
+ <nav class="tabs" aria-label="Pages">
+  <a href="/yeriko-vargas/">Overview</a>
+  <a href="/yeriko-vargas/portfolio/">Portfolio</a>
+  <a href="/yeriko-vargas/skills/">Skills</a>
+  <a href="/yeriko-vargas/architecture/">AI tools</a>
+  <a href="/yeriko-vargas/architecture/" aria-current="page">Architecture</a>
+ </nav>
+</header>
+
+<section>
+ <h2>Code architecture</h2>
+ <p class="lead">How I structure code so a system still reads clearly after its fiftieth change. Each pattern is
+ written down once, enforced on every build, and published here with the decisions behind it.</p>
+ <div class="ledger">
+  <div><i>Pattern 01</i><b>The builder</b><p>Stage contract · selector-first ingestion · three data tiers</p><em class="on">in use</em></div>
+  <div><i>Decision records</i><b>ADR log</b><p>Context, decision and consequences for each architecture call</p><em>publishing next</em></div>
+ </div>
+</section>
+
+<section>
+ <h2>I don't just print code</h2>
+ <h3 class="claim">Seven years of my own Python functions, built for the way I work.</h3>
+ <p class="lead">Every function I reuse was written, broken and rewritten against real workflows. I know where each
+ one sits, what it touches and what it returns, so when something fails I know which stage to open, and when
+ something is slow I know which function to tune.</p>
+ <ul class="laws">
+  <li><b>Structured to debug</b>One job per stage, one place for paths, one place for config. An error points to a single file.</li>
+  <li><b>Structured to optimize</b>Stages are isolated, so one function can be measured and rewritten without touching the rest.</li>
+  <li><b>Not a black box</b>The agents I run are built from these functions. I can explain every step they take.</li>
+  <li><b>Built over time</b>Kept, versioned and refined since 2019, from statistics work to production AI systems.</li>
+ </ul>
+</section>
+
+<section>
+ <h2>Pattern 01 · The builder</h2>
+ <h3 class="claim">One folder. One command. The whole pipeline.</h3>
+ <p class="lead">A builder is a self-contained mini-app: <code>python run.py</code> runs the full pipeline. It lives
+ inside a project but runs on its own, and a shared selector at the project root feeds every builder the same way.</p>
+ <div class="pipe">
+  <div><i>00</i><b>select</b><p>rows in: collect, filter, scan or one path</p></div>
+  <div><i>01</i><b>build</b><p>validate · normalize</p></div>
+  <div><i>02</i><b>process</b><p>tag · classify</p></div>
+  <div><i>03</i><b>extract</b><p>→ data/processed</p></div>
+  <div><i>04</i><b>analyze</b><p>→ data/exports</p></div>
+ </div>
+ <div class="term"><span>$</span> /builder_str &lt;name&gt; &lt;domain&gt;</div>
+</section>
+
+<section>
+ <h2>The shape</h2>
+ <details class="code" open>
+  <summary><span class="file">project tree</span><span class="role">what the scaffold creates</span><span class="lines">16 lines</span></summary>
+  <pre><code><span class="ln"><b class="slot">&lt;project_root&gt;</b>/</span>
+<span class="ln"><i class="com">├──</i> selector_df_rows.py          <i class="note">← create only if it doesn't exist yet</i></span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">└──</i> <b class="slot">&lt;name&gt;</b>/                      <i class="note">← the builder folder</i></span>
+<span class="ln">    <i class="com">├──</i> run.py                   <i class="note">← entry point; selector is ALWAYS first call</i></span>
+<span class="ln">    <i class="com">├──</i> <i class="dir">src_1/</i></span>
+<span class="ln">    <i class="com">│</i>   <i class="com">├──</i> __init__.py</span>
+<span class="ln">    <i class="com">│</i>   <i class="com">├──</i> _1_build_<b class="slot">&lt;domain&gt;</b>.py <i class="note">← validate/normalize df received from selector</i></span>
+<span class="ln">    <i class="com">│</i>   <i class="com">├──</i> _2_proc_<b class="slot">&lt;domain&gt;</b>.py  <i class="note">← tag / classify</i></span>
+<span class="ln">    <i class="com">│</i>   <i class="com">├──</i> _3_ext_<b class="slot">&lt;domain&gt;</b>.py   <i class="note">← save to data/processed/</i></span>
+<span class="ln">    <i class="com">│</i>   <i class="com">├──</i> _4_ana_<b class="slot">&lt;domain&gt;</b>.py   <i class="note">← analyze + save to data/exports/</i></span>
+<span class="ln">    <i class="com">│</i>   <i class="com">└──</i> _5_util_<b class="slot">&lt;domain&gt;</b>.py  <i class="note">← shared helpers; only file other stages import</i></span>
+<span class="ln">    <i class="com">└──</i> <i class="dir">data/</i></span>
+<span class="ln">        <i class="com">├──</i> <i class="dir">raw/</i>.gitkeep</span>
+<span class="ln">        <i class="com">├──</i> <i class="dir">processed/</i>.gitkeep</span>
+<span class="ln">        <i class="com">└──</i> <i class="dir">exports/</i>.gitkeep</span></code></pre>
+</details>
+ <p class="aside">No <code>config/</code> at scaffold time. CFG lives inline in <code>run.py</code> until the project grows.</p>
+</section>
+
+<section>
+ <h2>The stage contract · enforced always</h2>
+ <details class="code" open>
+  <summary><span class="file">every stage</span><span class="role">one signature</span><span class="lines">3 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">def</i> <i class="fn">fn</i>(df, paths, cfg):   <i class="com"># receives df, returns df</i></span>
+<span class="ln">    ...</span>
+<span class="ln">    <i class="kw">return</i> df</span></code></pre>
+</details>
+ <ul class="laws">
+  <li><b>Pure flow</b>df in, df out. Every stage receives the frame and returns it.</li>
+  <li><b>Single source of paths</b>Built once in run.py from __file__, never inside a stage.</li>
+  <li><b>Config is data</b>cfg is defined once: numbers, flags, names. Never paths.</li>
+  <li><b>One-way dependencies</b>_5_util is the only cross-import. Stages never import each other.</li>
+ </ul>
+</section>
+
+<section>
+ <h2>The source</h2>
+ <p class="lead">The full implementation, exactly as the scaffold writes it. Open any file.</p>
+ <div class="files">
+<details class="code" open>
+  <summary><span class="file">run.py</span><span class="role">entry point · selector always first</span><span class="lines">42 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> sys</span>
+<span class="ln"> </span>
+<span class="ln">_HERE = os.path.dirname(os.path.abspath(<i class="bi">__file__</i>))</span>
+<span class="ln">_ROOT = os.path.dirname(_HERE)</span>
+<span class="ln"> </span>
+<span class="ln">sys.path.insert(<i class="num">0</i>, _ROOT)   <i class="com"># selector_df_rows lives here</i></span>
+<span class="ln">sys.path.insert(<i class="num">0</i>, _HERE)   <i class="com"># src_1 lives here</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">import</i> selector_df_rows <i class="kw">as</i> selector</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">from</i> src_1._1_build_<b class="slot">&lt;domain&gt;</b> <i class="kw">import</i> build</span>
+<span class="ln"><i class="kw">from</i> src_1._2_proc_<b class="slot">&lt;domain&gt;</b>  <i class="kw">import</i> process</span>
+<span class="ln"><i class="kw">from</i> src_1._3_ext_<b class="slot">&lt;domain&gt;</b>   <i class="kw">import</i> extract</span>
+<span class="ln"><i class="kw">from</i> src_1._4_ana_<b class="slot">&lt;domain&gt;</b>   <i class="kw">import</i> analyze</span>
+<span class="ln"> </span>
+<span class="ln">CFG = {</span>
+<span class="ln">    <i class="com"># numbers, flags, names only — no paths</i></span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln">PATHS = {</span>
+<span class="ln">    <i class="str">"raw"</i>:       os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"raw"</i>),</span>
+<span class="ln">    <i class="str">"processed"</i>: os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"processed"</i>),</span>
+<span class="ln">    <i class="str">"exports"</i>:   os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"exports"</i>),</span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">run</i>():</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"\n  ┌─ <b class="slot">&lt;name&gt;</b> {'─' * (40 - len('<b class="slot">&lt;name&gt;</b>'))}┐"</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    df = selector.select()        <i class="com"># always first</i></span>
+<span class="ln">    df = build(df, PATHS, CFG)</span>
+<span class="ln">    df = process(df, PATHS, CFG)</span>
+<span class="ln">    df = extract(df, PATHS, CFG)</span>
+<span class="ln">    df = analyze(df, PATHS, CFG)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"  └──────────────────────────────────────────┘\n"</i>)</span>
+<span class="ln">    <i class="kw">return</i> df</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">if</i> <i class="bi">__name__</i> == <i class="str">"__main__"</i>:</span>
+<span class="ln">    run()</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">selector_df_rows.py</span><span class="role">project root · shared by every builder</span><span class="lines">86 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> pandas <i class="kw">as</i> pd</span>
+<span class="ln"> </span>
+<span class="ln">_HERE = os.path.dirname(os.path.abspath(<i class="bi">__file__</i>))</span>
+<span class="ln">_CSV  = os.path.join(_HERE, <i class="str">"_df_collect.csv"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">select</i>():</span>
+<span class="ln">    <i class="str">"""Returns a DataFrame. Always the first call in any builder run.py."""</i></span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"\n  [selector]  use rows?  [Enter = full collect   s = select]  "</i>, end=<i class="str">""</i>, flush=<i class="kw">True</i>)</span>
+<span class="ln">    choice = <i class="bi">input</i>().strip().lower()</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">if</i> choice == <i class="str">"s"</i>:</span>
+<span class="ln">        <i class="kw">return</i> _select_mode()</span>
+<span class="ln">    <i class="kw">return</i> _default()</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_default</i>():</span>
+<span class="ln">    <i class="kw">if</i> os.path.exists(_CSV):</span>
+<span class="ln">        df = pd.read_csv(_CSV)</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"  [selector]  →  {len(df)} rows  (_df_collect.csv)"</i>)</span>
+<span class="ln">        <i class="kw">return</i> df</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"  [selector]  no _df_collect.csv found — returning empty df"</i>)</span>
+<span class="ln">    <i class="kw">return</i> pd.DataFrame()</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_select_mode</i>():</span>
+<span class="ln">    <i class="kw">if</i> os.path.exists(_CSV):</span>
+<span class="ln">        <i class="kw">return</i> _filter_collect()</span>
+<span class="ln">    <i class="kw">return</i> _from_input()</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_filter_collect</i>():</span>
+<span class="ln">    df = pd.read_csv(_CSV)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"\n  collect:  {len(df)} rows   cols: {list(df.columns)}"</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">if</i> <i class="str">"extension"</i> <i class="kw">in</i> df.columns:</span>
+<span class="ln">        counts = df[<i class="str">"extension"</i>].value_counts()</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">"\n  extensions:"</i>)</span>
+<span class="ln">        <i class="kw">for</i> ext, n <i class="kw">in</i> counts.items():</span>
+<span class="ln">            <i class="bi">print</i>(<i class="str">f"    {ext:&lt;12} {n}"</i>)</span>
+<span class="ln">        val = <i class="bi">input</i>(<i class="str">"\n  filter by extension  (comma-sep, or Enter to skip): "</i>).strip()</span>
+<span class="ln">        <i class="kw">if</i> val:</span>
+<span class="ln">            wanted = [e.strip() <i class="kw">for</i> e <i class="kw">in</i> val.split(<i class="str">","</i>)]</span>
+<span class="ln">            df = df[df[<i class="str">"extension"</i>].isin(wanted)].reset_index(drop=<i class="kw">True</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"  [selector]  →  {len(df)} rows  (filtered)"</i>)</span>
+<span class="ln">    <i class="kw">return</i> df</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_from_input</i>():</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"\n  no _df_collect.csv"</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"  [f] scan folder    [p] single path    [Enter] skip"</i>)</span>
+<span class="ln">    choice = <i class="bi">input</i>(<i class="str">"  → "</i>).strip().lower()</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">if</i> choice == <i class="str">"f"</i>:</span>
+<span class="ln">        folder = <i class="bi">input</i>(<i class="str">"  folder path: "</i>).strip()</span>
+<span class="ln">        <i class="kw">return</i> _walk(folder)</span>
+<span class="ln">    <i class="kw">if</i> choice == <i class="str">"p"</i>:</span>
+<span class="ln">        path = <i class="bi">input</i>(<i class="str">"  file path: "</i>).strip()</span>
+<span class="ln">        name = os.path.basename(path)</span>
+<span class="ln">        _, ext = os.path.splitext(name)</span>
+<span class="ln">        <i class="kw">return</i> pd.DataFrame([{</span>
+<span class="ln">            <i class="str">"file_name"</i>:  name,</span>
+<span class="ln">            <i class="str">"file_path"</i>:  path,</span>
+<span class="ln">            <i class="str">"extension"</i>:  ext.lower(),</span>
+<span class="ln">            <i class="str">"size_mb"</i>:    <i class="bi">round</i>(os.path.getsize(path) / <i class="num">1e6</i>, <i class="num">3</i>) <i class="kw">if</i> os.path.exists(path) <i class="kw">else</i> <i class="num">0</i>,</span>
+<span class="ln">        }])</span>
+<span class="ln">    <i class="kw">return</i> pd.DataFrame()</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_walk</i>(folder):</span>
+<span class="ln">    rows = []</span>
+<span class="ln">    <i class="kw">for</i> root, _, files <i class="kw">in</i> os.walk(folder):</span>
+<span class="ln">        <i class="kw">for</i> f <i class="kw">in</i> files:</span>
+<span class="ln">            full = os.path.join(root, f)</span>
+<span class="ln">            _, ext = os.path.splitext(f)</span>
+<span class="ln">            rows.append({</span>
+<span class="ln">                <i class="str">"file_name"</i>:  f,</span>
+<span class="ln">                <i class="str">"file_path"</i>:  full,</span>
+<span class="ln">                <i class="str">"extension"</i>:  ext.lower(),</span>
+<span class="ln">                <i class="str">"size_mb"</i>:    <i class="bi">round</i>(os.path.getsize(full) / <i class="num">1e6</i>, <i class="num">3</i>),</span>
+<span class="ln">            })</span>
+<span class="ln">    df = pd.DataFrame(rows)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"  [selector]  →  {len(df)} rows  (scanned folder)"</i>)</span>
+<span class="ln">    <i class="kw">return</i> df</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_1_build_&lt;domain&gt;.py</span><span class="role">validate · normalize</span><span class="lines">25 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> random</span>
+<span class="ln"><i class="kw">import</i> pandas <i class="kw">as</i> pd</span>
+<span class="ln"><i class="kw">from</i> src_1._5_util_<b class="slot">&lt;domain&gt;</b> <i class="kw">import</i> hr</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">build</i>(df, paths, cfg):</span>
+<span class="ln">    hr(<i class="str">"BUILD"</i>)</span>
+<span class="ln">    <i class="kw">if</i> df.empty:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">"   empty df from selector — generating synthetic data"</i>)</span>
+<span class="ln">        df = _synth(cfg)</span>
+<span class="ln">    <i class="kw">else</i>:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"   df in:  {len(df)} rows  {list(df.columns)}"</i>)</span>
+<span class="ln">    <i class="kw">return</i> _validate(df, cfg)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_synth</i>(cfg):</span>
+<span class="ln">    <i class="com"># domain-specific synthetic data for standalone testing</i></span>
+<span class="ln">    <i class="kw">return</i> pd.DataFrame()</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_validate</i>(df, cfg):</span>
+<span class="ln">    before = <i class="bi">len</i>(df)</span>
+<span class="ln">    <i class="com"># domain-specific validation here</i></span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"   validate  {before} → {len(df)} rows"</i>)</span>
+<span class="ln">    <i class="kw">return</i> df.reset_index(drop=<i class="kw">True</i>)</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_2_proc_&lt;domain&gt;.py</span><span class="role">tag · classify</span><span class="lines">9 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">from</i> src_1._5_util_<b class="slot">&lt;domain&gt;</b> <i class="kw">import</i> hr</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">process</i>(df, paths, cfg):</span>
+<span class="ln">    hr(<i class="str">"PROCESS"</i>)</span>
+<span class="ln">    df = df.copy()</span>
+<span class="ln">    <i class="com"># domain-specific tagging</i></span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"   tagged  {len(df)} rows"</i>)</span>
+<span class="ln">    <i class="kw">return</i> df</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_3_ext_&lt;domain&gt;.py</span><span class="role">save → data/processed</span><span class="lines">9 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">from</i> src_1._5_util_<b class="slot">&lt;domain&gt;</b> <i class="kw">import</i> hr, save_csv</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">extract</i>(df, paths, cfg):</span>
+<span class="ln">    hr(<i class="str">"EXTRACT"</i>)</span>
+<span class="ln">    out = os.path.join(paths[<i class="str">"processed"</i>], <i class="str">"extracted.csv"</i>)</span>
+<span class="ln">    save_csv(df, out)</span>
+<span class="ln">    <i class="kw">return</i> df</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_4_ana_&lt;domain&gt;.py</span><span class="role">analyze → data/exports</span><span class="lines">10 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">from</i> src_1._5_util_<b class="slot">&lt;domain&gt;</b> <i class="kw">import</i> hr, save_csv</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">analyze</i>(df, paths, cfg):</span>
+<span class="ln">    hr(<i class="str">"ANALYZE"</i>)</span>
+<span class="ln">    <i class="com"># domain-specific analysis / prints</i></span>
+<span class="ln">    out = os.path.join(paths[<i class="str">"exports"</i>], <i class="str">f"{cfg['export_name']}.csv"</i>)</span>
+<span class="ln">    save_csv(df, out)</span>
+<span class="ln">    <i class="kw">return</i> df</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_5_util_&lt;domain&gt;.py</span><span class="role">helpers · the only cross-import</span><span class="lines">22 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> pandas <i class="kw">as</i> pd</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">load_csv</i>(path):</span>
+<span class="ln">    <i class="kw">if</i> <i class="kw">not</i> os.path.exists(path):</span>
+<span class="ln">        <i class="kw">return</i> <i class="kw">None</i></span>
+<span class="ln">    <i class="kw">return</i> pd.read_csv(path)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">save_csv</i>(df, path):</span>
+<span class="ln">    os.makedirs(os.path.dirname(path), exist_ok=<i class="kw">True</i>)</span>
+<span class="ln">    df.to_csv(path, index=<i class="kw">False</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"   saved  {os.path.basename(path)}  ({len(df)} rows)"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">hr</i>(label=<i class="str">""</i>):</span>
+<span class="ln">    <i class="kw">if</i> label:</span>
+<span class="ln">        pad = (<i class="num">44</i> - <i class="bi">len</i>(label) - <i class="num">2</i>) // <i class="num">2</i></span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"\n{'─'*pad} {label} {'─'*(44-pad-len(label)-2)}"</i>)</span>
+<span class="ln">    <i class="kw">else</i>:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">"─"</i> * <i class="num">44</i>)</span></code></pre>
+</details>
+ </div>
+ <p class="aside">Written as a Claude Code command, so every builder an agent scaffolds follows the same contract.</p>
+</section>
+
+<footer><span>Est. 2022 · © 2026 Custom AI Models</span><a href="/">customaimodels.com</a></footer>
+</div>
+</body>
+</html>
