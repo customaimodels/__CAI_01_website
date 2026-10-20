@@ -2,6 +2,7 @@
 footer_year: "Est. 2022 · © 2026 Custom AI Models"
 articles:
   - /articles/ai-data-readiness-before-rag/
+  - /articles/local-seo-hvac-contractors-ai/
   - /articles/python-ai-agent-pipelines/
   - /articles/rag-production-architecture/
   - /articles/real-time-audio-machine-learning/
@@ -22,6 +23,7 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC SEO4 min Your HVAC SEO froze. AI Overviews took the click. A summary answers the homeowner before they click, and a competitor gets named. Here is what that costs you, and the plumbing that fixes it. Read", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / SaaS Strategy5 min A few lines of text will do the work. SaaS isn't ready. Soon you will describe a job in a couple of lines and the work will run itself. For SaaS companies, that is a threat and an opening. The difference is plumbing. Read", href: "/articles/saas-ai-automation-future-challenges/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Data Readiness5 min Your AI didn't fail. Your data did. You tried a demo and watched it break. The model was fine. Here is what was underneath it, and the order that fixes it. Read", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Automation5 min Twelve tools, one Python pipeline How Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it. Read", href: "/articles/python-ai-agent-pipelines/", to: internal}
@@ -59,6 +61,7 @@ pages:
       - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your HVAC SEO froze. AI Overviews took the click.Page one used to be the finish line. Now an AI summary answers the homeowner before they click. Here is what still works, and the plumbing underneath it.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: main, a: "What replacing four spreadsheets actually tookBuilding a company's AI infrastructure from zero means the hard part was never the model.", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
       - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
@@ -135,6 +138,38 @@ pages:
       - {zone: footer, a: "Pallets of USDA Emergency Food", href: "https://www.rawpixel.com/image/3306942/free-photo-image-worker-factory-warehouse-agriculture-us", to: external}
       - {zone: footer, a: "NYSE trading floor", href: "https://commons.wikimedia.org/wiki/File:New_York_Stock_Exchange_trading_floor_on_Wall_Street,_New_York,_New_York_LCCN2011634218.tif", to: external}
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
+  - url: /articles/local-seo-hvac-contractors-ai/
+    file: src_articles/local-seo-hvac-contractors-ai/index.html
+    title: "HVAC SEO and AI Overviews: Get Cited, Not Buried"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: nav, a: "HVAC Local SEO", href: "/articles/local-seo-hvac-contractors-ai/", to: internal, current: true}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Your AI didn't fail. Your data did.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "The order on a real build", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "twelve tools, one Python pipeline", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "production retrieval systems", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
   - url: /articles/python-ai-agent-pipelines/
     file: src_articles/python-ai-agent-pipelines/index.html
     title: "Python AI Agent Pipelines: Orchestration Over Prompts"
@@ -247,6 +282,7 @@ pages:
       - {zone: article, a: "Secure your leverage", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your HVAC SEO froze. AI Overviews took the click.Page one used to be the finish line. Now an AI summary answers the homeowner before they click. Here is what still works, and the plumbing underneath it.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: main, a: "RAG isn't a feature. It's an architecture.Why a production retrieval system lives or dies on the telemetry and evaluation wrapped around it, not the prompt at its center.", href: "/articles/rag-production-architecture/", to: internal}
       - {zone: main, a: "What replacing four spreadsheets actually tookBuilding a company's AI infrastructure from zero means the hard part was never the model.", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
@@ -276,4 +312,5 @@ pages:
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "GM Fairfax Assembly Plant", href: "https://commons.wikimedia.org/wiki/File:GM_Fairfax_Assembly_Plant.jpg", to: external}
-drift: []
+drift:
+  - "local-seo-hvac-contractors-ai/index.html: nav differs from nav.yml"
