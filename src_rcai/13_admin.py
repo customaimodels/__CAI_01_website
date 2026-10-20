@@ -95,5 +95,13 @@ def people(cfg):
                   "doors": taps.get((r.get("email") or "").lower(), [])}
                for r in rows if r.get("kind") == "signup"]
     requests = [{k: r.get(k, "") for k in ("at", "email", "person", "what", "project", "text")}
-                for r in rows if r.get("kind") != "signup"]
-    return {"ok": True, "users": users, "signups": signups[::-1], "requests": requests[::-1][:40], "credits": led[::-1][:40]}
+                for r in rows if r.get("kind") not in ("signup", "reader")]
+    readers = [{k: r.get(k, "") for k in ("at", "ts", "email", "person", "company", "scale", "page", "src", "vid", "frame", "text")}
+               for r in rows if r.get("kind") == "reader"]          # 2026-10-20: the article card (11_inbound reads it)
+    raw_taps = []
+    try:
+        raw_taps = [json.loads(ln) for ln in (I.folder() / "doors.jsonl").read_text(encoding="utf-8").splitlines() if ln.strip()]
+    except (OSError, ValueError):
+        pass
+    return {"ok": True, "users": users, "signups": signups[::-1], "readers": readers[::-1], "taps": raw_taps[-500:],
+            "requests": requests[::-1][:40], "credits": led[::-1][:40]}

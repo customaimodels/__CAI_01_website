@@ -355,12 +355,17 @@ _EMAIL = __import__("re").compile(r"^[^@\s]{1,64}@[^@\s]{1,120}\.[a-z]{2,24}$", 
 
 
 def _reader(h, cfg, data):
-    """The article question card: {email, answer, page, src, consent}. Saved to 08_inbox kind=reader + admin mail.
+    """The article card (2026-10-20, v2): {name, company, scale, answer, email, consent, page, src, vid}.
+    Same shape as the sign-up (name · company · team size · their words). Saved to 08_inbox kind=reader + admin mail.
+    vid = the visitor beacon's anonymous id, so __Ysrc/11_inbound.py can join what they read before they wrote.
     Consent tick required (we only write back to people who asked). 3 per IP a day; same email waits 24 h."""
     ip, day = _ip(h), time.strftime("%Y-%m-%d")
-    f = {k: str(data.get(k, "")).strip()[:1200 if k == "answer" else 160] for k in ("email", "answer", "page", "src", "name")}
+    f = {k: str(data.get(k, "")).strip()[:1200 if k == "answer" else 160]
+         for k in ("email", "answer", "page", "src", "name", "company", "scale", "vid", "frame")}
     if str(data.get("hp", "")).strip():                 # honeypot: bots fill it, people never see it
         return _json(h, 200, {"ok": True})
+    if len(f["name"]) < 2:
+        return _json(h, 400, {"error": "Your name, please."})
     if not _EMAIL.match(f["email"]):
         return _json(h, 400, {"error": "That email doesn't look right."})
     if len(f["answer"]) < 3:
@@ -369,16 +374,20 @@ def _reader(h, cfg, data):
         return _json(h, 400, {"error": "Tick the box so we can write back."})
     if not f["page"].startswith("/articles/"):
         f["page"] = "/articles/"
+    if not __import__("re").fullmatch(r"[a-z0-9]{4,16}", f["vid"]):
+        f["vid"] = ""
     if _READERS.get((ip, day), 0) >= 3:
         return _json(h, 429, {"error": "We have it. We write back within 24 hours."})
     text = (f"From the article: https://customaimodels.com{f['page']}\nCame from: {f['src'] or 'direct'}\n"
-            f"Name: {f['name'] or '-'}\nEmail: {f['email']}\nConsent to reply: yes\n\nTheir answer:\n{f['answer']}")
-    ok, until = I.put(cfg, f["email"], "reader", text, "", f["name"], {"client_id": "reader", "page": f["page"], "src": f["src"]})
+            f"Name: {f['name']}\nCompany: {f['company'] or '-'}\nTeam size: {f['scale'] or '-'}\nEmail: {f['email']}\n"
+            f"Consent to reply: yes\n\nTheir data problem:\n{f['answer']}")
+    ok, until = I.put(cfg, f["email"], "reader", text, "", f["name"],
+                      {"client_id": "reader", "page": f["page"], "src": f["src"], "company": f["company"],
+                       "scale": f["scale"], "vid": f["vid"], "frame": f["frame"]})
     if not ok:
         return _json(h, 429, {"error": "We have it. We write back within 24 hours.", "until": until})
     _READERS[(ip, day)] = _READERS.get((ip, day), 0) + 1
     return _json(h, 200, {"ok": True})
-
 
 
 def _signup(h, cfg, data):
