@@ -21,8 +21,19 @@ def _send(h, code, body, ctype):
     h.wfile.write(body)
 
 
+ALIASES = {"/yerko-vargas": "/yeriko-vargas/", "/yeriko-vargas": "/yeriko-vargas/"}   # his short link to positions (2026-10-20)
+
+
 def handle(h, method):
     path = h.path.split("?", 1)[0].split("#", 1)[0]
+    to = ALIASES.get(path.rstrip("/")) if method == "GET" else None
+    if to and path != to:                     # site-wide short links: 301 to the one canonical page, query kept
+        q = h.path.split("?", 1)[1].split("#", 1)[0] if "?" in h.path else ""
+        h.send_response(301)
+        h.send_header("Location", to + ("?" + q if q else ""))
+        h.send_header("Content-Length", "0")
+        h.end_headers()
+        return True
     if method != "GET" or (path != MOUNT and not path.startswith(MOUNT + "/")):
         return False
     old = REDIRECTS.get(path if path.endswith("/") else path + "/")

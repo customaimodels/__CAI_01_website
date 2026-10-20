@@ -1,0 +1,80 @@
+/* /yeriko-vargas/ (2026-10-20, public copy of the /recruiter/ sheet). Paper, ink, one gold rule. */
+:root{--paper:#f5f2ea;--card:#fffdf8;--ink:#17131d;--ink-2:#4a4452;--mute:#8a8492;--line:#e2ddd2;--gold:#c9a227;--ok:#1f7a4a;
+  --sans:"Inter Tight",Inter,system-ui,-apple-system,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--serif:"DM Serif Display",Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+header{border-top:3px solid var(--gold);padding:56px 0 0}
+.tag{font:500 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+h1{font:400 clamp(40px,7vw,64px)/1.02 var(--serif);letter-spacing:-.01em;margin:14px 0 8px}
+h1 a{text-decoration:none}
+.role{font-size:19px;color:var(--ink-2);margin:0}
+
+/* the page tabs, right under the role line */
+nav.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0 0 26px}
+nav.tabs a{display:inline-flex;align-items:center;height:34px;padding:0 16px;border:1px solid var(--line);border-radius:999px;
+  background:var(--card);text-decoration:none;font-weight:600;font-size:13.5px;color:var(--ink-2)}
+nav.tabs a:hover{border-color:#b9b4bf;color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+.status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:8px 0 0}
+.status div{background:var(--card);padding:18px 18px 16px}
+.status b{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.status span{font-weight:600;font-size:15px;line-height:1.3}
+.status .go span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin:0 8px 2px 0}
+.keys{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 32px}
+.keys a{display:inline-flex;align-items:center;height:42px;padding:0 18px;border:1px solid var(--ink);text-decoration:none;font-weight:600;font-size:14px}
+.keys a.main{background:var(--ink);color:var(--paper)}
+.keys a:hover{background:var(--ink);color:var(--paper)}
+
+section{border-top:1px solid var(--line);padding:36px 0}
+h2{font:500 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin:0 0 20px}
+.lead{font-size:18px;color:var(--ink-2);margin:0;max-width:62ch}
+.lead + .lead{margin-top:12px}
+.job{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 28px;padding:0 0 22px}
+.job .when{font:12px/1.5 var(--mono);color:var(--mute);padding-top:3px}
+.job h3{font-size:16px;margin:0}
+.job h3 em{font-style:normal;color:var(--ink-2);font-weight:500}
+.job p{margin:4px 0 0;color:var(--ink-2);font-size:15px}
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
+.skills b{display:block;font-size:14px;margin-bottom:4px}
+.skills p{margin:0;color:var(--ink-2);font-size:14px}
+
+/* how I work: the loop, drawn */
+.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.loop div{background:var(--card);padding:16px 14px 14px;position:relative}
+.loop i{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.14em;color:var(--gold);font-style:normal;margin-bottom:10px}
+.loop b{display:block;font-size:14.5px;margin-bottom:4px}
+.loop p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.45}
+.rules{margin:18px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 28px}
+.rules li{font-size:14.5px;color:var(--ink-2);padding-left:16px;position:relative}
+.rules li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:1px;background:var(--gold)}
+
+/* portfolio cards */
+.work{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.work article{background:var(--card);padding:24px 24px 22px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 28px}
+.work .meta{font:12px/1.6 var(--mono);color:var(--mute)}
+.work .meta span{display:block}
+.work h3{font-size:18px;margin:0 0 6px;letter-spacing:-.005em}
+.work p{margin:0;color:var(--ink-2);font-size:15px}
+.work .how{margin:12px 0 0;font:12.5px/1.6 var(--mono);color:var(--ink)}
+.work .how b{color:var(--gold);font-weight:500}
+.work .read{display:inline-block;margin-top:12px;font-size:13.5px;font-weight:600;text-decoration:none;border-bottom:1px solid var(--gold)}
+.work .read:hover{color:var(--gold)}
+
+/* AI tools */
+.stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.stack div{background:var(--card);padding:18px 20px}
+.stack b{display:block;font-size:15px;margin-bottom:2px}
+.stack em{display:block;font:normal 11px/1.4 var(--mono);letter-spacing:.06em;color:var(--mute);margin-bottom:8px;text-transform:uppercase}
+.stack p{margin:0;font-size:14px;color:var(--ink-2)}
+
+footer{border-top:1px solid var(--line);padding:24px 0 48px;display:flex;justify-content:space-between;font:12px var(--mono);color:var(--mute)}
+@media (max-width:720px){
+  .status{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .job,.work article{grid-template-columns:minmax(0,1fr)}
+  .skills,.rules,.stack{grid-template-columns:minmax(0,1fr)}
+  .loop{grid-template-columns:minmax(0,1fr)}
+  header{padding-top:40px}
+}
