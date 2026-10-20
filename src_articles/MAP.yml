@@ -28,7 +28,7 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
-      - {zone: main, a: "Oct 2026AI Systems / HVAC Operations5 min Your contractors reorder the same parts. Your ERP still makes them ask. Repeat orders should not need a phone call. Here is the data work that comes first, the gates that keep orders honest, and where the model finally fits. Read", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC Operations5 min Your contractors reorder the same parts. Your ERP still makes them ask. Repeat orders should not need a phone call. Here is the data work that comes first, the custom AI built on top of it, and how AI search engines end up naming your business. Read", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / AI Agents4 min Agents make this worse before they make it better You added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back. Read", href: "/articles/ai-agents-production-problems/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Discoverability4 min Engines cite pages they can lift. Make yours liftable. Nobody outside the labs has the ranking formula. You still control what the engine finds when it arrives. Here is the checklist, and how to prove it works. Read", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / HVAC Wholesale5 min Your wholesale counter is the bottleneck. Fix the data first. Commercial HVAC wholesale runs on orders, stock and contractor accounts. Here is the data work that has to come first, and where the model finally fits. Read", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
@@ -183,7 +183,7 @@ pages:
       - {zone: footer, a: "Musician on stage", href: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg", to: external}
   - url: /articles/commercial-hvac-erp-automation-bloomfield-hills/
     file: src_articles/commercial-hvac-erp-automation-bloomfield-hills/index.html
-    title: "Commercial HVAC ERP Automation in Bloomfield Hills"
+    title: "HVAC SEO and AI Order Automation in Bloomfield Hills"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -200,19 +200,21 @@ pages:
       - {zone: article, a: "why the data failed, not the AI", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: article, a: "Photo: Alf van Beem · CC0 · Wikimedia Commons", href: "https://commons.wikimedia.org/wiki/File:HVAC_Air_Handler_Unit,_pic1.JPG", to: external}
       - {zone: article, a: "licence", href: "http://creativecommons.org/publicdomain/zero/1.0/deed.en", to: external}
-      - {zone: article, a: "fixing the counter data first", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "why RAG is an architecture", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: article, a: "what replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
       - {zone: article, a: "The order on a real build", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
-      - {zone: article, a: "what replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
       - {zone: article, a: "how engines choose what to cite", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
       - {zone: article, a: "what the lost click costs an HVAC firm", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
+      - {zone: article, a: "fixing the counter data first", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "How one pipeline calls twelve tools from plain Python", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: article, a: "(icon)", href: "/#ask", to: internal}
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
-      - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}

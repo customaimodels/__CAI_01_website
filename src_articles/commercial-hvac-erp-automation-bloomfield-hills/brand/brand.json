@@ -1,7 +1,7 @@
 {
  "slug": "commercial-hvac-erp-automation-bloomfield-hills",
  "topic": "ops",
- "made": "2026-10-20T13:55:17-04:00",
+ "made": "2026-10-20T14:01:50-04:00",
  "pieces": {
   "hero_loop": {
    "pool": "vid/06xx_background/cai-0601v01_background_brand-nebula-deep-space_16x9-1080p_05s_loop_20261018.mp4",
@@ -16,7 +16,7 @@
    "media_id": "cai-0904i01",
    "file": "cai-0904i01_commercial-hvac-erp-automation-bloomfield-hills.webp",
    "src_sha": "ca49adfb691b6448ccd18d9cdf1b40ab9cd42bd91bce664a4144820c7759ec31",
-   "bytes": 63276,
+   "bytes": 63250,
    "alt": "The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on ERP software integrations for commercial HVAC suppliers."
   },
   "ad1": {
@@ -24,7 +24,7 @@
    "media_id": "cai-1203i02",
    "file": "cai-1203i02_commercial-hvac-erp-automation-bloomfield-hills.webp",
    "src_sha": "55d4fa34cc1e54c2724811179ce4355fd0917d3ff97fe30c41c855c377a18866",
-   "bytes": 28374,
+   "bytes": 28346,
    "alt": "Custom AI Models banner (light (paper) theme): \"Plumbing over hype. The work is in the plumbing: SQL, Webhooks, Python, Cloudflare, Resend, JSON schemas, Exit codes.\". From the Custom AI Models article on ERP software integrations for commercial HVAC suppliers."
   },
   "ad2": {
@@ -32,7 +32,7 @@
    "media_id": "cai-1202i02",
    "file": "cai-1202i02_commercial-hvac-erp-automation-bloomfield-hills.webp",
    "src_sha": "79c5d975a6b782b3498c7b1eb8330cfb2859ff59b4ee94da819baf72dfc1f59f",
-   "bytes": 24014,
+   "bytes": 23986,
    "alt": "Custom AI Models banner (light (paper) theme): \"The order never changes: 01 Unify the data, 02 Model it, 03 Gate every step, 04 The model last.\". From the Custom AI Models article on ERP software integrations for commercial HVAC suppliers."
   },
   "cta": {
@@ -40,7 +40,7 @@
    "media_id": "cai-1303i01",
    "file": "cai-1303i01_commercial-hvac-erp-automation-bloomfield-hills.webp",
    "src_sha": "28f5388d35a4528c6d098ca1b841f0c50b7088765e7486f7d553dc8c8c61d8ec",
-   "bytes": 56192,
+   "bytes": 56164,
    "alt": "Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: \"Website to operations. Connect your website to your whole operation. Let's talk system architecture. customaimodels.com\". From the Custom AI Models article on ERP software integrations for commercial HVAC suppliers."
   },
   "photo": {
@@ -48,7 +48,7 @@
    "media_id": "cai-1402i01",
    "file": "cai-1402i01_commercial-hvac-erp-automation-bloomfield-hills.webp",
    "src_sha": "6a3c674721c31c008daddfdd7ca80fcd5e18a1908f8479e02261a02c97521a81",
-   "bytes": 105510,
+   "bytes": 105482,
    "alt": "A long green air handling unit in a commercial mechanical room."
   }
  }
