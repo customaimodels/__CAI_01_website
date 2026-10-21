@@ -26,7 +26,7 @@
 </script>
 <title>Yeriko Vargas · Code architecture</title>
 <!-- /yeriko-vargas/architecture/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
-<link rel="stylesheet" href="/yeriko-vargas/style.css?v=259ae1573a">
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=493633dabd">
 <script defer src="/cai-beacon.js"></script>
 </head>
 <body>
@@ -40,8 +40,11 @@
   <a href="/yeriko-vargas/">Overview</a>
   <a href="/yeriko-vargas/portfolio/">Portfolio</a>
   <a href="/yeriko-vargas/skills/">Skills</a>
-  <a href="/yeriko-vargas/architecture/">AI tools</a>
+  <a href="/yeriko-vargas/tools/">AI tools</a>
   <a href="/yeriko-vargas/architecture/" aria-current="page">Architecture</a>
+  <a href="/yeriko-vargas/hvac/">HVAC AI Models</a>
+  <a href="/yeriko-vargas/telemetry/">Telemetry</a>
+  <a href="/yeriko-vargas/workbench/">Workbench</a>
  </nav>
 </header>
 
@@ -51,6 +54,7 @@
  written down once, enforced on every build, and published here with the decisions behind it.</p>
  <div class="ledger">
   <div><i>Pattern 01</i><b>The builder</b><p>Stage contract · selector-first ingestion · three data tiers</p><em class="on">in use</em></div>
+  <div><i>Pattern 02</i><b>The agent rules</b><p>AGENTS.md · one entry file · functions only · ask before any env</p><em class="on">in use</em></div>
   <div><i>Decision records</i><b>ADR log</b><p>Context, decision and consequences for each architecture call</p><em>publishing next</em></div>
  </div>
 </section>
@@ -354,6 +358,286 @@
 </details>
  </div>
  <p class="aside">Written as a Claude Code command, so every builder an agent scaffolds follows the same contract.</p>
+</section>
+
+<section>
+ <h2>Pattern 02 · The agent rules</h2>
+ <h3 class="claim">The rules an agent reads before it writes a line.</h3>
+ <p class="lead">When an AI agent codes for me, it works inside my architecture, not its own. These rules came out
+ of a multi-builder finance app: <code>auto.py</code> finds every <code>run.py</code>, one file holds every input,
+ and nothing gets installed without a yes.</p>
+ <div class="pipe rules">
+  <div><i>R1</i><b>_u_entries.py</b><p>the only file a human edits · no logic</p></div>
+  <div><i>R2</i><b>_f_fns*.py</b><p>functions only · one domain per file</p></div>
+  <div><i>R4</i><b>ask first</b><p>never creates an env · never installs</p></div>
+  <div><i>auto</i><b>auto.py</b><p>finds every run.py · stops at the first failure</p></div>
+  <div><i>law</i><b>finance</b><p>no look-ahead · time splits · a baseline first</p></div>
+ </div>
+ <div class="files">
+<details class="code" open>
+  <summary><span class="file">my rules</span><span class="role">verbatim · as I wrote them for Cursor</span><span class="lines">46 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">RULE 1 — USER ENTRY FILE</i></span>
+<span class="ln"> </span>
+<span class="ln">Every project MUST include a file named: _u_entries.py</span>
+<span class="ln"> </span>
+<span class="ln">Purpose:</span>
+<span class="ln"><i class="num">-</i> This is the ONLY file the user edits manually</span>
+<span class="ln"> </span>
+<span class="ln">Contains:</span>
+<span class="ln"><i class="num">-</i> input paths</span>
+<span class="ln"><i class="num">-</i> tickers / parameters</span>
+<span class="ln"><i class="num">-</i> runtime options</span>
+<span class="ln"> </span>
+<span class="ln">Rules:</span>
+<span class="ln"><i class="num">-</i> No logic allowed</span>
+<span class="ln"><i class="num">-</i> Only variables / configs</span>
+<span class="ln"><i class="num">-</i> All other files MUST import from this file</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 2 — FUNCTION FILES</i></span>
+<span class="ln"> </span>
+<span class="ln">All core logic lives in: _f_fns*.py</span>
+<span class="ln"> </span>
+<span class="ln">Structure:</span>
+<span class="ln"><i class="num">-</i> _f_fns.py → general functions</span>
+<span class="ln"><i class="num">-</i> _f_fns_&lt;keyword&gt;.py → grouped by purpose</span>
+<span class="ln"> </span>
+<span class="ln">Rules:</span>
+<span class="ln"><i class="num">-</i> Functions MUST have explicit, readable names</span>
+<span class="ln"><i class="num">-</i> Each file = one cohesive domain</span>
+<span class="ln"><i class="num">-</i> Each file handles its own imports</span>
+<span class="ln"><i class="num">-</i> No execution code (functions only)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 4 — ENVIRONMENT CONTROL</i></span>
+<span class="ln"> </span>
+<span class="ln">Before running/installing anything:</span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> ALWAYS ask:</span>
+<span class="ln">    "Do you want to create a new environment?"</span>
+<span class="ln"> </span>
+<span class="ln">If NO:</span>
+<span class="ln"><i class="num">-</i> Ask:</span>
+<span class="ln">    "Which environment should be used?"</span>
+<span class="ln"> </span>
+<span class="ln">Rules:</span>
+<span class="ln"><i class="num">-</i> NEVER auto-create environments</span>
+<span class="ln"><i class="num">-</i> NEVER install packages without confirmation</span>
+<span class="ln"><i class="num">-</i> ALWAYS respect user's existing setup</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">AGENTS.md</span><span class="role">the full contract an agent follows · tested</span><span class="lines">210 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw"># AGENTS.md · builders</i></span>
+<span class="ln"> </span>
+<span class="ln">Read this before you write a line. Every agent that works here (Claude Code, Cursor, Codex) follows it.</span>
+<span class="ln">§1 is the owner's rules, word for word. Everything after expands them and never overrides them.</span>
+<span class="ln">When a request conflicts with this file, stop and ask.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 0. The one-minute version</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> <i class="str">`_u_entries.py`</i> is the only file a human edits. You read it. You never put logic in it.</span>
+<span class="ln"><i class="num">-</i> Logic lives in function files: functions only, nothing runs on import.</span>
+<span class="ln"><i class="num">-</i> Every builder has one front door, <i class="str">`run.py`</i>. <i class="str">`auto.py`</i> finds every <i class="str">`run.py`</i> and runs them in order.</span>
+<span class="ln"><i class="num">-</i> Never create an environment or install a package without asking first.</span>
+<span class="ln"><i class="num">-</i> Data moves one way: raw → processed → exports. Nothing writes back into raw.</span>
+<span class="ln"><i class="num">-</i> Done means <i class="str">`python auto.py --check`</i> passes and you can name the function you changed and why.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 1. The owner's rules (verbatim)</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 1 — USER ENTRY FILE</i></span>
+<span class="ln">Every project MUST include a file named: _u_entries.py</span>
+<span class="ln"><i class="num">-</i> This is the ONLY file the user edits manually</span>
+<span class="ln"><i class="num">-</i> Contains: input paths · tickers / parameters · runtime options</span>
+<span class="ln"><i class="num">-</i> No logic allowed · Only variables / configs · All other files MUST import from this file</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 2 — FUNCTION FILES</i></span>
+<span class="ln">All core logic lives in: _f_fns*.py</span>
+<span class="ln"><i class="num">-</i> _f_fns.py → general functions · _f_fns_&lt;keyword&gt;.py → grouped by purpose</span>
+<span class="ln"><i class="num">-</i> Functions MUST have explicit, readable names · Each file = one cohesive domain</span>
+<span class="ln"><i class="num">-</i> Each file handles its own imports · No execution code (functions only)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 3 — not written yet. Do not invent it. Ask.</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">RULE 4 — ENVIRONMENT CONTROL</i></span>
+<span class="ln">Before running/installing anything, ALWAYS ask: "Do you want to create a new environment?"</span>
+<span class="ln">If NO, ask: "Which environment should be used?"</span>
+<span class="ln"><i class="num">-</i> NEVER auto-create environments · NEVER install packages without confirmation</span>
+<span class="ln"><i class="num">-</i> ALWAYS respect user's existing setup</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 2. The map</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">app/</span>
+<span class="ln"><i class="com">├──</i> _u_entries.py            ← RULE 1: the only file a human edits</span>
+<span class="ln"><i class="com">├──</i> AGENTS.md                ← this file</span>
+<span class="ln"><i class="com">└──</i> builders/</span>
+<span class="ln">    <i class="com">├──</i> auto.py              ← finds builders/*/run.py, runs them in number order</span>
+<span class="ln">    <i class="com">├──</i> builder_1/           ← get + clean</span>
+<span class="ln">    <i class="com">├──</i> builder_2/           ← features + models</span>
+<span class="ln">    <i class="com">└──</i> builder_3/           ← evaluation + dashboard</span>
+<span class="ln">        <i class="com">├──</i> run.py           ← the builder's front door</span>
+<span class="ln">        <i class="com">├──</i> README.md        ← what it reads, what it writes, how to run it</span>
+<span class="ln">        <i class="com">├──</i> requirements.txt</span>
+<span class="ln">        <i class="com">├──</i> .gitignore</span>
+<span class="ln">        <i class="com">├──</i> config/config.py ← derived constants only, built from _u_entries</span>
+<span class="ln">        <i class="com">├──</i> src/</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> _0_fns_get/    fn_get_data.py</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> _1_fns_clean/  fn_clean_data.py</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> _2_fns_feat/   fn_features.py</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> _3_fns_model/  fn_model.py</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> _4_fns_eval/   fn_eval.py</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">└──</i> _5_fns_utils/  fn_utils.py</span>
+<span class="ln">        <i class="com">├──</i> data/</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> raw/           ← original pulls, never edited</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">├──</i> processed/     ← cleaned, aligned, feature tables</span>
+<span class="ln">        <i class="com">│</i>   <i class="com">└──</i> exports/       ← tables, reports, figures</span>
+<span class="ln">        <i class="com">└──</i> notebooks/main.ipynb ← playground, never imported by code</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln">The <i class="str">`src/_N_fns_*/fn_*.py`</i> files are RULE 2's function files: one folder per stage, one domain per file.</span>
+<span class="ln">A file that serves the whole app stays at the top as <i class="str">`_f_fns.py`</i> or <i class="str">`_f_fns_&lt;keyword&gt;.py`</i>.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 3. `_u_entries.py`: what goes in, what never does</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```python</i></span>
+<span class="ln"><i class="kw"># _u_entries.py  ·  edit this file, nothing else</i></span>
+<span class="ln">TICKERS     = ["AAPL", "NVDA", "ASML"]</span>
+<span class="ln">START, END  = "2018-01-01", "2026-06-30"</span>
+<span class="ln">HORIZON     = 5            # trading days ahead</span>
+<span class="ln">SEED        = 7</span>
+<span class="ln">INPUT_DIR   = "data_in"    # relative to the app root</span>
+<span class="ln">RUN         = {"builder_1": True, "builder_2": True, "builder_3": False}</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> Allowed: literals, lists, dicts, dates as strings, booleans.</span>
+<span class="ln"><i class="num">-</i> Never allowed: imports, functions, loops, file reads, <i class="str">`if`</i>, computed paths.</span>
+<span class="ln"><i class="num">-</i> A path is relative to the app root. An absolute path may live here and nowhere else.</span>
+<span class="ln"><i class="num">-</i> A new parameter gets a one-line comment saying what it changes.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 4. Function files: how a function is written</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> One job per function, named for what it returns: <i class="str">`get_prices_GET_df`</i>, <i class="str">`clean_gaps_ffill_GET_df`</i>.</span>
+<span class="ln"><i class="num">-</i> A stage function takes <i class="str">`(df, paths, cfg)`</i> and returns <i class="str">`df`</i>. Paths and cfg come in. They are never built inside.</span>
+<span class="ln"><i class="num">-</i> Each file imports what it uses at its own top. Files in <i class="str">`_0`</i> to <i class="str">`_4`</i> never import each other. Only <i class="str">`_5_fns_utils`</i> is shared.</span>
+<span class="ln"><i class="num">-</i> Nothing runs at import time: no top-level calls, no prints, no reads.</span>
+<span class="ln"><i class="num">-</i> A function that writes a file says so in its name (<i class="str">`_save_`</i>, <i class="str">`_export_`</i>) and returns the path it wrote.</span>
+<span class="ln"><i class="num">-</i> Raise errors with the stage and the reason (<i class="str">`ValueError("clean: 3 tickers have no rows after 2024-01-02")`</i>). Never pass on them silently.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 5. `run.py`: one builder, one front door</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```python</i></span>
+<span class="ln">import sys</span>
+<span class="ln">from pathlib import Path</span>
+<span class="ln"> </span>
+<span class="ln">HERE = Path(__file__).resolve().parent</span>
+<span class="ln">ROOT = HERE.parents[1]                       # app/</span>
+<span class="ln">sys.path[:0] = [str(ROOT), str(HERE)]</span>
+<span class="ln"> </span>
+<span class="ln">import _u_entries as U                        # RULE 1: everything starts here</span>
+<span class="ln">from src._0_fns_get.fn_get_data import get_prices_GET_df</span>
+<span class="ln">from src._1_fns_clean.fn_clean_data import clean_gaps_ffill_GET_df</span>
+<span class="ln"> </span>
+<span class="ln">PATHS = {k: HERE / "data" / k for k in ("raw", "processed", "exports")}</span>
+<span class="ln">CFG = {"tickers": U.TICKERS, "start": U.START, "end": U.END, "seed": U.SEED}</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def main(check=False):</span>
+<span class="ln">    df = get_prices_GET_df(None, PATHS, CFG | {"check": check})</span>
+<span class="ln">    df = clean_gaps_ffill_GET_df(df, PATHS, CFG)</span>
+<span class="ln">    print(f"✓ builder_1 · {len(df)} rows")</span>
+<span class="ln">    return 0</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">if __name__ == "__main__":</span>
+<span class="ln">    raise SystemExit(main(check="--check" in sys.argv))</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> <i class="str">`run.py`</i> composes the stages and does nothing else. Logic lives in function files.</span>
+<span class="ln"><i class="num">-</i> <i class="str">`--check`</i> runs the whole flow on a small, cached slice with no network, no training and no writes outside <i class="str">`data/`</i>.</span>
+<span class="ln"><i class="num">-</i> The exit code is the truth: 0 means it worked, anything else means it failed.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 6. `auto.py`: finds every `run.py`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```python</i></span>
+<span class="ln">"""auto.py · runs builders/*/run.py in number order. <i class="str">`python auto.py [--check] [--only 2]`</i>"""</span>
+<span class="ln">import re, subprocess, sys</span>
+<span class="ln">from pathlib import Path</span>
+<span class="ln"> </span>
+<span class="ln">HERE = Path(__file__).resolve().parent</span>
+<span class="ln">ROOT = HERE.parent</span>
+<span class="ln">sys.path.insert(0, str(ROOT))</span>
+<span class="ln">import _u_entries as U</span>
+<span class="ln"> </span>
+<span class="ln">def builders():</span>
+<span class="ln">    found = [p for p in HERE.glob("builder_*/run.py")]</span>
+<span class="ln">    return sorted(found, key=lambda p: int(re.search(r"\d+", p.parent.name).group()))</span>
+<span class="ln"> </span>
+<span class="ln">def main(argv):</span>
+<span class="ln">    only = argv[argv.index("--only") + 1] if "--only" in argv else None</span>
+<span class="ln">    for run in builders():</span>
+<span class="ln">        name = run.parent.name</span>
+<span class="ln">        if only and name != f"builder_{only}":</span>
+<span class="ln">            continue</span>
+<span class="ln">        if not U.RUN.get(name, True):</span>
+<span class="ln">            print(f"·  {name}  off in _u_entries.RUN"); continue</span>
+<span class="ln">        print(f"▶  {name}")</span>
+<span class="ln">        code = subprocess.call([sys.executable, "run.py", *(["--check"] if "--check" in argv else [])], cwd=run.parent)</span>
+<span class="ln">        if code:</span>
+<span class="ln">            print(f"✗  {name} exited {code}. Stopping here."); return code</span>
+<span class="ln">    print("✓  all builders ran"); return 0</span>
+<span class="ln"> </span>
+<span class="ln">if __name__ == "__main__":</span>
+<span class="ln">    raise SystemExit(main(sys.argv[1:]))</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> Each builder runs in its own process from its own folder, so one builder can't break another.</span>
+<span class="ln"><i class="num">-</i> It stops at the first failure and names it. It never skips ahead.</span>
+<span class="ln"><i class="num">-</i> A new <i class="str">`builder_N/run.py`</i> is picked up on its own. Nothing is registered by hand.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 7. RULE 4 in practice: environments</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">1.</i> Before any <i class="str">`pip`</i>, <i class="str">`conda`</i> or <i class="str">`uv`</i> command, ask: "Do you want to create a new environment?"</span>
+<span class="ln"><i class="num">2.</i> If no, ask: "Which environment should be used?" Use that one exactly, and say its name back.</span>
+<span class="ln"><i class="num">3.</i> A missing package is reported, never installed: <i class="str">`pandas-ta missing in &lt;env&gt;. Add it?`</i></span>
+<span class="ln"><i class="num">4.</i> Once a package is approved it goes into <i class="str">`requirements.txt`</i> in the same change.</span>
+<span class="ln"><i class="num">5.</i> Never touch the base env, global Python, or another project's env.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 8. Finance law: what makes the numbers worth trusting</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> <i class="fn">**No look-ahead.**</i> A feature at day t uses data up to t and nothing after. Targets are shifted forward, features are never shifted back.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Fit on train only.**</i> Scalers, PCA and imputers are fitted on the training window and applied to the rest.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Time splits, never shuffles.**</i> Walk-forward or expanding windows. Each fold reports its own metrics.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Name the target.**</i> Say what is predicted (for example, the log return <i class="str">`HORIZON`</i> days ahead) and keep it fixed across models.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**A baseline first.**</i> Last value, then a linear or ARIMA model. An LSTM has to beat both before anyone sees it.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Report the spread.**</i> Give MAE, RMSE and directional accuracy per fold, plus the interval coverage when a model gives a distribution.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Fix the seed.**</i> Seeds come from <i class="str">`_u_entries.SEED`</i>, so a result can be run again and come out the same.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Raw is a snapshot.**</i> Pulls land as <i class="str">`data/raw/&lt;source&gt;_&lt;YYYYMMDD&gt;.csv`</i> and are never edited. Cleaning writes to processed.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Fill gaps forward.**</i> Use the trading calendar, forward-fill only, and never back-fill across a split.</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**No live orders.**</i> Nothing here places a trade or moves money. Results are research, not advice.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 9. How an agent works a task</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">read      AGENTS.md → the builder's README → _u_entries.py</span>
+<span class="ln">plan      ≤ 5 lines: which stage, which function, what changes</span>
+<span class="ln">change    one stage at a time, the smallest change that works</span>
+<span class="ln">prove     python auto.py --check  (or run.py --check for one builder)</span>
+<span class="ln">report    file · function · why · what the numbers did</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> Don't rename or move files that work. Don't "tidy" code nobody asked about.</span>
+<span class="ln"><i class="num">-</i> When the README is wrong after your change, fix the README in the same change.</span>
+<span class="ln"><i class="num">-</i> When you aren't sure, ask. A question costs less than a wrong rewrite.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 10. Done means</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">- [ ]</i> <i class="str">`python auto.py --check`</i> exits 0</span>
+<span class="ln"><i class="num">- [ ]</i> No logic in <i class="str">`_u_entries.py`</i>, and no absolute path anywhere else</span>
+<span class="ln"><i class="num">- [ ]</i> No function file runs anything at import</span>
+<span class="ln"><i class="num">- [ ]</i> Data only moved raw → processed → exports</span>
+<span class="ln"><i class="num">- [ ]</i> No environment was created and no package installed without a yes</span>
+<span class="ln"><i class="num">- [ ]</i> README and requirements.txt match the code</span></code></pre>
+</details>
+ </div>
+ <p class="aside">AGENTS.md is the file Cursor, Codex and Claude Code read at a project's root, so one contract covers every agent.</p>
 </section>
 
 <footer><span>Est. 2022 · © 2026 Custom AI Models</span><a href="/">customaimodels.com</a></footer>
