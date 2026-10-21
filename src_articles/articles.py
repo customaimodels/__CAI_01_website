@@ -27,6 +27,8 @@ ALIASES = {"/yerko-vargas": "/yeriko-vargas/", "/yeriko-vargas": "/yeriko-vargas
 def handle(h, method):
     path = h.path.split("?", 1)[0].split("#", 1)[0]
     to = ALIASES.get(path.rstrip("/")) if method == "GET" else None
+    if method == "GET" and path.startswith("/s/"):   # old per-client share links (/s/<client-token>/<project>) → the hub (2026-10-20)
+        to = "/r-cai/"
     if to and path != to:                     # site-wide short links: 301 to the one canonical page, query kept
         q = h.path.split("?", 1)[1].split("#", 1)[0] if "?" in h.path else ""
         h.send_response(301)

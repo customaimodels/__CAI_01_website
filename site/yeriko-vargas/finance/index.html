@@ -1,0 +1,1740 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="/03_img/favicon.ico?v=k1" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/03_img/favicon-32.png?v=k1">
+<link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="description" content="Finance AI by Yeriko Vargas: LSTMs tested for Possible Investments, research on distributional forecasting and hidden correlation, and a stock-timing agent.">
+<link rel="canonical" href="https://customaimodels.com/yeriko-vargas/finance/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="Yeriko Vargas · Finance AI and LSTM research">
+<meta property="og:description" content="Finance AI by Yeriko Vargas: LSTMs tested for Possible Investments, research on distributional forecasting and hidden correlation, and a stock-timing agent.">
+<meta property="og:url" content="https://customaimodels.com/yeriko-vargas/finance/">
+<meta property="og:image" content="https://customaimodels.com/03_img/09_og_card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Custom AI Models gold knot emblem">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfilePage","@id":"https://customaimodels.com/yeriko-vargas/finance/","url":"https://customaimodels.com/yeriko-vargas/finance/","name":"Yeriko Vargas · Finance AI and LSTM research","mainEntity":{"@type":"Person","name":"Yeriko Vargas","jobTitle":"AI Engineer · AI Systems Architect","address":{"@type":"PostalAddress","addressLocality":"Detroit","addressRegion":"MI","addressCountry":"US"},"sameAs":["https://linkedin.com/in/yeriko-vargas"],"worksFor":{"@type":"Organization","@id":"https://customaimodels.com/#org","name":"Custom AI Models","url":"https://customaimodels.com/"}}}
+</script>
+<title>Yeriko Vargas · Finance AI and LSTM research</title>
+<!-- /yeriko-vargas/tools/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=8d60ff2b1f">
+<script defer src="/cai-beacon.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+ <div class="tag">Custom AI Models</div>
+ <h1><a href="/yeriko-vargas/">Yeriko Vargas</a></h1>
+ <p class="role">AI Engineer · AI Systems Architect · Detroit, MI</p>
+ <nav class="tabs" aria-label="Pages">
+  <a href="/yeriko-vargas/">Overview</a>
+  <a href="/yeriko-vargas/portfolio/">Portfolio</a>
+  <a href="/yeriko-vargas/skills/">Skills</a>
+  <a href="/yeriko-vargas/tools/">AI tools</a>
+  <a href="/yeriko-vargas/architecture/">Architecture</a>
+  <a href="/yeriko-vargas/hvac/">HVAC AI Models</a>
+  <a href="/yeriko-vargas/telemetry/">Telemetry</a>
+  <a href="/yeriko-vargas/workbench/">Workbench</a>
+  <a href="/yeriko-vargas/finance/" aria-current="page">Finance</a>
+  <a href="/yeriko-vargas/tutoring/">Tutoring</a>
+  <a href="/yeriko-vargas/prototypes/">Prototypes</a>
+ </nav>
+</header>
+
+<section class="fin-hero">
+ <h2>Finance</h2>
+ <h3 class="claim gold">Buy lift, not noise.</h3>
+ <p class="lead">Markets are the hardest data I work with: they never sit still. For Possible Investments, a client in
+ Australia, I tested LSTMs on real market data and built an AI dashboard for time series. Around that work I keep a
+ research bench: the mathematics under the model, and an agent that reads a stock the way a hawk reads the air.</p>
+ <div class="ledger fin">
+  <div><i>01 · client</i><b>Possible Investments</b><p>Australia · LSTMs tested on real market data · time-series AI dashboard</p><em class="on">tested</em></div>
+  <div><i>02 · research</i><b>Distributions, not points</b><p>my LSTM framework · 23 chapters · non-stationary returns</p><em>research</em></div>
+  <div><i>03 · research</i><b>Hidden correlations</b><p>16 chapters · copulas · tails · regimes · market modes</p><em>research</em></div>
+  <div><i>04 · agent</i><b>1_Day_Best</b><p>R → Python · ten analyses · five ASCII panels · one LSTM vote</p><em>in build</em></div>
+ </div>
+</section>
+
+<section>
+ <h2>The flight model</h2>
+ <h3 class="claim">A hawk doesn't flap all day. It finds a thermal.</h3>
+ <p class="lead">Soaring birds climb on rising columns of warm air and glide while the air does the work. My strategy
+ is built the same way: momentum is the thermal, the pullback is the circling, the breakout is the glide, and the exit
+ is the moment the lift fades.</p>
+ <div class="zsh flight">
+  <div class="zsh-bar"><i></i><i></i><i></i><span>the strategy, drawn</span></div>
+<pre><code>              ↗  GLIDE      breakout after compression · the entry
+          ◜ ◝ ◜ ◝    CIRCLE    pullback · coil under resistance · wait
+         (  (  )  )  THERMAL   a regime with real lift · the only air worth flying
+    ~~~~~~~~~~~~~~~~ NOISE     no lift · stay on the ground
+              ↘  EXIT       lift fades · you&#x27;d have to flap to stay level</code></pre>
+ </div>
+ <div class="pipe fin4">
+  <div><i>THERMAL</i><b>regime</b><p>medium-horizon momentum: is the name worth touching?</p></div>
+  <div><i>CIRCLE</i><b>pullback</b><p>short-run reversal into support, volatility compressing</p></div>
+  <div><i>GLIDE</i><b>entry</b><p>breakout with momentum intact, not out of breath</p></div>
+  <div><i>EXIT</i><b>lift fades</b><p>extension · support failure · model confidence rolls over</p></div>
+ </div>
+ <p class="aside">Two questions every day: is this stock in a regime worth touching, and if so, is today the day inside it?</p>
+</section>
+
+<section>
+ <h2>Research A · the model</h2>
+ <h3 class="claim">Returns aren't stationary. So I forecast the shape, not one number.</h3>
+ <p class="lead">Volatility clusters, regimes switch, tails are fat and jumps come in bursts. A point forecast hides all
+ of it. My LSTM framework asks the network for a distribution: mean, scale, skew and tails, with its own uncertainty,
+ checked for calibration before anyone trusts it. This is the statistics under the deep learning.</p>
+ <ol class="chapters">
+   <li><i>I</i>Foundational Paradigm: Departing From Euclidean Assumptions</li>
+   <li><i>II</i>Spectral Decomposition &amp; Fourier Harmonics In Hidden States</li>
+   <li><i>III</i>Volatility Forecasting: From Garch To Stochastic Volatility Neural Networks</li>
+   <li><i>IV</i>Information Geometry &amp; Fisher-Richtler Divergence</li>
+   <li><i>V</i>Copula Learning For Stock Co-Movement</li>
+   <li><i>VI</i>Temporal Point Process Theory &amp; Self-Exciting Jumps</li>
+   <li><i>VII</i>Optimal Stopping &amp; Sequential Decision Theory</li>
+   <li><i>VIII</i>Kernel Methods &amp; Feature Space Embeddings</li>
+   <li><i>IX</i>Variational Inference &amp; Posterior Uncertainty</li>
+   <li><i>X</i>Causal Inference &amp; Granger Causality</li>
+   <li><i>XI</i>Neural Ordinary Differential Equations (Neural Odes)</li>
+   <li><i>XII</i>Information Bottleneck &amp; Sufficient Statistics</li>
+   <li><i>XIII</i>Persistent Homology &amp; Topological Data Analysis</li>
+   <li><i>XIV</i>Kolmogorov-Smirnov Statistic &amp; Distributional Fairness</li>
+   <li><i>XV</i>Metric Learning &amp; Contrastive Representations</li>
+   <li><i>XVI</i>Optimal Transport &amp; Wasserstein Autoencoders</li>
+   <li><i>XVII</i>Attention Mechanisms As Optimal Transport Plans</li>
+   <li><i>XVIII</i>Entropy &amp; Differential Entropy In Learning</li>
+   <li><i>XIX</i>Multi-Task Learning &amp; Auxiliary Tasks</li>
+   <li><i>XX</i>Meta-Learning &amp; Few-Shot Transfer</li>
+   <li><i>XXI</i>Adversarial Training &amp; Robustness</li>
+   <li><i>XXII</i>Fractional Calculus &amp; Long-Memory Processes</li>
+   <li><i>XXIII</i>Information Geometry &amp; Fisher-Richtler Distance</li>
+ </ol>
+ <div class="desk">
+  <h4>On the desk</h4>
+  <div><code>σ²ₜ = ω + α·ε²ₜ₋₁ + β·σ²ₜ₋₁</code><span>GARCH: volatility remembers</span></div>
+  <div><code>Xₜ = μ(Sₜ) + σ(Sₜ)·εₜ</code><span>regimes switch under the surface</span></div>
+  <div><code>V[y|x] ≈ mean(ŷ²) − mean(ŷ)²</code><span>dropout left on: the model's own doubt</span></div>
+  <div><code>uₜ = F̂(yₜ | hₜ) ~ U[0,1]</code><span>PIT: is the stated doubt honest?</span></div>
+ </div>
+ <div class="files">
+<details class="code"><summary><span class="file">lstm_framework.md</span><span class="role">the whole framework, word for word</span><span class="lines">974 lines</span></summary>
+<pre><code><span class="ln"># 🧬 LSTM STOCK PREDICTION: ADVANCED MATHEMATICAL &amp; THEORETICAL FRAMEWORK 🧬</span>
+<span class="ln">## *A 2026 Research Perspective on Recurrent Architectures for Non-Stationary Financial Time Series*</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## I. FOUNDATIONAL PARADIGM: DEPARTING FROM EUCLIDEAN ASSUMPTIONS</span>
+<span class="ln"></span>
+<span class="ln">### A. The Pathology of Classical Stationarity Tests</span>
+<span class="ln"></span>
+<span class="ln">Traditional financial econometrics assumes **weak stationarity** (constant mean, variance, autocovariance):</span>
+<span class="ln"></span>
+<span class="ln">$$\mathbb{E}[X_t] = \mu, \quad \mathbb{Var}(X_t) = \sigma^2, \quad \text{Cov}(X_t, X_{t-k}) = \gamma(k)$$</span>
+<span class="ln"></span>
+<span class="ln">**This is fundamentally false for equity returns.** Stock markets exhibit:</span>
+<span class="ln"></span>
+<span class="ln">1. **Heteroskedastic volatility clustering** (GARCH effects)</span>
+<span class="ln">2. **Stochastic volatility regimes** (vol of vol)</span>
+<span class="ln">3. **Leverage effects** (negative returns increase future vol asymmetrically)</span>
+<span class="ln">4. **Jumps and discontinuities** (gap risk)</span>
+<span class="ln"></span>
+<span class="ln">**Solution:** Reformulate returns as elements of a **locally-stationary wavelet process**:</span>
+<span class="ln"></span>
+<span class="ln">$$X_t = \int_{-\pi}^{\pi} e^{i\omega t} A_t(\omega) dZ(\omega)$$</span>
+<span class="ln"></span>
+<span class="ln">where $A_t(\omega)$ is **time-varying spectral amplitude** and $dZ(\omega)$ is orthogonal increment process.</span>
+<span class="ln"></span>
+<span class="ln">**Why LSTMs exploit this:** The hidden state $h_t$ implicitly learns $A_t(\omega)$ through recurrent depth.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. The Curse of Regime-Dependent Dynamics</span>
+<span class="ln"></span>
+<span class="ln">Equity returns follow a **piecewise stochastic process** with switching volatility regimes:</span>
+<span class="ln"></span>
+<span class="ln">$$X_t = \mu_{S_t} + \sigma_{S_t} \epsilon_t, \quad S_t \in \{1, 2, ..., K\}$$</span>
+<span class="ln"></span>
+<span class="ln">where $S_t$ is latent regime state following **hidden Markov chain**:</span>
+<span class="ln"></span>
+<span class="ln">$$P(S_t = j | S_{t-1} = i) = \pi_{ij}$$</span>
+<span class="ln"></span>
+<span class="ln">**Classical LSTM limitation:** Vanilla architecture cannot explicitly model regime switching.</span>
+<span class="ln"></span>
+<span class="ln">**2026 Research Fix:** **Conditional Normalizing Flows + LSTM**</span>
+<span class="ln"></span>
+<span class="ln">- Parametrize output distribution (not point estimates) via **invertible transformations**:</span>
+<span class="ln"></span>
+<span class="ln">$$Z_t = f_{\theta}(X_t; h_t) \quad \text{with Jacobian} \quad J_t = \det\left(\frac{\partial f}{\partial X_t}\right)$$</span>
+<span class="ln"></span>
+<span class="ln">- LSTM generates **time-varying transformation parameters** $\theta_t$ that adapt to regime:</span>
+<span class="ln"></span>
+<span class="ln">$$\theta_t = W_\theta h_t + b_\theta$$</span>
+<span class="ln"></span>
+<span class="ln">- Model outputs: **mean, scale, skewness, excess kurtosis** (not just point prediction)</span>
+<span class="ln"></span>
+<span class="ln">This converts point-estimation LSTM into **distributional forecaster** that learns regime-dependent densities.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## II. SPECTRAL DECOMPOSITION &amp; FOURIER HARMONICS IN HIDDEN STATES</span>
+<span class="ln"></span>
+<span class="ln">### A. Representation Learning as Harmonic Analysis</span>
+<span class="ln"></span>
+<span class="ln">LSTMs with sufficient capacity learn Fourier-like decompositions implicitly:</span>
+<span class="ln"></span>
+<span class="ln">$$\tilde{h}_t^{(l)} = \sum_{k=1}^{K_l} A_k^{(l)} \cos(\omega_k^{(l)} t + \phi_k^{(l)}) + \text{irregular}$$</span>
+<span class="ln"></span>
+<span class="ln">The hidden state $h_t \in \mathbb{R}^{d_h}$ factorizes into:</span>
+<span class="ln">- **Trend component:** Low-frequency ($\omega_1 \approx 0$, period $\gg 60$ days)</span>
+<span class="ln">- **Business-cycle component:** Medium-frequency ($\omega_2 \approx 2\pi/252$, annual seasonality)</span>
+<span class="ln">- **Intra-regime oscillations:** High-frequency noise</span>
+<span class="ln"></span>
+<span class="ln">**Advanced implementation:**</span>
+<span class="ln"></span>
+<span class="ln">Instead of standard LSTM cell, use **Wavelet-LSTM hybrid**:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Cell}_{\text{hybrid}} = \text{LSTM}(x_t) + \sum_{j} \psi_j(t; \theta_j) \cdot \text{gate}_j(h_t)$$</span>
+<span class="ln"></span>
+<span class="ln">where $\psi_j$ are **Morlet wavelets** (time-localized Fourier basis):</span>
+<span class="ln"></span>
+<span class="ln">$$\psi_j(t) = \pi^{-1/4} e^{i\omega_j t} e^{-t^2/2} \quad \text{(continuous wavelet transform)}$$</span>
+<span class="ln"></span>
+<span class="ln">**Advantage:** Captures **non-stationary periodicity** (e.g., earnings-cycle seasonality that SHIFTS over time)</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. The Empirical Intrinsic Mode Decomposition (EIMD) Connection</span>
+<span class="ln"></span>
+<span class="ln">Your LSTM&#x27;s learned hidden states should approximate **Empirical Mode Decomposition (EMD)**:</span>
+<span class="ln"></span>
+<span class="ln">$$X_t = \sum_{j=1}^{J} \text{IMF}_j(t) + r_t$$</span>
+<span class="ln"></span>
+<span class="ln">where **Intrinsic Mode Functions (IMFs)** are zero-mean oscillatory components with amplitude/frequency modulation.</span>
+<span class="ln"></span>
+<span class="ln">**Mathematical bridge:** LSTM cell gate $\sigma(\cdot)$ creates **multiplicative gating** that implements *enveloping* (amplitude modulation):</span>
+<span class="ln"></span>
+<span class="ln">$$\tilde{h}_t = \underbrace{i_t}_{\text{input gate}} \odot \underbrace{\tilde{c}_t}_{\text{cell state}} = \underbrace{A(t)}_{\text{envelope}} \odot \underbrace{\cos(\phi(t))}_{\text{oscillation}}$$</span>
+<span class="ln"></span>
+<span class="ln">**Interpretation:** Your LSTM learns IMFs automatically through gate mechanisms.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## III. VOLATILITY FORECASTING: FROM GARCH TO STOCHASTIC VOLATILITY NEURAL NETWORKS</span>
+<span class="ln"></span>
+<span class="ln">### A. Beyond GARCH: Continuous Stochastic Volatility</span>
+<span class="ln"></span>
+<span class="ln">Classical **GARCH(1,1)** models volatility as:</span>
+<span class="ln"></span>
+<span class="ln">$$\sigma_t^2 = \omega + \alpha \epsilon_{t-1}^2 + \beta \sigma_{t-1}^2$$</span>
+<span class="ln"></span>
+<span class="ln">**Limitation:** Single-parameter updating is too rigid for regime-switching.</span>
+<span class="ln"></span>
+<span class="ln">**Advanced approach:** **Stochastic Volatility with Jumps (SVJ)**</span>
+<span class="ln"></span>
+<span class="ln">$$d\ln S_t = (\mu - \lambda \kappa) dt + \sqrt{v_t} dW_t^S + (J-1) dN_t$$</span>
+<span class="ln">$$dv_t = \kappa(\theta - v_t) dt + \sigma_v \sqrt{v_t} dW_t^V$$</span>
+<span class="ln"></span>
+<span class="ln">where:</span>
+<span class="ln">- $v_t$ is **latent volatility** following Ornstein-Uhlenbeck (mean-reversion)</span>
+<span class="ln">- $N_t$ is **jump Poisson process** (captures earnings surprises, circuit breakers)</span>
+<span class="ln">- $dW_t^S$ and $dW_t^V$ are **correlated Brownian motions** (leverage effect: $\rho &lt; 0$)</span>
+<span class="ln"></span>
+<span class="ln">**Neural representation:**</span>
+<span class="ln"></span>
+<span class="ln">Use **Latent SDE framework** (neural SDEs):</span>
+<span class="ln"></span>
+<span class="ln">$$d\mathbf{z}_t = f_\theta(\mathbf{z}_t, t) dt + g_\theta(\mathbf{z}_t, t) d\mathbf{W}_t$$</span>
+<span class="ln"></span>
+<span class="ln">where LSTM generates **drift $f_\theta$** and **diffusion $g_\theta$** coefficients dynamically:</span>
+<span class="ln"></span>
+<span class="ln">$$f_\theta(\mathbf{z}_t, t) = W_f \text{LSTM}(\mathbf{z}_t) + b_f$$</span>
+<span class="ln">$$g_\theta(\mathbf{z}_t, t) = \text{softplus}(W_g \text{LSTM}(\mathbf{z}_t) + b_g)$$</span>
+<span class="ln"></span>
+<span class="ln">**Output:** Distributional forecast with **time-varying skewness and excess kurtosis**, not just mean/variance.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Realized Volatility &amp; Jump Detection via Quadratic Variation</span>
+<span class="ln"></span>
+<span class="ln">Modern volatility forecasting uses **realized measures** from high-frequency data:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{RV}_t = \sum_{j=1}^{N_t} r_{t,j}^2 \quad \text{(realized variance)}$$</span>
+<span class="ln"></span>
+<span class="ln">$$\text{BV}_t = \frac{\pi}{2} \sum_{j=1}^{N_t-1} |r_{t,j}| \cdot |r_{t,j+1}| \quad \text{(bipower variation, robust to jumps)}$$</span>
+<span class="ln"></span>
+<span class="ln">**Jump component:**</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Jump}_t = \max\{0, \text{RV}_t - c \cdot \text{BV}_t\}, \quad c \approx \Phi^{-1}(0.999) = 3.09$$</span>
+<span class="ln"></span>
+<span class="ln">**Integration into LSTM:**</span>
+<span class="ln"></span>
+<span class="ln">Augment input with **jump-sign indicator**:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{input}_t = [\log r_t, \log \text{BV}_t, \mathbb{1}(\text{Jump}_t &gt; \tau), \text{vol\_regime}_t]$$</span>
+<span class="ln"></span>
+<span class="ln">This forces LSTM to **explicitly learn jump dynamics** (rare large moves from diffusive noise).</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## IV. INFORMATION GEOMETRY &amp; FISHER-RICHTLER DIVERGENCE</span>
+<span class="ln"></span>
+<span class="ln">### A. Geodesic Distance in Information Space</span>
+<span class="ln"></span>
+<span class="ln">When training multiple models (ensemble), don&#x27;t average predictions naively.</span>
+<span class="ln"></span>
+<span class="ln">Instead, use **Wasserstein distance** between predicted distributions:</span>
+<span class="ln"></span>
+<span class="ln">$$W_p(P, Q) = \left(\inf_{\gamma} \int \|x - y\|^p d\gamma(x,y)\right)^{1/p}$$</span>
+<span class="ln"></span>
+<span class="ln">**Application:** Model 1 predicts $\mathcal{N}(\mu_1, \sigma_1)$, Model 2 predicts $\mathcal{N}(\mu_2, \sigma_2)$</span>
+<span class="ln"></span>
+<span class="ln">Closed-form Wasserstein for Gaussians:</span>
+<span class="ln"></span>
+<span class="ln">$$W_2(\mathcal{N}_1, \mathcal{N}_2)^2 = \|\mu_1 - \mu_2\|^2 + \left(\sigma_1 + \sigma_2 - 2\sqrt{\sigma_1 \sigma_2}\right)$$</span>
+<span class="ln"></span>
+<span class="ln">**Ensemble logic:**</span>
+<span class="ln">- If $W_2 &lt; \tau_{\text{low}}$: Models agree → high confidence</span>
+<span class="ln">- If $W_2 &gt; \tau_{\text{high}}$: Models disagree → low confidence (hedge)</span>
+<span class="ln"></span>
+<span class="ln">**Alternative: Fisher Information Matrix**</span>
+<span class="ln"></span>
+<span class="ln">Compute **parameter uncertainty** via Hessian:</span>
+<span class="ln"></span>
+<span class="ln">$$H = \frac{\partial^2 \mathcal{L}}{\partial \theta^2}$$</span>
+<span class="ln"></span>
+<span class="ln">The **effective dimension** of learned features:</span>
+<span class="ln"></span>
+<span class="ln">$$d_{\text{eff}} = \text{tr}(H^{-1} H_{\text{fisher}})$$</span>
+<span class="ln"></span>
+<span class="ln">High $d_{\text{eff}}$ = model uses many orthogonal features (good generalization)</span>
+<span class="ln">Low $d_{\text{eff}}$ = model relies on few features (overfit risk)</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## V. COPULA LEARNING FOR STOCK CO-MOVEMENT</span>
+<span class="ln"></span>
+<span class="ln">### A. Departing from Linear Correlation</span>
+<span class="ln"></span>
+<span class="ln">Pearson correlation assumes:</span>
+<span class="ln">$$\rho = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}$$</span>
+<span class="ln"></span>
+<span class="ln">**Problem:** Only captures linear dependence. Tail dependence (crashes) is **highly non-linear**.</span>
+<span class="ln"></span>
+<span class="ln">**Solution: Copula Learning**</span>
+<span class="ln"></span>
+<span class="ln">Sklar&#x27;s theorem: Joint CDF decomposes:</span>
+<span class="ln"></span>
+<span class="ln">$$F(x, y) = C(F_X(x), F_Y(y))$$</span>
+<span class="ln"></span>
+<span class="ln">where **copula $C$** captures **pure dependence structure** independent of marginals.</span>
+<span class="ln"></span>
+<span class="ln">**Archimedean copulas:**</span>
+<span class="ln"></span>
+<span class="ln">Clayton copula (lower tail dependence):</span>
+<span class="ln">$$C_\theta(u, v) = \left(u^{-\theta} + v^{-\theta} - 1\right)^{-1/\theta}$$</span>
+<span class="ln"></span>
+<span class="ln">$\theta &gt; 0$: Positive dependence strengthens in crashes (bad for diversification)</span>
+<span class="ln"></span>
+<span class="ln">**Neural representation:**</span>
+<span class="ln"></span>
+<span class="ln">Train LSTM to output **copula parameters** (not just mean/variance):</span>
+<span class="ln"></span>
+<span class="ln">$$\hat{\theta}_t = f_{\text{LSTM}}([\text{vol}_t, \text{returns}_t, \text{correlation}_t])$$</span>
+<span class="ln"></span>
+<span class="ln">This captures **time-varying tail dependence** crucial for portfolio risk:</span>
+<span class="ln"></span>
+<span class="ln">When $\theta_t \uparrow$ (crashes approaching), all stocks co-move → diversification fails.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Multivariate Student-t Copulas (Fat Tails)</span>
+<span class="ln"></span>
+<span class="ln">Financial returns exhibit **excess kurtosis**. Better than Gaussian assumptions:</span>
+<span class="ln"></span>
+<span class="ln">$$X_t | v_t \sim \mathcal{N}(0, \Sigma v_t), \quad v_t \sim \text{InvGamma}(\nu/2, \nu/2)$$</span>
+<span class="ln"></span>
+<span class="ln">Marginal: $X_t \sim t_\nu(\Sigma)$ with **fat tails** ($\nu &lt; \infty$)</span>
+<span class="ln"></span>
+<span class="ln">**LSTM parametrizes:**</span>
+<span class="ln">- $\mu_t$: conditional mean</span>
+<span class="ln">- $\Sigma_t$: conditional covariance (via Cholesky decomposition)</span>
+<span class="ln">- $\nu_t$: conditional degrees of freedom (kurtosis indicator)</span>
+<span class="ln"></span>
+<span class="ln">$$\nu_t = \text{softplus}(W_\nu h_t + b_\nu) + 2.1$$</span>
+<span class="ln"></span>
+<span class="ln">(Adding 2.1 ensures $\nu &gt; 2$ for finite variance)</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## VI. TEMPORAL POINT PROCESS THEORY &amp; SELF-EXCITING JUMPS</span>
+<span class="ln"></span>
+<span class="ln">### A. Hawkes Process for Clustering Events</span>
+<span class="ln"></span>
+<span class="ln">Markets exhibit **self-exciting behavior:** Large moves beget more large moves.</span>
+<span class="ln"></span>
+<span class="ln">**Hawkes process intensity:**</span>
+<span class="ln"></span>
+<span class="ln">$$\lambda(t) = \mu + \int_0^t \alpha e^{-\beta(t-s)} dN(s)$$</span>
+<span class="ln"></span>
+<span class="ln">where:</span>
+<span class="ln">- $\mu$: baseline intensity</span>
+<span class="ln">- $\alpha e^{-\beta(t-s)}$: **self-exciting kernel** (past jumps increase future jump probability)</span>
+<span class="ln">- $N(t)$: cumulative count of jumps up to $t$</span>
+<span class="ln"></span>
+<span class="ln">**Application to volatility regime:**</span>
+<span class="ln"></span>
+<span class="ln">$$\text{vol}_t = \mathbb{E}[\lambda(t)] = \mu + \alpha \int_0^t e^{-\beta(t-s)} dN(s)$$</span>
+<span class="ln"></span>
+<span class="ln">**Neural Hawkes LSTM:**</span>
+<span class="ln"></span>
+<span class="ln">Combine Hawkes with LSTM:</span>
+<span class="ln"></span>
+<span class="ln">$$h_t^{\text{new}} = \text{LSTM}(h_t) + \underbrace{\alpha_t e^{-\beta_t(t-t_{\text{lastjump}})}}_{\text{Hawkes self-excitement}}$$</span>
+<span class="ln"></span>
+<span class="ln">where $\alpha_t, \beta_t$ are learned by LSTM.</span>
+<span class="ln"></span>
+<span class="ln">**Interpretation:** Model learns how much to &quot;remember&quot; large past moves.</span>
+<span class="ln">- High $\alpha_t$: Volatility persists (jump clustering)</span>
+<span class="ln">- Low $\alpha_t$: Volatility mean-reverts quickly</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Marked Point Processes &amp; Jump Size Distribution</span>
+<span class="ln"></span>
+<span class="ln">Not all jumps are equal. Model **jump size distribution** conditional on jump occurrence:</span>
+<span class="ln"></span>
+<span class="ln">$$P(\text{jump}_t \in [a, b] | \text{jump occurs}) = \text{mixture of distributions}$$</span>
+<span class="ln"></span>
+<span class="ln">Use **neural mixture density networks (MDN)**:</span>
+<span class="ln"></span>
+<span class="ln">$$p(y_t | h_t) = \sum_{k=1}^K \pi_k(h_t) \mathcal{N}(y_t; \mu_k(h_t), \sigma_k(h_t))$$</span>
+<span class="ln"></span>
+<span class="ln">LSTM outputs:</span>
+<span class="ln">- **Mixture weights:** $\pi_k = \text{softmax}(W_\pi h_t)$</span>
+<span class="ln">- **Component means:** $\mu_k = W_\mu^k h_t$</span>
+<span class="ln">- **Component variances:** $\sigma_k = \text{softplus}(W_\sigma^k h_t)$</span>
+<span class="ln"></span>
+<span class="ln">This creates **multimodal predictive distribution** capturing:</span>
+<span class="ln">- Normal market moves (narrow Gaussian)</span>
+<span class="ln">- Crash scenarios (wide left tail component)</span>
+<span class="ln">- Euphoria scenarios (wide right tail component)</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## VII. OPTIMAL STOPPING &amp; SEQUENTIAL DECISION THEORY</span>
+<span class="ln"></span>
+<span class="ln">### A. Bellman Equation for Portfolio Control</span>
+<span class="ln"></span>
+<span class="ln">Frame stock prediction as **sequential decision problem** (reinforcement learning angle):</span>
+<span class="ln"></span>
+<span class="ln">$$V_t(x_t, s_t) = \max_{a_t} \mathbb{E}[r(x_t, a_t) + \gamma V_{t+1}(x_{t+1}, s_{t+1})]$$</span>
+<span class="ln"></span>
+<span class="ln">where:</span>
+<span class="ln">- $x_t$: market state (prices, volatility)</span>
+<span class="ln">- $a_t$: action (buy/hold/sell quantity)</span>
+<span class="ln">- $s_t$: hidden regime state</span>
+<span class="ln">- $\gamma$: discount factor</span>
+<span class="ln"></span>
+<span class="ln">**Solution via LSTM value function approximation:**</span>
+<span class="ln"></span>
+<span class="ln">$$V_t(x_t) \approx v_{\theta}(x_t, h_t)$$</span>
+<span class="ln"></span>
+<span class="ln">where LSTM hidden state $h_t$ captures **sufficient statistics** of state distribution.</span>
+<span class="ln"></span>
+<span class="ln">**Advantage:** Avoids myopic per-period predictions. Instead learns **multi-period optimal strategy**.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Optimal Stopping Time (When to Sell)</span>
+<span class="ln"></span>
+<span class="ln">Define **exit boundary** via **Free Boundary Problem**:</span>
+<span class="ln"></span>
+<span class="ln">$$\max\{\underbrace{V_{\text{hold}}(S_t)}_{\text{value of holding}}, \underbrace{S_t - C}_{\text{sell now}}\}$$</span>
+<span class="ln"></span>
+<span class="ln">where $C$ is transaction cost and $V_{\text{hold}}$ satisfies:</span>
+<span class="ln"></span>
+<span class="ln">$$\frac{1}{2}\sigma^2 S^2 V&#x27;&#x27; + (r - q) S V&#x27; - r V + (r - q) S = 0$$</span>
+<span class="ln"></span>
+<span class="ln">**LSTM learns boundary implicitly:**</span>
+<span class="ln"></span>
+<span class="ln">$$\text{exit\_probability}_t = \sigma(W_e h_t + b_e)$$</span>
+<span class="ln"></span>
+<span class="ln">When $\text{exit\_probability}_t &gt; 0.7$ → Model predicts you should have already exited.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## VIII. KERNEL METHODS &amp; FEATURE SPACE EMBEDDINGS</span>
+<span class="ln"></span>
+<span class="ln">### A. Reproducing Kernel Hilbert Space (RKHS) Perspective</span>
+<span class="ln"></span>
+<span class="ln">LSTM hidden states can be viewed as **kernel features** in RKHS:</span>
+<span class="ln"></span>
+<span class="ln">$$h_t = \Phi(x_t) \quad \text{where } \Phi: \mathcal{X} \to \mathcal{H}$$</span>
+<span class="ln"></span>
+<span class="ln">The kernel:</span>
+<span class="ln"></span>
+<span class="ln">$$k(x_i, x_j) = \langle \Phi(x_i), \Phi(x_j) \rangle_\mathcal{H}$$</span>
+<span class="ln"></span>
+<span class="ln">**Advanced:** Use **Mercer expansion** to decompose learned representations:</span>
+<span class="ln"></span>
+<span class="ln">$$k(x_i, x_j) = \sum_{k=1}^\infty \lambda_k \phi_k(x_i) \phi_k(x_j)$$</span>
+<span class="ln"></span>
+<span class="ln">By examining **eigenvalues $\lambda_k$** of empirical Gram matrix:</span>
+<span class="ln"></span>
+<span class="ln">$$\Lambda = \frac{1}{T} \sum_{t=1}^T h_t h_t^\top$$</span>
+<span class="ln"></span>
+<span class="ln">High-variance directions (large $\lambda_k$) = important features</span>
+<span class="ln">Low-variance directions = noise</span>
+<span class="ln"></span>
+<span class="ln">**Dimension reduction:** Keep only directions with $\lambda_k &gt; \epsilon$ threshold.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Maximum Mean Discrepancy (MMD) for Distribution Matching</span>
+<span class="ln"></span>
+<span class="ln">When doing transfer learning (AAPL → COIN), ensure learned distributions are close:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{MMD}^2(P, Q) = \left\| \mathbb{E}_{x \sim P}[\Phi(x)] - \mathbb{E}_{y \sim Q}[\Phi(y)] \right\|_\mathcal{H}^2$$</span>
+<span class="ln"></span>
+<span class="ln">Empirical MMD:</span>
+<span class="ln"></span>
+<span class="ln">$$\widehat{\text{MMD}}^2 = \frac{1}{m^2} \sum_{i,j} k(x_i, x_j) + \frac{1}{n^2} \sum_{i,j} k(y_i, y_j) - \frac{2}{mn} \sum_{i,j} k(x_i, y_j)$$</span>
+<span class="ln"></span>
+<span class="ln">**Training objective:** Minimize transfer loss + MMD penalty:</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{total}} = \underbrace{\mathcal{L}_{\text{prediction}}}_{\text{source task}} + \underbrace{\lambda \cdot \text{MMD}^2(h_t^{\text{source}}, h_t^{\text{target}})}_{\text{domain adaptation}}$$</span>
+<span class="ln"></span>
+<span class="ln">This ensures transferred weights from AAPL/NVDA remain relevant on COIN.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## IX. VARIATIONAL INFERENCE &amp; POSTERIOR UNCERTAINTY</span>
+<span class="ln"></span>
+<span class="ln">### A. Variational Dropout as Bayesian Neural Networks</span>
+<span class="ln"></span>
+<span class="ln">Standard dropout is actually **approximate Bayesian inference**:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Dropout}(x) = x \odot z, \quad z_i \sim \text{Bernoulli}(p)$$</span>
+<span class="ln"></span>
+<span class="ln">At test time, sample multiple dropout masks:</span>
+<span class="ln"></span>
+<span class="ln">$$\hat{y}_1, \hat{y}_2, ..., \hat{y}_M \sim \text{model}_{\text{dropout}}(x) \text{ with dropout ON}$$</span>
+<span class="ln"></span>
+<span class="ln">Posterior mean:</span>
+<span class="ln">$$\mathbb{E}[y | x] \approx \frac{1}{M} \sum_{m=1}^M \hat{y}_m$$</span>
+<span class="ln"></span>
+<span class="ln">Posterior variance (uncertainty):</span>
+<span class="ln">$$\mathbb{V}[y | x] \approx \frac{1}{M} \sum_{m=1}^M \hat{y}_m^2 - \left(\frac{1}{M} \sum_{m=1}^M \hat{y}_m\right)^2$$</span>
+<span class="ln"></span>
+<span class="ln">**Implementation:** At prediction time, NEVER disable dropout. Run $M=50$ forward passes.</span>
+<span class="ln"></span>
+<span class="ln">This gives you **credible intervals** for predictions automatically.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Variational Autoencoder (VAE) for Representation Learning</span>
+<span class="ln"></span>
+<span class="ln">Use VAE to learn **generative model** of market states:</span>
+<span class="ln"></span>
+<span class="ln">$$p(x) = \int p(x|z) p(z) dz$$</span>
+<span class="ln"></span>
+<span class="ln">Encoder: $q_\phi(z | x) = \mathcal{N}(\mu_\phi(x), \sigma_\phi^2(x))$ (LSTM parametrizes $\mu, \sigma$)</span>
+<span class="ln">Decoder: $p_\psi(x | z)$ reconstructs price from latent</span>
+<span class="ln"></span>
+<span class="ln">ELBO (Evidence Lower Bound):</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L} = -\mathbb{E}_{q_\phi}[\log p_\psi(x|z)] + \mathbb{KL}(q_\phi(z|x) \| p(z))$$</span>
+<span class="ln"></span>
+<span class="ln">**Application:**</span>
+<span class="ln">- Latent $z$ captures **interpretable market regimes**</span>
+<span class="ln">- Posterior uncertainty $\sigma_\phi(x)$ indicates how &quot;normal&quot; the market is</span>
+<span class="ln">- When $\|\mu_\phi(x)\|$ is far from origin → Regime change detected</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## X. CAUSAL INFERENCE &amp; GRANGER CAUSALITY</span>
+<span class="ln"></span>
+<span class="ln">### A. Granger Causality in High Dimensions</span>
+<span class="ln"></span>
+<span class="ln">Does AAPL Granger-cause COIN? Test via **reduced vs full model**:</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{reduced}} = \log \det(\Sigma_{\text{reduced}})$$</span>
+<span class="ln">$$\mathcal{L}_{\text{full}} = \log \det(\Sigma_{\text{full}})$$</span>
+<span class="ln"></span>
+<span class="ln">**Granger causality test statistic:**</span>
+<span class="ln"></span>
+<span class="ln">$$\text{GC} = T(\log \det(\Sigma_{\text{reduced}}) - \log \det(\Sigma_{\text{full}})) \sim \chi^2_k$$</span>
+<span class="ln"></span>
+<span class="ln">**Neural adaptation:** Learn **attention weights** between stocks:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{attention}_{j \to i} = \frac{\exp(W_a [h_i; h_j])}{\sum_k \exp(W_a [h_i; h_k])}$$</span>
+<span class="ln"></span>
+<span class="ln">High attention weight = strong Granger causality (AAPL → COIN).</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Instrumental Variables for Confounding</span>
+<span class="ln"></span>
+<span class="ln">Problem: AAPL and COIN both rise → Is it causation or shared confounder?</span>
+<span class="ln"></span>
+<span class="ln">Use **instrumental variable** (something that affects AAPL but not COIN directly):</span>
+<span class="ln"></span>
+<span class="ln">Example: Semiconductor supply chain shock → Affects AAPL but COIN is just retail sentiment</span>
+<span class="ln"></span>
+<span class="ln">Two-stage least squares (2SLS):</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Stage 1:} \hat{\text{AAPL}}_t = Z_t&#x27; \gamma + v_t$$</span>
+<span class="ln">$$\text{Stage 2:} \text{COIN}_t = \hat{\text{AAPL}}_t \beta + \epsilon_t$$</span>
+<span class="ln"></span>
+<span class="ln">**LSTM implementation:** Augment input with **exogenous instruments**:</span>
+<span class="ln"></span>
+<span class="ln">$$h_t = \text{LSTM}([x_t, \underbrace{Z_t}_{\text{instruments}}])$$</span>
+<span class="ln"></span>
+<span class="ln">Model learns to disentangle **causal effects** from **confounding**.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XI. NEURAL ORDINARY DIFFERENTIAL EQUATIONS (Neural ODEs)</span>
+<span class="ln"></span>
+<span class="ln">### A. Continuous-Time Dynamics via ODE Solvers</span>
+<span class="ln"></span>
+<span class="ln">Instead of discrete LSTM cells, model continuous dynamics:</span>
+<span class="ln"></span>
+<span class="ln">$$\frac{dh}{dt} = f_\theta(h, t)$$</span>
+<span class="ln"></span>
+<span class="ln">Solution via ODE solver (e.g., RK4):</span>
+<span class="ln"></span>
+<span class="ln">$$h(t_{i+1}) = h(t_i) + \int_{t_i}^{t_{i+1}} f_\theta(h(\tau), \tau) d\tau$$</span>
+<span class="ln"></span>
+<span class="ln">**Advantages:**</span>
+<span class="ln">- Memory efficient (no need to store all hidden states)</span>
+<span class="ln">- Can evaluate at any time (not just integer timesteps)</span>
+<span class="ln">- **Theoretical soundness:** Direct correspondence to continuous stochastic processes</span>
+<span class="ln"></span>
+<span class="ln">**Implementation:**</span>
+<span class="ln"></span>
+<span class="ln">$$f_\theta(h, t) = W_1 \tanh(W_2 h + b_2) + b_1$$</span>
+<span class="ln"></span>
+<span class="ln">LSTM is now **learned differential equation**, not algebraic transformation.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Neural SDE (Continuous Stochasticity)</span>
+<span class="ln"></span>
+<span class="ln">Extend to stochastic dynamics:</span>
+<span class="ln"></span>
+<span class="ln">$$dh_t = f_\theta(h_t, t) dt + g_\theta(h_t, t) dW_t$$</span>
+<span class="ln"></span>
+<span class="ln">Use **Itô&#x27;s lemma** for derivative calculations.</span>
+<span class="ln"></span>
+<span class="ln">**Output:** Latent SDE parameters learned by neural network.</span>
+<span class="ln"></span>
+<span class="ln">Stock price prediction becomes:</span>
+<span class="ln"></span>
+<span class="ln">$$dS_t = \mu_{\text{learned}}(h_t) dt + \sigma_{\text{learned}}(h_t) dW_t$$</span>
+<span class="ln"></span>
+<span class="ln">where $\mu_{\text{learned}}, \sigma_{\text{learned}}$ are functions of learned latent states.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XII. INFORMATION BOTTLENECK &amp; SUFFICIENT STATISTICS</span>
+<span class="ln"></span>
+<span class="ln">### A. Information Bottleneck Principle</span>
+<span class="ln"></span>
+<span class="ln">Given high-dimensional input $X$ (OHLCV data), compress to $Z$ (hidden state) while preserving information about target $Y$ (future price).</span>
+<span class="ln"></span>
+<span class="ln">**Information bottleneck objective:**</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{IB}} = \mathcal{L}_{\text{pred}} + \beta \cdot \mathbb{I}(Z; X)$$</span>
+<span class="ln"></span>
+<span class="ln">where:</span>
+<span class="ln">- $\mathcal{L}_{\text{pred}}$: prediction loss</span>
+<span class="ln">- $\mathbb{I}(Z; X)$: mutual information between hidden state and input</span>
+<span class="ln">- $\beta$: Lagrange multiplier (trades off compression vs accuracy)</span>
+<span class="ln"></span>
+<span class="ln">As $\beta \uparrow$:</span>
+<span class="ln">- Hidden state becomes simpler (fewer features)</span>
+<span class="ln">- Generalization improves (less overfitting)</span>
+<span class="ln">- But prediction loss might rise (can&#x27;t fit training data as well)</span>
+<span class="ln"></span>
+<span class="ln">**Sweet spot:** $\beta$ where test accuracy peaks → **Pareto frontier of compression-vs-prediction**.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Sufficient Statistics via LSTM Bottleneck</span>
+<span class="ln"></span>
+<span class="ln">Markov property: Future returns depend on past only through **sufficient statistic** $T(x_t, ..., x_{t-k})$.</span>
+<span class="ln"></span>
+<span class="ln">For financial returns, sufficient statistics are:</span>
+<span class="ln">- Recent log-returns (trend)</span>
+<span class="ln">- Realized volatility (risk)</span>
+<span class="ln">- Volume (information arrival rate)</span>
+<span class="ln">- Regime indicator (bull/bear)</span>
+<span class="ln"></span>
+<span class="ln">**Enforce sufficiency:** Add **information bottleneck loss** to LSTM training:</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L} = \underbrace{(y_t - \hat{y}_t)^2}_{\text{MSE}} + \underbrace{\beta \cdot D_{\text{KL}}(q(z|x) \| p(z))}_{\text{information regularization}}$$</span>
+<span class="ln"></span>
+<span class="ln">This forces hidden state $z$ to discard irrelevant information (noise) while retaining predictive power.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XIII. PERSISTENT HOMOLOGY &amp; TOPOLOGICAL DATA ANALYSIS</span>
+<span class="ln"></span>
+<span class="ln">### A. Persistence Diagrams for Trend Detection</span>
+<span class="ln"></span>
+<span class="ln">Apply **persistent homology** to price data to extract **multi-scale structure**:</span>
+<span class="ln"></span>
+<span class="ln">Create Vietoris-Rips complex from point cloud $\{p_1, ..., p_n\}$:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{VR}(\epsilon) = \{\text{simplices with diameter} \leq \epsilon\}$$</span>
+<span class="ln"></span>
+<span class="ln">**Persistence diagram:** Plot births and deaths of topological features (connected components, loops, voids) as $\epsilon$ grows.</span>
+<span class="ln"></span>
+<span class="ln">**Interpretation for stocks:**</span>
+<span class="ln">- **Persistent 0-dimensional features** (clusters): Price consolidated in ranges</span>
+<span class="ln">- **Persistent 1-dimensional features** (loops): Mean-reversion patterns</span>
+<span class="ln">- **Ephemeral features** (short lifespan): Noise</span>
+<span class="ln"></span>
+<span class="ln">**Integration into LSTM:**</span>
+<span class="ln"></span>
+<span class="ln">Extract **topological features** from rolling windows:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{topo\_feature}_t = [\text{num\_clusters}, \text{num\_loops}, \text{avg\_persistence}]$$</span>
+<span class="ln"></span>
+<span class="ln">Feed to LSTM as additional input channel.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Mapper Algorithm for Regime Visualization</span>
+<span class="ln"></span>
+<span class="ln">**Mapper** creates simplified topological representation:</span>
+<span class="ln"></span>
+<span class="ln">1. Sample path $\{p_1, ..., p_T\}$ (closing prices over time)</span>
+<span class="ln">2. Compute **lens function** $f: \mathbb{R}^d \to \mathbb{R}$ (e.g., $f = $ rolling volatility)</span>
+<span class="ln">3. Cover range of $f$ with overlapping intervals</span>
+<span class="ln">4. Cluster points in each interval</span>
+<span class="ln">5. Create graph: nodes = clusters, edges = overlapping clusters</span>
+<span class="ln"></span>
+<span class="ln">**Result:** Simplicial complex revealing **shape** of price manifold.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XIV. KOLMOGOROV-SMIRNOV STATISTIC &amp; DISTRIBUTIONAL FAIRNESS</span>
+<span class="ln"></span>
+<span class="ln">### A. Model Distributional Calibration</span>
+<span class="ln"></span>
+<span class="ln">Your LSTM outputs distributions $\hat{p}(y | x)$. Are they **calibrated**?</span>
+<span class="ln"></span>
+<span class="ln">Test via KS statistic between predicted CDF and empirical CDF:</span>
+<span class="ln"></span>
+<span class="ln">$$D_n = \max_y |\hat{F}(y) - \hat{F}_{\text{emp}}(y)|$$</span>
+<span class="ln"></span>
+<span class="ln">where $\hat{F}$ is model-predicted CDF, $\hat{F}_{\text{emp}}$ is empirical.</span>
+<span class="ln"></span>
+<span class="ln">**Hypothesis test:** $\sqrt{T} D_n \sim \text{KS}_\infty$ under null (calibration holds)</span>
+<span class="ln"></span>
+<span class="ln">If $p\text{-value} &lt; 0.05$: Model is **not calibrated** (stated uncertainty ≠ realized)</span>
+<span class="ln"></span>
+<span class="ln">**Fix via isotonic regression:**</span>
+<span class="ln"></span>
+<span class="ln">Learn monotonic transformation $m: \mathbb{R} \to [0, 1]$ such that:</span>
+<span class="ln"></span>
+<span class="ln">$$m(\hat{p}(y | x)) \approx \mathbb{1}(y \leq y_{\text{realized}})$$</span>
+<span class="ln"></span>
+<span class="ln">This **recalibrates** predicted probabilities to match empirical frequencies.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Probability Integral Transform (PIT)</span>
+<span class="ln"></span>
+<span class="ln">If $y_t$ is drawn from $\hat{p}(y | h_t)$, then:</span>
+<span class="ln"></span>
+<span class="ln">$$u_t = \hat{F}(y_t | h_t) \sim \text{Uniform}[0, 1]$$</span>
+<span class="ln"></span>
+<span class="ln">Plot histogram of $\{u_1, ..., u_T\}$:</span>
+<span class="ln">- **Uniform histogram** → Good calibration</span>
+<span class="ln">- **U-shaped histogram** → Model too confident (predictions too extreme)</span>
+<span class="ln">- **Inverted-U histogram** → Model too uncertain (spread too wide)</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XV. METRIC LEARNING &amp; CONTRASTIVE REPRESENTATIONS</span>
+<span class="ln"></span>
+<span class="ln">### A. Siamese Networks for Stock Similarity</span>
+<span class="ln"></span>
+<span class="ln">Learn **embedding** where similar stocks are close, dissimilar stocks are far:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{distance}(S_i, S_j) = \|f(x_i) - f(x_j)\|$$</span>
+<span class="ln"></span>
+<span class="ln">where $f$ is shared encoder (LSTM).</span>
+<span class="ln"></span>
+<span class="ln">**Training via contrastive loss:**</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{contrastive}} = \sum_{\text{pos}} \|f(x_i) - f(x_j)\|^2 + \sum_{\text{neg}} \max(0, \Delta - \|f(x_i) - f(x_k)\|)^2$$</span>
+<span class="ln"></span>
+<span class="ln">**Positive pairs:** Stocks that co-move (AAPL &amp; ASML in bull market)</span>
+<span class="ln">**Negative pairs:** Stocks that diverge (AAPL &amp; COIN when sentiment inverts)</span>
+<span class="ln"></span>
+<span class="ln">**Advantage:** Automatically learns **stock similarity matrix** from data, reveals hidden sector structure.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Triplet Loss &amp; Hard Negative Mining</span>
+<span class="ln"></span>
+<span class="ln">Instead of pairs, use **triplets** (anchor, positive, negative):</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{triplet}} = \max(0, D(a, p) - D(a, n) + \alpha)$$</span>
+<span class="ln"></span>
+<span class="ln">**Hard negative mining:** Actively choose hardest negatives (stocks most similar to anchor but different label).</span>
+<span class="ln"></span>
+<span class="ln">This creates **maximally discriminative embeddings**.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XVI. OPTIMAL TRANSPORT &amp; WASSERSTEIN AUTOENCODERS</span>
+<span class="ln"></span>
+<span class="ln">### A. Monge-Kantorovich Problem</span>
+<span class="ln"></span>
+<span class="ln">Move probability mass from current state $P$ to ideal state $Q$ with minimum cost:</span>
+<span class="ln"></span>
+<span class="ln">$$W(P, Q) = \inf_\pi \int \|x - y\| d\pi(x, y)$$</span>
+<span class="ln"></span>
+<span class="ln">**Application:** Move predicted distribution toward true future distribution.</span>
+<span class="ln"></span>
+<span class="ln">**Wasserstein Autoencoder (WAE):**</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L} = \mathbb{E}_X[\|x - \hat{x}\|] + \lambda W(q_\phi(z), p(z))$$</span>
+<span class="ln"></span>
+<span class="ln">where $W$ is Wasserstein distance, ensuring latent distribution matches prior.</span>
+<span class="ln"></span>
+<span class="ln">**Benefit:** Smoother latent space (less interpolation artifacts) than VAE.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Sliced Wasserstein Distance (Computational Tractability)</span>
+<span class="ln"></span>
+<span class="ln">Computing Wasserstein in high dims is hard. Use **Radon transform**:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{SW}(P, Q)^2 = \int_{\mathbb{S}^{d-1}} W_1(\mathcal{R}_\theta P, \mathcal{R}_\theta Q)^2 d\theta$$</span>
+<span class="ln"></span>
+<span class="ln">where $\mathcal{R}_\theta$ is projection onto random direction $\theta$.</span>
+<span class="ln"></span>
+<span class="ln">Much faster to compute, still preserves geometric properties.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XVII. ATTENTION MECHANISMS AS OPTIMAL TRANSPORT PLANS</span>
+<span class="ln"></span>
+<span class="ln">### A. Self-Attention as Implicit Optimal Transport</span>
+<span class="ln"></span>
+<span class="ln">Transformer attention can be reinterpreted as **optimal transport**:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d}}\right) V$$</span>
+<span class="ln"></span>
+<span class="ln">The softmax matrix is an **optimal coupling** (transport plan) between queries and keys.</span>
+<span class="ln"></span>
+<span class="ln">**Interpretation:** For each time $t$, **allocate attention mass** to past timesteps that are most informative about future.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Temporal Attention with Uncertainty</span>
+<span class="ln"></span>
+<span class="ln">Parametrize attention **variance** (not just mean):</span>
+<span class="ln"></span>
+<span class="ln">$$\mu_{\text{attention}} = \text{softmax}(QK^\top / \sqrt{d})$$</span>
+<span class="ln">$$\sigma_{\text{attention}} = \text{softmax}(V_\sigma)$$</span>
+<span class="ln"></span>
+<span class="ln">Output is **attention-weighted distribution** with **heteroskedastic uncertainty**:</span>
+<span class="ln"></span>
+<span class="ln">$$y_t = \sum_s \mu_{\text{attention}}(s) y_s \quad \text{with} \quad \sigma_t^2 = \sum_s \sigma_{\text{attention}}(s) \sigma_s^2$$</span>
+<span class="ln"></span>
+<span class="ln">This captures **how confident** the model is in its attention allocation.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XVIII. ENTROPY &amp; DIFFERENTIAL ENTROPY IN LEARNING</span>
+<span class="ln"></span>
+<span class="ln">### A. Shannon Entropy for Feature Diversity</span>
+<span class="ln"></span>
+<span class="ln">Compute empirical entropy of LSTM outputs:</span>
+<span class="ln"></span>
+<span class="ln">$$H(h_t) = -\sum_i p_i \log p_i$$</span>
+<span class="ln"></span>
+<span class="ln">where $p_i$ is probability of unit $i$ being &quot;active&quot; (high $|h_i|$).</span>
+<span class="ln"></span>
+<span class="ln">**High entropy** → Units contribute equally (balanced learning)</span>
+<span class="ln">**Low entropy** → Few units dominate (potential bottleneck)</span>
+<span class="ln"></span>
+<span class="ln">**Objective:** Add entropy regularization:</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{ent}} = \alpha \sum_t H(h_t)$$</span>
+<span class="ln"></span>
+<span class="ln">Forces network to use **all available capacity**, not just a few features.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Differential Entropy for Continuous Distributions</span>
+<span class="ln"></span>
+<span class="ln">If LSTM outputs continuous distribution (e.g., $\mathcal{N}(\mu, \sigma)$):</span>
+<span class="ln"></span>
+<span class="ln">$$h(p) = -\int p(x) \log p(x) dx$$</span>
+<span class="ln"></span>
+<span class="ln">For Gaussian:</span>
+<span class="ln">$$h(\mathcal{N}(\mu, \sigma)) = \frac{1}{2} \log(2\pi e \sigma^2)$$</span>
+<span class="ln"></span>
+<span class="ln">**Entropy as regularizer:**</span>
+<span class="ln"></span>
+<span class="ln">High entropy (wide distribution) → Model is uncertain → Less likely to overfit</span>
+<span class="ln">Low entropy (narrow distribution) → Model is confident → Risk of overconfidence</span>
+<span class="ln"></span>
+<span class="ln">**Calibrated model** has entropy that **matches realized prediction error**.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XIX. MULTI-TASK LEARNING &amp; AUXILIARY TASKS</span>
+<span class="ln"></span>
+<span class="ln">### A. Auxiliary Objectives for Richer Representations</span>
+<span class="ln"></span>
+<span class="ln">Don&#x27;t just predict stock price. Multi-task learn:</span>
+<span class="ln"></span>
+<span class="ln">**Primary task:** Price prediction</span>
+<span class="ln">**Auxiliary task 1:** Volatility prediction (GARCH-style)</span>
+<span class="ln">**Auxiliary task 2:** Volume prediction (information flow)</span>
+<span class="ln">**Auxiliary task 3:** Regime classification (bull/bear/sideways)</span>
+<span class="ln">**Auxiliary task 4:** Jump detection (binary classification)</span>
+<span class="ln"></span>
+<span class="ln">Shared LSTM encoder learns **richer representations**:</span>
+<span class="ln"></span>
+<span class="ln">$$h_t = \text{LSTM}(x_t)$$</span>
+<span class="ln">$$\hat{y}_{\text{price}} = W_1 h_t + b_1$$</span>
+<span class="ln">$$\hat{y}_{\text{vol}} = W_2 h_t + b_2$$</span>
+<span class="ln">$$\hat{y}_{\text{vol\_pred}} = W_3 h_t + b_3$$</span>
+<span class="ln">... etc</span>
+<span class="ln"></span>
+<span class="ln">**Total loss:**</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{total}} = \lambda_1 \mathcal{L}_{\text{price}} + \lambda_2 \mathcal{L}_{\text{vol}} + \lambda_3 \mathcal{L}_{\text{regime}} + ...$$</span>
+<span class="ln"></span>
+<span class="ln">**Benefits:**</span>
+<span class="ln">- Inductive bias: All tasks benefit from learning trend structure</span>
+<span class="ln">- Regularization: Predicting auxiliary tasks prevents overfitting to price</span>
+<span class="ln">- Interpretability: Auxiliary outputs are interpretable signals</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Curriculum Learning &amp; Task Scheduling</span>
+<span class="ln"></span>
+<span class="ln">Start with **easier auxiliary tasks** (regime classification), progress to **harder** (price prediction):</span>
+<span class="ln"></span>
+<span class="ln">$$\lambda_t(i) = \begin{cases}</span>
+<span class="ln">1.0 &amp; \text{if } i \text{ is &quot;easy&quot;} \\</span>
+<span class="ln">\text{ramp up gradually} &amp; \text{as training progresses}</span>
+<span class="ln">\end{cases}$$</span>
+<span class="ln"></span>
+<span class="ln">This provides **soft-regularization path** and speeds convergence.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XX. META-LEARNING &amp; FEW-SHOT TRANSFER</span>
+<span class="ln"></span>
+<span class="ln">### A. Model-Agnostic Meta-Learning (MAML)</span>
+<span class="ln"></span>
+<span class="ln">Learn **initialization weights** that can be fine-tuned quickly on new stocks.</span>
+<span class="ln"></span>
+<span class="ln">**Outer loop (meta-train on many stocks):**</span>
+<span class="ln">For each stock $i$:</span>
+<span class="ln">1. Take gradient step on $\mathcal{L}_i$: $\theta&#x27; = \theta - \alpha \nabla \mathcal{L}_i(\theta)$</span>
+<span class="ln">2. Evaluate on validation: $\mathcal{L}_i^{\text{val}}(\theta&#x27;)$</span>
+<span class="ln"></span>
+<span class="ln">**Meta-update:** $\theta \leftarrow \theta - \beta \nabla \mathcal{L}^{\text{meta}} = \beta \sum_i \nabla \mathcal{L}_i^{\text{val}}(\theta&#x27;)$</span>
+<span class="ln"></span>
+<span class="ln">**Result:** Initialization $\theta^*$ that, after 1-5 gradient steps on new stock, achieves near-optimal performance.</span>
+<span class="ln"></span>
+<span class="ln">**Application:** New stock SSNLF arrives → Fine-tune pre-trained LSTM on 1 month of data → High accuracy</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Prototypical Networks</span>
+<span class="ln"></span>
+<span class="ln">Learn **prototype** (centroid) for each regime in embedding space:</span>
+<span class="ln"></span>
+<span class="ln">$$c_k = \frac{1}{|D_k|} \sum_{(x,y) \in D_k} f(x)$$</span>
+<span class="ln"></span>
+<span class="ln">Classify new point by distance to nearest prototype:</span>
+<span class="ln"></span>
+<span class="ln">$$\hat{y} = \arg\min_k \|f(x) - c_k\|^2$$</span>
+<span class="ln"></span>
+<span class="ln">**Benefit:** Clear **interpretable decision boundaries** in learned space.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XXI. ADVERSARIAL TRAINING &amp; ROBUSTNESS</span>
+<span class="ln"></span>
+<span class="ln">### A. Generative Adversarial Networks (GANs) for Market Simulation</span>
+<span class="ln"></span>
+<span class="ln">Train **generator** to produce realistic market paths:</span>
+<span class="ln"></span>
+<span class="ln">$$G: \mathcal{Z} \to \mathcal{X}, \quad z \sim p(z), \quad G(z) \text{ looks like real price path}$$</span>
+<span class="ln"></span>
+<span class="ln">Adversary **discriminator** learns to distinguish real from fake:</span>
+<span class="ln"></span>
+<span class="ln">$$D: \mathcal{X} \to [0,1], \quad D(x) = P(\text{real} | x)$$</span>
+<span class="ln"></span>
+<span class="ln">**Minimax objective:**</span>
+<span class="ln"></span>
+<span class="ln">$$\min_G \max_D \mathbb{E}_x[\log D(x)] + \mathbb{E}_z[\log(1 - D(G(z)))]$$</span>
+<span class="ln"></span>
+<span class="ln">**Benefit:** Generate **realistic market scenarios** for testing trading strategy robustness.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Adversarial Examples &amp; Stock Prediction Robustness</span>
+<span class="ln"></span>
+<span class="ln">Attack your LSTM: Find minimal **adversarial perturbation** $\delta$ such that:</span>
+<span class="ln"></span>
+<span class="ln">$$\|\delta\|_\infty &lt; \epsilon \quad \text{and} \quad \hat{y}(x + \delta) \neq \hat{y}(x)$$</span>
+<span class="ln"></span>
+<span class="ln">If perturbation size needed is tiny ($\epsilon \ll 0.01$) → Model is **brittle**, overfitting.</span>
+<span class="ln"></span>
+<span class="ln">**Defense:** Adversarial training on perturbed examples:</span>
+<span class="ln"></span>
+<span class="ln">$$\mathcal{L}_{\text{adv}} = \max_\delta \mathcal{L}(x + \delta, y)$$</span>
+<span class="ln"></span>
+<span class="ln">Train on worst-case perturbations → Robust to input noise.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XXII. FRACTIONAL CALCULUS &amp; LONG-MEMORY PROCESSES</span>
+<span class="ln"></span>
+<span class="ln">### A. Fractional Brownian Motion (fBM)</span>
+<span class="ln"></span>
+<span class="ln">Standard Brownian motion has **short memory** (Hurst exponent $H = 0.5$).</span>
+<span class="ln"></span>
+<span class="ln">Stocks exhibit **long-memory**: $H &gt; 0.5$ implies:</span>
+<span class="ln"></span>
+<span class="ln">$$\text{Var}(X_{t+h} - X_t) = \sigma^2 h^{2H}$$</span>
+<span class="ln"></span>
+<span class="ln">**Generalized to fractional Brownian motion:**</span>
+<span class="ln"></span>
+<span class="ln">$$B_H(t) = \frac{1}{\Gamma(H + 1/2)} \int_0^t (t - s)^{H-1/2} dB(s)$$</span>
+<span class="ln"></span>
+<span class="ln">where $\Gamma$ is gamma function.</span>
+<span class="ln"></span>
+<span class="ln">**LSTM learns $H$ implicitly:** Recurrent depth captures long-range dependencies captured by $H &gt; 0.5$.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Fractional Derivatives in Dynamics</span>
+<span class="ln"></span>
+<span class="ln">Model stock dynamics using **fractional derivatives** (not standard calculus):</span>
+<span class="ln"></span>
+<span class="ln">$$\frac{d^\alpha X_t}{dt^\alpha} = \mu, \quad 0 &lt; \alpha \leq 1$$</span>
+<span class="ln"></span>
+<span class="ln">where $\alpha &lt; 1$ captures **anomalous diffusion** (moves are more correlated than Brownian).</span>
+<span class="ln"></span>
+<span class="ln">**Numerical solution via Caputo fractional derivative:**</span>
+<span class="ln"></span>
+<span class="ln">$$D_t^\alpha f(t) = \frac{1}{\Gamma(n - \alpha)} \int_0^t (t - s)^{n-\alpha-1} f^{(n)}(s) ds$$</span>
+<span class="ln"></span>
+<span class="ln">LSTM can be modified to use fractional operations in gates.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## XXIII. INFORMATION GEOMETRY &amp; FISHER-RICHTLER DISTANCE</span>
+<span class="ln"></span>
+<span class="ln">### A. Natural Gradient Descent</span>
+<span class="ln"></span>
+<span class="ln">Standard gradient descent in parameter space doesn&#x27;t account for **information geometry**.</span>
+<span class="ln"></span>
+<span class="ln">Use **natural gradient** via Fisher information matrix:</span>
+<span class="ln"></span>
+<span class="ln">$$\tilde{g}_t = F^{-1} g_t$$</span>
+<span class="ln"></span>
+<span class="ln">where $F = \mathbb{E}[\nabla \log p(y|x) \nabla \log p(y|x)^\top]$ is Fisher matrix.</span>
+<span class="ln"></span>
+<span class="ln">**Benefit:** Invariant under reparametrization, faster convergence, better generalization.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">### B. Riemannian Manifold Optimization</span>
+<span class="ln"></span>
+<span class="ln">Optimize over space of probability distributions (not Euclidean):</span>
+<span class="ln"></span>
+<span class="ln">Geodesic distance via Wasserstein:</span>
+<span class="ln"></span>
+<span class="ln">$$d_W(P, Q) = \inf_\gamma \int \|x - y\| d\gamma(x, y)$$</span>
+<span class="ln"></span>
+<span class="ln">Gradient flow on manifold:</span>
+<span class="ln"></span>
+<span class="ln">$$\frac{dP_t}{dt} = -\nabla_W \mathcal{L}(P_t)$$</span>
+<span class="ln"></span>
+<span class="ln">where $\nabla_W$ is **Wasserstein gradient** (geometrically meaningful).</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">## CONCLUSION: TOWARD THEORY-GUIDED DATA-DRIVEN MODELS</span>
+<span class="ln"></span>
+<span class="ln">Your LSTM should be understood as:</span>
+<span class="ln"></span>
+<span class="ln">1. **Implicit harmonic analyzer** (learns Fourier decomposition)</span>
+<span class="ln">2. **Stochastic volatility estimator** (outputs regime-dependent distributions)</span>
+<span class="ln">3. **Topological feature extractor** (captures regime structure via homology)</span>
+<span class="ln">4. **Information bottleneck** (compresses irrelevant noise while preserving signals)</span>
+<span class="ln">5. **Optimal transport layer** (attention allocates resources to informative timesteps)</span>
+<span class="ln"></span>
+<span class="ln">This convergence of **classical mathematical finance** + **modern deep learning** creates foundation for robust, interpretable, and theoretically grounded stock prediction systems.</span>
+<span class="ln"></span>
+<span class="ln">The models don&#x27;t just fit data—they embed decades of financial econometrics into their learned architectures.</span>
+<span class="ln"></span>
+<span class="ln">---</span>
+<span class="ln"></span>
+<span class="ln">**END OF FRAMEWORK**</span>
+<span class="ln"></span>
+<span class="ln">*2026 perspective: These techniques are beyond current state-of-art commercial ML. Implementation requires deep understanding of both finance theory and advanced ML. Proceed with intellectual humility.*</span>
+</code></pre></details>
+ </div>
+</section>
+
+<section>
+ <h2>Research A · the market</h2>
+ <h3 class="claim">Zero correlation doesn't mean independent.</h3>
+ <p class="lead">Two stocks can show a Pearson ρ near zero and still crash together. I read dependence where it
+ actually lives: in the tails, in the regime, in the eigenvalues of the whole market, above the noise floor a random
+ matrix would give you.</p>
+ <ol class="chapters">
+   <li><i>I</i>Beyond Linear Correlation: The Geometry Of Dependence</li>
+   <li><i>II</i>Copula Structures: The Hidden Correlation Skeleton</li>
+   <li><i>III</i>Spectral Analysis Of Correlation Dynamics</li>
+   <li><i>IV</i>Higher-Order Moments: Coskewness &amp; Cokurtosis</li>
+   <li><i>V</i>Dynamic Conditional Correlation (Dcc) &amp; Threshold Behavior</li>
+   <li><i>VI</i>Correlation Breakdown &amp; Contagion</li>
+   <li><i>VII</i>Multivariate Extreme Value Theory</li>
+   <li><i>VIII</i>Information Geometry Of Correlation Matrices</li>
+   <li><i>IX</i>Hidden Markov Chains For Regime-Dependent Correlations</li>
+   <li><i>X</i>Abstract Variability: Variance Of Variance (Vol Of Vol)</li>
+   <li><i>XI</i>Concentration &amp; Diversification Limits</li>
+   <li><i>XII</i>Matrix Perturbation Theory &amp; Stability Analysis</li>
+   <li><i>XIII</i>Nonparametric Correlation: Spearman&#x27;S Rho &amp; Kendall&#x27;S Tau</li>
+   <li><i>XIV</i>Differential Correlation Equations</li>
+   <li><i>XV</i>Tensor Methods For Multi-Way Correlations</li>
+   <li><i>XVI</i>Phase Transition In Correlation Networks</li>
+ </ol>
+ <div class="files">
+<details class="code"><summary><span class="file">hidden_correlations.md</span><span class="role">16 chapters, word for word</span><span class="lines">332 lines</span></summary>
+<pre><code><span class="ln">🎓 HIDDEN CORRELATIONS &amp; ABSTRACT VARIABILITY STRUCTURES IN EQUITY MARKETS 🎓</span>
+<span class="ln">A Harvard-Level Mathematical Treatment of Day-to-Day Stock Relationships</span>
+<span class="ln"></span>
+<span class="ln">I. BEYOND LINEAR CORRELATION: THE GEOMETRY OF DEPENDENCE</span>
+<span class="ln">A. The Fundamental Problem with Pearson $\rho$</span>
+<span class="ln">Pearson correlation assumes bivariate normality:</span>
+<span class="ln">$$\rho_{XY} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}$$</span>
+<span class="ln">Critical failure mode: Stocks with $\rho = 0$ (uncorrelated) can have strong nonlinear dependence.</span>
+<span class="ln">Example: $$X \sim \mathcal{N}(0, 1), \quad Y = X^2$$</span>
+<span class="ln">Then $\text{Cov}(X, Y) = 0$ (perfectly orthogonal) but $Y$ is completely determined by $X$.</span>
+<span class="ln">Stock market analogy: AAPL and VIX have near-zero Pearson $\rho$, yet VIX controls regime in which AAPL moves.</span>
+<span class="ln">Fix: Maximal Correlation (Hirschfeld-Gebelein)</span>
+<span class="ln">$$\rho_{\max}(X, Y) = \sup_{f, g} \text{Corr}(f(X), g(Y))$$</span>
+<span class="ln">subject to $\mathbb{E}[f(X)] = \mathbb{E}[g(Y)] = 0$, $\mathbb{V}[f(X)] = \mathbb{V}[g(Y)] = 1$.</span>
+<span class="ln">What this means: Find the best nonlinear transformations $f, g$ that maximize correlation. Even if $\rho = 0$, we might have $\rho_{\max} = 0.9$.</span>
+<span class="ln">LSTM learns $f, g$ implicitly through hidden layers.</span>
+<span class="ln"></span>
+<span class="ln">B. Distance Correlation: Capturing Independence Structure</span>
+<span class="ln">$$\text{dCov}(X, Y) = \sqrt{\mathbb{E}[|X - X&#x27;| \cdot |Y - Y&#x27;|] - \mathbb{E}[|X - X&#x27;|] \cdot \mathbb{E}[|Y - Y&#x27;|]}$$</span>
+<span class="ln">where primes denote independent copies.</span>
+<span class="ln">Key property: $\text{dCov}(X, Y) = 0 \iff X \perp Y$ (truly independent)</span>
+<span class="ln">Unlike Pearson, detects all types of dependence: nonlinear, nonmonotonic, extreme tail associations.</span>
+<span class="ln">For stocks:</span>
+<span class="ln">Day-to-day returns might have $\rho = 0.02$ (independent) but $\text{dCov} = 0.15$ (dependent).</span>
+<span class="ln">Interpretation: Returns are uncorrelated but co-move under stress (hidden dependence).</span>
+<span class="ln"></span>
+<span class="ln">II. COPULA STRUCTURES: THE HIDDEN CORRELATION SKELETON</span>
+<span class="ln">A. Bivariate Copula Taxonomy</span>
+<span class="ln">Clayton Copula (lower tail dependence): $$C_\theta(u, v) = (u^{-\theta} + v^{-\theta} - 1)^{-1/\theta}$$</span>
+<span class="ln">Lower tail dependence coefficient: $$\lambda_L = \lim_{q \to 0^+} P(V \leq q | U \leq q) = 2^{-1/\theta}$$</span>
+<span class="ln">Stocks with high $\lambda_L$: Co-crash in downturns (COIN, RBLX with VIX spikes)</span>
+<span class="ln">Gumbel Copula (upper tail dependence): $$C_\theta(u, v) = \exp\left(-((-\ln u)^\theta + (-\ln v)^\theta)^{1/\theta}\right)$$</span>
+<span class="ln">Upper tail dependence coefficient: $$\lambda_U = 2 - 2^{1/\theta}$$</span>
+<span class="ln">Stocks with high $\lambda_U$: Co-rally in booms (NVDA, ASML in AI euphoria)</span>
+<span class="ln">Student-t Copula (symmetric tail dependence): $$\lambda_L = \lambda_U = P(t_\nu &gt; \sqrt{\frac{\nu+1}{1-\rho}(1+\rho)}) \quad \text{where } \nu, \rho \text{ are parameters}$$</span>
+<span class="ln">Stocks with high symmetric $\lambda$: Same behavior up and down (tech sector, especially AAPL)</span>
+<span class="ln"></span>
+<span class="ln">B. Conditional Copula: Time-Varying Dependence</span>
+<span class="ln">Copula parameter $\theta_t$ changes with regime:</span>
+<span class="ln">$$C_{\theta(h_t)}(u_t, v_t | h_t)$$</span>
+<span class="ln">where $h_t$ is hidden state containing volatility regime, market direction, etc.</span>
+<span class="ln">Extreme case: When $h_t$ indicates &quot;market crash&quot;, $\theta_t \to \infty$ (extreme tail dependence).</span>
+<span class="ln">LSTM learns: Mapping from market features $h_t \to$ copula parameter $\theta_t$.</span>
+<span class="ln">Trading implication:</span>
+<span class="ln">* When $\frac{d\theta_t}{dt} &gt; 0$ (dependence increasing) → Diversification failing → Tighten stops</span>
+<span class="ln">* When $\frac{d\theta_t}{dt} &lt; 0$ → Diversification improving → Widen risk allocation</span>
+<span class="ln"></span>
+<span class="ln">III. SPECTRAL ANALYSIS OF CORRELATION DYNAMICS</span>
+<span class="ln">A. Eigenvalue Evolution of Correlation Matrix</span>
+<span class="ln">Compute rolling correlation matrix $\Sigma_t \in \mathbb{R}^{d \times d}$ (where $d = 19$ stocks):</span>
+<span class="ln">$$\Sigma_t = \begin{pmatrix} \sigma_{\text{AAPL,AAPL}} &amp; \sigma_{\text{AAPL,AMD}} &amp; \cdots \ \sigma_{\text{AMD,AAPL}} &amp; \sigma_{\text{AMD,AMD}} &amp; \cdots \ \vdots &amp; \vdots &amp; \ddots \end{pmatrix}$$</span>
+<span class="ln">Eigenvalue decomposition:</span>
+<span class="ln">$$\Sigma_t = \sum_{i=1}^d \lambda_i(t) v_i(t) v_i(t)^\top$$</span>
+<span class="ln">where $\lambda_1(t) \geq \lambda_2(t) \geq ... \geq \lambda_d(t)$ are time-varying eigenvalues.</span>
+<span class="ln">Interpretation:</span>
+<span class="ln">* $\lambda_1(t)$ (market mode): &quot;How much do ALL stocks move together?&quot; When $\lambda_1 \uparrow$, systemic risk increases</span>
+<span class="ln">* $\lambda_2(t), \lambda_3(t)$ (sector modes): Tech sector vs financials vs retail</span>
+<span class="ln">* $\lambda_d(t)$ (idiosyncratic mode): Stock-specific risk uncorrelated with market</span>
+<span class="ln">Marchenko-Pastur limit:</span>
+<span class="ln">For random correlation matrix (null hypothesis: all returns independent):</span>
+<span class="ln">$$\lambda_{\text{MP}}^{\pm} = \sigma^2 \left(1 \pm \sqrt{\frac{T}{N}}\right)^2$$</span>
+<span class="ln">where $T$ = number of observations, $N$ = number of stocks, $\sigma^2$ = variance.</span>
+<span class="ln">Test: If $\lambda_1(t) &gt; \lambda_{\text{MP}}^+$ → Significant market-wide correlation (not random noise).</span>
+<span class="ln"></span>
+<span class="ln">B. Principal Component Analysis (PCA) as Hidden Structure</span>
+<span class="ln">First principal component explains maximum variance:</span>
+<span class="ln">$$v_1 = \arg\max_{|v|=1} \mathbb{V}[v^\top X_t]$$</span>
+<span class="ln">For your 19 stocks, typically $v_1 \approx \frac{1}{\sqrt{19}}[1, 1, ..., 1]$ (equal weighting).</span>
+<span class="ln">Interpretation: All stocks move together in primary mode (market beta).</span>
+<span class="ln">Second principal component orthogonal to $v_1$:</span>
+<span class="ln">$$v_2 = \arg\max_{|v|=1, v^\top v_1 = 0} \mathbb{V}[v^\top X_t]$$</span>
+<span class="ln">Often aligns with sector split: Tech (NVDA, ASML, AMD) vs Retail (COIN, RBLX) vs Consumer (AAPL).</span>
+<span class="ln">How LSTMs exploit this:</span>
+<span class="ln">Hidden state $h_t^{(1)}$ learns $v_1$ (captures market mode) Hidden state $h_t^{(2)}$ learns $v_2$ (captures sector divergence) Hidden state $h_t^{(3)}$ learns $v_3$ (captures idiosyncratic moves)</span>
+<span class="ln">This factorization makes learning efficient and interpretable.</span>
+<span class="ln"></span>
+<span class="ln">IV. HIGHER-ORDER MOMENTS: COSKEWNESS &amp; COKURTOSIS</span>
+<span class="ln">A. Trivariate Coskewness</span>
+<span class="ln">Beyond mean ($\rho$) and variance ($\sigma$), consider joint skewness:</span>
+<span class="ln">$$\text{Coskew}(X, Y, Z) = \mathbb{E}\left[\frac{X - \mu_X}{\sigma_X} \cdot \frac{Y - \mu_Y}{\sigma_Y} \cdot \frac{Z - \mu_Z}{\sigma_Z}\right]$$</span>
+<span class="ln">Example: When NVDA crashes (Z = NVDA return, large negative), do AAPL and AMD both collapse, or do they diverge?</span>
+<span class="ln">If $\text{Coskew}(\text{AAPL, AMD, NVDA}) &gt; 0$ → All three crash together (bad!) If $\text{Coskew}(\text{AAPL, AMD, NVDA}) &lt; 0$ → AMD rallies when NVDA crashes (good for hedging!)</span>
+<span class="ln"></span>
+<span class="ln">B. Quadratic Covariation for Jump Synchronization</span>
+<span class="ln">In continuous-time framework (Itô calculus):</span>
+<span class="ln">$$d[X_t, Y_t] = \text{Cov}(\sigma_X, \sigma_Y) dt + (\Delta X_t)(\Delta Y_t) \cdot \mathbb{1}_{\text{jump}}$$</span>
+<span class="ln">First term: Diffusive co-movement (smooth) Second term: Jump co-movement (do both stocks gap together?)</span>
+<span class="ln">Test for jump synchronization:</span>
+<span class="ln">$$\text{Jump Corr} = \frac{\sum_{\text{jump times}} (\Delta X_i)(\Delta Y_i)}{\sqrt{\sum (\Delta X_i)^2 \sum (\Delta Y_i)^2}}$$</span>
+<span class="ln">High jump correlation = gaps are synchronized = harder to hedge.</span>
+<span class="ln">LSTM learns: Which pairs have synchronized jump risk (avoid these combinations).</span>
+<span class="ln"></span>
+<span class="ln">V. DYNAMIC CONDITIONAL CORRELATION (DCC) &amp; THRESHOLD BEHAVIOR</span>
+<span class="ln">A. DCC-GARCH Framework</span>
+<span class="ln">Bollerslev&#x27;s DCC model separates volatility evolution from correlation evolution:</span>
+<span class="ln">$$h_{ij,t} = \rho_{ij,t} \sqrt{h_{ii,t} h_{jj,t}}$$</span>
+<span class="ln">where:</span>
+<span class="ln">* $h_{ii,t}$ = univariate GARCH(1,1) for stock $i$</span>
+<span class="ln">* $\rho_{ij,t}$ = time-varying correlation (evolves independently)</span>
+<span class="ln">Dynamics of correlation:</span>
+<span class="ln">$$\rho_{ij,t} = \frac{q_{ij,t}}{\sqrt{q_{ii,t} q_{jj,t}}}$$</span>
+<span class="ln">where $q_{ij,t}$ evolves:</span>
+<span class="ln">$$q_{ij,t} = (1 - \alpha - \beta) \bar{q}{ij} + \alpha \tilde{u}{i,t-1} \tilde{u}{j,t-1} + \beta q{ij,t-1}$$</span>
+<span class="ln">Interpretation:</span>
+<span class="ln">* $\alpha$ = how much recent shocks matter (high $\alpha$ = correlation reacts quickly)</span>
+<span class="ln">* $\beta$ = persistence (high $\beta$ = correlation &quot;locks in&quot; after shock)</span>
+<span class="ln">* $(1 - \alpha - \beta)$ = mean-reversion speed</span>
+<span class="ln"></span>
+<span class="ln">B. Threshold Correlation Effects</span>
+<span class="ln">Nonlinear DCC: Correlation depends on regime:</span>
+<span class="ln">$$\alpha_t = \begin{cases} \alpha_{\text{high}} &amp; \text{if } \sigma_t &gt; \sigma_{\text{high}} \ \alpha_{\text{low}} &amp; \text{if } \sigma_t &lt; \sigma_{\text{low}} \end{cases}$$</span>
+<span class="ln">Real behavior:</span>
+<span class="ln">When $\sigma \uparrow$ (market stress), correlations become stickier (higher $\beta$, lower $\alpha$).</span>
+<span class="ln">Market &quot;freezes&quot; in crisis: diversification evaporates, all correlations $\to 1$.</span>
+<span class="ln">Threshold crossing:</span>
+<span class="ln">Define critical volatility threshold $\sigma^*$ where correlation dynamics switch:</span>
+<span class="ln">$$\mathbb{I}(\sigma_t &gt; \sigma^*) = \begin{cases} 1 &amp; \text{crisis regime} \ 0 &amp; \text{normal regime} \end{cases}$$</span>
+<span class="ln">LSTM learns: Optimal $\sigma^*$ for each stock pair, AND learns how to predict threshold crossings.</span>
+<span class="ln"></span>
+<span class="ln">VI. CORRELATION BREAKDOWN &amp; CONTAGION</span>
+<span class="ln">A. Forbes-Rigobon Adjusted Correlation</span>
+<span class="ln">Raw correlation increases in crisis artificially (common variance channel).</span>
+<span class="ln">Adjusted correlation removes variance effect:</span>
+<span class="ln">$$\rho_{\text{adj}} = \frac{\rho - \rho_0 \omega_V}{1 - \rho_0 \omega_V}$$</span>
+<span class="ln">where $\omega_V = \frac{\sigma_{\text{crisis}}^2}{\sigma_{\text{normal}}^2}$ is variance ratio.</span>
+<span class="ln">Interpretation: Even after adjusting for higher volatility, do stocks still move together?</span>
+<span class="ln">If yes: TRUE contagion (structural change in dependence) If no: Just &quot;common volatility&quot; (mechanical artifact)</span>
+<span class="ln"></span>
+<span class="ln">B. Granger Causality Spectrum</span>
+<span class="ln">Extend Granger causality to frequency domain (Geweke):</span>
+<span class="ln">$$f_X \to Y(\omega) = \log\left(\frac{S_Y(\omega)}{S_Y(\omega) - |f_X \to Y(\omega)|^2}\right)$$</span>
+<span class="ln">Interpretation at different frequencies:</span>
+<span class="ln">* Low frequency ($\omega \approx 0$, long-term): AAPL Granger-causes COIN (institutional flows)</span>
+<span class="ln">* High frequency ($\omega \to \pi$, intraday): COIN Granger-causes AAPL (retail order flow)</span>
+<span class="ln">LSTM learns: Frequency-dependent causality structure (different relationships at different timescales).</span>
+<span class="ln"></span>
+<span class="ln">VII. MULTIVARIATE EXTREME VALUE THEORY</span>
+<span class="ln">A. Asymptotic Dependence in Tails</span>
+<span class="ln">Standard correlation fails in tails. Instead, use coefficient of tail dependence:</span>
+<span class="ln">$$\chi = \lim_{q \to 0^+} P(Y \leq q | X \leq q)$$</span>
+<span class="ln">If $\chi = 0$: Asymptotically independent (no tail comovement) If $\chi &gt; 0$: Asymptotically dependent (extreme moves synchronized)</span>
+<span class="ln">Practical: AAPL and NVDA have $\chi \approx 0.4$ (40% chance of joint extreme move).</span>
+<span class="ln"></span>
+<span class="ln">B. Generalized Pareto Distribution for Tail Modeling</span>
+<span class="ln">Conditional on entering tail (exceeding threshold $u$):</span>
+<span class="ln">$$P(X - u &gt; x | X &gt; u) \approx \begin{cases} \left(1 + \frac{\xi x}{\sigma}\right)^{-1/\xi} &amp; \text{if } \xi \neq 0 \ \exp(-x/\sigma) &amp; \text{if } \xi = 0 \end{cases}$$</span>
+<span class="ln">Parameters:</span>
+<span class="ln">* $\sigma$ = scale (tail volatility)</span>
+<span class="ln">* $\xi$ = shape (tail heaviness, $\xi &gt; 0$ = fat tails)</span>
+<span class="ln">Stock-specific:</span>
+<span class="ln">* AAPL: $\xi \approx 0.1$ (thin tails, bounded returns)</span>
+<span class="ln">* COIN: $\xi \approx 0.3$ (fat tails, extreme moves likely)</span>
+<span class="ln">LSTM learns: Different tail parameters per stock, AND learns when tails thicken (regime detection).</span>
+<span class="ln"></span>
+<span class="ln">VIII. INFORMATION GEOMETRY OF CORRELATION MATRICES</span>
+<span class="ln">A. Riemannian Manifold of Positive Definite Matrices</span>
+<span class="ln">Correlation matrices live on Riemannian manifold (not Euclidean space):</span>
+<span class="ln">$$\mathcal{P} = {\Sigma \in \mathbb{R}^{d \times d} : \Sigma \succ 0, \mathbb{1}^\top \Sigma \mathbb{1} = d}$$</span>
+<span class="ln">Proper metric (distance):</span>
+<span class="ln">$$d(\Sigma_1, \Sigma_2) = \left|\log(\Sigma_1^{-1/2} \Sigma_2 \Sigma_1^{-1/2})\right|_F$$</span>
+<span class="ln">This is affine-invariant (respects structure of positive-definite matrices).</span>
+<span class="ln">Euclidean distance fails: Moving correlation from $[0.3, 0.5]$ is NOT the same as moving from $[0.8, 1.0]$.</span>
+<span class="ln"></span>
+<span class="ln">B. Exponential Map for Prediction</span>
+<span class="ln">Parametrize time-varying correlation via exponential map:</span>
+<span class="ln">$$\Sigma_t = \text{Exp}{\Sigma{t-1}}(V_t)$$</span>
+<span class="ln">where $V_t$ is tangent vector (in tangent space at $\Sigma_{t-1}$).</span>
+<span class="ln">LSTM outputs: $V_t$ at each timestep.</span>
+<span class="ln">This guarantees predicted correlation matrix is always positive-definite (no numerical artifacts).</span>
+<span class="ln"></span>
+<span class="ln">IX. HIDDEN MARKOV CHAINS FOR REGIME-DEPENDENT CORRELATIONS</span>
+<span class="ln">A. Viterbi Algorithm for Most-Likely State Sequence</span>
+<span class="ln">Given observations (returns), find most likely hidden state sequence:</span>
+<span class="ln">$$S_1^, S_2^, ..., S_T^* = \arg\max \log P(S_1, ..., S_T | X_1, ..., X_T)$$</span>
+<span class="ln">Each hidden state $S_t \in {1, ..., K}$ has different correlation matrix:</span>
+<span class="ln">$$\Sigma^{(1)}, \Sigma^{(2)}, ..., \Sigma^{(K)}$$</span>
+<span class="ln">Example with 3 regimes:</span>
+<span class="ln">* Regime 1 (Bull): $\rho_{\text{AAPL, COIN}} = 0.1$ (decoupled)</span>
+<span class="ln">* Regime 2 (Normal): $\rho_{\text{AAPL, COIN}} = 0.5$ (moderate coupling)</span>
+<span class="ln">* Regime 3 (Crash): $\rho_{\text{AAPL, COIN}} = 0.9$ (synchronized collapse)</span>
+<span class="ln">LSTM learns: Implicit state transitions and regime-dependent correlations WITHOUT explicit HMM.</span>
+<span class="ln"></span>
+<span class="ln">B. Baum-Welch for Parameter Estimation</span>
+<span class="ln">Iteratively refine:</span>
+<span class="ln">* Transition matrix: $P(S_t = j | S_{t-1} = i)$</span>
+<span class="ln">* Emission distributions: $p(X_t | S_t = s)$</span>
+<span class="ln">EM algorithm:</span>
+<span class="ln">* E-step: Compute forward/backward probabilities</span>
+<span class="ln">* M-step: Update parameters</span>
+<span class="ln">Insight: LSTM gates ($\sigma, \text{tanh}$) implicitly perform this EM-like computation.</span>
+<span class="ln"></span>
+<span class="ln">X. ABSTRACT VARIABILITY: VARIANCE OF VARIANCE (VOL OF VOL)</span>
+<span class="ln">A. Stochastic Volatility of Volatility</span>
+<span class="ln">Volatility is not constant. It evolves stochastically:</span>
+<span class="ln">$$d\sigma_t^2 = \kappa(\theta - \sigma_t^2) dt + \gamma \sigma_t^{2\alpha} dW_t$$</span>
+<span class="ln">where $\gamma$ is volatility-of-volatility parameter.</span>
+<span class="ln">When $\gamma$ is large:</span>
+<span class="ln">* Vol swings wildly (can spike from 10% to 30% overnight)</span>
+<span class="ln">* Prediction is harder (even if mean direction correct, magnitude wrong)</span>
+<span class="ln">When $\gamma$ is small:</span>
+<span class="ln">* Vol stable (remains near long-term mean $\theta$)</span>
+<span class="ln">* Prediction easier</span>
+<span class="ln">LSTM learns: Latent $\gamma_t$ that adapts per stock/regime.</span>
+<span class="ln"></span>
+<span class="ln">B. Variance Targeting &amp; Correlation Instability</span>
+<span class="ln">When volatility changes, observed correlations mechanically shift:</span>
+<span class="ln">$$\rho_t = \frac{\text{Cov}_t(X, Y)}{\sigma_X(t) \sigma_Y(t)}$$</span>
+<span class="ln">If $\sigma_X \uparrow$ while $\text{Cov}_t$ stays constant → $\rho_t \downarrow$ (spurious decorrelation).</span>
+<span class="ln">Fix: Partial Correlation (controlling for volatility)</span>
+<span class="ln">$$\rho_{\text{partial}} = \text{Corr}(X - \beta_X V, Y - \beta_Y V)$$</span>
+<span class="ln">where $V$ is latent volatility factor, $\beta$&#x27;s are sensitivities.</span>
+<span class="ln">This removes &quot;pseudo-decorrelation&quot; caused purely by vol changes.</span>
+<span class="ln">LSTM learns: Partial correlations (true relationship) vs spurious correlations (vol-driven).</span>
+<span class="ln"></span>
+<span class="ln">XI. CONCENTRATION &amp; DIVERSIFICATION LIMITS</span>
+<span class="ln">A. Frobenius Norm of Correlation Matrix</span>
+<span class="ln">$$|\Sigma|F = \sqrt{\sum{i,j} \Sigma_{ij}^2}$$</span>
+<span class="ln">Bounds:</span>
+<span class="ln">* Minimum: $\sqrt{d}$ (completely independent)</span>
+<span class="ln">* Maximum: $d$ (perfectly correlated)</span>
+<span class="ln">Interpretation: $$|\Sigma|F^2 = d + 2 \sum{i &lt; j} \rho_{ij}$$</span>
+<span class="ln">When $|\Sigma|_F \to d$ (increases), diversification fails (correlations rising).</span>
+<span class="ln">Market stress indicator: Monitor $|\Sigma_t|_F$ in real-time.</span>
+<span class="ln">When $\frac{d|\Sigma_t|_F}{dt} &gt; 0$ → Concentration increasing → De-risk.</span>
+<span class="ln"></span>
+<span class="ln">B. Portfolio Variance Reduction via Diversification</span>
+<span class="ln">Minimum variance portfolio weight:</span>
+<span class="ln">$$w_{\min} = \frac{\Sigma^{-1} \mathbb{1}}{\mathbb{1}^\top \Sigma^{-1} \mathbb{1}}$$</span>
+<span class="ln">Portfolio variance:</span>
+<span class="ln">$$\sigma_p^2 = \frac{1}{\mathbb{1}^\top \Sigma^{-1} \mathbb{1}}$$</span>
+<span class="ln">Diversification ratio:</span>
+<span class="ln">$$\text{DR}_t = \frac{\sum_i w_i \sigma_i}{\sigma_p}$$</span>
+<span class="ln">When $\text{DR}_t \to 1$ (diversification fails), correlation matrix $\Sigma$ is becoming rank-deficient.</span>
+<span class="ln">LSTM predicts: When DR will collapse (before it happens).</span>
+<span class="ln"></span>
+<span class="ln">XII. MATRIX PERTURBATION THEORY &amp; STABILITY ANALYSIS</span>
+<span class="ln">A. Spectral Perturbation: How do small changes in correlation propagate?</span>
+<span class="ln">If true correlation is $\Sigma_0$ but we observe $\Sigma_0 + \Delta \Sigma$ (due to noise/estimation error):</span>
+<span class="ln">First-order perturbation:</span>
+<span class="ln">$$\delta \lambda_i = v_i^\top (\Delta \Sigma) v_i$$</span>
+<span class="ln">Eigenvalue stability:</span>
+<span class="ln">If two eigenvalues are close ($\lambda_1 \approx \lambda_2$), then small perturbations can swap them (unstable).</span>
+<span class="ln">Stock implication: When tech and retail stocks are equally weighted ($\lambda_1 \approx \lambda_2$), small sentiment shifts cause dramatic portfolio rebalancing.</span>
+<span class="ln"></span>
+<span class="ln">B. Condition Number: Numerical Sensitivity</span>
+<span class="ln">$$\kappa(\Sigma) = \frac{\lambda_{\max}}{\lambda_{\min}}$$</span>
+<span class="ln">High condition number: Matrix is &quot;nearly singular&quot; (extreme leverage in inverse covariance matrix).</span>
+<span class="ln">When $\kappa \to \infty$: Minimum variance portfolio weights explode (infinitesimal correlation change → huge weight change).</span>
+<span class="ln">LSTM learns: When $\kappa$ is dangerously high → avoid aggressive tactical bets.</span>
+<span class="ln"></span>
+<span class="ln">XIII. NONPARAMETRIC CORRELATION: SPEARMAN&#x27;S RHO &amp; KENDALL&#x27;S TAU</span>
+<span class="ln">A. Rank-Based Correlation</span>
+<span class="ln">$$\rho_{\text{Spearman}} = \text{Corr}(R_X, R_Y)$$</span>
+<span class="ln">where $R_X, R_Y$ are ranks (not raw values).</span>
+<span class="ln">Advantage: Robust to outliers. COIN can have one 50% crash without distorting correlation.</span>
+<span class="ln">$$\tau_{\text{Kendall}} = P(\text{concordant pairs}) - P(\text{discordant pairs})$$</span>
+<span class="ln">where &quot;concordant&quot; = both increase/decrease together.</span>
+<span class="ln">Interpretation: Kendall&#x27;s $\tau$ connects directly to copulas (higher $\tau \Rightarrow$ higher tail dependence).</span>
+<span class="ln"></span>
+<span class="ln">B. Resampling Correlation: Moving-Window Bootstrap</span>
+<span class="ln">Estimate correlation confidence intervals via bootstrap:</span>
+<span class="ln">$$\rho^{(b)} = \text{Corr}(X_{i_1}, Y_{i_1}, ..., X_{i_n}, Y_{i_n})$$</span>
+<span class="ln">where $(i_1, ..., i_n)$ are sampled with replacement.</span>
+<span class="ln">Distribution of $\rho^{(b)}$ over $B$ bootstrap samples gives you uncertainty.</span>
+<span class="ln">When confidence intervals widen → Correlation estimates unreliable → Reduce position size.</span>
+<span class="ln"></span>
+<span class="ln">XIV. DIFFERENTIAL CORRELATION EQUATIONS</span>
+<span class="ln">A. Correlation as Dynamical System</span>
+<span class="ln">Model correlation evolution as ODE:</span>
+<span class="ln">$$\frac{d\rho_{ij}}{dt} = f(\rho_{ij}, \sigma_i, \sigma_j, \text{vol regime})$$</span>
+<span class="ln">Simple linear version:</span>
+<span class="ln">$$\frac{d\rho_{ij}}{dt} = -\alpha(\rho_{ij} - \bar{\rho}_{ij}) + \beta \Delta \sigma_t$$</span>
+<span class="ln">where:</span>
+<span class="ln">* $-\alpha(\rho_{ij} - \bar{\rho}_{ij})$ = mean reversion</span>
+<span class="ln">* $\beta \Delta \sigma_t$ = shock from volatility change</span>
+<span class="ln">LSTM solution: Instead of solving ODE, LSTM learns what $f$ is.</span>
+<span class="ln"></span>
+<span class="ln">B. Lyapunov Stability Analysis</span>
+<span class="ln">If correlation dynamics are stable (Lyapunov exponent $&lt; 0$), correlation returns to equilibrium after shocks.</span>
+<span class="ln">If unstable ($&gt; 0$), shocks propagate and amplify (cascading failures).</span>
+<span class="ln">Test via: $$\lambda_{\text{Lyapunov}} = \lim_{T \to \infty} \frac{1}{T} \log \left| \frac{\partial f}{\partial \rho} \right|$$</span>
+<span class="ln">When $\lambda_{\text{Lyapunov}} \to 0^+$ (barely unstable) → Market at &quot;edge of chaos&quot; → Tiny shocks cause large moves.</span>
+<span class="ln"></span>
+<span class="ln">XV. TENSOR METHODS FOR MULTI-WAY CORRELATIONS</span>
+<span class="ln">A. Tucker Decomposition of Stock Correlations Over Time</span>
+<span class="ln">Instead of 2D matrix $\Sigma_t \in \mathbb{R}^{d \times d}$, consider 3D tensor:</span>
+<span class="ln">$$\mathcal{T} \in \mathbb{R}^{d \times d \times T}$$</span>
+<span class="ln">where dimension 1 = Stock $i$, dimension 2 = Stock $j$, dimension 3 = Time $t$.</span>
+<span class="ln">Tucker decomposition:</span>
+<span class="ln">$$\mathcal{T} \approx \mathcal{C} \times_1 U^{(1)} \times_2 U^{(2)} \times_3 U^{(3)}$$</span>
+<span class="ln">where $\mathcal{C}$ is core tensor (captures interactions), $U^{(k)}$ are factor matrices.</span>
+<span class="ln">Interpretation:</span>
+<span class="ln">* $U^{(1)}, U^{(2)}$ = spatial structure (which stocks cluster)</span>
+<span class="ln">* $U^{(3)}$ = temporal evolution (how clusters change over time)</span>
+<span class="ln">LSTM learns: Compressed representation via tensor factorization.</span>
+<span class="ln"></span>
+<span class="ln">B. Correlation Prediction via Tensor Regression</span>
+<span class="ln">Train model to predict future correlation matrix from past tensor:</span>
+<span class="ln">$$\hat{\Sigma}{t+h} = G([\Sigma_t, \Sigma{t-1}, ..., \Sigma_{t-k}])$$</span>
+<span class="ln">where $G$ is learned mapping (LSTM with tensor operations).</span>
+<span class="ln"></span>
+<span class="ln">XVI. PHASE TRANSITION IN CORRELATION NETWORKS</span>
+<span class="ln">A. Network Percolation Theory</span>
+<span class="ln">Model stocks as network nodes, correlations as edge weights.</span>
+<span class="ln">Define threshold $\rho_c$ (critical correlation) above which stocks are &quot;connected&quot;.</span>
+<span class="ln">Percolation threshold: At what $\rho_c$ does giant connected component emerge?</span>
+<span class="ln">Phase transition:</span>
+<span class="ln">* $\rho_c &gt; \rho_{\text{critical}}$: Many small clusters (diversification works)</span>
+<span class="ln">* $\rho_c &lt; \rho_{\text{critical}}$: Single giant cluster (all stocks move together)</span>
+<span class="ln">LSTM learns: When approaching phase transition (early warning of correlation breakdown).</span>
+<span class="ln"></span>
+<span class="ln">B. Network Centrality: Which Stocks are &quot;Hubs&quot;?</span>
+<span class="ln">Betweenness centrality: Stock $i$ is a hub if many correlation paths pass through it.</span>
+<span class="ln">AAPL and NVDA have high centrality (moves in them affect everyone else).</span>
+<span class="ln">LSTM learns: Dynamic centrality (which stocks are currently &quot;contagion centers&quot;).</span>
+<span class="ln"></span>
+<span class="ln">CONCLUSION</span>
+<span class="ln">Hidden correlations are multifaceted:</span>
+<span class="ln">1. Nonlinear: Maximal correlation $\rho_{\max} \gg$ Pearson $\rho$</span>
+<span class="ln">2. Regime-dependent: Different thresholds activate different structures</span>
+<span class="ln">3. Tail-concentrated: Extreme moves have different correlation than normal moves</span>
+<span class="ln">4. Time-varying: Correlation matrices evolve with regime and volatility</span>
+<span class="ln">5. Tensor-structured: High-order correlations matter (3-way, 4-way, etc.)</span>
+<span class="ln">LSTM captures ALL of this through:</span>
+<span class="ln">* Hidden states learning principal components</span>
+<span class="ln">* Gates performing implicit copula/tail dependency modeling</span>
+<span class="ln">* Recurrent connections capturing temporal dynamics</span>
+<span class="ln">* Stacked layers learning different frequency bands</span>
+<span class="ln">Your LSTM is essentially learning a multifaceted correlation structure that classical methods cannot even represent.</span>
+<span class="ln">The daily stock relationships aren&#x27;t just correlations—they&#x27;re complex geometric structures in high-dimensional manifolds evolving according to hidden dynamics.</span>
+<span class="ln"></span>
+<span class="ln">Harvard-level mathematics hidden in simple LSTM architecture.</span>
+</code></pre></details>
+ </div>
+</section>
+
+<section>
+ <h2>Research B · the agent</h2>
+ <h3 class="claim">Ten analyses inside. Five panels outside. One vote for the model.</h3>
+ <p class="lead">1_Day_Best started in R, finding the best days to buy and sell crypto. I'm porting it to Python as
+ one terminal app: pick a stock, read five ASCII panels, get one action. My ten analysis functions stay; they become
+ the engine behind five screens. The deep model votes. It doesn't rule.</p>
+ <div class="watch">
+  <span>NVDA</span><span>AMD</span><span>SOXX</span><span>CRSP</span><span>TSLA</span><span>ROKU</span><span>TSM</span><span>005930.KS</span><span>ASML</span><span>AVGO</span><span class="priv">Cursor<small>private · proxy</small></span><span class="priv">OpenEvidence<small>private · proxy</small></span><span class="priv">Lovable<small>private · proxy</small></span>
+ </div>
+ <p class="aside">Private names are welcome on the watchlist and never sent to the downloader: they show as proxy required.</p>
+ <div class="pipe panels">
+  <div><i>1/5</i><b>Lift + Regime</b><p>is there lift at all?</p><small>volatility_trend · regime_detector</small></div>
+  <div><i>2/5</i><b>Entry Zone</b><p>a healthy pullback, or a chase?</p><small>mean_reversion · support_resistance</small></div>
+  <div><i>3/5</i><b>Pressure + Follow-Through</b><p>coiling, or out of breath?</p><small>momentum_decay · breakout_pressure</small></div>
+  <div><i>4/5</i><b>Crowding + Relative Strength</b><p>leading the pack, or one bet twice?</p><small>smart_money · correlation_cluster</small></div>
+  <div><i>5/5</i><b>Decision + Exit</b><p>BUY · WAIT · HOLD · TRIM · SELL</p><small>decision_engine + LSTM vote</small></div>
+ </div>
+ <div class="zsh">
+  <div class="zsh-bar"><i></i><i></i><i></i><span>1_Day_Best · what the terminal opens with</span></div>
+<pre><code>┌─────────────────────────────────────────────┐
+│ 1/5 LIFT + REGIME                            │
+└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│ 2/5 ENTRY ZONE                               │
+└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│ 3/5 PRESSURE + FOLLOW-THROUGH                │
+└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│ 4/5 CROWDING + RELATIVE STRENGTH             │
+└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│ 5/5 DECISION + EXIT                          │
+└─────────────────────────────────────────────┘</code></pre>
+ </div>
+ <ul class="laws">
+  <li><b>One dataframe</b>every stock in one long parquet; each run appends, refetches 10 sessions, dedupes on symbol + date</li>
+  <li><b>Walk-forward only</b>time-series splits with a gap; never a shuffle, never the future in training</li>
+  <li><b>Pooled, multi-horizon LSTM</b>one network over all names, probabilities for 5 · 10 · 15 · 30 trading days</li>
+  <li><b>Rules first, model second</b>a bounce in a bad regime is still a no; the model only votes inside a valid setup</li>
+  <li><b>An honest scorecard</b>hit rate · precision on buys · top-bucket forward return · calibration · drawdown after entry</li>
+  <li><b>Exchange-aware</b>US, Taiwan and Korea sessions from real market calendars, not one holiday list</li>
+ </ul>
+ <div class="files">
+<details class="code"><summary><span class="file">src/_1_Day_Best/</span><span class="role">the app's shape</span><span class="lines">31 lines</span></summary>
+<pre><code><span class="ln">src/_1_Day_Best/</span>
+<span class="ln">├── app.py</span>
+<span class="ln">├── config/</span>
+<span class="ln">│ ├── watchlist.yaml</span>
+<span class="ln">│ └── settings.yaml</span>
+<span class="ln">├── data/</span>
+<span class="ln">│ ├── stocks_master.parquet</span>
+<span class="ln">│ ├── fetch_yahoo.py</span>
+<span class="ln">│ ├── master_store.py</span>
+<span class="ln">│ └── symbol_registry.py</span>
+<span class="ln">├── features/</span>
+<span class="ln">│ ├── feature_engineering.py</span>
+<span class="ln">│ └── labels.py</span>
+<span class="ln">├── signals/</span>
+<span class="ln">│ ├── ascii_panels.py</span>
+<span class="ln">│ ├── panel_groups.py</span>
+<span class="ln">│ └── decision_engine.py</span>
+<span class="ln">├── models/</span>
+<span class="ln">│ ├── lstm_dataset.py</span>
+<span class="ln">│ ├── lstm_model.py</span>
+<span class="ln">│ ├── train_walkforward.py</span>
+<span class="ln">│ └── infer.py</span>
+<span class="ln">├── ui/</span>
+<span class="ln">│ ├── textual_app.py</span>
+<span class="ln">│ ├── layouts.py</span>
+<span class="ln">│ └── widgets.py</span>
+<span class="ln">└── utils/</span>
+<span class="ln">├── calendars.py</span>
+<span class="ln">├── peers.py</span>
+<span class="ln">├── logging_utils.py</span>
+<span class="ln">└── types.py</span>
+</code></pre></details>
+<details class="code"><summary><span class="file">the_brief.md</span><span class="role">the full blueprint and build brief, word for word</span><span class="lines">182 lines</span></summary>
+<pre><code><span class="ln">Python Blueprint for Your 1_Day_Best Stock Timing App</span>
+<span class="ln">What the current project already contains</span>
+<span class="ln">From your screenshot, the R project already has the right conceptual pieces: preprocessing, correlation work, current-price plotting, daily crypto logic, neural-network modules, and train/test CSVs split by 5, 10, 15, and 30-day horizons. The important new fact is that your uploaded function_fin.py is already a solid Python terminal-analytics module. It contains ten resilient ASCII analysis functions—volatility_trend, momentum_decay, support_resistance, regime_detector, breakout_pressure, risk_map, correlation_cluster, mean_reversion, smart_money, and decision_engine—plus helper functions designed to survive the inconsistent dataframe shapes that often show up with Yahoo-style market data. That means the best migration path is not &quot;rewrite everything from R into Python from zero.&quot; It is: keep the existing Python terminal analytics, port the R data/model pipeline, and wrap the whole thing in one coherent stock app.</span>
+<span class="ln"></span>
+<span class="ln">The screenshot also quietly reveals something important about your older workflow: you were materializing fixed train/test CSVs for horizon-specific prediction tasks. In Python, that should become dynamic label generation from one master dataframe, not dozens of frozen CSV artifacts. That change alone will make the app more &quot;live,&quot; reduce mismatch between old training files and fresh market data, and make your deep model much easier to retrain month by month.</span>
+<span class="ln"></span>
+<span class="ln">The strategy research that should drive the app</span>
+<span class="ln">The research foundation for a week-trading or month-timing app is not &quot;find the magical weekday.&quot; It is a dual-horizon framework. Medium-horizon momentum has been documented for stocks over roughly 3–12 months, while time-series momentum work also finds persistence over about 1–12 months before later reversal. At the same time, short-run reversals have also been documented after very recent moves, with more recent work tying a large part of that effect to liquidity pressure and price pressure rather than simple calendar folklore. The practical conclusion is that your best buy signal is usually a pullback day inside a still-healthy trend, or a breakout day after volatility compression, not &quot;always buy on Monday.&quot;</span>
+<span class="ln"></span>
+<span class="ln">That is the right logic for your watchlist because most of what you want to track sits in trend-heavy sectors where moves can persist for months, but entries still matter a lot. So the app should answer two separate questions every day: Is this name structurally in a regime worth touching? and If yes, is today a good entry/exit day inside that regime? The first question is momentum and regime. The second question is mean reversion, compression, support/resistance, and follow-through.</span>
+<span class="ln"></span>
+<span class="ln">The real tradable universe</span>
+<span class="ln">The tradable public set is clear. Official investor and market pages confirm NVDA and AMD on NASDAQ, CRSP on Nasdaq, Tesla on Nasdaq under TSLA, Roku on Nasdaq under ROKU, Taiwan Semiconductor Manufacturing Company on the New York Stock Exchange as TSM and in Taiwan as 2330, Samsung Electronics on the Korea Exchange with 005930 for common shares, ASML Holding on Euronext and Nasdaq under ASML, Broadcom under AVGO, and SOXX as a semiconductor ETF that tracks U.S.-listed semiconductor equities. For Yahoo-backed research feeds, Samsung&#x27;s practical symbol is 005930.KS.</span>
+<span class="ln"></span>
+<span class="ln">Three names in your list are not public stocks right now. Cursor is a product of Anysphere; the official Cursor site talks about private funding rounds and its legal pages identify Anysphere, Inc., not a listed ticker. OpenEvidence&#x27;s own announcements and Reuters coverage describe a venture-funded private company raising large private rounds. Lovable&#x27;s official blog likewise announces private Series A/B rounds rather than a public exchange listing. So the app should let you enter these names, but classify them as private_company and proxy_required rather than sending them to the equity downloader.</span>
+<span class="ln"></span>
+<span class="ln">Your watchlist is also heavily concentrated in semiconductors and AI infrastructure. SOXX explicitly tracks U.S.-listed semiconductor names, and your public list includes designers, foundries, memory exposure, networking silicon, and lithography exposure. That means the correlation panel is not a nice extra; it is a form of risk control. If you are long SOXX plus NVDA plus AMD plus TSM plus ASML, you may think you hold five separate ideas when you really hold one big semiconductor regime bet.</span>
+<span class="ln"></span>
+<span class="ln">The Python architecture inside src/_1_Day_Best</span>
+<span class="ln">Because you want a real app, a stock picker, ASCII-only visuals, and something that feels beautiful in the terminal, the cleanest Python stack is this: Textual for the terminal UI shell, Rich for status/progress/tables, plotext for terminal-native plotting, yfinance for research-grade historical data, pandas + PyArrow/Parquet for the single persistent dataframe, and pandas-market-calendars for session logic across U.S., Taiwan, and Korea. Textual is explicitly designed for terminal or browser UIs, Rich supports live progress displays, plotext can render date-time and candlestick-style terminal plots, yfinance is explicitly described as a research/educational wrapper around Yahoo&#x27;s public APIs, pandas writes Parquet directly, and PyArrow provides the columnar engine that makes this storage pattern fast and practical.</span>
+<span class="ln"></span>
+<span class="ln">I would structure src/_1_Day_Best/ like this:</span>
+<span class="ln"></span>
+<span class="ln">text</span>
+<span class="ln">Copy</span>
+<span class="ln">src/_1_Day_Best/</span>
+<span class="ln">├── app.py</span>
+<span class="ln">├── config/</span>
+<span class="ln">│ ├── watchlist.yaml</span>
+<span class="ln">│ └── settings.yaml</span>
+<span class="ln">├── data/</span>
+<span class="ln">│ ├── stocks_master.parquet</span>
+<span class="ln">│ ├── fetch_yahoo.py</span>
+<span class="ln">│ ├── master_store.py</span>
+<span class="ln">│ └── symbol_registry.py</span>
+<span class="ln">├── features/</span>
+<span class="ln">│ ├── feature_engineering.py</span>
+<span class="ln">│ └── labels.py</span>
+<span class="ln">├── signals/</span>
+<span class="ln">│ ├── ascii_panels.py</span>
+<span class="ln">│ ├── panel_groups.py</span>
+<span class="ln">│ └── decision_engine.py</span>
+<span class="ln">├── models/</span>
+<span class="ln">│ ├── lstm_dataset.py</span>
+<span class="ln">│ ├── lstm_model.py</span>
+<span class="ln">│ ├── train_walkforward.py</span>
+<span class="ln">│ └── infer.py</span>
+<span class="ln">├── ui/</span>
+<span class="ln">│ ├── textual_app.py</span>
+<span class="ln">│ ├── layouts.py</span>
+<span class="ln">│ └── widgets.py</span>
+<span class="ln">└── utils/</span>
+<span class="ln">├── calendars.py</span>
+<span class="ln">├── peers.py</span>
+<span class="ln">├── logging_utils.py</span>
+<span class="ln">└── types.py</span>
+<span class="ln">The critical storage decision is one long-format master file, not one file per symbol and not lots of saved outputs. Make src/_1_Day_Best/data/stocks_master.parquet the only durable market-data artifact. On the first run, backfill three years. On later runs, load the master dataframe, look up the latest stored date per symbol, refetch from last_date - 10 sessions to catch split adjustments or revised rows, concatenate, deduplicate on (symbol, date), sort, and overwrite the same Parquet file. With yfinance, use auto_adjust=True and actions=True so the historical OHLC series stays corporate-action aware while split/dividend events remain available for audit or debugging.</span>
+<span class="ln"></span>
+<span class="ln">Because you are mixing multiple exchanges, each row in the master dataframe should also carry exchange, currency, and timezone. The updater should use proper market calendars instead of assuming every name trades on the U.S. holiday schedule. That matters immediately for Samsung Electronics and Taiwan Semiconductor&#x27;s local listings.</span>
+<span class="ln"></span>
+<span class="ln">To keep installs isolated only in the environment you named, the setup should be run like this:</span>
+<span class="ln"></span>
+<span class="ln">bash</span>
+<span class="ln">Copy</span>
+<span class="ln">source /Users/yerik/_apple_lib/_peg_ProgEnvGit/_envs_4yy/e4yy_FINANCE/bin/activate</span>
+<span class="ln">python -m pip install --upgrade pip</span>
+<span class="ln">python -m pip install pandas numpy yfinance pyarrow rich textual plotext scikit-learn torch pandas-market-calendars tqdm pyyaml</span>
+<span class="ln">That package list is intentionally lean. You do not need a large TA-indicator dependency if you compute your signals directly from pandas/numpy, which will keep the app easier to maintain.</span>
+<span class="ln"></span>
+<span class="ln">The five ASCII panels that should replace the ten-screen sprawl</span>
+<span class="ln">Your uploaded module already has the right raw parts; the real improvement is how they are surfaced. Instead of showing ten separate analyses every time, keep those ten internals but expose five user-facing super-panels. That gives you more signal and less terminal clutter.</span>
+<span class="ln"></span>
+<span class="ln">Lift and Regime. This should combine volatility_trend with regime_detector. The point is simple: do not ask whether today is a buy day until the stock has actual lift. If volatility is chaotic and the regime is weak, the answer is usually &quot;not now.&quot; If the regime is bullish but volatility has compressed, the stock is building a cleaner launch platform. This panel is where momentum research lives in the interface.</span>
+<span class="ln"></span>
+<span class="ln">Entry Zone. This should merge mean_reversion with support_resistance. The best swing entry is often a short-term reset into a strong area, not a chase at the exact emotional high. This panel answers: are we buying a healthy pullback, buying into a heavy support shelf, or buying an already stretched move? That maps directly onto the short-run reversal logic in the literature.</span>
+<span class="ln"></span>
+<span class="ln">Pressure and Follow-Through. Merge momentum_decay with breakout_pressure. This is your continuation panel. If momentum is decaying, you do not want to buy a breakout that is already out of breath. If momentum is stable or re-accelerating while price is coiling under resistance, this is where trend continuation earns the right to replace pullback buying.</span>
+<span class="ln"></span>
+<span class="ln">Crowding and Relative Strength. Merge smart_money with correlation_cluster. The first half asks whether up-volume or down-volume dominates. The second asks whether the stock is actually leading its peer cluster or just riding the same wave. This matters a lot in your semiconductor-heavy watchlist because one extra chip name may not add opportunity; it may just add duplicate exposure.</span>
+<span class="ln"></span>
+<span class="ln">Decision and Exit. Keep decision_engine, but add the deep-model probability layer here rather than spreading model output across the whole app. This is where you synthesize everything into a simple action: BUY, WAIT, HOLD, TRIM, or SELL. The user-facing screen should also show the intended holding horizon—5, 10, 15, or 30 trading days—and an exit plan based on extension, support failure, or model confidence rollover.</span>
+<span class="ln"></span>
+<span class="ln">The terminal sequence should feel like this:</span>
+<span class="ln"></span>
+<span class="ln">text</span>
+<span class="ln">Copy</span>
+<span class="ln">┌─────────────────────────────────────────────┐</span>
+<span class="ln">│ 1/5 LIFT + REGIME │</span>
+<span class="ln">└─────────────────────────────────────────────┘</span>
+<span class="ln"></span>
+<span class="ln">┌─────────────────────────────────────────────┐</span>
+<span class="ln">│ 2/5 ENTRY ZONE │</span>
+<span class="ln">└─────────────────────────────────────────────┘</span>
+<span class="ln"></span>
+<span class="ln">┌─────────────────────────────────────────────┐</span>
+<span class="ln">│ 3/5 PRESSURE + FOLLOW-THROUGH │</span>
+<span class="ln">└─────────────────────────────────────────────┘</span>
+<span class="ln"></span>
+<span class="ln">┌─────────────────────────────────────────────┐</span>
+<span class="ln">│ 4/5 CROWDING + RELATIVE STRENGTH │</span>
+<span class="ln">└─────────────────────────────────────────────┘</span>
+<span class="ln"></span>
+<span class="ln">┌─────────────────────────────────────────────┐</span>
+<span class="ln">│ 5/5 DECISION + EXIT │</span>
+<span class="ln">└─────────────────────────────────────────────┘</span>
+<span class="ln">That is the right compromise between visibility and discipline. The old ten functions do not disappear; they become the engine inside five visible panels.</span>
+<span class="ln"></span>
+<span class="ln">The LSTM layer and evaluation discipline</span>
+<span class="ln">Your deep model should be one vote, not the whole constitution. PyTorch&#x27;s nn.LSTM is a perfectly valid sequence model for this kind of work, but its value collapses if you evaluate it incorrectly. Scikit-learn&#x27;s TimeSeriesSplit exists specifically because ordinary cross-validation would train on future data and test on past data, and the current API even supports a gap parameter to leave a buffer between train and test windows. Broader forecasting work has repeatedly argued for blocked or walk-forward validation in time series, and financial ML work continues to warn how easily look-ahead bias contaminates market backtests.</span>
+<span class="ln"></span>
+<span class="ln">Given your screenshot&#x27;s 5/10/15/30-day train/test structure and your goal of identifying the best buy/sell days during the current month, I would not ask the model to output one mystical exact date. I would train a pooled multi-horizon classifier that consumes the last 40–60 trading days of engineered features and outputs probabilities that the next 5, 10, 15, or 30 trading-day return will be positive and above a minimum hurdle. A pooled model is much safer than one tiny model per symbol, because three years of daily data yields only about 750 bars per ticker—far too small for ten separate deep nets to generalize well.</span>
+<span class="ln"></span>
+<span class="ln">The sequence feature set should include at least returns, realized volatility, distance from 20/50-day means, support/resistance distance, volume ratio, relative strength versus SOXX or another benchmark, and peer-correlation context. Then fuse model output with the rules engine. A strong entry should require both a valid structural setup and model probability above threshold. A probable mean-reversion bounce in a bad regime should still be rejected. A stretched winner with momentum decay and weakening model probability should become an exit candidate. That &quot;rules first, model second&quot; architecture is usually stronger than letting the network dictate everything, and it aligns well with probabilistic forecasting work that treats uncertainty as part of the output rather than an afterthought.</span>
+<span class="ln"></span>
+<span class="ln">The right model scorecard is not just loss or RMSE. Track hit rate, precision on buy signals, average realized forward return in the top-probability bucket, calibration by probability bucket, and drawdown after entry. If the model cannot improve the decision engine on those measures in honest walk-forward tests, it should lose voting power.</span>
+<span class="ln"></span>
+<span class="ln">The Cursor build brief and the momentum metaphor</span>
+<span class="ln">If you want Cursor to build this cleanly, give it one tight systems brief instead of many fragmented edits:</span>
+<span class="ln"></span>
+<span class="ln">text</span>
+<span class="ln">Copy</span>
+<span class="ln">Build a complete Python terminal app in src/_1_Day_Best/.</span>
+<span class="ln"></span>
+<span class="ln">Core goal:</span>
+<span class="ln">I want a swing-trading stock app that helps decide whether today is a good day to buy, wait, hold, trim, or sell. Horizon is weekly-to-monthly, not intraday.</span>
+<span class="ln"></span>
+<span class="ln">Hard requirements:</span>
+<span class="ln">- Use Python only.</span>
+<span class="ln">- Keep all persistent stock data in ONE long-format dataframe saved as:</span>
+<span class="ln">src/_1_Day_Best/data/stocks_master.parquet</span>
+<span class="ln">- No chart images or output files saved.</span>
+<span class="ln">- Every run must APPEND/REFRESH the master dataframe, not replace history blindly.</span>
+<span class="ln">- First run backfills 3 years.</span>
+<span class="ln">- Later runs fetch only incremental updates per symbol, with a small overlap buffer, then dedupe.</span>
+<span class="ln">- Symbols must be editable by the user through config/watchlist.yaml and also addable inside the app.</span>
+<span class="ln">- Public symbols to support now:</span>
+<span class="ln">NVDA, AMD, SOXX, CRSP, TSLA, ROKU, TSM, 005930.KS, ASML, AVGO</span>
+<span class="ln">- Private names to support as non-downloadable watchlist items:</span>
+<span class="ln">Cursor, OpenEvidence, Lovable</span>
+<span class="ln">- Private names must be shown as proxy_required, not crash the downloader.</span>
+<span class="ln">- Use yfinance for historical data with auto_adjust=True and actions=True.</span>
+<span class="ln">- Use pandas-market-calendars for exchange sessions.</span>
+<span class="ln">- Use Textual + Rich + plotext for ASCII / terminal UI only.</span>
+<span class="ln">- Every dataframe-processing loop must show a tqdm or Rich progress bar.</span>
+<span class="ln">- Reuse my existing terminal analytics from function_fin.py instead of rewriting them from scratch.</span>
+<span class="ln"></span>
+<span class="ln">User-facing UI:</span>
+<span class="ln">- Left panel: stock picker / watchlist</span>
+<span class="ln">- Main area: exactly 5 super-panels</span>
+<span class="ln">1) Lift + Regime</span>
+<span class="ln">2) Entry Zone</span>
+<span class="ln">3) Pressure + Follow-Through</span>
+<span class="ln">4) Crowding + Relative Strength</span>
+<span class="ln">5) Decision + Exit</span>
+<span class="ln">- Bottom area: final action, confidence, target horizon, risk note</span>
+<span class="ln"></span>
+<span class="ln">Model requirements:</span>
+<span class="ln">- Add a pooled PyTorch LSTM model</span>
+<span class="ln">- Use multi-horizon outputs for 5/10/15/30 trading days</span>
+<span class="ln">- Use walk-forward validation only</span>
+<span class="ln">- No random shuffle CV</span>
+<span class="ln">- Add probability outputs, not just point forecasts</span>
+<span class="ln">- Combine model score with rules-based decision engine</span>
+<span class="ln"></span>
+<span class="ln">Engineering requirements:</span>
+<span class="ln">- Strong type hints</span>
+<span class="ln">- Clear docstrings</span>
+<span class="ln">- Graceful error handling</span>
+<span class="ln">- Logging</span>
+<span class="ln">- Config-driven design</span>
+<span class="ln">- Importable modules</span>
+<span class="ln">- Keep code structured and readable</span>
+<span class="ln">- For script-style files, use a main functional section labeled 0_FNS and separate running statements clearly</span>
+<span class="ln"></span>
+<span class="ln">Deliver:</span>
+<span class="ln">- Full file tree</span>
+<span class="ln">- All source files</span>
+<span class="ln">- Requirements list</span>
+<span class="ln">- One run command</span>
+<span class="ln">- No fake placeholders</span>
+<span class="ln">- No saved plot files</span>
+<span class="ln">The creative metaphor that best matches your strategy is soaring flight. A bird of prey does not waste energy flapping all the time. It searches for lift, enters the thermal, circles to gain altitude, then glides while the air is doing the work. Cornell&#x27;s bird-flight material describes soaring birds using rising columns of warm air to gain height efficiently, and general aerodynamics references explain how lift and glide ratio determine how far that free energy can carry the animal. Your strategy should behave the same way: regime is the thermal, pullback/compression is the circling phase, breakout is the glide entry, and exit is the moment lift deteriorates and you would have to flap just to stay level. In trading terms: buy lift, not noise.</span>
+</code></pre></details>
+ </div>
+ <p class="aside">The house rules every one of my agents follows sit on <a href="/yeriko-vargas/architecture/">Architecture</a> · Pattern 02.
+ Research and engineering, not financial advice.</p>
+</section>
+
+<footer><span>Est. 2022 · © 2026 Custom AI Models</span><a href="/">customaimodels.com</a></footer>
+</div>
+</body>
+</html>

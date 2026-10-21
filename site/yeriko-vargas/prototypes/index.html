@@ -1,0 +1,1420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="/03_img/favicon.ico?v=k1" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/03_img/favicon-32.png?v=k1">
+<link rel="apple-touch-icon" sizes="180x180" href="/03_img/apple-touch-icon.png?v=k1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="description" content="Prototypes: CascForward, where AI reasons and Python repeats, a local cascade from URL to site and chatbot, and the scaffold and function system.">
+<link rel="canonical" href="https://customaimodels.com/yeriko-vargas/prototypes/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Custom AI Models">
+<meta property="og:title" content="Yeriko Vargas · Prototypes">
+<meta property="og:description" content="Prototypes: CascForward, where AI reasons and Python repeats, a local cascade from URL to site and chatbot, and the scaffold and function system.">
+<meta property="og:url" content="https://customaimodels.com/yeriko-vargas/prototypes/">
+<meta property="og:image" content="https://customaimodels.com/03_img/09_og_card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Custom AI Models gold knot emblem">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfilePage","@id":"https://customaimodels.com/yeriko-vargas/prototypes/","url":"https://customaimodels.com/yeriko-vargas/prototypes/","name":"Yeriko Vargas · Prototypes","mainEntity":{"@type":"Person","name":"Yeriko Vargas","jobTitle":"AI Engineer · AI Systems Architect","address":{"@type":"PostalAddress","addressLocality":"Detroit","addressRegion":"MI","addressCountry":"US"},"sameAs":["https://linkedin.com/in/yeriko-vargas"],"worksFor":{"@type":"Organization","@id":"https://customaimodels.com/#org","name":"Custom AI Models","url":"https://customaimodels.com/"}}}
+</script>
+<title>Yeriko Vargas · Prototypes</title>
+<!-- /yeriko-vargas/tools/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=8d60ff2b1f">
+<script defer src="/cai-beacon.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+ <div class="tag">Custom AI Models</div>
+ <h1><a href="/yeriko-vargas/">Yeriko Vargas</a></h1>
+ <p class="role">AI Engineer · AI Systems Architect · Detroit, MI</p>
+ <nav class="tabs" aria-label="Pages">
+  <a href="/yeriko-vargas/">Overview</a>
+  <a href="/yeriko-vargas/portfolio/">Portfolio</a>
+  <a href="/yeriko-vargas/skills/">Skills</a>
+  <a href="/yeriko-vargas/tools/">AI tools</a>
+  <a href="/yeriko-vargas/architecture/">Architecture</a>
+  <a href="/yeriko-vargas/hvac/">HVAC AI Models</a>
+  <a href="/yeriko-vargas/telemetry/">Telemetry</a>
+  <a href="/yeriko-vargas/workbench/">Workbench</a>
+  <a href="/yeriko-vargas/finance/">Finance</a>
+  <a href="/yeriko-vargas/tutoring/">Tutoring</a>
+  <a href="/yeriko-vargas/prototypes/" aria-current="page">Prototypes</a>
+ </nav>
+</header>
+
+<section class="proto-hero">
+ <h2>Prototypes</h2>
+ <h3 class="claim">CascForward: build it, automate it, preserve what works.</h3>
+ <p class="lead">A Python-first system for turning ideas and AI-assisted workflows into structured, reusable
+ software. AI does the parts that need reasoning; everything repeatable moves into Python that runs the same way
+ every time.</p>
+ <div class="ledger proto">
+  <div><i>01</i><b>Builders</b><p>create and improve one component each, inside their own folder</p></div>
+  <div><i>02</i><b>Automations</b><p>connect proven components into larger workflows</p></div>
+  <div><i>03</i><b>Preserve</b><p>validated systems are kept and reused, never rebuilt from zero</p></div>
+ </div>
+</section>
+
+<section>
+ <h2>The rule underneath</h2>
+ <h3 class="claim">The model reasons. Python repeats.</h3>
+<pre class="proto-flow"><code>  idea ──▶ AI reasons ──▶ Python builds it ──▶ gates check it ──▶ it runs on a schedule
+                                  │                                        │
+                                  └──────── kept, versioned, reused ◀──────┘</code></pre>
+ <p class="aside">Validation, reproducibility, cost control and failure recovery are built in, not added after.</p>
+</section>
+
+<section>
+ <h2>Prototype 01 · The local cascade</h2>
+ <h3 class="claim">A URL in. A website and a chatbot out. The model runs on my machine.</h3>
+ <p class="lead">Python crawls, a local Llama (Ollama) reads, Python checks. The model only turns clean text into
+ structured JSON; design is my own components, never a model. Tested on a real page: valid JSON in under
+ 10 seconds at $0, and the validator caught the facts the small model got wrong.</p>
+ <div class="pipe">
+  <div><i>01</i><b>crawl</b><p>sitemap · ~20 pages · Playwright + Trafilatura</p></div>
+  <div><i>02</i><b>facts</b><p>Ollama · JSON schema only · temperature 0</p></div>
+  <div><i>03</i><b>design</b><p>my components · no model</p></div>
+  <div><i>04</i><b>RAG</b><p>chunks · local embeddings · FAISS</p></div>
+  <div><i>05</i><b>validate</b><p>no source string, no fact → export</p></div>
+ </div>
+ <div class="files">
+<details class="code" open>
+  <summary><span class="file">cai_cascade</span><span class="role">my diagram · verbatim</span><span class="lines">49 lines</span></summary>
+  <pre><code><span class="ln">                   URL</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">                    <i class="com">▼</i></span>
+<span class="ln">            ① PYTHON CRAWLER</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">        sitemap + navigation</span>
+<span class="ln">        max ~20 useful pages</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">           <i class="com">┌────────┴────────┐</i></span>
+<span class="ln">           <i class="com">▼</i>                 <i class="com">▼</i></span>
+<span class="ln">      PLAYWRIGHT         TRAFILATURA</span>
+<span class="ln">      DOM/rendering       clean text</span>
+<span class="ln">      screenshots         content</span>
+<span class="ln">           <i class="com">│</i>                 <i class="com">│</i></span>
+<span class="ln">           <i class="com">└────────┬────────┘</i></span>
+<span class="ln">                    <i class="com">▼</i></span>
+<span class="ln">             ② FACT ENGINE</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">              LOCAL LLAMA</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">        STRUCTURED JSON ONLY</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">    <i class="com">┌───────────────┼────────────────┐</i></span>
+<span class="ln">    <i class="com">▼</i>               <i class="com">▼</i>                <i class="com">▼</i></span>
+<span class="ln"> SERVICES          FAQ            PRICING</span>
+<span class="ln"> CONTACTS          LOCATIONS       PRODUCTS</span>
+<span class="ln">    <i class="com">│</i></span>
+<span class="ln">    <i class="com">└───────────────┬────────────────┘</i></span>
+<span class="ln">                    <i class="com">▼</i></span>
+<span class="ln">             COMPANY_MODEL.JSON</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">          <i class="com">┌─────────┴─────────┐</i></span>
+<span class="ln">          <i class="com">▼</i>                   <i class="com">▼</i></span>
+<span class="ln">   ③ CAI DESIGN ENGINE     ④ RAG ENGINE</span>
+<span class="ln">          <i class="com">│</i>                   <i class="com">│</i></span>
+<span class="ln">   YOUR components        chunk facts</span>
+<span class="ln">   YOUR spacing           embeddings</span>
+<span class="ln">   YOUR palettes          FAISS</span>
+<span class="ln">   YOUR typography        metadata</span>
+<span class="ln">          <i class="com">│</i>                   <i class="com">│</i></span>
+<span class="ln">          <i class="com">▼</i>                   <i class="com">▼</i></span>
+<span class="ln">     WEBSITE BUILD          CHATBOT</span>
+<span class="ln">          <i class="com">│</i>                   <i class="com">│</i></span>
+<span class="ln">          <i class="com">└─────────┬─────────┘</i></span>
+<span class="ln">                    <i class="com">▼</i></span>
+<span class="ln">              ⑤ VALIDATOR</span>
+<span class="ln">                    <i class="com">│</i></span>
+<span class="ln">                    <i class="com">▼</i></span>
+<span class="ln">                  EXPORT</span></code></pre>
+</details>
+ </div>
+ <p class="aside">Status: testing. The fact step has run on a live page; the rest is being wired.</p>
+</section>
+
+<section>
+ <h2>Prototype 02 · The scaffold and the function system</h2>
+ <h3 class="claim">File = stage. Function = action. Pipeline = story. Print = report.</h3>
+ <p class="lead">One command lays out a whole project: a menu that finds every builder, a collector that feeds them,
+ numbered stages inside each one. Every function is named so it reads like a sentence, checks what comes in, and
+ reports what it did. This is how I keep code readable after years of changes, and how I find a failure in one look.</p>
+ <div class="pipe">
+  <div><i>00</i><b>auto.py</b><p>loop menu · finds every run.py</p></div>
+  <div><i>01</i><b>collector</b><p>new · append · filter → _df_collect.csv</p></div>
+  <div><i>02</i><b>run.py</b><p>each builder's backbone</p></div>
+  <div><i>03</i><b>src_N</b><p>_0 get · _1 clean · _2 features · _3 model · _4 eval · _5 utils</p></div>
+  <div><i>04</i><b>data</b><p>raw → processed → exports</p></div>
+ </div>
+ <div class="term"><span>$</span> /scaffold &lt;project_name&gt; &lt;domain&gt;</div>
+</section>
+
+<section>
+ <h2>Read a function name like a sentence</h2>
+ <div class="anat">
+  <div><b>_2</b><i>stage</i></div>
+  <div><b>proc</b><i>type</i></div>
+  <div><b>audio</b><i>keyword</i></div>
+  <div><b>split</b><i>action</i></div>
+  <div><b>GET</b><i>returns</i></div>
+  <div><b>chunksdf</b><i>output</i></div>
+ </div>
+ <pre class="proto-flow"><code>  _1_build_audiofolders_create_GET_paths
+      ↓
+  _2_proc_audio_split_GET_chunksdf
+      ↓
+  _3_ext_audiofreq_detect_GET_freqdf
+      ↓
+  _4_ana_audioquality_score_GET_statsdf</code></pre>
+ <p class="aside">The name tells you the stage, what it does and what it gives back, before you open the file.</p>
+</section>
+
+<section>
+ <h2>Every function reports</h2>
+ <pre class="proto-term"><code>-----######----- FUNCTION SUMMARY -----######-----
+FUNC   : {function_name}
+STAGE  : {stage}
+INPUT  : {input_count}
+OUTPUT : {output_count}
+ERRORS : {n_errors}
+TIME   : {runtime}s
+STATUS : SUCCESS / FAIL</code></pre>
+ <ul class="laws">
+  <li><b>One job, one file</b>One function = one responsibility. One file = one stage. Stages never mix.</li>
+  <li><b>Always returns</b>A usable df or structured object, every time, so the next stage can trust it.</li>
+  <li><b>Always reports</b>tqdm on every loop and a summary print at the end: input, output, errors, time.</li>
+  <li><b>Fails fast</b>Inputs and outputs are validated, and failures land in an error bucket instead of vanishing.</li>
+ </ul>
+</section>
+
+<section>
+ <h2>The source, as I wrote it</h2>
+ <div class="files">
+<details class="code" open>
+  <summary><span class="file">project tree</span><span class="role">what /scaffold creates</span><span class="lines">26 lines</span></summary>
+  <pre><code><span class="ln"><b class="slot">&lt;project_name&gt;</b>/</span>
+<span class="ln"><i class="com">├──</i> auto.py          <i class="note">← loop menu; discovers run.py files; [C] pinned for collector</i></span>
+<span class="ln"><i class="com">├──</i> collector.py     <i class="note">← smart collector with interactive menu; outputs _df_collect.csv</i></span>
+<span class="ln"><i class="com">├──</i> README.md</span>
+<span class="ln"><i class="com">├──</i> requirements.txt</span>
+<span class="ln"><i class="com">├──</i> .gitignore</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> builders_<b class="slot">&lt;domain&gt;</b>/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">builder_1/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> run.py          <i class="note">← builder backbone (called by auto.py)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> <i class="dir">src_1/</i>          <i class="note">← all stage files live here</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _0_fn_get_data.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _1_fn_clean_data.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _2_fn_features.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _3_fn_model.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _4_fn_eval.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> _5_fn_utils.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> <i class="dir">data/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> <i class="dir">raw/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> <i class="dir">processed/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">└──</i> <i class="dir">exports/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">builder_2/</i>          (run.py + <i class="dir">src_2/</i> + <i class="dir">data/</i>)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> <i class="dir">builder_3/</i>          (run.py + <i class="dir">src_3/</i> + <i class="dir">data/</i>)</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">└──</i> <i class="dir">config/</i></span>
+<span class="ln">    <i class="com">└──</i> config.py</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">auto.py</span><span class="role">the loop menu · full implementation</span><span class="lines">82 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> sys</span>
+<span class="ln"><i class="kw">import</i> subprocess</span>
+<span class="ln"> </span>
+<span class="ln">ROOT = os.path.dirname(os.path.abspath(<i class="bi">__file__</i>))</span>
+<span class="ln">CSV_PATH = os.path.join(ROOT, <i class="str">"_df_collect.csv"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">clear</i>():</span>
+<span class="ln">    os.system(<i class="str">"cls"</i> <i class="kw">if</i> os.name == <i class="str">"nt"</i> <i class="kw">else</i> <i class="str">"clear"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">df_status</i>():</span>
+<span class="ln">    <i class="kw">if</i> os.path.exists(CSV_PATH):</span>
+<span class="ln">        try:</span>
+<span class="ln">            <i class="kw">import</i> pandas <i class="kw">as</i> pd</span>
+<span class="ln">            df = pd.read_csv(CSV_PATH)</span>
+<span class="ln">            <i class="kw">return</i> <i class="str">f"df available  {len(df)} rows"</i></span>
+<span class="ln">        except Exception:</span>
+<span class="ln">            <i class="kw">return</i> <i class="str">"df exists (unreadable)"</i></span>
+<span class="ln">    <i class="kw">return</i> <i class="str">"no df"</i></span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">find_runners</i>():</span>
+<span class="ln">    runners = []</span>
+<span class="ln">    <i class="kw">for</i> entry <i class="kw">in</i> sorted(os.listdir(ROOT)):</span>
+<span class="ln">        <i class="kw">if</i> entry.startswith(<i class="str">"builders_"</i>):</span>
+<span class="ln">            domain_path = os.path.join(ROOT, entry)</span>
+<span class="ln">            <i class="kw">for</i> builder <i class="kw">in</i> sorted(os.listdir(domain_path)):</span>
+<span class="ln">                run_py = os.path.join(domain_path, builder, <i class="str">"run.py"</i>)</span>
+<span class="ln">                <i class="kw">if</i> os.path.exists(run_py):</span>
+<span class="ln">                    runners.append((builder, run_py))</span>
+<span class="ln">    <i class="kw">return</i> runners</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">show_menu</i>(runners):</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"\n"</i> + <i class="str">"="</i> * <i class="num">44</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"   MAIN MENU"</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"="</i> * <i class="num">44</i>)</span>
+<span class="ln">    <i class="kw">for</i> i, (name, _) <i class="kw">in</i> enumerate(runners, <i class="num">1</i>):</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"   [{i}]  {name}"</i>)</span>
+<span class="ln">    <i class="bi">print</i>()</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"   [C]  Collector  ({df_status()})"</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"   [Q]  Quit"</i>)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"="</i> * <i class="num">44</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">main</i>():</span>
+<span class="ln">    <i class="kw">while</i> <i class="kw">True</i>:</span>
+<span class="ln">        clear()</span>
+<span class="ln">        runners = find_runners()</span>
+<span class="ln">        show_menu(runners)</span>
+<span class="ln">        choice = <i class="bi">input</i>(<i class="str">"\n   Select: "</i>).strip().lower()</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">if</i> choice == <i class="str">"q"</i>:</span>
+<span class="ln">            clear()</span>
+<span class="ln">            break</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">elif</i> choice == <i class="str">"c"</i>:</span>
+<span class="ln">            sys.path.insert(<i class="num">0</i>, ROOT)</span>
+<span class="ln">            <i class="kw">import</i> collector</span>
+<span class="ln">            <i class="kw">import</i> importlib</span>
+<span class="ln">            importlib.reload(collector)</span>
+<span class="ln">            collector.menu()</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">elif</i> choice.isdigit():</span>
+<span class="ln">            idx = int(choice) - <i class="num">1</i></span>
+<span class="ln">            <i class="kw">if</i> <i class="num">0</i> &lt;= idx &lt; <i class="bi">len</i>(runners):</span>
+<span class="ln">                name, run_path = runners[idx]</span>
+<span class="ln">                clear()</span>
+<span class="ln">                <i class="bi">print</i>(<i class="str">f"\n   Running {name}...\n"</i>)</span>
+<span class="ln">                subprocess.run([sys.executable, run_path])</span>
+<span class="ln">                <i class="bi">input</i>(<i class="str">"\n   Press Enter to return to menu..."</i>)</span>
+<span class="ln">            <i class="kw">else</i>:</span>
+<span class="ln">                <i class="bi">input</i>(<i class="str">"   Invalid selection — Press Enter..."</i>)</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">else</i>:</span>
+<span class="ln">            <i class="bi">input</i>(<i class="str">"   Invalid selection — Press Enter..."</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">if</i> <i class="bi">__name__</i> == <i class="str">"__main__"</i>:</span>
+<span class="ln">    main()</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">core function</span><span class="role">the template every stage function follows</span><span class="lines">43 lines</span></summary>
+  <pre><code><span class="ln">-----<i class="com">######----- CORE FUNCTION -----######-----</i></span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_2_proc_audio_split_GET_chunksdf</i>(df, output_dir, ...):</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">from</i> tqdm <i class="kw">import</i> tqdm</span>
+<span class="ln"><i class="kw">import</i> time</span>
+<span class="ln"> </span>
+<span class="ln">function_name = <i class="str">"_2_proc_audio_split_GET_chunksdf"</i></span>
+<span class="ln">stage = <i class="str">"PROC"</i></span>
+<span class="ln">t0 = time.time()</span>
+<span class="ln"> </span>
+<span class="ln"><i class="com"># 1. VALIDATION</i></span>
+<span class="ln">assert <i class="str">'Path'</i> <i class="kw">in</i> df.columns, <i class="str">"Missing 'Path' column"</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com"># 2. SETUP</i></span>
+<span class="ln">results = []</span>
+<span class="ln">n_errors = <i class="num">0</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com"># 3. TQDM LOOP</i></span>
+<span class="ln"><i class="kw">for</i> path <i class="kw">in</i> tqdm(df[<i class="str">'Path'</i>], desc=<i class="str">'[PROC] Splitting Audio'</i>):</span>
+<span class="ln"> </span>
+<span class="ln">    try:</span>
+<span class="ln">        <i class="com"># 4. CORE LOGIC</i></span>
+<span class="ln">        <i class="com"># (your processing here)</i></span>
+<span class="ln"> </span>
+<span class="ln">        <i class="com"># 5. STORE</i></span>
+<span class="ln">        results.append(...)</span>
+<span class="ln"> </span>
+<span class="ln">    except Exception:</span>
+<span class="ln">        n_errors += <i class="num">1</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com"># 6. OUTPUT</i></span>
+<span class="ln">df_chunks = ...</span>
+<span class="ln"> </span>
+<span class="ln"><i class="com"># 7. SUMMARY PRINT</i></span>
+<span class="ln">runtime = <i class="bi">round</i>(time.time() - t0, <i class="num">2</i>)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="bi">print</i>(<i class="str">f""</i>"</span>
+<span class="ln"> </span>
+<span class="ln">-----<i class="com">######----- FUNCTION SUMMARY -----######----- FUNC : {function_name} STAGE : {stage} INPUT : {len(df)} OUTPUT : {len(df_chunks)} ERRORS : {n_errors} TIME : {runtime}s STATUS : SUCCESS</i></span>
+<span class="ln"><i class="str">""</i>")</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">return</i> df_chunks</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">/scaffold</span><span class="role">the command · verbatim</span><span class="lines">172 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw"># /scaffold — Create a new app project with standard structure</i></span>
+<span class="ln"> </span>
+<span class="ln">Scaffold a new project using the user's standard layout.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Usage</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">/scaffold &lt;project_name&gt; &lt;domain&gt;</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">Examples:</span>
+<span class="ln"><i class="num">-</i> <i class="str">`/scaffold music_code_structure music`</i></span>
+<span class="ln"><i class="num">-</i> <i class="str">`/scaffold finance_pipeline finance`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Directory structure</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">&lt;project_name&gt;/</span>
+<span class="ln"><i class="com">├──</i> auto.py          ← loop menu; discovers run.py files; [C] pinned for collector</span>
+<span class="ln"><i class="com">├──</i> collector.py     ← smart collector with interactive menu; outputs _df_collect.csv</span>
+<span class="ln"><i class="com">├──</i> README.md</span>
+<span class="ln"><i class="com">├──</i> requirements.txt</span>
+<span class="ln"><i class="com">├──</i> .gitignore</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> builders_&lt;domain&gt;/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> builder_1/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> run.py          ← builder backbone (called by auto.py)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> src_1/          ← all stage files live here</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _0_fn_get_data.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _1_fn_clean_data.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _2_fn_features.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _3_fn_model.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _4_fn_eval.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> _5_fn_utils.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> data/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> raw/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> processed/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">└──</i> exports/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> builder_2/          (run.py + src_2/ + data/)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> builder_3/          (run.py + src_3/ + data/)</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">└──</i> config/</span>
+<span class="ln">    <i class="com">└──</i> config.py</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln">Data folders get a <i class="str">`.gitkeep`</i>. Stage files inside <i class="str">`src_N/`</i> are empty skeletons (<i class="str">`pass`</i>).</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## auto.py — full implementation</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```python</i></span>
+<span class="ln">import os</span>
+<span class="ln">import sys</span>
+<span class="ln">import subprocess</span>
+<span class="ln"> </span>
+<span class="ln">ROOT = os.path.dirname(os.path.abspath(__file__))</span>
+<span class="ln">CSV_PATH = os.path.join(ROOT, "_df_collect.csv")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def clear():</span>
+<span class="ln">    os.system("cls" if os.name == "nt" else "clear")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def df_status():</span>
+<span class="ln">    if os.path.exists(CSV_PATH):</span>
+<span class="ln">        try:</span>
+<span class="ln">            import pandas as pd</span>
+<span class="ln">            df = pd.read_csv(CSV_PATH)</span>
+<span class="ln">            return f"df available  {len(df)} rows"</span>
+<span class="ln">        except Exception:</span>
+<span class="ln">            return "df exists (unreadable)"</span>
+<span class="ln">    return "no df"</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def find_runners():</span>
+<span class="ln">    runners = []</span>
+<span class="ln">    for entry in sorted(os.listdir(ROOT)):</span>
+<span class="ln">        if entry.startswith("builders_"):</span>
+<span class="ln">            domain_path = os.path.join(ROOT, entry)</span>
+<span class="ln">            for builder in sorted(os.listdir(domain_path)):</span>
+<span class="ln">                run_py = os.path.join(domain_path, builder, "run.py")</span>
+<span class="ln">                if os.path.exists(run_py):</span>
+<span class="ln">                    runners.append((builder, run_py))</span>
+<span class="ln">    return runners</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def show_menu(runners):</span>
+<span class="ln">    print("\n" + "=" * 44)</span>
+<span class="ln">    print("   MAIN MENU")</span>
+<span class="ln">    print("=" * 44)</span>
+<span class="ln">    for i, (name, _) in enumerate(runners, 1):</span>
+<span class="ln">        print(f"   [{i}]  {name}")</span>
+<span class="ln">    print()</span>
+<span class="ln">    print(f"   [C]  Collector  ({df_status()})")</span>
+<span class="ln">    print("   [Q]  Quit")</span>
+<span class="ln">    print("=" * 44)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def main():</span>
+<span class="ln">    while True:</span>
+<span class="ln">        clear()</span>
+<span class="ln">        runners = find_runners()</span>
+<span class="ln">        show_menu(runners)</span>
+<span class="ln">        choice = input("\n   Select: ").strip().lower()</span>
+<span class="ln"> </span>
+<span class="ln">        if choice == "q":</span>
+<span class="ln">            clear()</span>
+<span class="ln">            break</span>
+<span class="ln"> </span>
+<span class="ln">        elif choice == "c":</span>
+<span class="ln">            sys.path.insert(0, ROOT)</span>
+<span class="ln">            import collector</span>
+<span class="ln">            import importlib</span>
+<span class="ln">            importlib.reload(collector)</span>
+<span class="ln">            collector.menu()</span>
+<span class="ln"> </span>
+<span class="ln">        elif choice.isdigit():</span>
+<span class="ln">            idx = int(choice) - 1</span>
+<span class="ln">            if 0 &lt;= idx &lt; len(runners):</span>
+<span class="ln">                name, run_path = runners[idx]</span>
+<span class="ln">                clear()</span>
+<span class="ln">                print(f"\n   Running {name}...\n")</span>
+<span class="ln">                subprocess.run([sys.executable, run_path])</span>
+<span class="ln">                input("\n   Press Enter to return to menu...")</span>
+<span class="ln">            else:</span>
+<span class="ln">                input("   Invalid selection — Press Enter...")</span>
+<span class="ln"> </span>
+<span class="ln">        else:</span>
+<span class="ln">            input("   Invalid selection — Press Enter...")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">if __name__ == "__main__":</span>
+<span class="ln">    main()</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## collector.py — full implementation</i></span>
+<span class="ln"> </span>
+<span class="ln">Copy the full collector.py from <i class="str">`music_code_structure/collector.py`</i> as the canonical template.</span>
+<span class="ln">It implements: <i class="str">`_new`</i>, <i class="str">`_append`</i>, <i class="str">`_replace`</i>, <i class="str">`_view`</i>, <i class="str">`_filter`</i>, <i class="str">`_clear`</i>, <i class="str">`menu()`</i>, <i class="str">`main()`</i>.</span>
+<span class="ln">Menu options:</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[N] New**</i> — fresh collection, replaces df</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[A] Append**</i> — adds rows, dedupes by file_path</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[R] Replace**</i> — preview current df then swap with new input</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[V] View**</i> — shape, columns, extension breakdown with bar, total size MB, head(5)</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[F] Filter**</i> — filter by extension(s), optionally save filtered result</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[X] Clear**</i> — delete _df_collect.csv with confirmation</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[B] Back**</i> — return to auto.py menu</span>
+<span class="ln">Status line always shows: row count + top extensions with counts.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Other file rules</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### run.py (each builder)</i></span>
+<span class="ln"><i class="num">-</i> Empty skeleton: <i class="str">`pass`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### config/config.py</i></span>
+<span class="ln"><i class="num">-</i> Empty skeleton: <i class="str">`pass`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### requirements.txt</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">pandas</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### .gitignore</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">__pycache__/</span>
+<span class="ln">*.pyc</span>
+<span class="ln">_df_collect.csv</span>
+<span class="ln">data/raw/*</span>
+<span class="ln">data/processed/*</span>
+<span class="ln">data/exports/*</span>
+<span class="ln">!**/.gitkeep</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## After scaffolding</i></span>
+<span class="ln">Print a short tree confirming the created structure.</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">FUNCTION SYSTEM</span><span class="role">naming · flow · print · hard rules · checklist</span><span class="lines">146 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw"># 🧱 FUNCTION SYSTEM — FULL STRUCTURE (SCALABLE)</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 1. FILE STRUCTURE (Stage-Based)</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### Rule: **One stage per file**</i></span>
+<span class="ln"> </span>
+<span class="ln">src/</span>
+<span class="ln">_1_build_audio.py _2_proc_audio.py _3_ext_audio.py _4_ana_audio.py _5_util_audio.py</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> <i class="str">`_1`</i> → build (setup, folders, paths)</span>
+<span class="ln"><i class="num">-</i> <i class="str">`_2`</i> → process (transformations)</span>
+<span class="ln"><i class="num">-</i> <i class="str">`_3`</i> → extract (features, metadata)</span>
+<span class="ln"><i class="num">-</i> <i class="str">`_4`</i> → analyze (scoring, insights)</span>
+<span class="ln"><i class="num">-</i> <i class="str">`_5`</i> → utilities (helpers)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 2. FUNCTION NAMING (LOCK THIS)</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### Format:</i></span>
+<span class="ln"> </span>
+<span class="ln">_#stage##_type_keyword##_action_GET_output</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### Examples:</i></span>
+<span class="ln"> </span>
+<span class="ln">_1_build_audiofolders_create_GET_paths _2_proc_audio_split_GET_chunksdf _3_ext_audiofreq_detect_GET_freqdf _4_ana_audioquality_score_GET_statsdf</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 3. PIPELINE FLOW (Readable Story)</i></span>
+<span class="ln"> </span>
+<span class="ln">_1_build → _2_proc → _3_ext → _4_ana</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### Example:</i></span>
+<span class="ln"> </span>
+<span class="ln">_1_build_audiofolders_create_GET_paths ↓ _2_proc_audio_split_GET_chunksdf ↓ _3_ext_audiofreq_detect_GET_freqdf ↓ _4_ana_audioquality_score_GET_statsdf</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 4. CORE FUNCTION TEMPLATE</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>----######----- CORE FUNCTION -----######-----</span>
+<span class="ln">def _2_proc_audio_split_GET_chunksdf(df, output_dir, ...):</span>
+<span class="ln"> </span>
+<span class="ln">import os</span>
+<span class="ln">from tqdm import tqdm</span>
+<span class="ln">import time</span>
+<span class="ln"> </span>
+<span class="ln">function_name = "_2_proc_audio_split_GET_chunksdf"</span>
+<span class="ln">stage = "PROC"</span>
+<span class="ln">t0 = time.time()</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw"># 1. VALIDATION</i></span>
+<span class="ln">assert 'Path' in df.columns, "Missing 'Path' column"</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw"># 2. SETUP</i></span>
+<span class="ln">results = []</span>
+<span class="ln">n_errors = 0</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw"># 3. TQDM LOOP</i></span>
+<span class="ln">for path in tqdm(df['Path'], desc='[PROC] Splitting Audio'):</span>
+<span class="ln"> </span>
+<span class="ln">    try:</span>
+<span class="ln">        # 4. CORE LOGIC</span>
+<span class="ln">        # (your processing here)</span>
+<span class="ln"> </span>
+<span class="ln">        # 5. STORE</span>
+<span class="ln">        results.append(...)</span>
+<span class="ln"> </span>
+<span class="ln">    except Exception:</span>
+<span class="ln">        n_errors += 1</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw"># 6. OUTPUT</i></span>
+<span class="ln">df_chunks = ...</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw"># 7. SUMMARY PRINT</i></span>
+<span class="ln">runtime = round(time.time() - t0, 2)</span>
+<span class="ln"> </span>
+<span class="ln">print(f"""</span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>----######----- FUNCTION SUMMARY -----######----- FUNC : {function_name} STAGE : {stage} INPUT : {len(df)} OUTPUT : {len(df_chunks)} ERRORS : {n_errors} TIME : {runtime}s STATUS : SUCCESS</span>
+<span class="ln">""")</span>
+<span class="ln"> </span>
+<span class="ln">return df_chunks</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 5. STANDARD PRINT FORMAT</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### Always use:</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>----######----- FUNCTION SUMMARY -----######----- FUNC : {function_name} STAGE : {stage} INPUT : {input_count} OUTPUT : {output_count} ERRORS : {n_errors} TIME : {runtime}s STATUS : SUCCESS / FAIL</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 6. RUNNING PIPELINE</i></span>
+<span class="ln"> </span>
+<span class="ln">#!#!#!#!#! RUNNING STATEMENTS #!#!#!#!#!</span>
+<span class="ln">df_1 = _1_build_audiofolders_create_GET_paths(...) df_2 = _2_proc_audio_split_GET_chunksdf(df_1, ...) df_3 = _3_ext_audiofreq_detect_GET_freqdf(df_2, ...) df_4 = _4_ana_audioquality_score_GET_statsdf(df_3)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 7. HARD RULES</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> One function = one responsibility</span>
+<span class="ln"><i class="num">-</i> One file = one stage</span>
+<span class="ln"><i class="num">-</i> Always return usable output (df or structured object)</span>
+<span class="ln"><i class="num">-</i> Always include tqdm for loops</span>
+<span class="ln"><i class="num">-</i> Always include summary print</span>
+<span class="ln"><i class="num">-</i> Never mix stages in one function</span>
+<span class="ln"><i class="num">-</i> Naming must reflect:</span>
+<span class="ln"><i class="num">  -</i> stage</span>
+<span class="ln"><i class="num">  -</i> action</span>
+<span class="ln"><i class="num">  -</i> output</span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 8. MENTAL MODEL</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> File = <i class="fn">**Stage**</i></span>
+<span class="ln"><i class="num">-</i> Function = <i class="fn">**Action**</i></span>
+<span class="ln"><i class="num">-</i> Pipeline = <i class="fn">**Story**</i></span>
+<span class="ln"><i class="num">-</i> Print = <i class="fn">**Report**</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i>--</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## 9. QUICK CHECKLIST BEFORE CODING</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">- [ ]</i> Input clearly defined</span>
+<span class="ln"><i class="num">- [ ]</i> Output clearly defined</span>
+<span class="ln"><i class="num">- [ ]</i> Stage assigned (_1, _2, _3...)</span>
+<span class="ln"><i class="num">- [ ]</i> Function name follows format</span>
+<span class="ln"><i class="num">- [ ]</i> tqdm included if looping</span>
+<span class="ln"><i class="num">- [ ]</i> Summary print included</span>
+<span class="ln"><i class="num">- [ ]</i> Returns structured output</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">validation layer</span><span class="role">input + output checks · error bucket</span><span class="lines">17 lines</span></summary>
+  <pre><code><span class="ln">🧪 3. VALIDATION LAYER (INPUT + OUTPUT CHECKS)</span>
+<span class="ln">🔹 Why</span>
+<span class="ln">* Prevent silent errors → critical for pipelines</span>
+<span class="ln">🔹 Add pattern:</span>
+<span class="ln"> </span>
+<span class="ln">def _validate_df_has_cols(df, cols):</span>
+<span class="ln">    for c in cols:</span>
+<span class="ln">        if c not in df.columns:</span>
+<span class="ln">            raise ValueError(f"Missing column: {c}")</span>
+<span class="ln"> </span>
+<span class="ln">🔹 Also validate output:</span>
+<span class="ln"> </span>
+<span class="ln">assert len(df_chunks) &gt; 0, "No chunks created"</span>
+<span class="ln"> </span>
+<span class="ln">🔹 Benefit</span>
+<span class="ln">* Fail fast instead of corrupting pipeline</span>
+<span class="ln">⚡ BONUS (HIGH IMPACT) 🔹 6. ERROR BUCKET SYSTEM Instead of losing failures: errors = [] try: ... except Exception as e: errors.append((path, str(e))) Return: return df_chunks, errors</span></code></pre>
+</details>
+ </div>
+ <p class="aside">Written as a Claude Code command, so every project an agent scaffolds starts in the same shape.</p>
+</section>
+
+<section>
+ <h2>Prototype 03 · /struct and its web twin</h2>
+ <h3 class="claim">One shape for every project. Python or web: the same menu, the same stages, the same proof.</h3>
+ <p class="lead">/struct lays out any data project so it runs on any machine without one edit. Its web twin keeps
+ every law and swaps the parts: builders become layers, the dataframe becomes the site, and a landing page that asks
+ for input in steps ships with its own run test.</p>
+ <div class="twin">
+  <div class="h"><b>/struct</b><b>/webstruct</b></div>
+  <div><span>builders_&lt;domain&gt;/builder_N</span><span>layers_&lt;domain&gt;/layer_N</span></div>
+  <div><span>_df_collect.csv</span><span>the site dict</span></div>
+  <div><span>fn(df, paths, cfg) → df</span><span>fn(site, paths, cfg) → site</span></div>
+  <div><span>collector.py</span><span>schema.json per layer</span></div>
+  <div><span>auto.py · [C] collector</span><span>auto.py · P · K · T · A · E</span></div>
+  <div><span>export_2_desk.py</span><span>export_2_desk.py</span></div>
+ </div>
+<pre class="proto-flow"><code>  layer 1 ──Next──▶ layer 2 ──Next──▶ layer 3 ──Send──▶ server checks it all again ──▶ stored
+     │                 │                 │                                              │
+     └── page checks ──┴── page checks ──┘          steps.jsonl ──▶ funnel per layer ◀──┘</code></pre>
+ <ul class="laws">
+  <li><b>Portable</b>No path outside the project except export_2_desk.py. The test fails the run if one appears.</li>
+  <li><b>Markup = schema</b>Every field in the page is in its schema and back. A mismatch stops the build.</li>
+  <li><b>Never trust the page</b>The browser checks each layer; the server checks every field again.</li>
+  <li><b>Proven</b>16 checks: worst-case inputs, the funnel, and a real Chrome walking every layer at phone width.</li>
+ </ul>
+ <div class="term"><span>$</span> python run.py --test</div>
+ <div class="files">
+<details class="code">
+  <summary><span class="file">/struct</span><span class="role">the command · verbatim</span><span class="lines">214 lines</span></summary>
+  <pre><code><span class="ln"><i class="kw"># /struct — Create a new app project with standard structure</i></span>
+<span class="ln"> </span>
+<span class="ln">This is the general-purpose project structure used across all domains (music, finance, etc.).</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## ⚠️ PORTABILITY RULE — ENFORCE ALWAYS</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="fn">**This app must work on any machine, in any folder, without modification.**</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="num">-</i> <i class="fn">**ZERO hardcoded external paths**</i> anywhere in the project — not in functions, not in run.py, not in config files</span>
+<span class="ln"><i class="num">-</i> All internal paths are computed at runtime using <i class="str">`os.path.dirname(os.path.abspath(__file__))`</i> as the anchor</span>
+<span class="ln"><i class="num">-</i> <i class="str">`_df_collect.csv`</i> lives at project root and is always located relative to <i class="str">`__file__`</i></span>
+<span class="ln"><i class="num">-</i> The <i class="fn">**only**</i> file that ever touches external/desktop paths is <i class="str">`export_2_desk.py`</i> — that is its entire purpose</span>
+<span class="ln"><i class="num">-</i> If you ever see an absolute path like <i class="str">`/Users/...`</i> or <i class="str">`C:\...`</i> inside any file except <i class="str">`export_2_desk.py`</i>, it is a bug</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## ROLE OF EACH ROOT FILE</i></span>
+<span class="ln"> </span>
+<span class="ln">| File | Role |</span>
+<span class="ln">|------|------|</span>
+<span class="ln">| <i class="str">`auto.py`</i> | Loop menu — orchestrates builders and collector |</span>
+<span class="ln">| <i class="str">`collector.py`</i> | Builds <i class="str">`_df_collect.csv`</i> — the df we work on |</span>
+<span class="ln">| <i class="str">`export_2_desk.py`</i> | <i class="fn">**Only file with external/desktop paths**</i> — highly customizable per project; copies builder exports to desktop with appropriate naming/format |</span>
+<span class="ln">| <i class="str">`_df_collect.csv`</i> | The working dataframe — input to all builders |</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Collector note</i></span>
+<span class="ln"><i class="str">`collector.py`</i> is the one file that may vary by domain. When the user invokes <i class="str">`/struct`</i> for the first time on a new project, ask: <i class="fn">**"Does this project need a custom collector, or use the standard file/folder collector?"**</i></span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Standard**</i>: file/folder walker → <i class="str">`_df_collect.csv`</i> (copy as-is from template)</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**Custom**</i>: user will describe the data source (API, database, spreadsheet, etc.) — adapt <i class="str">`collector.py`</i> for that source while keeping the same menu structure (<i class="str">`menu()`</i>) and CSV output contract (<i class="str">`_df_collect.csv`</i>)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Usage</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">/struct &lt;project_name&gt; &lt;domain&gt;</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">Examples:</span>
+<span class="ln"><i class="num">-</i> <i class="str">`/struct music_code_structure music`</i></span>
+<span class="ln"><i class="num">-</i> <i class="str">`/struct finance_pipeline finance`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Directory structure</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">&lt;project_name&gt;/</span>
+<span class="ln"><i class="com">├──</i> auto.py              ← loop menu; discovers run.py files; [C] pinned for collector</span>
+<span class="ln"><i class="com">├──</i> collector.py         ← smart collector; outputs _df_collect.csv</span>
+<span class="ln"><i class="com">├──</i> export_2_desk.py     ← ONLY file with external paths; copies exports → Desktop</span>
+<span class="ln"><i class="com">├──</i> _df_collect.csv      ← working df (gitignored; created by collector)</span>
+<span class="ln"><i class="com">├──</i> README.md</span>
+<span class="ln"><i class="com">├──</i> requirements.txt</span>
+<span class="ln"><i class="com">├──</i> .gitignore</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> builders_&lt;domain&gt;/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> builder_1/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> run.py          ← builder backbone (called by auto.py)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> src_1/          ← stage files (named by /pystr convention)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _1_build_&lt;domain&gt;.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _2_proc_&lt;domain&gt;.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _3_ext_&lt;domain&gt;.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _4_ana_&lt;domain&gt;.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> _5_util_&lt;domain&gt;.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> data/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> raw/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> processed/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">└──</i> exports/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> builder_2/          (run.py + src_2/ + data/)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> builder_3/          (run.py + src_3/ + data/)</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">└──</i> config/</span>
+<span class="ln">    <i class="com">├──</i> config.py        ← global app config</span>
+<span class="ln">    <i class="com">├──</i> config_u1.py     ← user-editable config for builder_1</span>
+<span class="ln">    <i class="com">├──</i> config_u2.py     ← user-editable config for builder_2</span>
+<span class="ln">    <i class="com">└──</i> config_u3.py     ← user-editable config for builder_3</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln">Data folders get a <i class="str">`.gitkeep`</i>. Stage files inside <i class="str">`src_N/`</i> are empty skeletons (<i class="str">`pass`</i>).</span>
+<span class="ln">Each <i class="str">`config_uN.py`</i> is the first import in its <i class="str">`run.py`</i> — see /pystr Section 11 for the full pattern.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## auto.py — full implementation</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="com">```python</i></span>
+<span class="ln">import os</span>
+<span class="ln">import sys</span>
+<span class="ln">import subprocess</span>
+<span class="ln"> </span>
+<span class="ln">ROOT = os.path.dirname(os.path.abspath(__file__))</span>
+<span class="ln">CSV_PATH = os.path.join(ROOT, "_df_collect.csv")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def clear():</span>
+<span class="ln">    os.system("cls" if os.name == "nt" else "clear")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def df_status():</span>
+<span class="ln">    if os.path.exists(CSV_PATH):</span>
+<span class="ln">        try:</span>
+<span class="ln">            import pandas as pd</span>
+<span class="ln">            df = pd.read_csv(CSV_PATH)</span>
+<span class="ln">            return f"df available  {len(df)} rows"</span>
+<span class="ln">        except Exception:</span>
+<span class="ln">            return "df exists (unreadable)"</span>
+<span class="ln">    return "no df"</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def find_runners():</span>
+<span class="ln">    runners = []</span>
+<span class="ln">    for entry in sorted(os.listdir(ROOT)):</span>
+<span class="ln">        if entry.startswith("builders_"):</span>
+<span class="ln">            domain_path = os.path.join(ROOT, entry)</span>
+<span class="ln">            for builder in sorted(os.listdir(domain_path)):</span>
+<span class="ln">                run_py = os.path.join(domain_path, builder, "run.py")</span>
+<span class="ln">                if os.path.exists(run_py):</span>
+<span class="ln">                    runners.append((builder, run_py))</span>
+<span class="ln">    return runners</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def show_menu(runners):</span>
+<span class="ln">    print("\n" + "=" * 44)</span>
+<span class="ln">    print("   MAIN MENU")</span>
+<span class="ln">    print("=" * 44)</span>
+<span class="ln">    for i, (name, _) in enumerate(runners, 0):</span>
+<span class="ln">        print(f"   [{i}]  {name}")</span>
+<span class="ln">    print()</span>
+<span class="ln">    print(f"   [C]  Collector  ({df_status()})")</span>
+<span class="ln">    print("   [Q]  Quit")</span>
+<span class="ln">    print("=" * 44)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">def main():</span>
+<span class="ln">    while True:</span>
+<span class="ln">        clear()</span>
+<span class="ln">        runners = find_runners()</span>
+<span class="ln">        show_menu(runners)</span>
+<span class="ln">        choice = input("\n   Select: ").strip().lower()</span>
+<span class="ln"> </span>
+<span class="ln">        if choice == "q":</span>
+<span class="ln">            clear()</span>
+<span class="ln">            break</span>
+<span class="ln"> </span>
+<span class="ln">        elif choice == "c":</span>
+<span class="ln">            sys.path.insert(0, ROOT)</span>
+<span class="ln">            import collector</span>
+<span class="ln">            import importlib</span>
+<span class="ln">            importlib.reload(collector)</span>
+<span class="ln">            collector.menu()</span>
+<span class="ln"> </span>
+<span class="ln">        elif choice.isdigit():</span>
+<span class="ln">            idx = int(choice)</span>
+<span class="ln">            if 0 &lt;= idx &lt; len(runners):</span>
+<span class="ln">                name, run_path = runners[idx]</span>
+<span class="ln">                clear()</span>
+<span class="ln">                print(f"\n   Running {name}...\n")</span>
+<span class="ln">                subprocess.run([sys.executable, run_path])</span>
+<span class="ln">                input("\n   Press Enter to return to menu...")</span>
+<span class="ln">            else:</span>
+<span class="ln">                input("   Invalid selection — Press Enter...")</span>
+<span class="ln"> </span>
+<span class="ln">        else:</span>
+<span class="ln">            input("   Invalid selection — Press Enter...")</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">if __name__ == "__main__":</span>
+<span class="ln">    main()</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## collector.py — full implementation</i></span>
+<span class="ln"> </span>
+<span class="ln">Copy the full collector.py from <i class="str">`music_code_structure/collector.py`</i> as the canonical template.</span>
+<span class="ln">It implements: <i class="str">`_new`</i>, <i class="str">`_append`</i>, <i class="str">`_replace`</i>, <i class="str">`_view`</i>, <i class="str">`_filter`</i>, <i class="str">`_clear`</i>, <i class="str">`menu()`</i>, <i class="str">`main()`</i>.</span>
+<span class="ln">Menu options:</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[N] New**</i> — fresh collection, replaces df</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[A] Append**</i> — adds rows, dedupes by file_path</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[R] Replace**</i> — preview current df then swap with new input</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[V] View**</i> — shape, columns, extension breakdown with bar, total size MB, head(5)</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[F] Filter**</i> — filter by extension(s), optionally save filtered result</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[X] Clear**</i> — delete _df_collect.csv with confirmation</span>
+<span class="ln"><i class="num">-</i> <i class="fn">**[B] Back**</i> — return to auto.py menu</span>
+<span class="ln">Status line always shows: row count + top extensions with counts.</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## Other file rules</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### run.py (each builder)</i></span>
+<span class="ln"><i class="num">-</i> Empty skeleton: <i class="str">`pass`</i></span>
+<span class="ln"><i class="num">-</i> First import must be its <i class="str">`config_uN.py`</i> (e.g. <i class="str">`from config.config_u1 import *`</i>)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### config/config.py</i></span>
+<span class="ln"><i class="num">-</i> Empty skeleton: <i class="str">`pass`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### config/config_uN.py (one per builder)</i></span>
+<span class="ln"><i class="num">-</i> Empty skeleton with comment: <i class="str">`# USER CONFIG — builder_N`</i></span>
+<span class="ln"><i class="num">-</i> Contains ONLY functional attributes: numbers, thresholds, formats, flags, extension lists, seeds</span>
+<span class="ln"><i class="num">-</i> NEVER contains paths — paths are always computed at runtime via <i class="str">`__file__`</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### export_2_desk.py</i></span>
+<span class="ln"><i class="num">-</i> The one and only file allowed to use desktop/external paths (<i class="str">`os.path.expanduser("~/Desktop")`</i> etc.)</span>
+<span class="ln"><i class="num">-</i> Reads from builder <i class="str">`data/exports/`</i> folders (project-relative)</span>
+<span class="ln"><i class="num">-</i> Copies/exports to Desktop with appropriate naming</span>
+<span class="ln"><i class="num">-</i> Highly customizable per project: zip, rename, format conversion, selective export, etc.</span>
+<span class="ln"><i class="num">-</i> Skeleton only at scaffold time — user/AI fills it in based on project needs</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### requirements.txt</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">pandas</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">### .gitignore</i></span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln">__pycache__/</span>
+<span class="ln">*.pyc</span>
+<span class="ln">_df_collect.csv</span>
+<span class="ln">data/raw/*</span>
+<span class="ln">data/processed/*</span>
+<span class="ln">data/exports/*</span>
+<span class="ln">!**/.gitkeep</span>
+<span class="ln"><i class="com">```</i></span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">## After creating</i></span>
+<span class="ln">Print a short tree confirming the created structure.</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">struct tree</span><span class="role">what /struct creates</span><span class="lines">30 lines</span></summary>
+  <pre><code><span class="ln"><b class="slot">&lt;project_name&gt;</b>/</span>
+<span class="ln"><i class="com">├──</i> auto.py              <i class="note">← loop menu; discovers run.py files; [C] pinned for collector</i></span>
+<span class="ln"><i class="com">├──</i> collector.py         <i class="note">← smart collector; outputs _df_collect.csv</i></span>
+<span class="ln"><i class="com">├──</i> export_2_desk.py     <i class="note">← ONLY file with external paths; copies exports → Desktop</i></span>
+<span class="ln"><i class="com">├──</i> _df_collect.csv      <i class="note">← working df (gitignored; created by collector)</i></span>
+<span class="ln"><i class="com">├──</i> README.md</span>
+<span class="ln"><i class="com">├──</i> requirements.txt</span>
+<span class="ln"><i class="com">├──</i> .gitignore</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> builders_<b class="slot">&lt;domain&gt;</b>/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">builder_1/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> run.py          <i class="note">← builder backbone (called by auto.py)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> <i class="dir">src_1/</i>          <i class="note">← stage files (named by /pystr convention)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _1_build_<b class="slot">&lt;domain&gt;</b>.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _2_proc_<b class="slot">&lt;domain&gt;</b>.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _3_ext_<b class="slot">&lt;domain&gt;</b>.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> _4_ana_<b class="slot">&lt;domain&gt;</b>.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> _5_util_<b class="slot">&lt;domain&gt;</b>.py</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> <i class="dir">data/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> <i class="dir">raw/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">├──</i> <i class="dir">processed/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>       <i class="com">└──</i> <i class="dir">exports/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">builder_2/</i>          (run.py + <i class="dir">src_2/</i> + <i class="dir">data/</i>)</span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> <i class="dir">builder_3/</i>          (run.py + <i class="dir">src_3/</i> + <i class="dir">data/</i>)</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">└──</i> <i class="dir">config/</i></span>
+<span class="ln">    <i class="com">├──</i> config.py        <i class="note">← global app config</i></span>
+<span class="ln">    <i class="com">├──</i> config_u1.py     <i class="note">← user-editable config for builder_1</i></span>
+<span class="ln">    <i class="com">├──</i> config_u2.py     <i class="note">← user-editable config for builder_2</i></span>
+<span class="ln">    <i class="com">└──</i> config_u3.py     <i class="note">← user-editable config for builder_3</i></span></code></pre>
+</details>
+<details class="code" open>
+  <summary><span class="file">webstruct tree</span><span class="role">the web twin</span><span class="lines">37 lines</span></summary>
+  <pre><code><span class="ln"><b class="slot">&lt;site_name&gt;</b>/</span>
+<span class="ln"><i class="com">├──</i> auto.py              <i class="note">← loop menu; lists layers; P · K · T · A · E · Q</i></span>
+<span class="ln"><i class="com">├──</i> run.py               <i class="note">← build → preview · --check · --test · --analyze</i></span>
+<span class="ln"><i class="com">├──</i> export_2_desk.py     <i class="note">← ONLY file with external paths</i></span>
+<span class="ln"><i class="com">├──</i> README.md</span>
+<span class="ln"><i class="com">├──</i> requirements.txt     <i class="note">← stdlib; playwright optional (browser test)</i></span>
+<span class="ln"><i class="com">├──</i> .gitignore</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> layers_<b class="slot">&lt;domain&gt;</b>/     <i class="note">← one folder per input layer, shown one at a time</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> layer_1_<b class="slot">&lt;step&gt;</b>/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> layer.html      <i class="note">← the fields, markup only (no form, no buttons)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">├──</i> schema.json     <i class="note">← title + fields: name · type · label · required · options</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">│</i>   <i class="com">└──</i> layer.css       <i class="note">← optional, this layer only</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> layer_2_<b class="slot">&lt;step&gt;</b>/</span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> layer_3_<b class="slot">&lt;step&gt;</b>/</span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> <i class="dir">src_web/</i>             <i class="note">← stage files, /pystr names, contract fn(site, paths, cfg) → site</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> _1_build_web.py     <i class="note">← find layers in number order, load parts</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> _2_proc_web.py      <i class="note">← markup ⇄ schema must agree · unique names · known types · fail fast</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> _3_ext_web.py       <i class="note">← stitch shell + layers → dist/ (index · css · js · schema.json)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> _4_ana_web.py       <i class="note">← submissions → csv · steps → funnel per layer</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> _5_util_web.py      <i class="note">← print · files · validate_payload (the only cross-import)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> <i class="dir">shell/</i>              <i class="note">← index.html · site.css · site.js (the stepper)</i></span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> <i class="dir">tests/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> test_site.py        <i class="note">← the run test: build · portability · worst-case submits · funnel</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> test_browser.py     <i class="note">← optional: headless Chrome walks every layer at phone width</i></span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> <i class="dir">config/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> config.py        <i class="note">← global: name · port · limits · field types (no paths)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> config_u1.py     <i class="note">← user-editable: the words on the page (no paths)</i></span>
+<span class="ln"><i class="com">│</i></span>
+<span class="ln"><i class="com">├──</i> <i class="dir">data/</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">raw/</i>             <i class="note">← submissions.jsonl · steps.jsonl (append only)</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">├──</i> <i class="dir">processed/</i>       <i class="note">← submissions.csv</i></span>
+<span class="ln"><i class="com">│</i>   <i class="com">└──</i> <i class="dir">exports/</i>         <i class="note">← funnel.csv</i></span>
+<span class="ln"><i class="com">└──</i> <i class="dir">dist/</i>                <i class="note">← built site (gitignored)</i></span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">run.py</span><span class="role">build · preview · --check · --test</span><span class="lines">116 lines</span></summary>
+  <pre><code><span class="ln"><i class="str">""</i>"The site's front door. Python only, stdlib only.</span>
+<span class="ln">  python run.py            build dist/ <i class="kw">and</i> preview it at <i class="num">127.0</i>.<i class="num">0.1</i>:PORT (POST /submit · POST /step)</span>
+<span class="ln">  python run.py --check    build only: exit <i class="num">0</i> when every layer <i class="kw">is</i> sound, <i class="num">1</i> when <i class="kw">not</i></span>
+<span class="ln">  python run.py --test     the run test: every check <i class="kw">in</i> tests/ (schema · build · portability · submit flow)</span>
+<span class="ln">  python run.py --analyze  submissions → data/processed/submissions.csv · funnel → data/exports/funnel.csv<i class="str">""</i>"</span>
+<span class="ln"><i class="kw">import</i> json</span>
+<span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> sys</span>
+<span class="ln"><i class="kw">from</i> datetime <i class="kw">import</i> datetime, timezone</span>
+<span class="ln"><i class="kw">from</i> http.server <i class="kw">import</i> SimpleHTTPRequestHandler, ThreadingHTTPServer</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">from</i> config <i class="kw">import</i> config, config_u1      <i class="com"># USER CONFIG first, always</i></span>
+<span class="ln"> </span>
+<span class="ln">_HERE = os.path.dirname(os.path.abspath(<i class="bi">__file__</i>))</span>
+<span class="ln">sys.path.insert(<i class="num">0</i>, _HERE)</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">from</i> src_web._1_build_web <i class="kw">import</i> build      <i class="com"># noqa: E402</i></span>
+<span class="ln"><i class="kw">from</i> src_web._2_proc_web <i class="kw">import</i> process     <i class="com"># noqa: E402</i></span>
+<span class="ln"><i class="kw">from</i> src_web._3_ext_web <i class="kw">import</i> extract      <i class="com"># noqa: E402</i></span>
+<span class="ln"><i class="kw">from</i> src_web._4_ana_web <i class="kw">import</i> analyze      <i class="com"># noqa: E402</i></span>
+<span class="ln"><i class="kw">from</i> src_web._5_util_web <i class="kw">import</i> validate_payload  <i class="com"># noqa: E402</i></span>
+<span class="ln"> </span>
+<span class="ln">CFG = {k: v <i class="kw">for</i> m <i class="kw">in</i> (config, config_u1) <i class="kw">for</i> k, v <i class="kw">in</i> vars(m).items() <i class="kw">if</i> k.isupper()}</span>
+<span class="ln"> </span>
+<span class="ln">PATHS = {</span>
+<span class="ln">    <i class="str">"layers"</i>: os.path.join(_HERE, <i class="str">"layers_web"</i>),</span>
+<span class="ln">    <i class="str">"src"</i>: os.path.join(_HERE, <i class="str">"src_web"</i>),</span>
+<span class="ln">    <i class="str">"dist"</i>: os.path.join(_HERE, <i class="str">"dist"</i>),</span>
+<span class="ln">    <i class="str">"raw"</i>: os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"raw"</i>),</span>
+<span class="ln">    <i class="str">"processed"</i>: os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"processed"</i>),</span>
+<span class="ln">    <i class="str">"exports"</i>: os.path.join(_HERE, <i class="str">"data"</i>, <i class="str">"exports"</i>),</span>
+<span class="ln">}</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">run</i>(paths=PATHS, cfg=CFG):</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"\n  ┌─ {cfg['SITE_NAME']} {'─' * (40 - len(cfg['SITE_NAME']))}┐"</i>)</span>
+<span class="ln">    site = {}</span>
+<span class="ln">    site = build(site, paths, cfg)</span>
+<span class="ln">    site = process(site, paths, cfg)</span>
+<span class="ln">    site = extract(site, paths, cfg)</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">"  └──────────────────────────────────────────┘\n"</i>)</span>
+<span class="ln">    <i class="kw">return</i> site</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">_append</i>(path, row):</span>
+<span class="ln">    os.makedirs(os.path.dirname(path), exist_ok=<i class="kw">True</i>)</span>
+<span class="ln">    <i class="kw">with</i> open(path, <i class="str">"a"</i>, encoding=<i class="str">"utf-8"</i>) <i class="kw">as</i> f:</span>
+<span class="ln">        f.write(json.dumps(row, ensure_ascii=<i class="kw">False</i>) + <i class="str">"\n"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">make_server</i>(schema, paths=PATHS, cfg=CFG, port=<i class="kw">None</i>):</span>
+<span class="ln">    class Handler(SimpleHTTPRequestHandler):</span>
+<span class="ln">        <i class="kw">def</i> <i class="fn">__init__</i>(self, *a, **k):</span>
+<span class="ln">            super().__init__(*a, directory=paths[<i class="str">"dist"</i>], **k)</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">def</i> <i class="fn">log_message</i>(self, *a):</span>
+<span class="ln">            pass</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">def</i> <i class="fn">_send</i>(self, code, body):</span>
+<span class="ln">            data = json.dumps(body).encode()</span>
+<span class="ln">            self.send_response(code)</span>
+<span class="ln">            self.send_header(<i class="str">"Content-Type"</i>, <i class="str">"application/json"</i>)</span>
+<span class="ln">            self.send_header(<i class="str">"Content-Length"</i>, str(<i class="bi">len</i>(data)))</span>
+<span class="ln">            self.end_headers()</span>
+<span class="ln">            self.wfile.write(data)</span>
+<span class="ln"> </span>
+<span class="ln">        <i class="kw">def</i> <i class="fn">do_POST</i>(self):</span>
+<span class="ln">            n = int(self.headers.get(<i class="str">"Content-Length"</i>) <i class="kw">or</i> <i class="num">0</i>)</span>
+<span class="ln">            <i class="kw">if</i> n &gt; cfg[<i class="str">"MAX_BODY_BYTES"</i>]:</span>
+<span class="ln">                <i class="kw">return</i> self._send(<i class="num">413</i>, {<i class="str">"ok"</i>: <i class="kw">False</i>, <i class="str">"errors"</i>: [<i class="str">"too big"</i>]})</span>
+<span class="ln">            try:</span>
+<span class="ln">                body = json.loads(self.rfile.read(n) <i class="kw">or</i> <i class="str">b"null"</i>)</span>
+<span class="ln">            except ValueError:</span>
+<span class="ln">                <i class="kw">return</i> self._send(<i class="num">400</i>, {<i class="str">"ok"</i>: <i class="kw">False</i>, <i class="str">"errors"</i>: [<i class="str">"not json"</i>]})</span>
+<span class="ln">            now = datetime.now(timezone.utc).isoformat(timespec=<i class="str">"seconds"</i>)</span>
+<span class="ln">            <i class="kw">if</i> self.path == <i class="str">"/submit"</i>:</span>
+<span class="ln">                errors = validate_payload(schema, body, cfg)</span>
+<span class="ln">                <i class="kw">if</i> errors:</span>
+<span class="ln">                    <i class="kw">return</i> self._send(<i class="num">400</i>, {<i class="str">"ok"</i>: <i class="kw">False</i>, <i class="str">"errors"</i>: errors})</span>
+<span class="ln">                _append(os.path.join(paths[<i class="str">"raw"</i>], <i class="str">"submissions.jsonl"</i>), {<i class="str">"at"</i>: now, **body})</span>
+<span class="ln">                <i class="kw">return</i> self._send(<i class="num">200</i>, {<i class="str">"ok"</i>: <i class="kw">True</i>})</span>
+<span class="ln">            <i class="kw">if</i> self.path == <i class="str">"/step"</i> <i class="kw">and</i> isinstance(body, dict) <i class="kw">and</i> str(body.get(<i class="str">"layer"</i>, <i class="str">""</i>)).isdigit():</span>
+<span class="ln">                _append(os.path.join(paths[<i class="str">"raw"</i>], <i class="str">"steps.jsonl"</i>),</span>
+<span class="ln">                        {<i class="str">"at"</i>: now, <i class="str">"visit"</i>: str(body.get(<i class="str">"visit"</i>, <i class="str">""</i>))[:<i class="num">16</i>], <i class="str">"layer"</i>: int(body[<i class="str">"layer"</i>])})</span>
+<span class="ln">                <i class="kw">return</i> self._send(<i class="num">200</i>, {<i class="str">"ok"</i>: <i class="kw">True</i>})</span>
+<span class="ln">            <i class="kw">return</i> self._send(<i class="num">404</i>, {<i class="str">"ok"</i>: <i class="kw">False</i>, <i class="str">"errors"</i>: [<i class="str">"no such route"</i>]})</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">return</i> ThreadingHTTPServer((<i class="str">"127.0.0.1"</i>, cfg[<i class="str">"PORT"</i>] <i class="kw">if</i> port <i class="kw">is</i> <i class="kw">None</i> <i class="kw">else</i> port), Handler)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">main</i>():</span>
+<span class="ln">    arg = sys.argv[<i class="num">1</i>] <i class="kw">if</i> <i class="bi">len</i>(sys.argv) &gt; <i class="num">1</i> <i class="kw">else</i> <i class="str">""</i></span>
+<span class="ln">    <i class="kw">if</i> arg == <i class="str">"--test"</i>:</span>
+<span class="ln">        <i class="kw">import</i> unittest</span>
+<span class="ln">        suite = unittest.defaultTestLoader.discover(os.path.join(_HERE, <i class="str">"tests"</i>), top_level_dir=_HERE)</span>
+<span class="ln">        raise SystemExit(<i class="num">0</i> <i class="kw">if</i> unittest.TextTestRunner(verbosity=<i class="num">2</i>).run(suite).wasSuccessful() <i class="kw">else</i> <i class="num">1</i>)</span>
+<span class="ln">    try:</span>
+<span class="ln">        site = run()</span>
+<span class="ln">    except ValueError <i class="kw">as</i> e:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"  ✗ {e}"</i>)</span>
+<span class="ln">        raise SystemExit(<i class="num">1</i>)</span>
+<span class="ln">    <i class="kw">if</i> arg == <i class="str">"--check"</i>:</span>
+<span class="ln">        raise SystemExit(<i class="num">0</i>)</span>
+<span class="ln">    <i class="kw">if</i> arg == <i class="str">"--analyze"</i>:</span>
+<span class="ln">        analyze(site, PATHS, CFG)</span>
+<span class="ln">        raise SystemExit(<i class="num">0</i>)</span>
+<span class="ln">    srv = make_server(site[<i class="str">"schema"</i>])</span>
+<span class="ln">    <i class="bi">print</i>(<i class="str">f"  preview  http://127.0.0.1:{CFG['PORT']}/   (ctrl-c stops it)"</i>)</span>
+<span class="ln">    try:</span>
+<span class="ln">        srv.serve_forever()</span>
+<span class="ln">    except KeyboardInterrupt:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">"\n  stopped"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">if</i> <i class="bi">__name__</i> == <i class="str">"__main__"</i>:</span>
+<span class="ln">    main()</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">_2_proc_web.py</span><span class="role">markup and schema must agree</span><span class="lines">41 lines</span></summary>
+  <pre><code><span class="ln"><i class="str">"""_2 process — check every layer before anything is written. Markup and schema must agree. Fails fast."""</i></span>
+<span class="ln"><i class="kw">import</i> re</span>
+<span class="ln"><i class="kw">import</i> time</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">from</i> src_web._5_util_web <i class="kw">import</i> hr, summary</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">def</i> <i class="fn">process</i>(site, paths, cfg):</span>
+<span class="ln">    t0 = time.time()</span>
+<span class="ln">    hr(<i class="str">"PROCESS"</i>)</span>
+<span class="ln">    errors, seen = [], set()</span>
+<span class="ln">    <i class="kw">if</i> <i class="kw">not</i> site[<i class="str">"layers"</i>]:</span>
+<span class="ln">        errors.append(<i class="str">"no layers found"</i>)</span>
+<span class="ln">    <i class="kw">for</i> layer <i class="kw">in</i> site[<i class="str">"layers"</i>]:</span>
+<span class="ln">        name, sch = layer[<i class="str">"name"</i>], layer[<i class="str">"schema"</i>]</span>
+<span class="ln">        <i class="kw">if</i> <i class="kw">not</i> sch.get(<i class="str">"title"</i>):</span>
+<span class="ln">            errors.append(<i class="str">f"{name}: schema has no title"</i>)</span>
+<span class="ln">        <i class="kw">if</i> <i class="kw">not</i> sch.get(<i class="str">"fields"</i>):</span>
+<span class="ln">            errors.append(<i class="str">f"{name}: schema has no fields"</i>)</span>
+<span class="ln">        <i class="kw">for</i> f <i class="kw">in</i> sch.get(<i class="str">"fields"</i>, []):</span>
+<span class="ln">            fn = f.get(<i class="str">"name"</i>, <i class="str">""</i>)</span>
+<span class="ln">            <i class="kw">if</i> <i class="kw">not</i> re.fullmatch(<i class="str">r"[a-z][a-z0-9_]*"</i>, fn):</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: bad field name {fn!r}"</i>)</span>
+<span class="ln">            <i class="kw">if</i> fn <i class="kw">in</i> seen:</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: field {fn} used twice"</i>)</span>
+<span class="ln">            seen.add(fn)</span>
+<span class="ln">            <i class="kw">if</i> f.get(<i class="str">"type"</i>) <i class="kw">not</i> <i class="kw">in</i> cfg[<i class="str">"FIELD_TYPES"</i>]:</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: {fn} has unknown type {f.get('type')!r}"</i>)</span>
+<span class="ln">            <i class="kw">if</i> f.get(<i class="str">"type"</i>) == <i class="str">"choice"</i> <i class="kw">and</i> <i class="kw">not</i> f.get(<i class="str">"options"</i>):</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: choice {fn} has no options"</i>)</span>
+<span class="ln">            <i class="kw">if</i> <i class="str">f'name="{fn}"'</i> <i class="kw">not</i> <i class="kw">in</i> layer[<i class="str">"html"</i>]:</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: {fn} is in schema.json but not in layer.html"</i>)</span>
+<span class="ln">        <i class="kw">for</i> fn <i class="kw">in</i> re.findall(<i class="str">r'name="([^"]+)"'</i>, layer[<i class="str">"html"</i>]):</span>
+<span class="ln">            <i class="kw">if</i> fn <i class="kw">not</i> <i class="kw">in</i> {f.get(<i class="str">"name"</i>) <i class="kw">for</i> f <i class="kw">in</i> sch.get(<i class="str">"fields"</i>, [])}:</span>
+<span class="ln">                errors.append(<i class="str">f"{name}: {fn} is in layer.html but not in schema.json"</i>)</span>
+<span class="ln">    <i class="kw">for</i> e <i class="kw">in</i> errors:</span>
+<span class="ln">        <i class="bi">print</i>(<i class="str">f"   ✗ {e}"</i>)</span>
+<span class="ln">    summary(<i class="str">"_2_proc_webschema_check_GET_site"</i>, <i class="str">"PROC"</i>, <i class="bi">len</i>(site[<i class="str">"layers"</i>]), <i class="bi">len</i>(site[<i class="str">"layers"</i>]), <i class="bi">len</i>(errors), t0)</span>
+<span class="ln">    <i class="kw">if</i> errors:</span>
+<span class="ln">        raise ValueError(<i class="str">f"{len(errors)} layer error(s): fix them before building"</i>)</span>
+<span class="ln">    <i class="kw">return</i> site</span></code></pre>
+</details>
+<details class="code">
+  <summary><span class="file">tests/test_site.py</span><span class="role">the run test</span><span class="lines">144 lines</span></summary>
+  <pre><code><span class="ln"><i class="str">"""The run test. No network beyond 127.0.0.1, nothing written outside the project; test files are removed after."""</i></span>
+<span class="ln"><i class="kw">import</i> json</span>
+<span class="ln"><i class="kw">import</i> os</span>
+<span class="ln"><i class="kw">import</i> re</span>
+<span class="ln"><i class="kw">import</i> threading</span>
+<span class="ln"><i class="kw">import</i> unittest</span>
+<span class="ln"><i class="kw">import</i> urllib.error</span>
+<span class="ln"><i class="kw">import</i> urllib.request</span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">import</i> run</span>
+<span class="ln"> </span>
+<span class="ln">ROOT = os.path.dirname(os.path.dirname(os.path.abspath(<i class="bi">__file__</i>)))</span>
+<span class="ln">TEST_RAW = os.path.join(ROOT, <i class="str">"data"</i>, <i class="str">"raw"</i>, <i class="str">"_test"</i>)</span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln">class Site(unittest.TestCase):</span>
+<span class="ln">    @classmethod</span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">setUpClass</i>(cls):</span>
+<span class="ln">        cls.site = run.run()</span>
+<span class="ln">        cls.paths = {**run.PATHS, <i class="str">"raw"</i>: TEST_RAW}</span>
+<span class="ln">        cls.srv = run.make_server(cls.site[<i class="str">"schema"</i>], cls.paths, run.CFG, port=<i class="num">0</i>)</span>
+<span class="ln">        cls.url = <i class="str">f"http://127.0.0.1:{cls.srv.server_address[1]}"</i></span>
+<span class="ln">        threading.Thread(target=cls.srv.serve_forever, daemon=<i class="kw">True</i>).start()</span>
+<span class="ln"> </span>
+<span class="ln">    @classmethod</span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">tearDownClass</i>(cls):</span>
+<span class="ln">        cls.srv.shutdown()</span>
+<span class="ln">        <i class="kw">for</i> f <i class="kw">in</i> (<i class="str">"submissions.jsonl"</i>, <i class="str">"steps.jsonl"</i>):</span>
+<span class="ln">            p = os.path.join(TEST_RAW, f)</span>
+<span class="ln">            <i class="kw">if</i> os.path.exists(p):</span>
+<span class="ln">                os.remove(p)</span>
+<span class="ln">        <i class="kw">if</i> os.path.isdir(TEST_RAW):</span>
+<span class="ln">            os.rmdir(TEST_RAW)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">post</i>(self, route, body):</span>
+<span class="ln">        req = urllib.request.Request(self.url + route, json.dumps(body).encode(), {<i class="str">"Content-Type"</i>: <i class="str">"application/json"</i>})</span>
+<span class="ln">        try:</span>
+<span class="ln">            <i class="kw">with</i> urllib.request.urlopen(req) <i class="kw">as</i> r:</span>
+<span class="ln">                <i class="kw">return</i> r.status, json.loads(r.read())</span>
+<span class="ln">        except urllib.error.HTTPError <i class="kw">as</i> e:</span>
+<span class="ln">            <i class="kw">return</i> e.code, json.loads(e.read())</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">good</i>(self):</span>
+<span class="ln">        <i class="kw">return</i> {<i class="str">"need"</i>: <i class="str">"A chatbot"</i>, <i class="str">"need_words"</i>: <i class="str">"Ñandú · 名前 · 🚀 "</i> + <i class="str">"x"</i> * <i class="num">1500</i>,</span>
+<span class="ln">                <i class="str">"company"</i>: <i class="str">"O'Brien &amp; Søn, Ltd."</i>, <i class="str">"team_size"</i>: <i class="str">"12"</i>,</span>
+<span class="ln">                <i class="str">"name"</i>: <i class="str">"Maximiliano Fernández-Oyarzún de la Torre"</i>, <i class="str">"email"</i>: <i class="str">"a.very.long.name@sub.example-company.co"</i>,</span>
+<span class="ln">                <i class="str">"consent"</i>: <i class="kw">True</i>}</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="com"># ── the page ──────────────────────────────────────────────────────────────────────────────</i></span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_every_layer_in_order</i>(self):</span>
+<span class="ln">        page = open(os.path.join(ROOT, <i class="str">"dist"</i>, <i class="str">"index.html"</i>), encoding=<i class="str">"utf-8"</i>).read()</span>
+<span class="ln">        found = [int(n) <i class="kw">for</i> n <i class="kw">in</i> re.findall(<i class="str">r'data-layer="(\d+)"'</i>, page)]</span>
+<span class="ln">        self.assertEqual(found, <i class="bi">list</i>(range(<i class="bi">len</i>(self.site[<i class="str">"layers"</i>]))))</span>
+<span class="ln">        self.assertEqual(page.count(<i class="str">" hidden&gt;"</i>), <i class="bi">len</i>(found) - <i class="num">1</i> + <i class="num">1</i>)  <i class="com"># all layers but the first, plus the done panel</i></span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_every_field_on_the_page</i>(self):</span>
+<span class="ln">        page = open(os.path.join(ROOT, <i class="str">"dist"</i>, <i class="str">"index.html"</i>), encoding=<i class="str">"utf-8"</i>).read()</span>
+<span class="ln">        <i class="kw">for</i> layer <i class="kw">in</i> self.site[<i class="str">"schema"</i>][<i class="str">"layers"</i>]:</span>
+<span class="ln">            <i class="kw">for</i> f <i class="kw">in</i> layer[<i class="str">"fields"</i>]:</span>
+<span class="ln">                self.assertIn(<i class="str">f'name="{f["name"]}"'</i>, page, f[<i class="str">"name"</i>])</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_no_placeholder_left</i>(self):</span>
+<span class="ln">        page = open(os.path.join(ROOT, <i class="str">"dist"</i>, <i class="str">"index.html"</i>), encoding=<i class="str">"utf-8"</i>).read()</span>
+<span class="ln">        self.assertNotIn(<i class="str">"{{"</i>, page)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="com"># ── portability: only export_2_desk.py may name a place outside the project ───────────────────</i></span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_no_outside_paths</i>(self):</span>
+<span class="ln">        bad = re.compile(<i class="str">"/"</i> + <i class="str">"Users/|[A-Z]:"</i> + <i class="str">r"\\\\"</i> + <i class="str">"|expand"</i> + <i class="str">"user|/"</i> + <i class="str">"home/"</i>)</span>
+<span class="ln">        <i class="kw">for</i> d, _, files <i class="kw">in</i> os.walk(ROOT):</span>
+<span class="ln">            <i class="kw">if</i> <i class="str">"dist"</i> <i class="kw">in</i> d.split(os.sep) <i class="kw">or</i> <i class="str">"__pycache__"</i> <i class="kw">in</i> d:</span>
+<span class="ln">                continue</span>
+<span class="ln">            <i class="kw">for</i> f <i class="kw">in</i> files:</span>
+<span class="ln">                <i class="kw">if</i> f.endswith((<i class="str">".py"</i>, <i class="str">".html"</i>, <i class="str">".css"</i>, <i class="str">".js"</i>, <i class="str">".json"</i>)) <i class="kw">and</i> f != <i class="str">"export_2_desk.py"</i>:</span>
+<span class="ln">                    text = open(os.path.join(d, f), encoding=<i class="str">"utf-8"</i>).read()</span>
+<span class="ln">                    self.assertIsNone(bad.search(text), os.path.join(d, f))</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="com"># ── the layers, broken on purpose ───────────────────────────────────────────────────────────</i></span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_schema_and_markup_must_agree</i>(self):</span>
+<span class="ln">        broken = {<i class="str">"layers"</i>: [{<i class="str">"name"</i>: <i class="str">"layer_1_x"</i>, <i class="str">"html"</i>: <i class="str">'&lt;input name="a"&gt;'</i>, <i class="str">"css"</i>: <i class="str">""</i>,</span>
+<span class="ln">                              <i class="str">"schema"</i>: {<i class="str">"title"</i>: <i class="str">"x"</i>, <i class="str">"fields"</i>: [{<i class="str">"name"</i>: <i class="str">"b"</i>, <i class="str">"type"</i>: <i class="str">"text"</i>}]}}]}</span>
+<span class="ln">        <i class="kw">with</i> self.assertRaises(ValueError):</span>
+<span class="ln">            run.process(broken, run.PATHS, run.CFG)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_duplicate_field_refused</i>(self):</span>
+<span class="ln">        lay = lambda n: {<i class="str">"name"</i>: n, <i class="str">"html"</i>: <i class="str">'&lt;input name="a"&gt;'</i>, <i class="str">"css"</i>: <i class="str">""</i>,</span>
+<span class="ln">                         <i class="str">"schema"</i>: {<i class="str">"title"</i>: <i class="str">"x"</i>, <i class="str">"fields"</i>: [{<i class="str">"name"</i>: <i class="str">"a"</i>, <i class="str">"type"</i>: <i class="str">"text"</i>}]}}</span>
+<span class="ln">        <i class="kw">with</i> self.assertRaises(ValueError):</span>
+<span class="ln">            run.process({<i class="str">"layers"</i>: [lay(<i class="str">"layer_1_a"</i>), lay(<i class="str">"layer_2_b"</i>)]}, run.PATHS, run.CFG)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="com"># ── the submit flow, worst cases first ─────────────────────────────────────────────────────</i></span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_empty_refused</i>(self):</span>
+<span class="ln">        code, out = self.post(<i class="str">"/submit"</i>, {})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln">        self.assertTrue(any(<i class="str">"required"</i> <i class="kw">in</i> e <i class="kw">for</i> e <i class="kw">in</i> out[<i class="str">"errors"</i>]))</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_bad_email_refused</i>(self):</span>
+<span class="ln">        code, out = self.post(<i class="str">"/submit"</i>, {**self.good(), <i class="str">"email"</i>: <i class="str">"not-an-email"</i>})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln">        self.assertIn(<i class="str">"email: not an email"</i>, out[<i class="str">"errors"</i>])</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_consent_must_be_ticked</i>(self):</span>
+<span class="ln">        code, out = self.post(<i class="str">"/submit"</i>, {**self.good(), <i class="str">"consent"</i>: <i class="str">"true"</i>})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_unknown_field_refused</i>(self):</span>
+<span class="ln">        code, out = self.post(<i class="str">"/submit"</i>, {**self.good(), <i class="str">"admin"</i>: <i class="str">"yes"</i>})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_choice_outside_options_refused</i>(self):</span>
+<span class="ln">        code, _ = self.post(<i class="str">"/submit"</i>, {**self.good(), <i class="str">"need"</i>: <i class="str">"Free money"</i>})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_too_long_refused</i>(self):</span>
+<span class="ln">        code, _ = self.post(<i class="str">"/submit"</i>, {**self.good(), <i class="str">"need_words"</i>: <i class="str">"x"</i> * <i class="num">5000</i>})</span>
+<span class="ln">        self.assertEqual(code, <i class="num">400</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_not_json_refused</i>(self):</span>
+<span class="ln">        req = urllib.request.Request(self.url + <i class="str">"/submit"</i>, <i class="str">b"{nope"</i>, {<i class="str">"Content-Type"</i>: <i class="str">"application/json"</i>})</span>
+<span class="ln">        <i class="kw">with</i> self.assertRaises(urllib.error.HTTPError) <i class="kw">as</i> e:</span>
+<span class="ln">            urllib.request.urlopen(req)</span>
+<span class="ln">        self.assertEqual(e.exception.code, <i class="num">400</i>)</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_worst_case_good_payload_stored</i>(self):</span>
+<span class="ln">        code, out = self.post(<i class="str">"/submit"</i>, self.good())</span>
+<span class="ln">        self.assertEqual((code, out), (<i class="num">200</i>, {<i class="str">"ok"</i>: <i class="kw">True</i>}))</span>
+<span class="ln">        rows = [json.loads(l) <i class="kw">for</i> l <i class="kw">in</i> open(os.path.join(TEST_RAW, <i class="str">"submissions.jsonl"</i>), encoding=<i class="str">"utf-8"</i>)]</span>
+<span class="ln">        self.assertEqual(rows[-<i class="num">1</i>][<i class="str">"name"</i>], self.good()[<i class="str">"name"</i>])</span>
+<span class="ln"> </span>
+<span class="ln">    <i class="kw">def</i> <i class="fn">test_steps_feed_the_funnel</i>(self):</span>
+<span class="ln">        <i class="kw">for</i> layer <i class="kw">in</i> range(<i class="num">3</i>):</span>
+<span class="ln">            self.assertEqual(self.post(<i class="str">"/step"</i>, {<i class="str">"visit"</i>: <i class="str">"t1"</i>, <i class="str">"layer"</i>: layer})[<i class="num">0</i>], <i class="num">200</i>)</span>
+<span class="ln">        self.assertEqual(self.post(<i class="str">"/step"</i>, {<i class="str">"visit"</i>: <i class="str">"t2"</i>, <i class="str">"layer"</i>: <i class="num">0</i>})[<i class="num">0</i>], <i class="num">200</i>)</span>
+<span class="ln">        self.assertEqual(self.post(<i class="str">"/step"</i>, {<i class="str">"visit"</i>: <i class="str">"t3"</i>, <i class="str">"layer"</i>: <i class="str">"drop table"</i>})[<i class="num">0</i>], <i class="num">404</i>)</span>
+<span class="ln">        paths = {**run.PATHS, <i class="str">"raw"</i>: TEST_RAW, <i class="str">"processed"</i>: TEST_RAW, <i class="str">"exports"</i>: TEST_RAW}</span>
+<span class="ln">        run.analyze(self.site, paths, run.CFG)</span>
+<span class="ln">        funnel = open(os.path.join(TEST_RAW, <i class="str">"funnel.csv"</i>), encoding=<i class="str">"utf-8"</i>).read().splitlines()</span>
+<span class="ln">        os.remove(os.path.join(TEST_RAW, <i class="str">"funnel.csv"</i>))</span>
+<span class="ln">        os.remove(os.path.join(TEST_RAW, <i class="str">"submissions.csv"</i>))</span>
+<span class="ln">        self.assertTrue(funnel[<i class="num">1</i>].endswith(<i class="str">",2"</i>), funnel)   <i class="com"># two visits passed layer 1</i></span>
+<span class="ln">        self.assertTrue(funnel[<i class="num">3</i>].endswith(<i class="str">",1"</i>), funnel)   <i class="com"># one visit passed layer 3</i></span>
+<span class="ln"> </span>
+<span class="ln"> </span>
+<span class="ln"><i class="kw">if</i> <i class="bi">__name__</i> == <i class="str">"__main__"</i>:</span>
+<span class="ln">    unittest.main()</span></code></pre>
+</details>
+ </div>
+ <p class="aside">Stdlib only. Playwright is optional, for the browser walk.</p>
+</section>
+
+<section class="proto-hero hub" id="hub">
+ <h2>Prototype 04 · CAI Hub <span class="beta">beta</span></h2>
+ <p class="kicker">Custom AI Models presents</p>
+ <h3 class="claim">R-CAI · Remote Control for Aggregated Integrations</h3>
+ <p class="lead">One door for clients: sign in like anywhere else, then scroll a landing page that is also the
+ menu. Every step up the ladder hands the client more control over their own AI.</p>
+ <div class="names">
+  <div><b>R-CAI</b><p>Remote Control for Aggregated Integrations</p></div>
+  <div><b>RCS-CAI</b><p>Remote Control Source for Custom Aggregated Integrations</p></div>
+  <div><b>SRC-CAI</b><p>Source Remote Control for Custom Aggregated Integrations</p></div>
+  <div><b>CTRAIL</b><p>Custom Training for Remote Aggregated Integrations Liaisons · trains people who find people</p></div>
+ </div>
+</section>
+
+<section>
+ <h2>The ladder inside the hub</h2>
+<pre class="proto-flow"><code>  sign in ──▶ scroll ──▶ 01 ──▶ 02 ──▶ 03 ──▶ 04 ──▶ 05
+                         scope  clone  +chat  your AI  agentic
+                         ─────────── more control for the client ──────────▶</code></pre>
+ <div class="ladder">
+  <div><i>01</i><b>Add or edit a web app</b><p>on top of the app you already have · custom, scoped as a project</p><em>scoped</em></div>
+  <div><i>02</i><b>Clone the website</b><p>custom adds · 6 months support · tool costs included · then from $15 with the URL · no surprise costs</p><em>$888</em></div>
+  <div><i>03</i><b>Clone + chatbot</b><p>a year of support · tool costs included · then subscription from $35</p><em>$2,499</em></div>
+  <div><i>04</i><b>SRC-CAI</b><p>full AI development: an optimised web solution · a chatbot agent built from how customers really ask · your own editable AI + devops tool for the site · standard / silver / gold</p><em>tiers</em></div>
+  <div class="soon"><i>05</i><b>ARC-CAI</b><p>agentic remote control for your custom AI models</p><em>2027</em></div>
+ </div>
+ <p class="aside">Status: beta. Prices and names are a working draft, not a published offer.</p>
+</section>
+
+<section>
+ <h2>In my words</h2>
+ <details class="star"><summary>CascForward, as I wrote it</summary>
+<pre class="proto-raw">I’m also building CascForward, a Python-first system for turning ideas and AI-assisted workflows into structured, reusable software.
+
+CascForward: build it, automate it, preserve what works.
+
+The idea is simple. Use AI for the parts that require reasoning, then move repeatable work into reliable Python systems. Builders create and improve components, automations connect them into larger workflows, and validated systems can be preserved and reused instead of rebuilt every time.</pre>
+ </details>
+ <details class="star"><summary>CAI Hub beta, as I wrote it</summary>
+<pre class="proto-raw">CAI - HUB - BETA 
+Custom AI Models presents 
+
+=———
+
+R-CAI
+Remote Control for Aggregated Integrations 
+
+
+RCS-CAI
+Remote Control Source for Custom Aggregated Integrations 
+
+
+SRC-CAI
+Source Remote Control for Custom Aggregated Integrations 
+
+=———
+CTRAIL 
+Custom training for Remote Aggregated Integrations Liaisons 
+(Recruits ppl to help you find ppl ) - trainings 
+
+=———
+
+Design Page . Click “R-CAI” goes in -&gt; 
+Whats inside designs wise :
+
+Log in / Sign up (this has to be very similar as other standard entry points )
+Is basecally also a landing page , scroll down you will see    1) add/edit a web app to existing web app (custom side - scope a project )  2) like the package 888 for cloning the website , custom adds will be there -&gt; 6 months support added , tool cost included , after 6 months starts at 15 with URL - no surprise costs
+3. Clone website and add chatbot - 2499 -&gt; yearly support included , tool cost included , after a year subscription starts 35 
+4. SRCCAI - full AI development w source remote control your own custom AI model for you business  a) optimized web solution b) included Chat bot agent -&gt; dev from how customers interact c) your own AI editable + dev ops tool for your website (standard /silver/gold) 
+5. ARCCAI - AGENTIC REMOTE control for your Custom AI models - coming up 2027
+
+
+Bersecally this is what we are selling .</pre>
+ </details>
+</section>
+
+<footer><span>Est. 2022 · © 2026 Custom AI Models</span><a href="/">customaimodels.com</a></footer>
+</div>
+</body>
+</html>

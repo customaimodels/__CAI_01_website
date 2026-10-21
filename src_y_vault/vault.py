@@ -101,8 +101,12 @@ def pages():
         t = TITLE.search(raw[:4000].decode("utf-8", "ignore"))
         title = t.group(1).strip() if t else Path(name).stem.strip("_")
         inside.append({"file": name, "title": "LinkedIn" if "linked" in name.lower() else title.split(" · ")[0]})
+    # 2026-10-20 (his word): his interview prep is HIDDEN in Ydta, not Marketing. A sealed shelf page, so it
+    # opens on the hosted vault too (Ydta's own files stay local).
+    prep = [i for i in inside if "prep" in i["file"].lower()]
+    inside = [i for i in inside if i not in prep]
     ydta = [{"file": "ydta/" + n, "title": "Master resume" if "resume" in n.lower() else Path(n).stem.strip("_")[:18]}
-            for n in ydta_files()]
+            for n in ydta_files()] + prep
     sq = lambda row, **k: {"group": "square", "row": row, **k}
     return [sq("company", file="marketing", title="Marketing Studio", kind="marketing", ss="ss3",
                line="Say it once, post it everywhere.", inside=inside,

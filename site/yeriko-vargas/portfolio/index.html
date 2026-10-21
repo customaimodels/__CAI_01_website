@@ -26,7 +26,7 @@
 </script>
 <title>Yeriko Vargas · Portfolio</title>
 <!-- /yeriko-vargas/portfolio/ (2026-10-20): PUBLIC copy of the /recruiter/ dossier, no private facts (no phone, email, work status, PDF). Edit both. -->
-<link rel="stylesheet" href="/yeriko-vargas/style.css?v=493633dabd">
+<link rel="stylesheet" href="/yeriko-vargas/style.css?v=8d60ff2b1f">
 <script defer src="/cai-beacon.js"></script>
 </head>
 <body>
@@ -45,6 +45,9 @@
   <a href="/yeriko-vargas/hvac/">HVAC AI Models</a>
   <a href="/yeriko-vargas/telemetry/">Telemetry</a>
   <a href="/yeriko-vargas/workbench/">Workbench</a>
+  <a href="/yeriko-vargas/finance/">Finance</a>
+  <a href="/yeriko-vargas/tutoring/">Tutoring</a>
+  <a href="/yeriko-vargas/prototypes/">Prototypes</a>
  </nav>
 </header>
 
@@ -61,14 +64,18 @@
    <div><h3>Dealer Training Hub &amp; AI Assistant</h3>
     <p>A company's AI infrastructure from zero: registration, training, attendance, retention, knowledge retrieval and
     natural-language access to business data. It replaced four spreadsheets and a paper sign-up process, company-wide.</p>
-    <div class="how"><b>shape</b> spreadsheets → one data model → RAG + agent workflows → multi-mode assistant</div></div>
+    <div class="how"><b>shape</b> spreadsheets → one data model → RAG + agent workflows → multi-mode assistant</div>
+    <div class="proof"><span>code · client-private</span><span>handbook · client-only</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>M&amp;A Supply ran dealer training on four spreadsheets and a paper sign-up. Nobody could see who trained, who came back, or who drifted away.</dd><dt>T</dt><dd>Sole architect: replace all of it with one system the whole company actually uses.</dd><dt>A</dt><dd>One data model under everything. QR class registration, dealer rosters, a retention engine and weekly regional exports, plus a 3-mode AI assistant on a local LLM (Ollama) with RAG over the company's knowledge and a rule-based fallback.</dd><dt>R</dt><dd><b>Four spreadsheets and the paper process retired, company-wide.</b> Still in production after the contract ended; the next phase is in discussion.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>2022 – 2026</span><span>Custom AI Models</span><span>production</span></div>
    <div><h3>Financial decision-support RAG + agents</h3>
     <p>A retrieval and agent framework for financial decisions, with telemetry, evaluation and monitoring in every step,
     fed by LSTM forecasting systems.</p>
-    <div class="how"><b>shape</b> sources → retrieval → agents → evaluation loop → decision, forecasts alongside</div></div>
+    <div class="how"><b>shape</b> sources → retrieval → agents → evaluation loop → decision, forecasts alongside</div>
+    <div class="proof"><a href="https://github.com/vargasyeriko/_4_Strategy_AI_Stocks_Finance_LSTM" rel="noopener">LSTM CODE ↗</a><a href="https://github.com/vargasyeriko/ai-research-engine" rel="noopener">AGENT LOOP CODE ↗</a></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>Financial decisions drawn from scattered sources, and LLM answers nobody could trace back to a source.</dd><dt>T</dt><dd>A decision-support system where every answer is sourced, measured and cheap enough to run every day.</dd><dt>A</dt><dd>I designed the retrieval layer, the agent orchestration, the token-budget management and the telemetry stack. LSTM forecasting runs alongside as one input, never the only vote.</dd><dt>R</dt><dd><b>A full production system, not an API call:</b> every answer carries its sources, every step is logged and evaluated.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>2022 – 2026</span><span>Custom AI Models</span><span>in production</span></div>
@@ -76,7 +83,9 @@
     <p>A system that listens to a live venue and adapts in real time: 100+ DSP features through PCA and KMeans into
     similarity scoring, with a continuous evaluation loop. The same signal pipeline reads sensor feeds and raw text:
     scrape, clean, extract features, then model.</p>
-    <div class="how"><b>shape</b> live audio → 100+ features → PCA → KMeans → similarity → adapt, evaluated continuously</div></div>
+    <div class="how"><b>shape</b> live audio → 100+ features → PCA → KMeans → similarity → adapt, evaluated continuously</div>
+    <div class="proof"><a href="https://github.com/vargasyeriko/_py2ms_git_AUDIO_EDITING_projects" rel="noopener">MUSIC PIPELINE CODE ↗</a><span>venue system · client-private</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>A live hospitality venue whose music ignored the room: the same playlist for a quiet afternoon and a Friday rush.</dd><dt>T</dt><dd>Pick the next track from the room itself, with no metadata and no listener history.</dd><dt>A</dt><dd>3-minute microphone windows become 100+ spectral, temporal and energy features. A voice-frequency filter estimates crowd activity. The room and the music library live in one feature space, z-scored ((x − mean) / std) and weighted; PCA, KMeans and cosine / Euclidean similarity choose the track, balancing randomness with relevance. Each track's cover art is drawn from the same vectors, so a person can check a match at a glance.</dd><dt>R</dt><dd><b>Running in production:</b> calmer tracks keep a slow room longer, higher energy keeps a rush flowing, and a continuous evaluation loop watches every choice.</dd></dl></details></div>
   </article>
  </div>
 </section>
@@ -93,7 +102,9 @@
     <p>250,000+ vehicles and 108 option codes. Neural networks against logistic regression at three profit
     thresholds found 14 drivers, and one hard fact: about 95% of sales volume came from roughly 11% of
     configurations. The long tail was cost.</p>
-    <div class="how"><b>shape</b> build codes → profit class → 14 drivers → fewer configurations</div></div>
+    <div class="how"><b>shape</b> build codes → profit class → 14 drivers → fewer configurations</div>
+    <div class="proof"><a href="https://github.com/vargasyeriko/DL_CarConfiguration_Profitability_CompleteCode" rel="noopener">CODE ↗</a><a href="https://github.com/vargasyeriko/DL_CarConfiguration_Profitability#readme" rel="noopener">REPORT ↗</a></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>Fiat Chrysler built far more vehicle configurations than it sold, and every extra one cost money on the line.</dd><dt>T</dt><dd>Find which configurations actually earn their place.</dd><dt>A</dt><dd>250,000+ vehicles, 108 option codes as binary features. Multilayer perceptrons (R, SGD, binary cross-entropy) against reduced logistic regression at $10k, $14k and $17k profit thresholds.</dd><dt>R</dt><dd><b>108 options narrowed to 14 drivers; about 95% of sales volume came from roughly 11% of configurations.</b> The long tail became a production-planning decision.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>diagnose</span><span>Ford Motor Company</span><span>2022 · contract</span></div>
@@ -101,21 +112,27 @@
     <p>CVDOS vehicle diagnostics in Python, SQL, Spark, Hadoop and MATLAB: multi-source merges, automated daily reports in Jupyter,
     AWS SageMaker workflows. PCA and clustering grouped ECU faults into recurring defect patterns engineers could act
     on, and ECU issue resolution got about 20% faster.</p>
-    <div class="how"><b>shape</b> diagnostic feeds → merge → PCA → clusters → defect patterns → daily report to engineering</div></div>
+    <div class="how"><b>shape</b> diagnostic feeds → merge → PCA → clusters → defect patterns → daily report to engineering</div>
+    <div class="proof"><span>code · Ford-private</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>ECU faults scattered across separate diagnostic feeds, so root-cause work started from zero every time.</dd><dt>T</dt><dd>Own the data lifecycle end to end: ingestion, transformation, the model, and a daily report engineering would read.</dd><dt>A</dt><dd>Python, SQL, Spark, Hadoop and MATLAB merged the feeds; AWS SageMaker ran the workflows. PCA and clustering grouped the faults into five recurring defect buckets, delivered as automated daily reports from Jupyter.</dd><dt>R</dt><dd><b>ECU issue resolution about 20% faster.</b> Engineering re-tuned around the two biggest clusters.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>service</span><span>ADAS recalibration</span><span>Python · AWS</span></div>
    <div><h3>Why recalibration jobs cancel</h3>
     <p>About 1.47M work orders. Scheduling delay, rescheduling and lead time came out of the timestamps; make–model
     bins by cancellation ratio became risk tiers, so operations knew which vehicles to plan around.</p>
-    <div class="how"><b>shape</b> S3 → work orders → timing features → make–model risk tiers</div></div>
+    <div class="how"><b>shape</b> S3 → work orders → timing features → make–model risk tiers</div>
+    <div class="proof"><span>code · client-private</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>ADAS recalibration jobs were cancelling, and nobody knew which ones would.</dd><dt>T</dt><dd>Find what drives a cancellation, from the data the operation already had.</dd><dt>A</dt><dd>About 1.47M unique work orders from AWS S3 (boto3) into pandas. Scheduling delay, rescheduling and lead time engineered from the timestamps; crosstabs and pivots by service method and channel; make–model bins by cancellation ratio.</dd><dt>R</dt><dd><b>Vehicle risk tiers</b> operations could plan around, and timing shown as a driver of cancellation.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>aftermarket</span><span>Soothsayer Analytics</span><span>2021</span></div>
    <div><h3>Fraud across a service-shop network</h3>
     <p>About 500 automotive service shop locations. Random Forest, clustering and anomaly detection flagged the
     shops; SHAP showed the business why each one was flagged. About 20% more fraudulent locations found.</p>
-    <div class="how"><b>shape</b> shop records → features → RF + anomaly scores → SHAP reasons → flagged shops</div></div>
+    <div class="how"><b>shape</b> shop records → features → RF + anomaly scores → SHAP reasons → flagged shops</div>
+    <div class="proof"><span>code · client-private</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>Fraud hidden somewhere across about 500 automotive service-shop locations.</dd><dt>T</dt><dd>Flag the shops, and show the business why each one was flagged.</dd><dt>A</dt><dd>Random Forest, clustering and anomaly detection scored every location; SHAP turned each score into reasons, and Tableau / Power BI put them in front of the people who decide.</dd><dt>R</dt><dd><b>About 20% more fraudulent locations found</b>, each with a reason a person could check.</dd></dl></details></div>
   </article>
  </div>
 </section>
@@ -128,7 +145,8 @@
    <div><h3>SCRN · an AI operating desk</h3>
     <p>An always-on-top helper screen that runs my work: 20 Python packages, mail, usage, deadlines and a tray of
     agents. Each agent lives in its own folder, and a guard stops any reach outside it until I allow or deny it.</p>
-    <div class="how"><b>shape</b> one folder per agent → fenced → asks me before it reaches out → logs every turn</div></div>
+    <div class="how"><b>shape</b> one folder per agent → fenced → asks me before it reaches out → logs every turn</div><div class="proof"><span>code · private</span></div>
+    </div>
   </article>
   <article>
    <div class="meta"><span>2026</span><span>customaimodels.com</span><span>live</span></div>
@@ -136,7 +154,8 @@
     <p>How every article on my company site is made: one model call writes it, Python laws check it (title,
     description, answer length, heading ladder, sources for every number), I read the test page and approve, and the
     same press pushes, deploys, pings IndexNow and checks Google's index through the Search Console API.</p>
-    <div class="how"><b>shape</b> brief → 1 model call → Python gates → test page → my approve → push → index check</div></div>
+    <div class="how"><b>shape</b> brief → 1 model call → Python gates → test page → my approve → push → index check</div><div class="proof"><span>code · private</span></div>
+    </div>
   </article>
   <article>
    <div class="meta"><span>2026</span><span>own system</span><span>builder + critic</span></div>
@@ -144,7 +163,8 @@
     <p>One headless Claude build per folder, jailed to that folder, with a cost cap and a snapshot first. Python gates
     then decide: files landed, everything parses, docs present, folder clean, tests ran. One repair at most, then a
     ticket, and undo is one command.</p>
-    <div class="how"><b>shape</b> snapshot → fenced build → 5 gates → ≤1 repair → 3 dry runs → ticket</div></div>
+    <div class="how"><b>shape</b> snapshot → fenced build → 5 gates → ≤1 repair → 3 dry runs → ticket</div><div class="proof"><span>code · private</span></div>
+    </div>
   </article>
  </div>
 </section>
@@ -159,7 +179,8 @@
     <p>Years of single-purpose Python functions, each written and tested on its own, now run inside unified agents
     that take on whole jobs. I know what every step does, because I wrote every step.</p>
     <div class="how"><b>inside</b> territory reporting · dealer engagement tracking · marketing communications ·
-    reminders and follow-ups · executive dashboards · AI-assisted search and support · workflow automation</div></div>
+    reminders and follow-ups · executive dashboards · AI-assisted search and support · workflow automation</div><div class="proof"><a href="https://github.com/vargasyeriko/CLAUDEskill_PyStrct" rel="noopener">CODE STRUCTURE SKILL ↗</a><a href="https://github.com/vargasyeriko/claude-agents" rel="noopener">AGENTS ↗</a></div>
+    </div>
   </article>
  </div>
 </section>
@@ -175,7 +196,8 @@
     packages); multilayer perceptrons in R, trained with SGD and binary cross-entropy, classified each configuration
     above or below $10k, $14k and $17k profit. Benchmarked against reduced multivariate logistic regression, the work
     narrowed 108 options to 14 drivers. The finding that moved production: about 95% of sales volume came from roughly 11% of configurations.</p>
-    <div class="how"><b>shape</b> config codes → 108 binary features → MLP vs logistic → 3 profit thresholds → 14 drivers → cut the long tail</div></div>
+    <div class="how"><b>shape</b> config codes → 108 binary features → MLP vs logistic → 3 profit thresholds → 14 drivers → cut the long tail</div><div class="proof"><a href="https://github.com/vargasyeriko/DL_CarConfiguration_Profitability_CompleteCode" rel="noopener">FULL CODE ↗</a><a href="https://github.com/vargasyeriko/DL_CarConfiguration_Profitability" rel="noopener">FIRST MODELS ↗</a><a href="https://github.com/vargasyeriko/DL_CarConfiguration_Profitability#readme" rel="noopener">REPORT ↗</a></div>
+    </div>
   </article>
   <article>
    <div class="meta"><span>research study</span><span>biostatistics</span><span>SAS · R</span></div>
@@ -183,7 +205,9 @@
     <p>Gender differences in coronary plaque across 145 patients' CT angiography: plaque volume, low-attenuation
     plaque, plaque count, remodeling index, positive-remodeling probability and plaque type, controlled for diabetes,
     hypertension and smoking.</p>
-    <div class="how"><b>models</b> linear mixed · Poisson · logistic · multinomial</div></div>
+    <div class="how"><b>models</b> linear mixed · Poisson · logistic · multinomial</div>
+    <div class="proof"><a href="https://github.com/vargasyeriko/BiostatCardiology_CTA" rel="noopener">SAS + R CODE ↗</a><span>report · study-private</span></div>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>A cardiovascular research study asking whether coronary plaque differs between women and men.</dd><dt>T</dt><dd>Quantify the differences across plaque phenotypes without letting risk factors fake them.</dd><dt>A</dt><dd>145 patients' CT angiography: plaque volume, low-attenuation plaque, plaque count, remodeling index, positive-remodeling probability and plaque type. Linear mixed, Poisson, logistic and multinomial models in SAS and R, controlled for diabetes, hypertension and smoking.</dd><dt>R</dt><dd><b>Each phenotype's difference quantified</b>, with the covariates held, in support of the study's findings.</dd></dl></details></div>
   </article>
   <article>
    <div class="meta"><span>ADAS services</span><span>operations</span><span>Python · AWS</span></div>
@@ -191,7 +215,16 @@
     <p>~1.47M unique work orders pulled from AWS S3 (boto3) into pandas. Time features engineered from appointment and
     opportunity timestamps (scheduling delay, rescheduling, lead time) showed how timing drives cancellations; vehicle
     make–model bins grouped by cancellation ratio became risk tiers.</p>
-    <div class="how"><b>shape</b> S3 → 1.47M orders → time features → job done vs canceled → make–model risk tiers</div></div>
+    <div class="how"><b>shape</b> S3 → 1.47M orders → time features → job done vs canceled → make–model risk tiers</div><div class="proof"><span>code · client-private</span></div>
+    </div>
+  </article>
+  <article>
+   <div class="meta"><span>graduate study</span><span>biostatistics</span><span>SAS</span></div>
+   <div><h3>Survival time in a treatment clinic</h3>
+    <p>Longitudinal analysis of how long heroin-dependence patients stayed in a clinic, in days, from entry until
+    departure. Data from John Caplehorn, University of Sydney Department of Public Health.</p>
+    <div class="how"><b>shape</b> entry → days in treatment → censored departures → survival models in SAS</div><div class="proof"><a href="https://github.com/vargasyeriko/Longitudinal_Addicts" rel="noopener">SAS CODE ↗</a></div>
+    </div>
   </article>
  </div>
 </section>
@@ -200,10 +233,11 @@
  <h2>Teaching</h2>
  <div class="work">
   <article>
-   <div class="meta"><span>Wiingy</span><span>mentor</span></div>
-   <div><h3>Statistics and coding mentor</h3>
+   <div class="meta"><span>2023 – present</span><span>Wiingy</span><span>contract</span></div>
+   <div><h3>Data science consultant and mentor</h3>
     <p>One-to-one mentoring in statistics, machine learning, Python and R. Explaining a model to someone new is the
-    fastest test of whether I understand it.</p></div>
+    fastest test of whether I understand it.</p>
+    <details class="star"><summary>The full story · STAR</summary><dl><dt>S</dt><dd>Students and working professionals stuck between ML theory and code that runs.</dd><dt>T</dt><dd>Turn real problems into working models, and make them understand why each step is there.</dd><dt>A</dt><dd>Built and reviewed regression, time-series and classification models with them in Python; hands-on feature engineering, preprocessing and evaluation; structured sessions in applied statistics and ML.</dd><dt>R</dt><dd><b>Theory turned into end-to-end workflows they can run alone.</b> Explaining a model to someone new is the fastest test of whether I understand it.</dd></dl></details></div>
   </article>
  </div>
 </section>
