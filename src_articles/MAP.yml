@@ -545,7 +545,7 @@ pages:
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
   - url: /articles/industrial-hvac-supply-automation-troy-mi/
     file: src_articles/industrial-hvac-supply-automation-troy-mi/index.html
-    title: "Custom AI Models for Operations Data: HVAC Supply, Troy MI"
+    title: "Custom AI Models for Operations Data | HVAC Distributors"
     clicks:
       - {zone: header, a: "Custom AI Models", href: "/", to: internal}
       - {zone: nav, a: "Articles", href: "/articles/", to: internal}
@@ -570,7 +570,6 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
-      - {zone: main, a: "Contractors ask the AI who supplies them. Fix your data before it answers.Buyers ask ChatGPT, Copilot and Google who to call, and a few firms get named. Here is what staying invisible costs, and the order of work that fixes it.", href: "/articles/hvac-distribution-supply-chain-digital-transformation/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
       - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
