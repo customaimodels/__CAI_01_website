@@ -11,7 +11,9 @@ articles:
   - /articles/deterministic-logic-llm-orchestration/
   - /articles/geo-vs-seo-checklist/
   - /articles/how-ai-search-engines-cite-websites/
+  - /articles/hvac-distribution-supply-chain-digital-transformation/
   - /articles/hvac-wholesale-inventory-ai-oakland-county/
+  - /articles/industrial-hvac-supply-automation-troy-mi/
   - /articles/local-seo-hvac-contractors-ai/
   - /articles/python-ai-agent-pipelines/
   - /articles/rag-production-architecture/
@@ -33,6 +35,8 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC Operations4 min Contractors ask the AI who supplies them. Fix your data before it answers. Buyers ask ChatGPT, Copilot and Google who to call, and a few firms get named. Here is what staying invisible costs, and the order of work that fixes it. Read", href: "/articles/hvac-distribution-supply-chain-digital-transformation/", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC Supply4 min AI engines name a few suppliers. Your data decides if you're one. Contractors ask the AI who to call, and a few firms get named. Here is what staying invisible costs a distributor, and the data work that comes first. Read", href: "/articles/industrial-hvac-supply-automation-troy-mi/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / HVAC Distribution4 min AI answers name a few distributors. Is yours one of them? Contractors ask the AI who to call, and it names a handful of firms. Here is what that costs a distributor, and the data work that comes before any model. Read", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / HVAC Distribution5 min Contractors ask the AI who to call. Does it say your name? Buyers now ask ChatGPT, Copilot and Google who supplies their parts. A few firms get named and the rest are skipped. Here is what that costs, and the data work that fixes it. Read", href: "/articles/b2b-hvac-distributors-near-birmingham-mi/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Client Acquisition4 min Everyone says AI gets clients. Here is the plumbing that does it. You tried the demo and it invented a detail about the prospect. That is the normal first result. Here is where AI earns clients, and the checks that keep it honest. Read", href: "/articles/companies-use-ai-get-clients/", to: internal}
@@ -254,6 +258,7 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "AI engines name a few suppliers. Your data decides if you're one.Contractors ask the AI who to call, and a few firms get named. Here is what staying invisible costs a distributor, and the data work that comes first.", href: "/articles/industrial-hvac-supply-automation-troy-mi/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
       - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Homeowners ask the AI. It names three contractors. Are you one?The list of links is gone.", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
@@ -290,10 +295,10 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Contractors ask the AI who supplies them. Fix your data before it answers.Buyers ask ChatGPT, Copilot and Google who to call, and a few firms get named. Here is what staying invisible costs, and the order of work that fixes it.", href: "/articles/hvac-distribution-supply-chain-digital-transformation/", to: internal}
+      - {zone: main, a: "AI engines name a few suppliers. Your data decides if you're one.Contractors ask the AI who to call, and a few firms get named. Here is what staying invisible costs a distributor, and the data work that comes first.", href: "/articles/industrial-hvac-supply-automation-troy-mi/", to: internal}
       - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms. Here is what that costs a distributor, and the data work that comes before any model.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
-      - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
-      - {zone: main, a: "GEO vs SEO: verify this before you spend a dollarAn AI answer replaces the list of links, and you either get named or you don't.", href: "/articles/geo-vs-seo-checklist/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
@@ -468,6 +473,41 @@ pages:
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
       - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/hvac-distribution-supply-chain-digital-transformation/
+    file: src_articles/hvac-distribution-supply-chain-digital-transformation/index.html
+    title: "Custom AI Models for Operations Data: HVAC Wholesalers"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Photo: Mesadbal · CC BY 4.0 · Wikimedia Commons", href: "https://commons.wikimedia.org/wiki/File:Cold_Room_Condensing_Unit_-_Bitzer_Compressor.jpg", to: external}
+      - {zone: article, a: "Local search for HVAC, done in Python", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "our piece on AI answers that name only a few distributors", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
+      - {zone: article, a: "the contractor search article", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
+      - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "the wholesale inventory article", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "the Bloomfield Hills ERP piece", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: article, a: "why your AI did not fail, your data did", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "custom AI models for operations data", href: "/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
   - url: /articles/hvac-wholesale-inventory-ai-oakland-county/
     file: src_articles/hvac-wholesale-inventory-ai-oakland-county/index.html
     title: "HVAC Wholesalers in Oakland County MI: Scale With Data"
@@ -499,6 +539,41 @@ pages:
       - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call. Here is the data work that comes first, the gates that keep orders honest, and where the model finally fits.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/industrial-hvac-supply-automation-troy-mi/
+    file: src_articles/industrial-hvac-supply-automation-troy-mi/index.html
+    title: "Custom AI Models for Operations Data: HVAC Supply, Troy MI"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Photo: Marek Ślusarczyk (Tupungato) · CC BY 3.0 · Wikimedia Commons", href: "https://commons.wikimedia.org/wiki/File:012_Rooftop_HVAC_systems_and_roof_ventilation_ducts_in_Tokyo,_Japan.jpg", to: external}
+      - {zone: article, a: "Local search for HVAC, done in Python", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "wholesale inventory work in Oakland County", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "ERP automation for repeat contractor orders", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: article, a: "the data was the cause", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "custom AI models built on your data", href: "/", to: internal}
+      - {zone: article, a: "our GEO vs SEO checklist", href: "/articles/geo-vs-seo-checklist/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Contractors ask the AI who supplies them. Fix your data before it answers.Buyers ask ChatGPT, Copilot and Google who to call, and a few firms get named. Here is what staying invisible costs, and the order of work that fixes it.", href: "/articles/hvac-distribution-supply-chain-digital-transformation/", to: internal}
+      - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
