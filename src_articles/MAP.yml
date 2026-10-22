@@ -4,8 +4,12 @@ articles:
   - /articles/ai-agents-production-problems/
   - /articles/ai-data-readiness-before-rag/
   - /articles/ai-search-hvac-contractors-near-me/
+  - /articles/b2b-hvac-distributors-ai-search-visibility/
+  - /articles/b2b-hvac-distributors-near-birmingham-mi/
   - /articles/commercial-hvac-erp-automation-bloomfield-hills/
+  - /articles/companies-use-ai-get-clients/
   - /articles/deterministic-logic-llm-orchestration/
+  - /articles/geo-vs-seo-checklist/
   - /articles/how-ai-search-engines-cite-websites/
   - /articles/hvac-wholesale-inventory-ai-oakland-county/
   - /articles/local-seo-hvac-contractors-ai/
@@ -29,6 +33,10 @@ pages:
       - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC Distribution4 min AI answers name a few distributors. Is yours one of them? Contractors ask the AI who to call, and it names a handful of firms. Here is what that costs a distributor, and the data work that comes before any model. Read", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / HVAC Distribution5 min Contractors ask the AI who to call. Does it say your name? Buyers now ask ChatGPT, Copilot and Google who supplies their parts. A few firms get named and the rest are skipped. Here is what that costs, and the data work that fixes it. Read", href: "/articles/b2b-hvac-distributors-near-birmingham-mi/", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / Client Acquisition4 min Everyone says AI gets clients. Here is the plumbing that does it. You tried the demo and it invented a detail about the prospect. That is the normal first result. Here is where AI earns clients, and the checks that keep it honest. Read", href: "/articles/companies-use-ai-get-clients/", to: internal}
+      - {zone: main, a: "Oct 2026AI Systems / AI Search4 min GEO vs SEO: verify this before you spend a dollar An AI answer replaces the list of links, and you either get named or you don't. Here is the checklist to run first, and the data work underneath it. Read", href: "/articles/geo-vs-seo-checklist/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / Local Search4 min Homeowners ask the AI. It names three contractors. Are you one? The list of links is gone. One answer replaces it, and a competitor gets the name. Here is what the engine reads, and the plumbing that puts you in it. Read", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / HVAC Operations5 min Your contractors reorder the same parts. Your ERP still makes them ask. Repeat orders should not need a phone call. Here is the data work that comes first, the custom AI built on top of it, and how AI search engines end up naming your business. Read", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Oct 2026AI Systems / AI Agents4 min Agents make this worse before they make it better You added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back. Read", href: "/articles/ai-agents-production-problems/", to: internal}
@@ -75,6 +83,7 @@ pages:
       - {zone: article, a: "Secure your leverage", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Everyone says AI gets clients. Here is the plumbing that does it.You tried the demo and it invented a detail about the prospect. That is the normal first result. Here is where AI earns clients, and the checks that keep it honest.", href: "/articles/companies-use-ai-get-clients/", to: internal}
       - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
@@ -209,9 +218,82 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "GEO vs SEO: verify this before you spend a dollarAn AI answer replaces the list of links, and you either get named or you don't. Here is the checklist to run first, and the data work underneath it.", href: "/articles/geo-vs-seo-checklist/", to: internal}
       - {zone: main, a: "Your HVAC SEO froze. AI Overviews took the click.A summary answers the homeowner before they click, and a competitor gets named.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/b2b-hvac-distributors-ai-search-visibility/
+    file: src_articles/b2b-hvac-distributors-ai-search-visibility/index.html
+    title: "B2B HVAC Distributors Near Birmingham MI: AI Search Fix"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "how AI search names contractors", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
+      - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Photo: Alf van Beem · CC0 · Wikimedia Commons", href: "https://commons.wikimedia.org/wiki/File:HVAC_Air_Handler_Unit,_pic1.JPG", to: external}
+      - {zone: article, a: "licence", href: "http://creativecommons.org/publicdomain/zero/1.0/deed.en", to: external}
+      - {zone: article, a: "wholesale inventory data", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "ERP automation for repeat orders", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "The order on a real build", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "AI data readiness", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "GEO vs SEO checklist", href: "/articles/geo-vs-seo-checklist/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: main, a: "Homeowners ask the AI. It names three contractors. Are you one?The list of links is gone.", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/b2b-hvac-distributors-near-birmingham-mi/
+    file: src_articles/b2b-hvac-distributors-near-birmingham-mi/index.html
+    title: "B2B HVAC Distributors Near Birmingham MI: Get Named by AI"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "How the stack is wired", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Your HVAC SEO froze. AI Overviews took the click.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
+      - {zone: article, a: "Photo: Alf van Beem · CC0 · Wikimedia Commons", href: "https://commons.wikimedia.org/wiki/File:HVAC_Air_Handler_Unit,_pic1.JPG", to: external}
+      - {zone: article, a: "licence", href: "http://creativecommons.org/publicdomain/zero/1.0/deed.en", to: external}
+      - {zone: article, a: "Your wholesale counter is the bottleneck", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: article, a: "Your contractors reorder the same parts", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "The order on a real build", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "The model is a stage. The program is the system.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
+      - {zone: article, a: "GEO vs SEO: verify this before you spend a dollar", href: "/articles/geo-vs-seo-checklist/", to: internal}
+      - {zone: article, a: "Engines cite pages they can lift", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms. Here is what that costs a distributor, and the data work that comes before any model.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
+      - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
+      - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
+      - {zone: main, a: "GEO vs SEO: verify this before you spend a dollarAn AI answer replaces the list of links, and you either get named or you don't.", href: "/articles/geo-vs-seo-checklist/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
@@ -247,9 +329,44 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "AI answers name a few distributors. Is yours one of them?Contractors ask the AI who to call, and it names a handful of firms. Here is what that costs a distributor, and the data work that comes before any model.", href: "/articles/b2b-hvac-distributors-ai-search-visibility/", to: internal}
+      - {zone: main, a: "Contractors ask the AI who to call. Does it say your name?Buyers now ask ChatGPT, Copilot and Google who supplies their parts. A few firms get named and the rest are skipped. Here is what that costs, and the data work that fixes it.", href: "/articles/b2b-hvac-distributors-near-birmingham-mi/", to: internal}
       - {zone: main, a: "Homeowners ask the AI. It names three contractors. Are you one?The list of links is gone. One answer replaces it, and a competitor gets the name. Here is what the engine reads, and the plumbing that puts you in it.", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
-      - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/companies-use-ai-get-clients/
+    file: src_articles/companies-use-ai-get-clients/index.html
+    title: "How Companies Use AI to Get Clients: Pipelines and Gates"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Fewer calls, more Python", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Your AI didn't fail. Your data did.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "What replacing four spreadsheets actually took", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "The model is a stage. The program is the system.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
+      - {zone: article, a: "Twelve tools, one Python pipeline", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "How every call gets gated", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: article, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Agents make this worse before they make it better", href: "/articles/ai-agents-production-problems/", to: internal}
+      - {zone: article, a: "GEO vs SEO: verify this before you spend a dollar", href: "/articles/geo-vs-seo-checklist/", to: internal}
+      - {zone: article, a: "Engines cite pages they can lift. Make yours liftable.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Secure your leverage", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "GEO vs SEO: verify this before you spend a dollarAn AI answer replaces the list of links, and you either get named or you don't.", href: "/articles/geo-vs-seo-checklist/", to: internal}
+      - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
@@ -279,9 +396,39 @@ pages:
       - {zone: article, a: "Secure your leverage", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Everyone says AI gets clients. Here is the plumbing that does it.You tried the demo and it invented a detail about the prospect. That is the normal first result. Here is where AI earns clients, and the checks that keep it honest.", href: "/articles/companies-use-ai-get-clients/", to: internal}
       - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call. Here is the data work that comes first, the gates that keep orders honest, and where the model finally fits.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Agents make this worse before they make it betterYou added agents and the demo got worse. That is the normal first month. Here is what breaks, and the checks that bring it back.", href: "/articles/ai-agents-production-problems/", to: internal}
       - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula. You still control what the engine finds when it arrives. Here is the checklist, and how to prove it works.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: page, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: footer, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+  - url: /articles/geo-vs-seo-checklist/
+    file: src_articles/geo-vs-seo-checklist/index.html
+    title: "GEO vs SEO: The Checklist Before You Spend"
+    clicks:
+      - {zone: header, a: "Custom AI Models", href: "/", to: internal}
+      - {zone: nav, a: "Articles", href: "/articles/", to: internal}
+      - {zone: nav, a: "RAG", href: "/articles/rag-production-architecture/", to: internal}
+      - {zone: nav, a: "Training Hub", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: nav, a: "Real-time audio", href: "/articles/real-time-audio-machine-learning/", to: internal}
+      - {zone: nav, a: "Stats to LLMs", href: "/articles/statistics-to-llm-ai-engineering/", to: internal}
+      - {zone: nav, a: "Tool pipelines", href: "/articles/python-ai-agent-pipelines/", to: internal}
+      - {zone: header, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: header, a: "Start a project", href: "/#ask", to: internal}
+      - {zone: article, a: "Audit my data first", href: "/#ask", to: internal}
+      - {zone: article, a: "Four spreadsheets, replaced", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "Engines cite pages they can lift", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "The order on a real build", href: "/articles/replacing-spreadsheets-ai-infrastructure/", to: internal}
+      - {zone: article, a: "Your AI didn't fail. Your data did.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
+      - {zone: article, a: "(icon)", href: "/#ask", to: internal}
+      - {zone: article, a: "Start with your data", href: "/#ask", to: internal}
+      - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
+      - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
+      - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "Twelve tools, one Python pipelineHow Custom AI Models calls Claude, ChatGPT, Gemini and nine other tools from plain Python, and why every call is treated as a claim until a check proves it.", href: "/articles/python-ai-agent-pipelines/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
@@ -348,10 +495,10 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "Contractors ask the AI who to call. Does it say your name?Buyers now ask ChatGPT, Copilot and Google who supplies their parts. A few firms get named and the rest are skipped. Here is what that costs, and the data work that fixes it.", href: "/articles/b2b-hvac-distributors-near-birmingham-mi/", to: internal}
       - {zone: main, a: "Your contractors reorder the same parts. Your ERP still makes them ask.Repeat orders should not need a phone call. Here is the data work that comes first, the gates that keep orders honest, and where the model finally fits.", href: "/articles/commercial-hvac-erp-automation-bloomfield-hills/", to: internal}
       - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: main, a: "The model is a stage. The program is the system.Most agent failures are decisions you gave the model that a few lines of code should have made.", href: "/articles/deterministic-logic-llm-orchestration/", to: internal}
-      - {zone: main, a: "Your HVAC SEO froze. AI Overviews took the click.A summary answers the homeowner before they click, and a competitor gets named.", href: "/articles/local-seo-hvac-contractors-ai/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}
@@ -380,10 +527,10 @@ pages:
       - {zone: article, a: "Map my operation", href: "/#ask", to: internal}
       - {zone: article, a: "Talk on LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: main, a: "All articles", href: "/articles/", to: internal}
+      - {zone: main, a: "GEO vs SEO: verify this before you spend a dollarAn AI answer replaces the list of links, and you either get named or you don't. Here is the checklist to run first, and the data work underneath it.", href: "/articles/geo-vs-seo-checklist/", to: internal}
       - {zone: main, a: "Homeowners ask the AI. It names three contractors. Are you one?The list of links is gone. One answer replaces it, and a competitor gets the name. Here is what the engine reads, and the plumbing that puts you in it.", href: "/articles/ai-search-hvac-contractors-near-me/", to: internal}
       - {zone: main, a: "Engines cite pages they can lift. Make yours liftable.Nobody outside the labs has the ranking formula. You still control what the engine finds when it arrives. Here is the checklist, and how to prove it works.", href: "/articles/how-ai-search-engines-cite-websites/", to: internal}
       - {zone: main, a: "Your wholesale counter is the bottleneck. Fix the data first.Commercial HVAC wholesale runs on orders, stock and contractor accounts. Here is the data work that has to come first, and where the model finally fits.", href: "/articles/hvac-wholesale-inventory-ai-oakland-county/", to: internal}
-      - {zone: main, a: "Your AI didn't fail. Your data did.You tried a demo and watched it break.", href: "/articles/ai-data-readiness-before-rag/", to: internal}
       - {zone: page, a: "Start a project", href: "/#ask", to: internal}
       - {zone: page, a: "LinkedIn", href: "https://linkedin.com/in/yeriko-vargas", to: external}
       - {zone: footer, a: "Custom AI Models", href: "/", to: internal}

@@ -1,0 +1,55 @@
+{
+ "slug": "b2b-hvac-distributors-ai-search-visibility",
+ "topic": "ops",
+ "made": "2026-10-22T05:44:03-04:00",
+ "pieces": {
+  "hero_loop": {
+   "pool": "vid/06xx_background/cai-0601v01_background_brand-nebula-deep-space_16x9-1080p_05s_loop_20261018.mp4",
+   "media_id": "cai-0601v01",
+   "file": "cai-0601v01_b2b-hvac-distributors-ai-search-visibility-hero-loop.mp4",
+   "src_sha": "69cc86a2cdb91cd7c1dae01cc55b6995a63f932eb7906e97a172f6719347ff9a",
+   "bytes": 324197,
+   "alt": "The gold 3D Celtic-knot emblem of Custom AI Models: brand nebula deep space. From the Custom AI Models article on B2B HVAC distributors near Birmingham MI."
+  },
+  "hero_mark": {
+   "pool": "img/09xx_logo-mark/cai-0904i01_logo-mark_gold-knot-3d-transparent_1x1-1254p_still_alpha_20261018.png",
+   "media_id": "cai-0904i01",
+   "file": "cai-0904i01_b2b-hvac-distributors-ai-search-visibility.webp",
+   "src_sha": "ca49adfb691b6448ccd18d9cdf1b40ab9cd42bd91bce664a4144820c7759ec31",
+   "bytes": 63172,
+   "alt": "The gold 3D Celtic-knot emblem of Custom AI Models: gold knot 3d transparent on a transparent background. From the Custom AI Models article on B2B HVAC distributors near Birmingham MI."
+  },
+  "ad1": {
+   "pool": "img/12xx_article-breaker/cai-1203i02_article-breaker_plumbing-over-hype-tech-stack-light_4x1-400p_still_opaque_20261018.png",
+   "media_id": "cai-1203i02",
+   "file": "cai-1203i02_b2b-hvac-distributors-ai-search-visibility.webp",
+   "src_sha": "55d4fa34cc1e54c2724811179ce4355fd0917d3ff97fe30c41c855c377a18866",
+   "bytes": 28272,
+   "alt": "Custom AI Models banner (light (paper) theme): \"Plumbing over hype. The work is in the plumbing: SQL, Webhooks, Python, Cloudflare, Resend, JSON schemas, Exit codes.\". From the Custom AI Models article on B2B HVAC distributors near Birmingham MI."
+  },
+  "ad2": {
+   "pool": "img/12xx_article-breaker/cai-1202i02_article-breaker_order-never-changes-unify-model-gate-model-last-light_4x1-400p_still_opaque_20261018.png",
+   "media_id": "cai-1202i02",
+   "file": "cai-1202i02_b2b-hvac-distributors-ai-search-visibility.webp",
+   "src_sha": "79c5d975a6b782b3498c7b1eb8330cfb2859ff59b4ee94da819baf72dfc1f59f",
+   "bytes": 23920,
+   "alt": "Custom AI Models banner (light (paper) theme): \"The order never changes: 01 Unify the data, 02 Model it, 03 Gate every step, 04 The model last.\". From the Custom AI Models article on B2B HVAC distributors near Birmingham MI."
+  },
+  "cta": {
+   "pool": "img/13xx_article-cta/cai-1303i01_article-cta_connect-your-website-to-your-whole-operation-dark_16x5-500p_still_opaque_20261018.png",
+   "media_id": "cai-1303i01",
+   "file": "cai-1303i01_b2b-hvac-distributors-ai-search-visibility.webp",
+   "src_sha": "28f5388d35a4528c6d098ca1b841f0c50b7088765e7486f7d553dc8c8c61d8ec",
+   "bytes": 56098,
+   "alt": "Custom AI Models call-to-action banner (dark (midnight) theme) with the gold Celtic-knot emblem: \"Website to operations. Connect your website to your whole operation. Let's talk system architecture. customaimodels.com\". From the Custom AI Models article on B2B HVAC distributors near Birmingham MI."
+  },
+  "photo": {
+   "pool": "img/14xx_industry-photo/cai-1402i01_industry-photo_air-handling-unit-mechanical-room_4x3-1800p_still_opaque_20261020.jpg",
+   "media_id": "cai-1402i01",
+   "file": "cai-1402i01_b2b-hvac-distributors-ai-search-visibility.webp",
+   "src_sha": "6a3c674721c31c008daddfdd7ca80fcd5e18a1908f8479e02261a02c97521a81",
+   "bytes": 105452,
+   "alt": "A long green air handling unit in a commercial mechanical room."
+  }
+ }
+}
