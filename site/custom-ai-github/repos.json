@@ -1,0 +1,22 @@
+{
+ "owner": "customaimodels",
+ "as_of": "2026-10-23",
+ "repos": [
+  {
+   "name": "__CAI_01_website",
+   "url": "https://github.com/customaimodels/__CAI_01_website",
+   "title": "customaimodels.com",
+   "line": "The code behind this website: landing, client portal, articles and the SEO gate that checks every page before it ships.",
+   "lang": "HTML",
+   "stars": 0,
+   "forks": 0,
+   "topics": [
+    "python",
+    "static-site",
+    "seo",
+    "railway"
+   ],
+   "updated": "2026-10-22"
+  }
+ ]
+}
