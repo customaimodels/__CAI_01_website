@@ -3,5 +3,6 @@ Allow: /
 Disallow: /r-cai/
 Disallow: /y-vault/
 Disallow: /recruiter/
+Disallow: /brain/
 
 Sitemap: https://customaimodels.com/sitemap.xml

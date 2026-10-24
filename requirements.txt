@@ -1,1 +1,2 @@
-# stdlib only
+# stdlib, plus the official MCP SDK for /brain/mcp (src_brain/connector.py)
+mcp==2.3.0
