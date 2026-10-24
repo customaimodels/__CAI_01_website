@@ -26,6 +26,7 @@ import json
 import os
 import re
 import secrets
+import sys
 import threading
 import time
 import unicodedata
@@ -218,6 +219,36 @@ def _scope(h, ip):
             "headers": [(k.lower().encode("latin-1"), v.encode("latin-1")) for k, v in h.headers.items()], "state": {}}
 
 
+def _body(h):
+    """The POST body, Content-Length or chunked (some clients, Gemini among them, stream it: no length = 0 bytes before).
+    None = over MAX_BYTES."""
+    if "chunked" not in h.headers.get("Transfer-Encoding", "").lower():
+        n = int(h.headers.get("Content-Length") or 0)
+        return None if n > MAX_BYTES else h.rfile.read(n)
+    out = b""
+    while True:
+        size = int(h.rfile.readline().split(b";", 1)[0].strip() or b"0", 16)
+        if size == 0:
+            while h.rfile.readline() not in (b"\r\n", b"\n", b""):   # trailers, then the blank line
+                pass
+            return out
+        out += h.rfile.read(size)
+        h.rfile.readline()                                # the CRLF after each chunk
+        if len(out) > MAX_BYTES:
+            return None
+
+
+def _note(h, status, body):
+    """One stderr line per non-200 (Railway logs): status + what the client said it speaks. Never the URL or the body."""
+    try:
+        m = json.loads(body).get("method", "?") if body[:1] == b"{" else "?"
+    except Exception:
+        m = "?"
+    print(f"[brain-mcp] {status} method={m} proto={h.headers.get('MCP-Protocol-Version', '-')} "
+          f"accept={h.headers.get('Accept', '-')[:80]} ctype={h.headers.get('Content-Type', '-')[:40]} "
+          f"te={h.headers.get('Transfer-Encoding', '-')} ua={h.headers.get('User-Agent', '-')[:60]}", file=sys.stderr, flush=True)
+
+
 def handle(h, method):
     path = h.path.split("?", 1)[0]
     ip = B._ip(h)
@@ -228,10 +259,9 @@ def handle(h, method):
         return B._send(h, 404, "Not found", "text/plain")
     if method != "POST":
         return B._send(h, 405, "", "text/plain", extra=(("Allow", "POST"),))
-    n = int(h.headers.get("Content-Length") or 0)
-    if n > MAX_BYTES:
+    body = _body(h)
+    if body is None:
         return B._json(h, 413, {"error": "too long"})
-    body = h.rfile.read(n)
     try:
         rt = _runtime()
     except ImportError:
@@ -242,6 +272,8 @@ def handle(h, method):
         out = asyncio.run_coroutine_threadsafe(_call(rt["app"], _scope(h, ip), body), rt["loop"]).result(TIMEOUT)
     except Exception:
         return B._json(h, 504, {"error": "timed out"})
+    if out["status"] >= 300:
+        _note(h, out["status"], body)
     h.send_response(out["status"])
     skip = {b"content-length", b"connection", b"transfer-encoding"}
     for k, v in out["headers"]:
